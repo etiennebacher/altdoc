@@ -2,8 +2,11 @@ Package: altdoc
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: 
+    person(given = "Etienne",
+           family = "Bacher",
+           role = c("aut", "cre", "cph"),
+           email = "etienne.bacher@protonmail.com")
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
@@ -13,6 +16,8 @@ RoxygenNote: 7.1.1
 Imports: 
     cli,
     fs,
-    servr
+    htmltools,
+    servr,
+    usethis
 URL: https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues

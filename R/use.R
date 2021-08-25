@@ -13,11 +13,13 @@ use_docute <- function() {
     system.file("docute/index.html", package = "altdoc"),
     title = get_pkg_name(),
     footer = sprintf(
-      "<a href=%s> %s v. %s </a>",
-      get_github_url(), get_pkg_name(), get_pkg_version()
+      "<a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
+      get_github_url(), get_pkg_name(), get_pkg_version(),
+      packageVersion("altdoc")
     ),
     github_link = get_github_url()
   )
+  # regex stuff to correct footer
   index <- as.character(index)
   index <- gsub("&lt;", "<", index)
   index <- gsub("&gt;", ">", index)
@@ -35,9 +37,42 @@ use_docute <- function() {
     )
   }
 
+  # CHANGELOG
+  if (fs::file_exists("NEWS.md")) {
+    changelog_exists <- TRUE
+    fs::file_copy("NEWS.md", "docs/NEWS.md")
+    changelog <- readLines("NEWS.md")
+    changelog <- gsub("^# ", "## ", changelog)
+    writeLines(changelog, "docs/NEWS.md")
+  } else {
+    changelog_exists <- FALSE
+  }
+
+  # CODE OF CONDUCT
+  if (fs::file_exists("CODE_OF_CONDUCT.md")) {
+    coc_exists <- TRUE
+    fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
+  } else {
+    coc_exists <- FALSE
+  }
+
+
+  # FINAL STEPS
+  usethis::use_git_ignore("^docs$")
+
   message_validate("Docute initialized.")
+  message_validate("Folder 'docs' put in .gitignore.")
+  if (!changelog_exists) {
+    message_info("'NEWS.md' does not exist. You can remove the
+                 'Changelog' section in 'docs/index.html'.")
+  }
+  if (!coc_exists) {
+    message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
+                 'Code of Conduct' section in 'docs/index.html'.")
+  }
 }
 
+#' @export
 
 use_docsify <- function() {
 
@@ -70,63 +105,9 @@ use_mkdocs <- function() {
   check_docs_exists()
 
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
-  fs::file_copy(
-    system.file("mkdocs/index.html", package = "altdoc"),
-    "docs/index.html"
-  )
 
-  message_validate("Mkdocs initialized.")
-}
-
-
-#' Check that folder 'docs' does not already exist, or is empty.
-
-check_docs_exists <- function() {
-
-  if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
-    stop(
-      message_error("Folder 'docs' already exists and is not empty.
-                    Nothing has been modified.")
-    )
-  }
+  ### Not as easy as the other ones because there is no index.html file
+  ### Everything is done through mkdocs command
 
 }
 
-# Wrappers for cli messages
-# @param x Message
-# @keywords internal
-
-message_validate <- function(x) {
-  cli::cli_alert_success(
-    strwrap(prefix = " ", initial = "", x)
-  )
-}
-
-# @keywords internal
-message_info <- function(x) {
-  cli::cli_alert_info(
-    strwrap(prefix = " ", initial = "", x)
-  )
-}
-
-# @keywords internal
-message_error <- function(x, y) {
-  strwrap(prefix = " ", initial = "", x)
-}
-
-
-# Detect if a folder is empty
-#
-# @param x Name of the folder
-# @keywords internal
-
-folder_is_empty <- function(x) {
-
-  if (length(list.files(x)) == 0) {
-    is_empty <- TRUE
-  } else {
-    is_empty <- FALSE
-  }
-  return(is_empty)
-
-}

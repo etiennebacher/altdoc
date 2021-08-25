@@ -1,7 +1,6 @@
 #' Preview the documentation in a webpage or in viewer
 #'
 #' @export
-#' @examples
 
 preview <- function() {
 

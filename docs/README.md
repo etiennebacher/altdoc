@@ -92,7 +92,7 @@ ggplot(dat, aes(year, NY.GDP.PCAP.KD, color=country)) + geom_line() +
 
 Note: You can use `country='all'` to download data for all available countries. You can also feed a vector of indicator strings if you want to download multiple indicators at once.
 
-# Monthly or quarterly data
+## Monthly or quarterly data
 
 Some World Bank series are available at the monthly or quarterly frequency. You can download those simply using the `start` and `end` arguments:
 
