@@ -14,3 +14,5 @@ Imports:
     cli,
     fs,
     servr
+URL: https://github.com/etiennebacher/altdoc
+BugReports: https://github.com/etiennebacher/altdoc/issues
