@@ -15,7 +15,8 @@ use_docute <- function() {
     footer = sprintf(
       "<a href=%s> %s v. %s </a>",
       get_github_url(), get_pkg_name(), get_pkg_version()
-    )
+    ),
+    github_link = get_github_url()
   )
   index <- as.character(index)
   index <- gsub("&lt;", "<", index)

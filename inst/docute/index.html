@@ -12,6 +12,22 @@
     <script>
       new Docute({
         target: '#docute',
+        nav: [
+					{
+						title: 'Home',
+						link: '/'
+					},
+					{
+						title: 'GitHub',
+						link: '{{github_link}}'
+					}
+				],
+				sidebar: [
+					{
+						title: 'Home',
+						link: '/'
+					}
+				],
         title: '{{title}}',
         footer: '{{footer}}'
       })
