@@ -9,10 +9,20 @@ use_docute <- function() {
 
   # INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
-  fs::file_copy(
+  index <- htmltools::htmlTemplate(
     system.file("docute/index.html", package = "altdoc"),
-    "docs/index.html"
+    title = get_pkg_name(),
+    footer = sprintf(
+      "<a href=%s> %s v. %s </a>",
+      get_github_url(), get_pkg_name(), get_pkg_version()
+    )
   )
+  index <- as.character(index)
+  index <- gsub("&lt;", "<", index)
+  index <- gsub("&gt;", ">", index)
+  index <- gsub("\\r\\n", "\\\n", index)
+
+  writeLines(index, "docs/index.html")
 
   # README
   if (fs::file_exists("README.md")) {
