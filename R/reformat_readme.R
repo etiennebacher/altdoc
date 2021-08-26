@@ -60,7 +60,7 @@ reformat_readme <- function() {
 
   # Check if there are several h1 (need to exclude # in code)
   z <- y
-  delim <- which(z == "```")
+  delim <- which(grepl("```", z))
   while (length(delim) > 0 && delim %% 2 == 0) {
     start <- delim[1]+1
     end <- delim[2]-1
@@ -82,7 +82,7 @@ reformat_readme <- function() {
 
     # Find code chunks, extract them, remove the # added earlier,
     # and reinsert them
-    delim <- which(y == "```")
+    delim <- which(grepl("```", y))
     while (length(delim) > 0 && delim %% 2 == 0) {
       start <- delim[1]+1
       end <- delim[2]-1
