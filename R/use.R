@@ -36,7 +36,6 @@ use_docute <- function() {
       "docs/README.md"
     )
   }
-  reformat_readme()
 
   ### CHANGELOG
   if (fs::file_exists("NEWS.md")) {
@@ -63,6 +62,7 @@ use_docute <- function() {
 
   message_validate("Docute initialized.")
   message_validate("Folder 'docs' put in .gitignore.")
+  reformat_readme() # placed here so that message is displayed after init message
   if (!changelog_exists) {
     message_info("'NEWS.md' does not exist. You can remove the
                  'Changelog' section in 'docs/index.html'.")
