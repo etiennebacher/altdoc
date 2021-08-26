@@ -56,7 +56,7 @@
 
 reformat_readme <- function() {
 
-  y <- readLines('docs/README.md')
+  y <- readLines('docs/README.md', warn = FALSE)
 
   # Check if there are several h1 (need to exclude # in code)
   z <- y
@@ -101,3 +101,42 @@ reformat_readme <- function() {
 
 }
 
+#' Copy images/GIF that are in README in 'docs/'
+
+move_img_readme <- function() {
+
+  img_paths <- img_paths_readme()
+
+  for (i in seq_along(img_paths)) {
+    fs::file_copy(
+      img_paths[i],
+      paste0("docs/", img_paths[i]),
+      overwrite = T
+    )
+  }
+
+}
+
+
+#' Get the paths of images/GIF in README
+
+img_paths_readme <- function() {
+
+  file_content <- paste(readLines("docs/README.md", warn = FALSE), collapse = "\n")
+
+  # regex adapted from https://stackoverflow.com/a/44227600/11598948
+  # (second one)
+  img_path <- unlist(
+    regmatches(file_content,
+               gregexpr('!\\[[^\\]]*\\]\\((.*?)\\s*("(?:.*[^"])")?\\s*\\)',
+                        file_content, perl = TRUE)
+    )
+  )
+  img_path <- img_path[which(!grepl("http", img_path))]
+  img_path <- gsub("!\\[\\]", "", img_path)
+  img_path <- gsub("\\(", "", img_path)
+  img_path <- gsub("\\)", "", img_path)
+
+  return(img_path)
+
+}

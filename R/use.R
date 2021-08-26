@@ -36,12 +36,13 @@ use_docute <- function() {
       "docs/README.md"
     )
   }
+  move_img_readme()
 
   ### CHANGELOG
   if (fs::file_exists("NEWS.md")) {
     changelog_exists <- TRUE
     fs::file_copy("NEWS.md", "docs/NEWS.md")
-    changelog <- readLines("NEWS.md")
+    changelog <- readLines("NEWS.md", warn = FALSE)
     changelog <- gsub("^# ", "## ", changelog)
     writeLines(changelog, "docs/NEWS.md")
   } else {
