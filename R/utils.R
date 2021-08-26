@@ -51,7 +51,7 @@ folder_is_empty <- function(x) {
 }
 
 # @keywords internal
-get_pkg_name <- function() {
+pkg_name <- function() {
 
   pkgname <- NULL
 
@@ -68,7 +68,7 @@ get_pkg_name <- function() {
 }
 
 # @keywords internal
-get_pkg_version <- function() {
+pkg_version <- function() {
 
   pkgname <- NULL
 
@@ -85,7 +85,7 @@ get_pkg_version <- function() {
 }
 
 # @keywords internal
-get_github_url <- function() {
+gh_url <- function() {
 
   description <- readLines("DESCRIPTION", warn = FALSE)
   line_with_url <- description[

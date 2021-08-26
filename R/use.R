@@ -7,17 +7,17 @@ use_docute <- function() {
 
   check_docs_exists()
 
-  # INDEX
+  ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docute/index.html", package = "altdoc"),
-    title = get_pkg_name(),
+    title = pkg_name(),
     footer = sprintf(
       "<a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
-      get_github_url(), get_pkg_name(), get_pkg_version(),
+      gh_url(), pkg_name(), pkg_version(),
       packageVersion("altdoc")
     ),
-    github_link = get_github_url()
+    github_link = gh_url()
   )
   # regex stuff to correct footer
   index <- as.character(index)
@@ -27,7 +27,7 @@ use_docute <- function() {
 
   writeLines(index, "docs/index.html")
 
-  # README
+  ### README
   if (fs::file_exists("README.md")) {
     fs::file_copy("README.md", "docs/README.md")
   } else {
@@ -36,8 +36,9 @@ use_docute <- function() {
       "docs/README.md"
     )
   }
+  reformat_readme()
 
-  # CHANGELOG
+  ### CHANGELOG
   if (fs::file_exists("NEWS.md")) {
     changelog_exists <- TRUE
     fs::file_copy("NEWS.md", "docs/NEWS.md")
@@ -48,7 +49,7 @@ use_docute <- function() {
     changelog_exists <- FALSE
   }
 
-  # CODE OF CONDUCT
+  ### CODE OF CONDUCT
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     coc_exists <- TRUE
     fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
@@ -57,7 +58,7 @@ use_docute <- function() {
   }
 
 
-  # FINAL STEPS
+  ### FINAL STEPS
   usethis::use_git_ignore("^docs$")
 
   message_validate("Docute initialized.")
