@@ -14,7 +14,7 @@
 #'
 #' For example, if your README looked like this:
 #'
-#' \preformatted{
+#' ```
 #' # Package
 #'
 #' # Installation
@@ -28,11 +28,11 @@
 #' # Demo
 #'
 #' Hello again
-#' }
+#' ```
 #'
 #' It will now look like that:
 #'
-#' \preformatted{
+#' ```
 #' # Package
 #'
 #' ## Installation
@@ -46,7 +46,7 @@
 #' ## Demo
 #'
 #' Hello again
-#' }
+#' ```
 #'
 #' Note that the main structure is preserved: "Stable version" and "Dev
 #'  version" are still subsections of "Installation".

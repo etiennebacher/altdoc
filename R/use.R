@@ -17,7 +17,8 @@ use_docute <- function() {
       gh_url(), pkg_name(), pkg_version(),
       packageVersion("altdoc")
     ),
-    github_link = gh_url()
+    github_link = gh_url(),
+    reference = make_reference()
   )
   # regex stuff to correct footer
   index <- as.character(index)

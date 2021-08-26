@@ -20,10 +20,7 @@ main sections, which messed up with Docute organization. Therefore,
 \code{altdoc} automatically added a '#' to all sections and subsections,
 except the first one, which is usually the title of the package.
 
-For example, if your README looked like this:
-
-\preformatted{
-# Package
+For example, if your README looked like this:\preformatted{# Package
 
 # Installation
 
@@ -38,10 +35,7 @@ Hello
 Hello again
 }
 
-It will now look like that:
-
-\preformatted{
-# Package
+It will now look like that:\preformatted{# Package
 
 ## Installation
 
@@ -57,7 +51,7 @@ Hello again
 }
 
 Note that the main structure is preserved: "Stable version" and "Dev
- version" are still subsections of "Installation".
+version" are still subsections of "Installation".
 
 Also, if your README includes R comments in code chunks, these will not
 be modified.
