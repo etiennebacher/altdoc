@@ -15,7 +15,7 @@ use_docute <- function() {
     footer = sprintf(
       "<a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
       gh_url(), pkg_name(), pkg_version(),
-      packageVersion("altdoc")
+      utils::packageVersion("altdoc")
     ),
     github_link = gh_url(),
     reference = make_reference()
@@ -61,9 +61,10 @@ use_docute <- function() {
 
   ### FINAL STEPS
   usethis::use_git_ignore("^docs$")
+  usethis::use_build_ignore("^docs$")
 
   message_validate("Docute initialized.")
-  message_validate("Folder 'docs' put in .gitignore.")
+  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
   reformat_readme() # placed here so that message is displayed after init message
   if (!changelog_exists) {
     message_info("'NEWS.md' does not exist. You can remove the
@@ -75,6 +76,8 @@ use_docute <- function() {
   }
 }
 
+#' Init docsify
+#'
 #' @export
 
 use_docsify <- function() {
