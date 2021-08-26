@@ -14,7 +14,7 @@ make_reference <- function() {
   files <- list.files("man")
   files <- files[grepl("\\.Rd", files)]
 
-  purrr::map(files, function(x){
+  lapply(files, function(x){
     input <- paste0("man/", x)
     nm <- gsub("\\.Rd", ".md", x)
     output <- paste0("docs/reference/", nm)
@@ -23,7 +23,7 @@ make_reference <- function() {
     list(name = nm, output = output)
   })
 
-  json <- purrr::map(files, function(x){
+  json <- lapply(files, function(x){
     link <- gsub("\\.Rd", "", x)
     list(title = link, link = sprintf("/reference/%s", link))
   })

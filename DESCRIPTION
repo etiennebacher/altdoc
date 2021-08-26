@@ -18,7 +18,6 @@ Imports:
     cli,
     fs,
     htmltools,
-    purrr,
     servr,
     usethis
 URL: https://github.com/etiennebacher/altdoc
