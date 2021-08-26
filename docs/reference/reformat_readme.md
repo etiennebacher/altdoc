@@ -27,13 +27,9 @@ To use Docute, the format of Markdown files has to follow a precise
  `altdoc` automatically added a '#' to all sections and subsections,
  except the first one, which is usually the title of the package.
  
- For example, if your README looked like this:
+ For example, if your README looked like this: list("# Package\n", "\n", "# Installation\n", "\n", "## Stable version\n", "\n", "## Dev version\n", "\n", "Hello\n", "\n", "# Demo\n", "\n", "Hello again\n") 
  
- list("\n", "# Package\n", "\n", "# Installation\n", "\n", "## Stable version\n", "\n", "## Dev version\n", "\n", "Hello\n", "\n", "# Demo\n", "\n", "Hello again\n") 
- 
- It will now look like that:
- 
- list("\n", "# Package\n", "\n", "## Installation\n", "\n", "### Stable version\n", "\n", "### Dev version\n", "\n", "Hello\n", "\n", "## Demo\n", "\n", "Hello again\n") 
+ It will now look like that: list("# Package\n", "\n", "## Installation\n", "\n", "### Stable version\n", "\n", "### Dev version\n", "\n", "Hello\n", "\n", "## Demo\n", "\n", "Hello again\n") 
  
  Note that the main structure is preserved: "Stable version" and "Dev
  version" are still subsections of "Installation".
