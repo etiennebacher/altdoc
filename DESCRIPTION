@@ -22,6 +22,10 @@ Imports:
     Rd2md,
     servr,
     usethis,
-    utils
+    utils,
+    withr
 URL: https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
