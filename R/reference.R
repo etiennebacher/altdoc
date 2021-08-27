@@ -8,8 +8,8 @@
 
 make_reference <- function() {
 
-  if (fs::dir_exists("docs/reference")) fs::dir_delete("docs/reference")
-  fs::dir_create("docs/reference")
+  if (fs::file_exists("docs/reference.md")) fs::file_delete("docs/reference.md")
+  fs::file_create("docs/reference.md")
 
   files <- list.files("man")
   files <- files[grepl("\\.Rd", files)]
@@ -17,18 +17,10 @@ make_reference <- function() {
   lapply(files, function(x){
     input <- paste0("man/", x)
     nm <- gsub("\\.Rd", ".md", x)
-    output <- paste0("docs/reference/", nm)
-    Rd2md::Rd2markdown(input, output)
-
-    list(name = nm, output = output)
+    Rd2md::Rd2markdown(input, "docs/reference.md", append = TRUE)
   })
 
-  json <- lapply(files, function(x){
-    link <- gsub("\\.Rd", "", x)
-    list(title = link, link = sprintf("/reference/%s", link))
-  })
-
-  jsonlite::toJSON(json, pretty = TRUE, auto_unbox = TRUE)
+  reformat_md("docs/reference.md")
 
 }
 

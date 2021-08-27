@@ -65,7 +65,7 @@ use_docute <- function() {
 
   message_validate("Docute initialized.")
   message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
-  reformat_readme() # placed here so that message is displayed after init message
+  reformat_md("docs/README.md") # placed here so that message is displayed after init message
   if (!changelog_exists) {
     message_info("'NEWS.md' does not exist. You can remove the
                  'Changelog' section in 'docs/index.html'.")

@@ -54,9 +54,11 @@
 #' Also, if your README includes R comments in code chunks, these will not
 #' be modified.
 
-reformat_readme <- function() {
+reformat_md <- function(filename) {
 
-  y <- readLines('docs/README.md', warn = FALSE)
+  stopifnot(!is.null(filename), is.character(filename))
+
+  y <- readLines(filename, warn = FALSE)
 
   # Check if there are several h1 (need to exclude # in code)
   z <- y
@@ -78,7 +80,9 @@ reformat_readme <- function() {
 
     # Remove # added earlier for package title
     y <- gsub(paste("^##", pkg_name()), paste("#", pkg_name()), y)
-    y[1] <- gsub("^##", "#", y[1])
+    if (filename == "docs/README.md") {
+      y[1] <- gsub("^##", "#", y[1])
+    }
 
     # Find code chunks, extract them, remove the # added earlier,
     # and reinsert them
@@ -92,12 +96,14 @@ reformat_readme <- function() {
       delim <- delim[-c(1, 2)]
     }
 
-    message_info("'README.md' had to be slightly modified.
-    Get more info with `?altdoc:::reformat_readme`.")
+    if (filename == "docs/README.md") {
+      message_info(paste0(filename, " had to be slightly modified.
+    Get more info with `?altdoc:::reformat_md`."))
+    }
 
   }
 
-  writeLines(y, "docs/README.md")
+  writeLines(y, filename)
 
 }
 
