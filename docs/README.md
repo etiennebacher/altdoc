@@ -1,5 +1,6 @@
 # altdoc
 
+
 [![R-CMD-check](https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg)](https://github.com/etiennebacher/altdoc/actions)
 
 The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [`docute`](https://docute.org/) and [`docsify`](https://docsify.js.org/#/). 

@@ -12,6 +12,10 @@
     <script>
       new Docute({
         target: '#docute',
+        title: '{{title}}',
+        highlight: ['r'],
+        detectSystemDarkTheme: true,
+        darkThemeToggler: true,
         nav: [
 					{
 						title: 'Home',
@@ -40,7 +44,6 @@
 					  link: '/CODE_OF_CONDUCT'
 					}
 				],
-        title: '{{title}}',
         footer: "{{footer}}"
       })
     </script>
