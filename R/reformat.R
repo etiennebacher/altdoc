@@ -54,20 +54,19 @@
 #' Also, if your README includes R comments in code chunks, these will not
 #' be modified.
 
-reformat_md <- function(filename) {
+reformat_md <- function(file) {
 
-  stopifnot(!is.null(filename), is.character(filename))
+  stopifnot(!is.null(file), is.character(file))
 
-  y <- readLines(filename, warn = FALSE)
+  y <- readLines(file, warn = FALSE)
 
-  # Check if there are several h1 (need to exclude # in code)
+  # Check if there are several h1 (need to exclude code first)
   z <- y
   delim <- which(grepl("```", z))
-  while (length(delim) > 0 && delim %% 2 == 0) {
+  while (length(delim) > 0 && length(delim) %% 2 == 0) {
     start <- delim[1]+1
     end <- delim[2]-1
-    code <- z[start:end]
-    z <- gsub(code, "", z)
+    z[c(start:end)] <- ""
     delim <- delim[-c(1, 2)]
   }
 
@@ -80,14 +79,14 @@ reformat_md <- function(filename) {
 
     # Remove # added earlier for package title
     y <- gsub(paste("^##", pkg_name()), paste("#", pkg_name()), y)
-    if (filename == "docs/README.md") {
+    if (file == "docs/README.md") {
       y[1] <- gsub("^##", "#", y[1])
     }
 
     # Find code chunks, extract them, remove the # added earlier,
     # and reinsert them
     delim <- which(grepl("```", y))
-    while (length(delim) > 0 && delim %% 2 == 0) {
+    while (length(delim) > 0 && length(delim) %% 2 == 0) {
       start <- delim[1]+1
       end <- delim[2]-1
       code <- y[start:end]
@@ -96,14 +95,14 @@ reformat_md <- function(filename) {
       delim <- delim[-c(1, 2)]
     }
 
-    if (filename == "docs/README.md") {
-      message_info(paste0(filename, " had to be slightly modified.
+    if (file == "docs/README.md") {
+      message_info(paste0(file, " had to be slightly modified.
     Get more info with `?altdoc:::reformat_md`."))
     }
 
   }
 
-  writeLines(y, filename)
+  writeLines(y, file)
 
 }
 

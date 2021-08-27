@@ -5,15 +5,15 @@
 
 The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [`docute`](https://docute.org/) and [`docsify`](https://docsify.js.org/#/). 
 
-### Installation
+## Installation
 
 This package is only available in development version for now:
 ```r
-## install.packages("remotes")
+# install.packages("remotes")
 remotes::install_github("etiennebacher/altdoc")
 ```
 
-### Features
+## Features
 
 The purpose of this package is to make it easy and fast to use documentation generators. Its features include:
 

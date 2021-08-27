@@ -17,8 +17,7 @@ use_docute <- function() {
       gh_url(), pkg_name(), pkg_version(),
       utils::packageVersion("altdoc")
     ),
-    github_link = gh_url(),
-    reference = make_reference()
+    github_link = gh_url()
   )
   # regex stuff to correct footer
   index <- as.character(index)
@@ -44,6 +43,7 @@ use_docute <- function() {
     changelog_exists <- TRUE
     fs::file_copy("NEWS.md", "docs/NEWS.md")
     changelog <- readLines("NEWS.md", warn = FALSE)
+    changelog <- gsub("^## ", "### ", changelog)
     changelog <- gsub("^# ", "## ", changelog)
     writeLines(changelog, "docs/NEWS.md")
   } else {
@@ -57,6 +57,9 @@ use_docute <- function() {
   } else {
     coc_exists <- FALSE
   }
+
+  ### REFERENCE
+  make_reference()
 
 
   ### FINAL STEPS
