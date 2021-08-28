@@ -35,22 +35,30 @@ rd2md <- function(rdfile) {
   tools::Rd2HTML(rdfile, out = tmp_html, permissive = TRUE)
   rmarkdown::pandoc_convert(tmp_html, "markdown_strict", output = tmp_md)
 
-  # Extract examples
-  rd <- paste(readLines(rdfile, warn = FALSE), collapse = "\n")
-  pattern = "\\\\dontrun({([^{}]*?(?:(?1)[^{}]*?)*)\\s*})"
-  examples <- unlist(regmatches(rd, regexec(pattern, rd, perl = TRUE)))[3]
-  if (!is.na(examples)) {
-    examples_md <- paste0(
-      "\n\n### Examples\n\n```r", examples, "\n```"
-    )
-    cat(examples_md, file = tmp_md, append = TRUE)
-  }
-
   cat("\n\n---", file = tmp_md, append = TRUE)
 
   # Get function title and remove HTML tags left
   md <- readLines(tmp_md, warn = FALSE)
-  md[-c(1:8)]
+  md <- md[-c(1:8)]
+
+  # Syntax used for examples is four spaces, which prevents code
+  # highlighting. So I need to put backticks before and after the examples
+  # and remove the four spaces.
+  start_examples <- which(grepl("^### Examples$", md))
+  if (length(start_examples) != 0) {
+    examples <- md[start_examples:length(md)]
+    not_empty_lines <- which(examples != "")[-1]
+    examples[not_empty_lines[1]] <-
+      paste0("```r\n", examples[not_empty_lines[1]])
+    examples[not_empty_lines[length(not_empty_lines)-1]] <-
+      paste0(examples[not_empty_lines[length(not_empty_lines)-1]], "\n```")
+    md[start_examples:length(md)] <- examples
+    for (i in start_examples:length(md)) {
+      md[i] <- gsub("    ", "", md[i])
+    }
+  }
+
+  md
 
 }
 
