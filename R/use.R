@@ -89,10 +89,13 @@ use_docsify <- function() {
 
   # INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
-  fs::file_copy(
+  index <- htmltools::htmlTemplate(
     system.file("docsify/index.html", package = "altdoc"),
-    "docs/index.html"
+    title = pkg_name(),
+    repo = gh_url()
   )
+  index <- as.character(index)
+  writeLines(index, "docs/index.html")
 
   # README
   if (fs::file_exists("README.md")) {

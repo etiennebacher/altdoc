@@ -12,9 +12,23 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      //...
+      name: '{{title}}',
+      repo: '{{repo}}',
+      search: {
+        placeholder: 'Search',
+        depth: 3,
+      },
+      auto2top: true,
+      copyCode: {
+        buttonText : 'Copy',
+        errorText  : 'Error',
+        successText: 'Copied'
+      }
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.24.1/components/prism-r.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>

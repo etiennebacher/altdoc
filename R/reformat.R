@@ -2,7 +2,7 @@
 #'
 #' @details
 #'
-#' To use Docute, the format of Markdown files has to follow a precise
+#' To use Docute or Docsify, the format of Markdown files has to follow a precise
 #' structure. There must be at most one main section (starting with '#')
 #' but there can be as many subsections and subsubsections as you want.
 #'
