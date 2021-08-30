@@ -29,3 +29,24 @@ test_that("pkg_version() works", {
   expect_true(is.character(pkg_version()))
   expect_true(nchar(pkg_version()) > 0)
 })
+
+test_that("import_* functions work", {
+  create_local_package()
+  fs::dir_create("docs")
+
+  usethis::use_readme_md()
+  expect_false(fs::file_exists("docs/README.md"))
+  import_readme()
+  expect_true(fs::file_exists("docs/README.md"))
+
+  usethis::use_code_of_conduct()
+  expect_false(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
+  import_coc()
+  expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
+
+  usethis::use_news_md()
+  expect_false(fs::file_exists("docs/NEWS.md"))
+  import_changelog()
+  expect_true(fs::file_exists("docs/NEWS.md"))
+
+})
