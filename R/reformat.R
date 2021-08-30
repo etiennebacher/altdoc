@@ -96,8 +96,8 @@ reformat_md <- function(file) {
     }
 
     if (file == "docs/README.md") {
-      message_info(paste0(file, " had to be slightly modified.
-    Get more info with `?altdoc:::reformat_md`."))
+      message_info(sprintf("'%s' had to be slightly modified. Get more info
+                           with `?altdoc:::reformat_md`.", file))
     }
 
   }

@@ -28,14 +28,7 @@ use_docute <- function() {
   writeLines(index, "docs/index.html")
 
   ### README
-  if (fs::file_exists("README.md")) {
-    fs::file_copy("README.md", "docs/README.md")
-  } else {
-    fs::file_copy(
-      system.file("docute/README.md", package = "altdoc"),
-      "docs/README.md"
-    )
-  }
+  import_readme()
   move_img_readme()
 
   ### CHANGELOG
@@ -49,20 +42,7 @@ use_docute <- function() {
 
 
   ### FINAL STEPS
-  usethis::use_git_ignore("^docs$")
-  usethis::use_build_ignore("^docs$")
-
-  message_validate("Docute initialized.")
-  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
-  reformat_md("docs/README.md") # placed here so that message is displayed after init message
-  if (!changelog_exists) {
-    message_info("'NEWS.md' does not exist. You can remove the
-                 'Changelog' section in 'docs/index.html'.")
-  }
-  if (!coc_exists) {
-    message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
-                 'Code of Conduct' section in 'docs/index.html'.")
-  }
+  final_steps(x = "Docute")
 }
 
 #' Init docsify
@@ -84,14 +64,8 @@ use_docsify <- function() {
   writeLines(index, "docs/index.html")
 
   ### README
-  if (fs::file_exists("README.md")) {
-    fs::file_copy("README.md", "docs/README.md")
-  } else {
-    fs::file_copy(
-      system.file("docsify/README.md", package = "altdoc"),
-      "docs/README.md"
-    )
-  }
+  import_readme()
+  move_img_readme()
 
   ### CHANGELOG
   import_changelog()
@@ -108,30 +82,20 @@ use_docsify <- function() {
     "docs/_sidebar.md"
   )
   sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
-  if (!fs::file_exists("NEWS.md")) {
+  if (!fs::file_exists("docs/NEWS.md")) {
     sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
   }
-  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+  if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
     sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
+  }
+  if (!fs::file_exists("docs/reference.md")) {
+    sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
   }
   cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
 
 
   ### FINAL STEPS
-  usethis::use_git_ignore("^docs$")
-  usethis::use_build_ignore("^docs$")
-
-  message_validate("Docsify initialized.")
-  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
-  reformat_md("docs/README.md") # placed here so that message is displayed after init message
-  if (!fs::file_exists("NEWS.md")) {
-    message_info("'NEWS.md' does not exist. You can remove the
-                 'Changelog' section in 'docs/index.html'.")
-  }
-  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
-    message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
-                 'Code of Conduct' section in 'docs/index.html'.")
-  }
+  final_steps(x = "Docsify")
 
 }
 

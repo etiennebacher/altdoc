@@ -12,6 +12,19 @@ Check that folder 'docs' does not already exist, or is empty.
 
 ---
 
+## Last things to do in initialization
+
+### Description
+
+Last things to do in initialization
+
+### Usage
+
+    final_steps(x)
+
+
+---
+
 ## Get the paths of images/GIF in README
 
 ### Description
@@ -30,7 +43,7 @@ Get the paths of images/GIF in README
 ### Description
 
 Function adapted from [John Coene's
-code](https://github.com/devOpifex/leprechaun/blob/master/docs/docify.R)
+code](https://github.com/devOpifex/leprechaun/blob/master/docs/docify.R).
 
 Convert .Rd to .md files, move them in 'docs/reference', and generate
 the JSON to put in 'docs/index.html'
@@ -68,6 +81,30 @@ Preview the documentation in a webpage or in viewer
 
 ---
 
+## Convert Rd files to Markdown
+
+### Description
+
+Convert Rd files to Markdown
+
+### Usage
+
+    rd2md(rdfile)
+
+### Arguments
+
+<table data-summary="R argblock">
+<tbody>
+<tr class="odd" data-valign="top">
+<td><code>rdfile</code></td>
+<td><p>Filename</p></td>
+</tr>
+</tbody>
+</table>
+
+
+---
+
 ## Reformat the README
 
 ### Description
@@ -76,13 +113,14 @@ Reformat the README
 
 ### Usage
 
-    reformat_readme()
+    reformat_md(file)
 
 ### Details
 
-To use Docute, the format of Markdown files has to follow a precise
-structure. There must be at most one main section (starting with '\#')
-but there can be as many subsections and subsubsections as you want.
+To use Docute or Docsify, the format of Markdown files has to follow a
+precise structure. There must be at most one main section (starting with
+'\#') but there can be as many subsections and subsubsections as you
+want.
 
 If you saw a message saying that `README.md` was slightly modified, it
 is because the README didn't follow these rules. There probably was

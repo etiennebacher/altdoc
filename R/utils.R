@@ -1,3 +1,16 @@
+import_readme <- function() {
+
+  if (fs::file_exists("README.md")) {
+    fs::file_copy("README.md", "docs/README.md")
+  } else {
+    fs::file_copy(
+      system.file("docsify/README.md", package = "altdoc"),
+      "docs/README.md"
+    )
+  }
+
+}
+
 import_changelog <- function() {
 
   if (fs::file_exists("NEWS.md")) {
@@ -15,6 +28,30 @@ import_coc <- function() {
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
   }
+
+}
+
+#' Last things to do in initialization
+
+final_steps <- function(x) {
+
+  usethis::use_git_ignore("^docs$")
+  usethis::use_build_ignore("^docs$")
+
+  message_validate(sprintf("%s initialized.", x))
+  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
+  reformat_md("docs/README.md") # placed here so that message is displayed after init message
+  if (x == "Docute") {
+    if (!fs::file_exists("NEWS.md")) {
+      message_info("'NEWS.md' does not exist. You can remove the
+                 'Changelog' section in 'docs/index.html'.")
+    }
+    if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+      message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
+                 'Code of Conduct' section in 'docs/index.html'.")
+    }
+  }
+
 
 }
 

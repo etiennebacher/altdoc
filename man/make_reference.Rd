@@ -7,8 +7,6 @@
 make_reference()
 }
 \description{
-Function adapted from \href{https://github.com/devOpifex/leprechaun/blob/master/docs/docify.R}{John Coene's code}
-
 Convert .Rd to .md files, move them in 'docs/reference', and generate
 the JSON to put in 'docs/index.html'
 }
