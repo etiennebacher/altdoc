@@ -1,3 +1,24 @@
+import_changelog <- function() {
+
+  if (fs::file_exists("NEWS.md")) {
+    fs::file_copy("NEWS.md", "docs/NEWS.md")
+    changelog <- readLines("NEWS.md", warn = FALSE)
+    changelog <- gsub("^## ", "### ", changelog)
+    changelog <- gsub("^# ", "## ", changelog)
+    writeLines(changelog, "docs/NEWS.md")
+  }
+
+}
+
+import_coc <- function() {
+
+  if (fs::file_exists("CODE_OF_CONDUCT.md")) {
+    fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
+  }
+
+}
+
+
 #' Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function() {
@@ -65,17 +86,17 @@ pkg_name <- function() {
 
 pkg_version <- function() {
 
-  pkgname <- NULL
+  pkgversion <- NULL
 
   if (file.exists("DESCRIPTION")) {
     description <- readLines("DESCRIPTION", warn = FALSE)
     line_with_name <- description[
       which(startsWith(description, "Version:"))
     ]
-    pkgname <- gsub("Version: ", "", line_with_name)
+    pkgversion <- gsub("Version: ", "", line_with_name)
   }
 
-  return(pkgname)
+  return(pkgversion)
 
 }
 

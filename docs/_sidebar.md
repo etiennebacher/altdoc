@@ -1,0 +1,2 @@
+* [Home](/)
+* [Changelog](NEWS.md)

@@ -39,24 +39,10 @@ use_docute <- function() {
   move_img_readme()
 
   ### CHANGELOG
-  if (fs::file_exists("NEWS.md")) {
-    changelog_exists <- TRUE
-    fs::file_copy("NEWS.md", "docs/NEWS.md")
-    changelog <- readLines("NEWS.md", warn = FALSE)
-    changelog <- gsub("^## ", "### ", changelog)
-    changelog <- gsub("^# ", "## ", changelog)
-    writeLines(changelog, "docs/NEWS.md")
-  } else {
-    changelog_exists <- FALSE
-  }
+  import_changelog()
 
   ### CODE OF CONDUCT
-  if (fs::file_exists("CODE_OF_CONDUCT.md")) {
-    coc_exists <- TRUE
-    fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
-  } else {
-    coc_exists <- FALSE
-  }
+  import_coc()
 
   ### REFERENCE
   make_reference()
@@ -87,7 +73,7 @@ use_docsify <- function() {
 
   check_docs_exists()
 
-  # INDEX
+  ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docsify/index.html", package = "altdoc"),
@@ -97,7 +83,7 @@ use_docsify <- function() {
   index <- as.character(index)
   writeLines(index, "docs/index.html")
 
-  # README
+  ### README
   if (fs::file_exists("README.md")) {
     fs::file_copy("README.md", "docs/README.md")
   } else {
@@ -107,7 +93,56 @@ use_docsify <- function() {
     )
   }
 
+  ### CHANGELOG
+  import_changelog()
+
+  ### CODE OF CONDUCT
+  import_coc()
+
+  ### REFERENCE
+  make_reference()
+
+  ### SIDEBAR
+  fs::file_copy(
+    system.file("docsify/_sidebar.md", package = "altdoc"),
+    "docs/_sidebar.md"
+  )
+  sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
+  if (!fs::file_exists("NEWS.md")) {
+    sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
+  }
+  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+    sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
+  }
+  cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
+
+
+  ### FINAL STEPS
+  usethis::use_git_ignore("^docs$")
+  usethis::use_build_ignore("^docs$")
+
   message_validate("Docsify initialized.")
+  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
+  reformat_md("docs/README.md") # placed here so that message is displayed after init message
+  if (!fs::file_exists("NEWS.md")) {
+    message_info("'NEWS.md' does not exist. You can remove the
+                 'Changelog' section in 'docs/index.html'.")
+  }
+  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+    message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
+                 'Code of Conduct' section in 'docs/index.html'.")
+  }
+
+}
+
+use_docpress <- function() {
+
+  check_docs_exists()
+
+  if (!fs::dir_exists("docs")) fs::dir_create("docs")
+
+  ### Not as easy as the other ones because there is no index.html file
+  ### Everything is done through mkdocs command
 
 }
 
