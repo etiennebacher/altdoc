@@ -25,7 +25,16 @@
         buttonText : 'Copy',
         errorText  : 'Error',
         successText: 'Copied'
-      }
+      },
+      plugins: [
+        function(hook) {
+          var footer = ["{{footer}}"].join('');
+
+          hook.afterEach(function(html) {
+            return html + footer;
+          });
+        }
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
