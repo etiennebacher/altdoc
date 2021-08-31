@@ -115,13 +115,35 @@ move_img_readme <- function() {
   for (i in seq_along(img_paths)) {
     fs::file_copy(
       img_paths[i],
-      paste0("docs/", img_paths[i]),
+      paste0("docs/", trimws(basename(img_paths[i]))),
       overwrite = T
     )
   }
 
 }
 
+#' Replace image paths in README
+
+replace_img_paths_readme <- function() {
+
+  file_content <- readLines("docs/README.md", warn = FALSE)
+  img_paths <- img_paths_readme()
+
+  # generate the new paths
+  new_paths <- unlist(lapply(img_paths, function(x) {
+
+    # Thanks stackoverflow: https://stackoverflow.com/questions/49499703/in-r-how-to-remove-everything-before-the-last-slash
+    trimws(basename(x))
+  }))
+
+  # replace the old paths by the new ones
+  for (i in seq_along(img_paths)) {
+    file_content <- gsub(img_paths[i], new_paths[i], file_content)
+  }
+
+  writeLines(file_content, "docs/README.md")
+
+}
 
 #' Get the paths of images/GIF in README
 
@@ -141,6 +163,25 @@ img_paths_readme <- function() {
   img_path <- gsub("!\\[\\]", "", img_path)
   img_path <- gsub("\\(", "", img_path)
   img_path <- gsub("\\)", "", img_path)
+
+
+  # when double quotes, i.e <img src="path">
+  img_path_double_quotes <- unlist(
+    regmatches(file_content,
+               gregexpr('(?<=img src=\\").*?(?=\\")',
+                        file_content, perl = TRUE)
+    )
+  )
+  # when single quotes, i.e <img src='path'>
+  img_path_single_quotes <- unlist(
+    regmatches(file_content,
+               gregexpr("(?<=img src=\\').*?(?=\\')",
+                        file_content, perl = TRUE)
+    )
+  )
+
+  img_path <- c(img_path, img_path_single_quotes, img_path_double_quotes)
+  img_path <- img_path[which(!grepl("http", img_path))]
 
   return(img_path)
 

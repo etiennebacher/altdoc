@@ -30,6 +30,7 @@ use_docute <- function() {
   ### README
   import_readme()
   move_img_readme()
+  replace_img_paths_readme()
 
   ### CHANGELOG
   import_changelog()
@@ -76,6 +77,7 @@ use_docsify <- function() {
   ### README
   import_readme()
   move_img_readme()
+  replace_img_paths_readme()
 
   ### CHANGELOG
   import_changelog()
