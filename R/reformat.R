@@ -106,7 +106,7 @@ reformat_md <- function(file) {
 
 }
 
-#' Copy images/GIF that are in README in 'docs/'
+#' Copy images/GIF that are in README in 'docs'
 
 move_img_readme <- function() {
 

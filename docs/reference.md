@@ -1,5 +1,4 @@
-
-## Check that folder 'docs' does not already exist, or is empty.
+## Check docs exists
 
 ### Description
 
@@ -11,8 +10,7 @@ Check that folder 'docs' does not already exist, or is empty.
 
 
 ---
-
-## Last things to do in initialization
+## Final steps
 
 ### Description
 
@@ -24,8 +22,7 @@ Last things to do in initialization
 
 
 ---
-
-## Get the paths of images/GIF in README
+## Img paths readme
 
 ### Description
 
@@ -37,8 +34,7 @@ Get the paths of images/GIF in README
 
 
 ---
-
-## Create 'Reference' tab
+## Make reference
 
 ### Description
 
@@ -51,12 +47,11 @@ the JSON to put in 'docs/index.html'
 
 
 ---
-
-## Copy images/GIF that are in README in 'docs/'
+## Move img readme
 
 ### Description
 
-Copy images/GIF that are in README in 'docs/'
+Copy images/GIF that are in README in 'docs'
 
 ### Usage
 
@@ -64,8 +59,7 @@ Copy images/GIF that are in README in 'docs/'
 
 
 ---
-
-## Preview the documentation in a webpage or in viewer
+## Preview
 
 ### Description
 
@@ -77,8 +71,7 @@ Preview the documentation in a webpage or in viewer
 
 
 ---
-
-## Convert Rd files to Markdown
+## Rd2md
 
 ### Description
 
@@ -101,8 +94,7 @@ Convert Rd files to Markdown
 
 
 ---
-
-## Reformat the README
+## Reformat md
 
 ### Description
 
@@ -120,7 +112,7 @@ precise structure. There must be at most one main section (starting with
 want.
 
 If you saw a message saying that `README.md` was slightly modified, it
-is because the README didn't follow these rules. There probably was
+is because the README didn't follow these rules. There were probably
 several main sections, which messed up with Docute organization.
 Therefore, `altdoc` automatically added a '\#' to all sections and
 subsections, except the first one, which is usually the title of the
@@ -166,8 +158,7 @@ be modified.
 
 
 ---
-
-## Init docsify
+## Use docsify
 
 ### Description
 
@@ -179,8 +170,7 @@ Init docsify
 
 
 ---
-
-## Init docute
+## Use docute
 
 ### Description
 

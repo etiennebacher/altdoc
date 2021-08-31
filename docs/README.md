@@ -25,4 +25,12 @@ The purpose of this package is to make it easy and fast to use documentation gen
 
 * links towards your package's repo
 
-* `preview()` function to display the site in RStudio Viewer pane.
+* preview the site in RStudio Viewer pane
+
+
+## Functions
+
+Main functions:
+
+* `use_*()` to create the documentation with `docute` or `docsify`
+* `preview()` to show the site

@@ -1,37 +1,51 @@
-<!-- index.html -->
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
-</head>
-<body>
-  <div id="app"></div>
-  <script>
-    window.$docsify = {
-      name: 'altdoc',
-      repo: 'https://github.com/etiennebacher/altdoc',
-      loadSidebar: true,
-      subMaxLevel: 2,
-      search: {
-        placeholder: 'Search',
-        depth: 3,
-      },
-      auto2top: true,
-      copyCode: {
-        buttonText : 'Copy',
-        errorText  : 'Error',
-        successText: 'Copied'
-      }
-    }
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.24.1/components/prism-r.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Docs</title>
+    <link rel="stylesheet" href="https://unpkg.com/docute@4/dist/docute.css">
+  </head>
+  <body>
+    <div id="docute"></div>
+    <script src="https://unpkg.com/docute@4/dist/docute.js"></script>
+    <script>
+      new Docute({
+        target: '#docute',
+        title: 'altdoc',
+        highlight: ['r'],
+        darkThemeToggler: true,
+        nav: [
+					{
+						title: 'Home',
+						link: '/'
+					},
+					{
+						title: 'GitHub',
+						link: 'https://github.com/etiennebacher/altdoc'
+					}
+				],
+				sidebar: [
+					{
+						title: 'Home',
+						link: '/'
+					},
+					{
+					  title: 'Changelog',
+					  link: '/NEWS'
+					},
+					{
+					  title: 'Reference',
+					  link: '/reference'
+					},
+					{
+					  title: 'Code of Conduct',
+					  link: '/CODE_OF_CONDUCT'
+					}
+				],
+        footer: "<a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. 0.1.0 </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. 0.1.0</a>"
+      })
+    </script>
+  </body>
+</html>
 

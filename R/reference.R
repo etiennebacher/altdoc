@@ -37,7 +37,20 @@ rd2md <- function(rdfile) {
 
   # Get function title and remove HTML tags left
   md <- readLines(tmp_md, warn = FALSE)
-  md <- md[-c(1:8)]
+  md <- md[-c(1:10)]
+
+  # Title to put in sidebar
+  title <- gsub(".Rd", "", rdfile)
+  title <- gsub("man/", "", title)
+  title <- gsub("_", " ", title)
+  initial <- substr(title, 1, 1)
+  title <- paste0(toupper(initial), substr(title, 2, nchar(title)))
+
+  md <- c(
+    paste0("## ", title),
+    md
+  )
+
 
   # Syntax used for examples is four spaces, which prevents code
   # highlighting. So I need to put backticks before and after the examples

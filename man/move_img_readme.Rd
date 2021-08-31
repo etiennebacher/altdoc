@@ -2,10 +2,10 @@
 % Please edit documentation in R/reformat.R
 \name{move_img_readme}
 \alias{move_img_readme}
-\title{Copy images/GIF that are in README in 'docs/'}
+\title{Copy images/GIF that are in README in 'docs'}
 \usage{
 move_img_readme()
 }
 \description{
-Copy images/GIF that are in README in 'docs/'
+Copy images/GIF that are in README in 'docs'
 }
