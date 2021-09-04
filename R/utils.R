@@ -41,15 +41,18 @@ final_steps <- function(x) {
   message_validate(sprintf("%s initialized.", x))
   message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
   reformat_md("docs/README.md") # placed here so that message is displayed after init message
+
   if (x == "Docute") {
+    index <- readLines("docs/index.html")
     if (!fs::file_exists("NEWS.md")) {
-      message_info("'NEWS.md' does not exist. You can remove the
-                 'Changelog' section in 'docs/index.html'.")
+      index <- index[-which(grepl("/NEWS", index))]
+      message_info("No changelog to include.")
     }
     if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
-      message_info("'CODE_OF_CONDUCT' does not exist. You can remove the
-                 'Code of Conduct' section in 'docs/index.html'.")
+      index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
+      message_info("No code of conduct to include.")
     }
+    writeLines(index, "docs/index.html")
   }
 
 
