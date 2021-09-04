@@ -106,7 +106,7 @@ reformat_md <- function(file) {
 
 }
 
-#' Copy images/GIF that are in README in 'docs'
+# Copy images/GIF that are in README in 'docs'
 
 move_img_readme <- function() {
 
@@ -122,7 +122,7 @@ move_img_readme <- function() {
 
 }
 
-#' Replace image paths in README
+# Replace image paths in README
 
 replace_img_paths_readme <- function() {
 
@@ -145,7 +145,7 @@ replace_img_paths_readme <- function() {
 
 }
 
-#' Get the paths of images/GIF in README
+# Get the paths of images/GIF in README
 
 img_paths_readme <- function() {
 

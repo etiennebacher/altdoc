@@ -1,8 +1,8 @@
-#' @title Create 'Reference' tab
-#'
-#' @description
-#' Convert .Rd to .md files, move them in 'docs/reference', and generate
-#' the JSON to put in 'docs/index.html'
+# @title Create 'Reference' tab
+#
+# @description
+# Convert .Rd to .md files, move them in 'docs/reference', and generate
+# the JSON to put in 'docs/index.html'
 
 make_reference <- function() {
 
@@ -20,10 +20,10 @@ make_reference <- function() {
 }
 
 
-#' Convert Rd files to Markdown
-#'
-#' @param rdfile Filename
-#'
+# Convert Rd files to Markdown
+#
+# @param rdfile Filename
+#
 
 rd2md <- function(rdfile) {
 

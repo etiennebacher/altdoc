@@ -31,7 +31,7 @@ import_coc <- function() {
 
 }
 
-#' Last things to do in initialization
+# Last things to do in initialization
 
 final_steps <- function(x) {
 
@@ -59,15 +59,19 @@ final_steps <- function(x) {
 }
 
 
-#' Check that folder 'docs' does not already exist, or is empty.
+# Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function() {
 
   if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
-    stop(
-      message_error("Folder 'docs' already exists and is not empty.
-                    Nothing has been modified.")
+    delete_docs <- yesno::yesno(
+      "Folder 'docs' already exists. Do you want to delete it?"
     )
+    if (delete_docs) {
+      fs::dir_delete("docs")
+    } else {
+      stop("Nothing was modified.")
+    }
   }
 
 }

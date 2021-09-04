@@ -1,64 +1,3 @@
-## Check docs exists
-
-### Description
-
-Check that folder 'docs' does not already exist, or is empty.
-
-### Usage
-
-    check_docs_exists()
-
-
----
-## Final steps
-
-### Description
-
-Last things to do in initialization
-
-### Usage
-
-    final_steps(x)
-
-
----
-## Img paths readme
-
-### Description
-
-Get the paths of images/GIF in README
-
-### Usage
-
-    img_paths_readme()
-
-
----
-## Make reference
-
-### Description
-
-Convert .Rd to .md files, move them in 'docs/reference', and generate
-the JSON to put in 'docs/index.html'
-
-### Usage
-
-    make_reference()
-
-
----
-## Move img readme
-
-### Description
-
-Copy images/GIF that are in README in 'docs'
-
-### Usage
-
-    move_img_readme()
-
-
----
 ## Preview
 
 ### Description
@@ -68,29 +7,6 @@ Preview the documentation in a webpage or in viewer
 ### Usage
 
     preview()
-
-
----
-## Rd2md
-
-### Description
-
-Convert Rd files to Markdown
-
-### Usage
-
-    rd2md(rdfile)
-
-### Arguments
-
-<table data-summary="R argblock">
-<tbody>
-<tr class="odd" data-valign="top">
-<td><code>rdfile</code></td>
-<td><p>Filename</p></td>
-</tr>
-</tbody>
-</table>
 
 
 ---

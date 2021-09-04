@@ -21,7 +21,8 @@ Imports:
     servr,
     usethis,
     utils,
-    withr
+    withr,
+    yesno
 URL: https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
 Suggests: 
