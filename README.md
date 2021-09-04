@@ -15,17 +15,21 @@ remotes::install_github("etiennebacher/altdoc")
 
 ## Features
 
-The purpose of this package is to make it easy and fast to use documentation generators. Its features include:
+What this package can do:
 
-* automatic import of core files to use `docute` or `docsify`
+* automatically import of core files to use `docute` or `docsify`
 
-* automatic generation of Changelog and Code of Conduct sections
+* automatically generation of Changelog and Code of Conduct sections
 
-* automatic creation of function reference
+* automatically creation of function reference
 
-* links towards your package's repo
+* link towards your package's repo
 
 * preview the site in RStudio Viewer pane
+
+What this package cannot do: 
+
+* deal with vignettes, you will have to import them and transform them so that they create Markdown files instead of HTML.
 
 
 ## Functions
