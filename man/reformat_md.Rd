@@ -2,12 +2,12 @@
 % Please edit documentation in R/reformat.R
 \name{reformat_md}
 \alias{reformat_md}
-\title{Reformat the README}
+\title{Reformat Markdown files}
 \usage{
 reformat_md(file)
 }
 \description{
-Reformat the README
+Reformat Markdown files
 }
 \details{
 To use Docute or Docsify, the format of Markdown files has to follow a precise

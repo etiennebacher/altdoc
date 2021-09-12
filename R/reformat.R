@@ -1,4 +1,4 @@
-#' @title Reformat the README
+#' @title Reformat Markdown files
 #'
 #' @details
 #'

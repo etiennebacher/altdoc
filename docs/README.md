@@ -38,6 +38,7 @@ Main functions:
 
 * `use_*()` to create the documentation with `docute` or `docsify`
 * `preview()` to show the site
+* `update_docs()` 
 
 
 ## More
