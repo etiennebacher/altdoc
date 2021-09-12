@@ -17,11 +17,11 @@ remotes::install_github("etiennebacher/altdoc")
 
 What this package can do:
 
-* automatically import of core files to use `docute` or `docsify`
+* automatically import core files to use `docute` or `docsify`
 
-* automatically generation of Changelog and Code of Conduct sections
+* automatically generate Changelog and Code of Conduct sections
 
-* automatically creation of function reference
+* automatically create function reference
 
 * link towards your package's repo
 
@@ -29,7 +29,7 @@ What this package can do:
 
 What this package cannot do: 
 
-* deal with vignettes, you will have to import them and transform them so that they create Markdown files instead of HTML.
+* deal with vignettes. You will have to import them and transform them so that they create Markdown files instead of HTML.
 
 
 ## Functions
@@ -38,3 +38,15 @@ Main functions:
 
 * `use_*()` to create the documentation with `docute` or `docsify`
 * `preview()` to show the site
+
+
+## More
+
+More details on the package and the deployment are available on the [website](https://altdoc.etiennebacher.com/#/). 
+
+Options for each site generator can be found on their own website:
+
+* [https://docute.org/](https://docute.org/)
+
+* [https://docsify.js.org/](https://docsify.js.org/)
+
