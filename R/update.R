@@ -28,6 +28,8 @@ update_file <- function(filename) {
   if (fs::file_exists(docs_file)) {
     if (fs::file_exists(orig_file)) {
       fs::file_copy(orig_file, docs_file, overwrite = TRUE)
+    } else {
+      fs::file_delete(docs_file)
     }
   }
 
