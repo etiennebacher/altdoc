@@ -1,3 +1,5 @@
+# Get started
+
 ## Initialize the documentation
 
 You can use `altdoc` at any stage in the development of your package. When you're ready to build a documentation, just call `use_docsify()` or `use_docute()`, according to which documentation generator you prefer.

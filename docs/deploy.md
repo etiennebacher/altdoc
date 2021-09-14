@@ -1,3 +1,5 @@
+# Deploy
+
 ## How to deploy
 
 `docsify.js` and `docute` documentations can be deployed with several tools, which are detailed respectively [here](https://docsify.js.org/#/deploy) and [here](https://docute.org/guide/deployment). I'll just focus on GitHub Pages and Netlify here.

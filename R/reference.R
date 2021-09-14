@@ -16,7 +16,7 @@ make_reference <- function() {
   })
 
   fs::file_create("docs/reference.md")
-  writeLines(unlist(all_rd_as_md), "docs/reference.md")
+  writeLines(c("# Reference \n", unlist(all_rd_as_md)), "docs/reference.md")
 }
 
 
