@@ -7,5 +7,6 @@
 update_docs()
 }
 \description{
-Update README, Changelog and Reference sections.
+Update README, Changelog and Reference sections. This will leave every
+other files unmodified.
 }

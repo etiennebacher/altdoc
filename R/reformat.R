@@ -8,7 +8,7 @@
 #'
 #' If you saw a message saying that \code{README.md} was slightly modified, it
 #' is because the README didn't follow these rules. There were probably several
-#' main sections, which messed up with Docute organization. Therefore,
+#' main sections, which messed up Docute/Docsify documentation. Therefore,
 #' \code{altdoc} automatically added a '#' to all sections and subsections,
 #' except the first one, which is usually the title of the package.
 #'

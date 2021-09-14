@@ -2,6 +2,8 @@
 #'
 #' Update README, Changelog and Reference sections. This will leave every
 #' other files unmodified.
+#'
+#' @export
 
 update_docs <- function() {
 

@@ -29,7 +29,7 @@ want.
 
 If you saw a message saying that `README.md` was slightly modified, it
 is because the README didn't follow these rules. There were probably
-several main sections, which messed up with Docute organization.
+several main sections, which messed up Docute/Docsify documentation.
 Therefore, `altdoc` automatically added a '\#' to all sections and
 subsections, except the first one, which is usually the title of the
 package.
@@ -78,7 +78,8 @@ be modified.
 
 ### Description
 
-Update README, Changelog and Reference sections.
+Update README, Changelog and Reference sections. This will leave every
+other files unmodified.
 
 ### Usage
 

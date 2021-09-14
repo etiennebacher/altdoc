@@ -4,7 +4,7 @@ You can use `altdoc` at any stage in the development of your package. When you'r
 
 This will create the folder 'docs'. If it already exists, a message will ask whether it should be overwritten. 
 
-The `use_()` functions will pre-populate your documentation with several files:
+The `use_*()` functions will pre-populate your documentation with several files:
 
 * the `README` will be the homepage;
 * `NEWS` and `CODE_OF_CONDUCT` (if they exist) will be sections;
