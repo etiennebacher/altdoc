@@ -29,7 +29,7 @@ What this package can do:
 
 What this package cannot do: 
 
-* deal with vignettes. You will have to import them and transform them so that they create Markdown files instead of HTML.
+* deal with vignettes. If you already have some, you will have to import them and transform them so that they create Markdown files instead of HTML.
 
 
 ## Functions
