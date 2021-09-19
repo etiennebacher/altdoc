@@ -3,7 +3,7 @@
 # altdoc
 
 
-[![R-CMD-check](https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg)](https://github.com/etiennebacher/altdoc/actions)![](https://img.shields.io/badge/license-MIT-blue)
+[![R-CMD-check](https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg)](https://github.com/etiennebacher/altdoc/actions) ![](https://img.shields.io/badge/license-MIT-blue)
 
 </div>
 
