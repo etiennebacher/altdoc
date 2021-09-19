@@ -1,0 +1,11 @@
+test_that("update_docs works", {
+  create_local_package()
+  use_docute()
+  usethis::use_readme_md()
+  readme1 <- readLines("README.md", warn = FALSE)
+  readme2 <- readLines("docs/README.md", warn = FALSE)
+  expect_false(identical(readme1, readme2))
+  update_docs()
+  readme2 <- readLines("docs/README.md", warn = FALSE)
+  expect_true(identical(readme1, readme2))
+})
