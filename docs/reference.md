@@ -22,6 +22,17 @@ Reformat Markdown files
 
     reformat_md(file)
 
+### Arguments
+
+<table data-summary="R argblock">
+<tbody>
+<tr class="odd" data-valign="top">
+<td><code>file</code></td>
+<td><p>Markdown file to reformat</p></td>
+</tr>
+</tbody>
+</table>
+
 ### Details
 
 To use Docute or Docsify, the format of Markdown files has to follow a
