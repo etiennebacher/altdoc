@@ -3,4 +3,6 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
 ^LICENSE\.md$
-^^docs$$
+^docs$
+^\.yarnrc$
+^cran-comments\.md$

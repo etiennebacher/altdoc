@@ -35,8 +35,8 @@ import_coc <- function() {
 
 final_steps <- function(x) {
 
-  usethis::use_git_ignore("^docs$")
-  usethis::use_build_ignore("^docs$")
+  usethis::use_git_ignore("docs")
+  usethis::use_build_ignore("docs")
 
   message_validate(sprintf("%s initialized.", x))
   message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")

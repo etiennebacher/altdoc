@@ -111,26 +111,3 @@ use_docsify <- function() {
 
 }
 
-use_docpress <- function() {
-
-  check_docs_exists()
-
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
-
-  ### Not as easy as the other ones because there is no index.html file
-  ### Everything is done through mkdocs command
-
-}
-
-
-use_mkdocs <- function() {
-
-  check_docs_exists()
-
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
-
-  ### Not as easy as the other ones because there is no index.html file
-  ### Everything is done through mkdocs command
-
-}
-

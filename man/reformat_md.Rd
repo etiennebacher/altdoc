@@ -6,6 +6,9 @@
 \usage{
 reformat_md(file)
 }
+\arguments{
+\item{file}{Markdown file to reformat}
+}
 \description{
 Reformat Markdown files
 }

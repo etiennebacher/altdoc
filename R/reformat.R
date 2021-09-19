@@ -1,5 +1,7 @@
 #' @title Reformat Markdown files
 #'
+#' @param file Markdown file to reformat
+#'
 #' @details
 #'
 #' To use Docute or Docsify, the format of Markdown files has to follow a precise
