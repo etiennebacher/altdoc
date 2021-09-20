@@ -6,6 +6,18 @@
 \usage{
 use_docsify()
 }
+\value{
+No value returned. Creates files in folder 'docs'.
+}
 \description{
 Init docsify
+}
+\examples{
+\dontrun{
+# Create a package
+devtools::create("mypkg")
+
+# Create docsify documentation
+use_docsify()
+}
 }

@@ -6,6 +6,22 @@
 \usage{
 preview()
 }
+\value{
+No value returned. If RStudio is used, it shows a site preview in Viewer.
+}
 \description{
 Preview the documentation in a webpage or in viewer
+}
+\examples{
+
+\dontrun{
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+
+# Preview documentation
+preview()
+}
 }

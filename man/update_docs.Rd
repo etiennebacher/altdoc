@@ -6,7 +6,25 @@
 \usage{
 update_docs()
 }
+\value{
+No value returned. Updates files in folder 'docs'.
+}
 \description{
 Update README, Changelog and Reference sections. This will leave every
 other files unmodified.
+}
+\examples{
+\dontrun{
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+
+# Create a README
+usethis::use_readme_md()
+
+# Update documentation
+update_docs()
+}
 }

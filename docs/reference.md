@@ -10,6 +10,28 @@ Preview the documentation in a webpage or in viewer
 
     preview()
 
+### Value
+
+No value returned. If RStudio is used, it shows a site preview in
+Viewer.
+
+### Examples
+
+
+```r
+## Not run: 
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+
+# Preview documentation
+preview()
+
+## End(Not run)
+```
+
 
 ---
 ## Reformat md
@@ -98,6 +120,29 @@ other files unmodified.
 
     update_docs()
 
+### Value
+
+No value returned. Updates files in folder 'docs'.
+
+### Examples
+
+```r
+## Not run: 
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+
+# Create a README
+usethis::use_readme_md()
+
+# Update documentation
+update_docs()
+
+## End(Not run)
+```
+
 
 ---
 ## Use docsify
@@ -110,6 +155,23 @@ Init docsify
 
     use_docsify()
 
+### Value
+
+No value returned. Creates files in folder 'docs'.
+
+### Examples
+
+```r
+## Not run: 
+# Create a package
+devtools::create("mypkg")
+
+# Create docsify documentation
+use_docsify()
+
+## End(Not run)
+```
+
 
 ---
 ## Use docute
@@ -121,6 +183,23 @@ Init docute
 ### Usage
 
     use_docute()
+
+### Value
+
+No value returned. Creates files in folder 'docs'.
+
+### Examples
+
+```r
+## Not run: 
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+
+## End(Not run)
+```
 
 
 ---

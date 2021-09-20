@@ -6,6 +6,18 @@
 \usage{
 use_docute()
 }
+\value{
+No value returned. Creates files in folder 'docs'.
+}
 \description{
 Init docute
+}
+\examples{
+\dontrun{
+# Create a package
+devtools::create("mypkg")
+
+# Create docute documentation
+use_docute()
+}
 }

@@ -19,6 +19,7 @@ Imports:
     fs,
     htmltools,
     rmarkdown,
+    rstudioapi,
     servr,
     tools,
     usethis,

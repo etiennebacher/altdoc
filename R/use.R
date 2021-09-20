@@ -2,6 +2,16 @@
 #'
 #' @export
 #'
+#' @return No value returned. Creates files in folder 'docs'.
+#'
+#' @examples
+#' \dontrun{
+#' # Create a package
+#' devtools::create("mypkg")
+#'
+#' # Create docute documentation
+#' use_docute()
+#' }
 
 use_docute <- function() {
 
@@ -49,6 +59,18 @@ use_docute <- function() {
 #' Init docsify
 #'
 #' @export
+#'
+#' @return No value returned. Creates files in folder 'docs'.
+#'
+#' @examples
+#' \dontrun{
+#' # Create a package
+#' devtools::create("mypkg")
+#'
+#' # Create docsify documentation
+#' use_docsify()
+#' }
+
 
 use_docsify <- function() {
 
