@@ -14,9 +14,6 @@ Init docsify
 }
 \examples{
 \dontrun{
-# Create a package
-devtools::create("mypkg")
-
 # Create docsify documentation
 use_docsify()
 }

@@ -20,12 +20,6 @@ Viewer.
 
 ```r
 ## Not run: 
-# Create a package
-devtools::create("mypkg")
-
-# Create docute documentation
-use_docute()
-
 # Preview documentation
 preview()
 
@@ -128,15 +122,6 @@ No value returned. Updates files in folder 'docs'.
 
 ```r
 ## Not run: 
-# Create a package
-devtools::create("mypkg")
-
-# Create docute documentation
-use_docute()
-
-# Create a README
-usethis::use_readme_md()
-
 # Update documentation
 update_docs()
 
@@ -163,9 +148,6 @@ No value returned. Creates files in folder 'docs'.
 
 ```r
 ## Not run: 
-# Create a package
-devtools::create("mypkg")
-
 # Create docsify documentation
 use_docsify()
 
@@ -192,9 +174,6 @@ No value returned. Creates files in folder 'docs'.
 
 ```r
 ## Not run: 
-# Create a package
-devtools::create("mypkg")
-
 # Create docute documentation
 use_docute()
 

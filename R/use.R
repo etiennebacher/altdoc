@@ -6,9 +6,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Create a package
-#' devtools::create("mypkg")
-#'
 #' # Create docute documentation
 #' use_docute()
 #' }
@@ -64,9 +61,6 @@ use_docute <- function() {
 #'
 #' @examples
 #' \dontrun{
-#' # Create a package
-#' devtools::create("mypkg")
-#'
 #' # Create docsify documentation
 #' use_docsify()
 #' }

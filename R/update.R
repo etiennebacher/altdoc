@@ -9,15 +9,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Create a package
-#' devtools::create("mypkg")
-#'
-#' # Create docute documentation
-#' use_docute()
-#'
-#' # Create a README
-#' usethis::use_readme_md()
-#'
 #' # Update documentation
 #' update_docs()
 #' }

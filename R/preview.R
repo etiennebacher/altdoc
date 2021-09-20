@@ -7,12 +7,6 @@
 #' @examples
 #'
 #' \dontrun{
-#' # Create a package
-#' devtools::create("mypkg")
-#'
-#' # Create docute documentation
-#' use_docute()
-#'
 #' # Preview documentation
 #' preview()
 #' }
