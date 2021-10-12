@@ -35,11 +35,10 @@ import_coc <- function() {
 
 final_steps <- function(x) {
 
-  usethis::use_git_ignore("docs")
   usethis::use_build_ignore("docs")
 
   message_validate(sprintf("%s initialized.", x))
-  message_validate("Folder 'docs' put in .gitignore and .Rbuildignore.")
+  message_validate("Folder 'docs' put in and .Rbuildignore.")
   reformat_md("docs/README.md") # placed here so that message is displayed after init message
 
   if (x == "Docute") {
