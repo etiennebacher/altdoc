@@ -39,7 +39,7 @@ test_that("import_* functions work", {
   import_readme()
   expect_true(fs::file_exists("docs/README.md"))
 
-  usethis::use_code_of_conduct()
+  usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   expect_false(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
   import_coc()
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
