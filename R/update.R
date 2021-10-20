@@ -23,6 +23,7 @@ update_docs <- function() {
 
   update_file("NEWS.md")
 
+
   make_reference()
 
   message_validate("Documentation updated. See `?altdoc::update_docs` to know
@@ -35,13 +36,13 @@ update_file <- function(filename) {
 
   orig_file <- filename
   docs_file <- paste0("docs/", filename)
-
-  if (fs::file_exists(docs_file)) {
-    if (fs::file_exists(orig_file)) {
-      fs::file_copy(orig_file, docs_file, overwrite = TRUE)
-    } else {
-      fs::file_delete(docs_file)
+  if (fs::file_exists(filename)) {
+    fs::file_copy(orig_file, docs_file, overwrite = TRUE)
+    if (filename == "NEWS.md") {
+      changelog <- readLines("NEWS.md", warn = FALSE)
+      changelog <- gsub("^## ", "### ", changelog)
+      changelog <- gsub("^# ", "## ", changelog)
+      writeLines(changelog, "docs/NEWS.md")
     }
   }
-
 }
