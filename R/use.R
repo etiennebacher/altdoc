@@ -127,3 +127,27 @@ use_docsify <- function() {
 
 }
 
+
+#' Init mkdocs
+#'
+#' @export
+#'
+#' @return No value returned. Creates files in folder 'docs'.
+#'
+#' @examples
+#' \dontrun{
+#' # Create mkdocs documentation
+#' use_mkdocs()
+#' }
+
+use_mkdocs <- function() {
+
+  check_docs_exists()
+
+  # Create basic structure
+  system("mkdocs new docs -q")
+
+  system("cd docs && mkdocs build -q")
+
+
+}

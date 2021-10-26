@@ -91,7 +91,9 @@ message_info <- function(x) {
 }
 
 message_error <- function(x, y) {
-  strwrap(prefix = " ", initial = "", x)
+  cli::cli_alert_danger(
+    strwrap(prefix = " ", initial = "", x)
+  )
 }
 
 
