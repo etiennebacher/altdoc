@@ -140,14 +140,47 @@ use_docsify <- function() {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function() {
+use_mkdocs <- function(theme = NULL) {
 
   check_docs_exists()
 
+  if (is.null(theme)) theme <- "readthedocs"
+
   # Create basic structure
   system("mkdocs new docs -q")
-
   system("cd docs && mkdocs build -q")
 
+  yaml <- paste0(
+    "site_name: ", pkg_name(),
+    "\ntheme:\n  name: ", theme
+  )
+  cat(yaml, file = "docs/mkdocs.yml")
 
+  ### README
+  import_readme()
+  if (fs::file_exists("docs/docs/README.md")) {
+    file.rename("docs/docs/README.md", "docs/docs/index.md")
+  }
+  # move_img_readme()
+  # replace_img_paths_readme()
+
+  ### CHANGELOG
+  import_changelog()
+
+  ### CODE OF CONDUCT
+  import_coc()
+
+  ### REFERENCE
+  make_reference()
+
+
+}
+
+test_mkdocs <- function() {
+  fs::dir_delete("docs")
+  use_mkdocs("material")
+}
+test_docsify <- function() {
+  fs::dir_delete("docs")
+  use_docsify()
 }

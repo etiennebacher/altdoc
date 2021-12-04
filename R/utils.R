@@ -1,11 +1,12 @@
 import_readme <- function() {
 
+  good_path <- doc_path()
   if (fs::file_exists("README.md")) {
-    fs::file_copy("README.md", "docs/README.md")
+    fs::file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
   } else {
     fs::file_copy(
       system.file("docsify/README.md", package = "altdoc"),
-      "docs/README.md"
+      paste0(good_path, "/README.md")
     )
   }
 
@@ -13,20 +14,22 @@ import_readme <- function() {
 
 import_changelog <- function() {
 
+  good_path <- doc_path()
   if (fs::file_exists("NEWS.md")) {
-    fs::file_copy("NEWS.md", "docs/NEWS.md")
+    fs::file_copy("NEWS.md", paste0(good_path, "/NEWS.md"))
     changelog <- readLines("NEWS.md", warn = FALSE)
     changelog <- gsub("^## ", "### ", changelog)
     changelog <- gsub("^# ", "## ", changelog)
-    writeLines(changelog, "docs/NEWS.md")
+    writeLines(changelog, paste0(good_path, "/NEWS.md"))
   }
 
 }
 
 import_coc <- function() {
 
+  good_path <- doc_path()
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
-    fs::file_copy("CODE_OF_CONDUCT.md", "docs/CODE_OF_CONDUCT.md")
+    fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
   }
 
 }
@@ -112,7 +115,7 @@ folder_is_empty <- function(x) {
 
 }
 
-
+# Get package name
 pkg_name <- function() {
 
   pkgname <- NULL
@@ -129,6 +132,7 @@ pkg_name <- function() {
 
 }
 
+# Get package version
 pkg_version <- function() {
 
   pkgversion <- NULL
@@ -145,6 +149,7 @@ pkg_version <- function() {
 
 }
 
+# Get package Github URL
 gh_url <- function() {
 
   description <- readLines("DESCRIPTION", warn = FALSE)
@@ -169,4 +174,30 @@ gh_url <- function() {
     return(unique(gh_url))
   }
 
+}
+
+
+# Get the tool that was used
+doc_type <- function() {
+
+  if (!fs::dir_exists("docs")) return(NULL)
+
+  if (fs::file_exists("docs/mkdocs.yml")) return("mkdocs")
+
+  if (fs::file_exists("docs/index.html")) {
+    file <- paste(readLines("docs/index.html"), collapse = "")
+    if (grepl("docute", file)) return("docute")
+    if (grepl("docsify", file)) return("docsify")
+  }
+
+}
+
+# Get the path for files
+doc_path <- function() {
+  doc_type <- doc_type()
+  if (doc_type == "mkdocs") {
+    return("docs/docs")
+  } else if (doc_type %in% c("docsify", "docute")) {
+    return("docs")
+  }
 }
