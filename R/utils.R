@@ -190,7 +190,7 @@ doc_type <- function() {
   if (fs::file_exists("docs/mkdocs.yml")) return("mkdocs")
 
   if (fs::file_exists("docs/index.html")) {
-    file <- paste(readLines("docs/index.html"), collapse = "")
+    file <- paste(readLines("docs/index.html", warn = FALSE), collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
   }

@@ -33,6 +33,7 @@ test_that("pkg_version() works", {
 test_that("import_* functions work", {
   create_local_package()
   fs::dir_create("docs")
+  cat("docute", file = "docs/index.html")
 
   usethis::use_readme_md()
   expect_false(fs::file_exists("docs/README.md"))

@@ -2,19 +2,33 @@
 % Please edit documentation in R/use.R
 \name{use_docute}
 \alias{use_docute}
-\title{Init docute}
+\alias{use_docsify}
+\alias{use_mkdocs}
+\title{Init Docute, Docsify, or Mkdocs}
 \usage{
 use_docute()
+
+use_docsify()
+
+use_mkdocs(theme = NULL)
 }
 \value{
 No value returned. Creates files in folder 'docs'.
 }
 \description{
-Init docute
+Init Docute, Docsify, or Mkdocs
 }
 \examples{
 \dontrun{
 # Create docute documentation
 use_docute()
+}
+\dontrun{
+# Create docsify documentation
+use_docsify()
+}
+\dontrun{
+# Create mkdocs documentation
+use_mkdocs()
 }
 }
