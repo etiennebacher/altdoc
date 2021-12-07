@@ -206,12 +206,3 @@ nav:
   final_steps(x = "Mkdocs")
 
 }
-
-test_mkdocs <- function() {
-  fs::dir_delete("docs")
-  use_mkdocs("material")
-}
-test_docsify <- function() {
-  fs::dir_delete("docs")
-  use_docsify()
-}
