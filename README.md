@@ -19,9 +19,9 @@ remotes::install_github("etiennebacher/altdoc")
 
 ## Features
 
-What this package can do:
+**What this package can do:**
 
-* automatically import core files to use `docute` or `docsify`
+* automatically import core files to use `docute`, `docsify`, or `mkdocs`
 
 * automatically generate Changelog and Code of Conduct sections
 
@@ -31,7 +31,7 @@ What this package can do:
 
 * preview the site in RStudio Viewer pane
 
-What this package cannot do: 
+**What this package cannot do:** 
 
 * deal with vignettes. If you already have some, you will have to import them and transform them so that they create Markdown files instead of HTML.
 
@@ -40,7 +40,7 @@ What this package cannot do:
 
 Main functions:
 
-* `use_*()` to create the documentation with `docute` or `docsify`
+* `use_*()` to create the documentation with `docute`, `docsify` or `mkdocs`
 * `preview()` to show the site
 * `update_docs()` 
 
@@ -51,7 +51,9 @@ More details on the package and the deployment are available on the [website](ht
 
 Options for each site generator can be found on their own website:
 
-* [https://docute.org/](https://docute.org/)
+* [Docute](https://docute.org/)
 
-* [https://docsify.js.org/](https://docsify.js.org/)
+* [Docsify](https://docsify.js.org/)
+
+* [Mkdocs](https://www.mkdocs.org/) ([Material for Mkdocs](https://squidfunk.github.io/mkdocs-material/))
 
