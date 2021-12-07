@@ -12,11 +12,18 @@ use_docsify()
 
 use_mkdocs(theme = NULL)
 }
+\arguments{
+\item{theme}{Name of the theme to use. Default is basic theme. See Details
+section.}
+}
 \value{
 No value returned. Creates files in folder 'docs'.
 }
 \description{
 Init Docute, Docsify, or Mkdocs
+}
+\details{
+If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
 }
 \examples{
 \dontrun{

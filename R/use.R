@@ -129,6 +129,12 @@ use_docsify <- function() {
 
 #' @export
 #'
+#' @param theme Name of the theme to use. Default is basic theme. See Details
+#' section.
+#'
+#'
+#' @details
+#' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
 #' @rdname init
 #' @examples
 #' \dontrun{
@@ -140,10 +146,6 @@ use_mkdocs <- function(theme = NULL) {
 
   check_docs_exists()
 
-  if (is.null(theme)) theme <- "readthedocs"
-  if (!(theme %in% c(NULL, "readthedocs", "material")))
-    stop("Please provide a valid theme for mkdocs.")
-
   # Create basic structure
   system("mkdocs new docs -q")
   system("cd docs && mkdocs build -q")
@@ -151,9 +153,16 @@ use_mkdocs <- function(theme = NULL) {
   yaml <- paste0(
     "
 ### Basic information
-site_name: ", pkg_name(), "
+site_name: ", pkg_name(),
+if (!is.null(theme)) {
+  paste0("
 theme:
-  name: ", theme, "
+  name: ", theme
+  )
+},
+if (!is.null(theme) && theme == "material") {
+  paste0(
+    "
 
   # Dark mode toggle
   palette:
@@ -169,7 +178,10 @@ theme:
   features:
     - navigation.tabs
     - toc.integrate
-
+    "
+  )
+},
+"
 
 ### Repo information
 repo_url: ", gh_url(), "
