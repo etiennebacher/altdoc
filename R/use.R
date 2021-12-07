@@ -1,8 +1,9 @@
-#' Init docute
+#' Init Docute, Docsify, or Mkdocs
 #'
 #' @export
 #'
 #' @return No value returned. Creates files in folder 'docs'.
+#' @rdname init
 #'
 #' @examples
 #' \dontrun{
@@ -53,11 +54,9 @@ use_docute <- function() {
   final_steps(x = "Docute")
 }
 
-#' Init docsify
-#'
 #' @export
 #'
-#' @return No value returned. Creates files in folder 'docs'.
+#' @rdname init
 #'
 #' @examples
 #' \dontrun{
@@ -128,12 +127,9 @@ use_docsify <- function() {
 }
 
 
-#' Init mkdocs
-#'
 #' @export
 #'
-#' @return No value returned. Creates files in folder 'docs'.
-#'
+#' @rdname init
 #' @examples
 #' \dontrun{
 #' # Create mkdocs documentation
@@ -145,24 +141,57 @@ use_mkdocs <- function(theme = NULL) {
   check_docs_exists()
 
   if (is.null(theme)) theme <- "readthedocs"
+  if (!(theme %in% c(NULL, "readthedocs", "material")))
+    stop("Please provide a valid theme for mkdocs.")
 
   # Create basic structure
   system("mkdocs new docs -q")
   system("cd docs && mkdocs build -q")
 
   yaml <- paste0(
-    "site_name: ", pkg_name(),
-    "\ntheme:\n  name: ", theme
+    "
+### Basic information
+site_name: ", pkg_name(), "
+theme:
+  name: ", theme, "
+
+  # Dark mode toggle
+  palette:
+    - media: '(prefers-color-scheme: light)' #
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)' #
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - toc.integrate
+
+
+### Repo information
+repo_url: ", gh_url(), "
+repo_name: ", pkg_name(), "
+
+### Plugins
+plugins:
+  - search
+
+### Navigation tree
+nav:
+  - Home: README.md
+  - Reference: reference.md
+    "
   )
   cat(yaml, file = "docs/mkdocs.yml")
 
   ### README
+  fs::file_delete("docs/docs/index.md")
   import_readme()
-  if (fs::file_exists("docs/docs/README.md")) {
-    file.rename("docs/docs/README.md", "docs/docs/index.md")
-  }
-  # move_img_readme()
-  # replace_img_paths_readme()
+  move_img_readme()
+  replace_img_paths_readme()
 
   ### CHANGELOG
   import_changelog()
@@ -173,6 +202,8 @@ use_mkdocs <- function(theme = NULL) {
   ### REFERENCE
   make_reference()
 
+  ### FINAL STEPS
+  final_steps(x = "Mkdocs")
 
 }
 

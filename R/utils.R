@@ -41,8 +41,13 @@ final_steps <- function(x) {
   usethis::use_build_ignore("docs")
 
   message_validate(sprintf("%s initialized.", x))
-  message_validate("Folder 'docs' put in and .Rbuildignore.")
-  reformat_md("docs/README.md") # placed here so that message is displayed after init message
+  message_validate("Folder 'docs' put in .Rbuildignore.")
+  if (x %in% c("Docute", "Docsify")) {
+    reformat_md("docs/README.md") # placed here so that message is displayed after init message
+  } else if (x == "Mkdocs") {
+    reformat_md("docs/docs/README.md")
+  }
+
 
   if (x == "Docute") {
     index <- readLines("docs/index.html")

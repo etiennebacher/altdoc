@@ -118,7 +118,7 @@ move_img_readme <- function() {
   for (i in seq_along(img_paths)) {
     fs::file_copy(
       img_paths[i],
-      paste0(good_path, trimws(basename(img_paths[i]))),
+      paste0(good_path, "/", trimws(basename(img_paths[i]))),
       overwrite = T
     )
   }
@@ -153,6 +153,7 @@ replace_img_paths_readme <- function() {
 
 img_paths_readme <- function() {
 
+  good_path <- doc_path()
   file_content <- paste(readLines(paste0(good_path, "/README.md"), warn = FALSE), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
