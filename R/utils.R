@@ -101,7 +101,8 @@ check_docs_exists <- function() {
     if (delete_docs) {
       fs::dir_delete("docs")
     } else {
-      stop("Nothing was modified.")
+      message_info("Nothing was modified.")
+      return("dont_delete_docs")
     }
   }
 
@@ -196,8 +197,11 @@ gh_url <- function() {
     gh_urls <- unlist(strsplit(gh_urls, ","))
     gh_url <- gh_urls[which(grepl("github.com", gh_urls))]
     gh_url <- gsub("/issues", "", gh_url)
-    if (length(gh_url) == 0)
+    if (length(gh_url) == 0) {
       gh_url <- gh_urls[which(grepl("github.io", gh_urls))]
+      gh_url <- gsub(".github.io", "", gh_url)
+      gh_url <- gsub("https://", "https://github.com/", gh_url)
+    }
     gh_url <- gsub(" ", "", gh_url)
 
     return(unique(gh_url))

@@ -13,7 +13,8 @@
 
 use_docute <- function() {
 
-  check_docs_exists()
+  x <- check_docs_exists()
+  if (x == "dont_delete_docs") return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -67,7 +68,8 @@ use_docute <- function() {
 
 use_docsify <- function() {
 
-  check_docs_exists()
+  x <- check_docs_exists()
+  if (x == "dont_delete_docs") return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -144,7 +146,8 @@ use_docsify <- function() {
 
 use_mkdocs <- function(theme = NULL) {
 
-  check_docs_exists()
+  x <- check_docs_exists()
+  if (x == "dont_delete_docs") return(invisible())
 
   # Create basic structure
   if (!is_mkdocs()) {
