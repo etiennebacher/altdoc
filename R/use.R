@@ -212,7 +212,7 @@ plugins:
 ### Navigation tree
 nav:
   - Home: README.md",
-if (fs::file_exists("NEWS.md")) {
+if (fs::file_exists("NEWS.md") || fs::file_exists("Changelog.md")) {
   paste0("\n  - Changelog: NEWS.md")
 },
 "
