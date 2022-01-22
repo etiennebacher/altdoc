@@ -9,13 +9,15 @@ test_that("use_mkdocs creates the right files", {
 test_that("argument theme works", {
   create_local_package()
   use_mkdocs(theme = "readthedocs")
-  yaml <- paste(readLines("docs/mkdocs.yml", warn = FALSE), collapse = "")
+  path <- getwd()
+  yaml <- paste(readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE), collapse = "")
   expect_true(grepl("name: readthedocs", yaml))
 })
 
 test_that("argument theme works", {
   create_local_package()
   use_mkdocs(theme = "material")
-  yaml <- paste(readLines("docs/mkdocs.yml", warn = FALSE), collapse = "")
+  path <- getwd()
+  yaml <- paste(readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE), collapse = "")
   expect_true(grepl("name: material", yaml))
 })
