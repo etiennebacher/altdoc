@@ -1,3 +1,8 @@
+# This requires installing pip3 and mkdocs, which is not possible on CRAN
+# (to my knowledge)
+skip_on_cran()
+skip_on_ci()
+
 test_that("use_mkdocs creates the right files", {
   create_local_package()
   use_mkdocs()
