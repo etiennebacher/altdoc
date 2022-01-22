@@ -1,3 +1,14 @@
+is_mkdocs <- function() {
+  x <- try(system("mkdocs", intern = TRUE, ignore.stdout = TRUE, ignore.stderr = TRUE), silent = TRUE)
+  return(!inherits(x, "try-error"))
+}
+
+is_mkdocs_material <- function() {
+  x <- system("pip list --local | grep  mkdocs-material", intern = TRUE)
+  return(length(x) > 1)
+}
+
+
 import_readme <- function() {
 
   good_path <- doc_path()
@@ -98,7 +109,7 @@ message_info <- function(x) {
   )
 }
 
-message_error <- function(x, y) {
+message_error <- function(x) {
   cli::cli_alert_danger(
     strwrap(prefix = " ", initial = "", x)
   )
