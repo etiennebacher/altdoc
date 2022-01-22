@@ -1,10 +1,23 @@
+# Is pip3 installed?
+is_pip3 <- function() {
+  x <- system("pip3 --version", intern = TRUE)
+  return(length(x) != 0)
+}
+
+# Is mkdocs installed?
 is_mkdocs <- function() {
   x <- try(system("mkdocs", intern = TRUE, ignore.stdout = TRUE, ignore.stderr = TRUE), silent = TRUE)
   return(!inherits(x, "try-error"))
 }
 
+# Is mkdocs material installed?
 is_mkdocs_material <- function() {
-  x <- system("pip list --local | grep  mkdocs-material", intern = TRUE)
+  if (!is_pip3()) {
+    message_error("Apparently, {.code pip3} is not installed on your system.")
+    message_error("Could not check whether {.code mkdocs-material} is installed.")
+    return(invisible())
+  }
+  x <- system("pip3 list --local | grep  mkdocs-material", intern = TRUE)
   return(length(x) > 1)
 }
 

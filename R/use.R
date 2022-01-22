@@ -149,7 +149,7 @@ use_mkdocs <- function(theme = NULL) {
   # Create basic structure
   if (!is_mkdocs()) {
     message_error("Apparently, {.code mkdocs} is not installed on your system.")
-    message_info("You can install it with {.code pip install mkdocs} in your terminal.")
+    message_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
     message_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
     return(invisible())
   }
@@ -157,7 +157,7 @@ use_mkdocs <- function(theme = NULL) {
   if (!is.null(theme) && theme == "material") {
     if (!is_mkdocs_material()) {
       message_error("Apparently, {.code mkdocs-material} is not installed on your system.")
-      message_info("You can install it with {.code pip install mkdocs-material} in your terminal.")
+      message_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
       return(invisible())
     }
   }
