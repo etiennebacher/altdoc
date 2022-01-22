@@ -14,7 +14,7 @@
 use_docute <- function() {
 
   x <- check_docs_exists()
-  if (x == "dont_delete_docs") return(invisible())
+  if (!is.null(x)) return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -69,7 +69,7 @@ use_docute <- function() {
 use_docsify <- function() {
 
   x <- check_docs_exists()
-  if (x == "dont_delete_docs") return(invisible())
+  if (!is.null(x)) return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -147,7 +147,7 @@ use_docsify <- function() {
 use_mkdocs <- function(theme = NULL) {
 
   x <- check_docs_exists()
-  if (x == "dont_delete_docs") return(invisible())
+  if (!is.null(x)) return(invisible())
 
   # Create basic structure
   if (!is_mkdocs()) {
@@ -211,7 +211,11 @@ plugins:
 
 ### Navigation tree
 nav:
-  - Home: README.md
+  - Home: README.md",
+if (fs::file_exists("NEWS.md")) {
+  paste0("\n  - Changelog: NEWS.md")
+},
+"
   - Reference: reference.md
     "
   )

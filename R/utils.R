@@ -102,7 +102,7 @@ check_docs_exists <- function() {
       fs::dir_delete("docs")
     } else {
       message_info("Nothing was modified.")
-      return("dont_delete_docs")
+      return(1)
     }
   }
 
