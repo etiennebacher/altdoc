@@ -1,12 +1,12 @@
 # Is pip3 installed?
 is_pip3 <- function() {
-  x <- try(system2("pip3 --version", intern = TRUE, ignore.stdout = TRUE, ignore.stderr = TRUE), silent = TRUE)
+  x <- try(system2("pip3", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
   return(!inherits(x, "try-error"))
 }
 
 # Is mkdocs installed?
 is_mkdocs <- function() {
-  x <- try(system2("mkdocs", intern = TRUE, ignore.stdout = TRUE, ignore.stderr = TRUE), silent = TRUE)
+  x <- try(system2("mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
   return(!inherits(x, "try-error"))
 }
 
