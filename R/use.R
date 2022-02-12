@@ -1,8 +1,9 @@
-#' Init docute
+#' Init Docute, Docsify, or Mkdocs
 #'
 #' @export
 #'
 #' @return No value returned. Creates files in folder 'docs'.
+#' @rdname init
 #'
 #' @examples
 #' \dontrun{
@@ -12,7 +13,8 @@
 
 use_docute <- function() {
 
-  check_docs_exists()
+  x <- check_docs_exists()
+  if (!is.null(x)) return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -53,11 +55,9 @@ use_docute <- function() {
   final_steps(x = "Docute")
 }
 
-#' Init docsify
-#'
 #' @export
 #'
-#' @return No value returned. Creates files in folder 'docs'.
+#' @rdname init
 #'
 #' @examples
 #' \dontrun{
@@ -68,7 +68,8 @@ use_docute <- function() {
 
 use_docsify <- function() {
 
-  check_docs_exists()
+  x <- check_docs_exists()
+  if (!is.null(x)) return(invisible())
 
   ### INDEX
   if (!fs::dir_exists("docs")) fs::dir_create("docs")
@@ -127,3 +128,115 @@ use_docsify <- function() {
 
 }
 
+
+#' @export
+#'
+#' @param theme Name of the theme to use. Default is basic theme. See Details
+#' section.
+#'
+#'
+#' @details
+#' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
+#' @rdname init
+#' @examples
+#' \dontrun{
+#' # Create mkdocs documentation
+#' use_mkdocs()
+#' }
+
+use_mkdocs <- function(theme = NULL) {
+
+  x <- check_docs_exists()
+  if (!is.null(x)) return(invisible())
+
+  # Create basic structure
+  if (!is_mkdocs()) {
+    message_error("Apparently, {.code mkdocs} is not installed on your system.")
+    message_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
+    message_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
+    return(invisible())
+  }
+
+  if (!is.null(theme) && theme == "material") {
+    if (!is_mkdocs_material()) {
+      message_error("Apparently, {.code mkdocs-material} is not installed on your system.")
+      message_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
+      return(invisible())
+    }
+  }
+
+  system("mkdocs new docs -q")
+  system("cd docs && mkdocs build -q")
+
+  yaml <- paste0(
+    "
+### Basic information
+site_name: ", pkg_name(),
+if (!is.null(theme)) {
+  paste0("
+theme:
+  name: ", theme
+  )
+},
+if (!is.null(theme) && theme == "material") {
+  paste0(
+    "
+
+  # Dark mode toggle
+  palette:
+    - media: '(prefers-color-scheme: light)' #
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)' #
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - toc.integrate
+    "
+  )
+},
+"
+
+### Repo information
+repo_url: ", gh_url(), "
+repo_name: ", pkg_name(), "
+
+### Plugins
+plugins:
+  - search
+
+### Navigation tree
+nav:
+  - Home: README.md",
+if (fs::file_exists("NEWS.md") || fs::file_exists("Changelog.md")) {
+  paste0("\n  - Changelog: NEWS.md")
+},
+"
+  - Reference: reference.md
+    "
+  )
+  cat(yaml, file = "docs/mkdocs.yml")
+
+  ### README
+  fs::file_delete("docs/docs/index.md")
+  import_readme()
+  move_img_readme()
+  replace_img_paths_readme()
+
+  ### CHANGELOG
+  import_changelog()
+
+  ### CODE OF CONDUCT
+  import_coc()
+
+  ### REFERENCE
+  make_reference()
+
+  ### FINAL STEPS
+  final_steps(x = "Mkdocs")
+
+}

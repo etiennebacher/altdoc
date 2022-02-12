@@ -114,10 +114,11 @@ move_img_readme <- function() {
 
   img_paths <- img_paths_readme()
 
+  good_path <- doc_path()
   for (i in seq_along(img_paths)) {
     fs::file_copy(
       img_paths[i],
-      paste0("docs/", trimws(basename(img_paths[i]))),
+      paste0(good_path, "/", trimws(basename(img_paths[i]))),
       overwrite = T
     )
   }
@@ -128,7 +129,8 @@ move_img_readme <- function() {
 
 replace_img_paths_readme <- function() {
 
-  file_content <- readLines("docs/README.md", warn = FALSE)
+  good_path <- doc_path()
+  file_content <- readLines(paste0(good_path, "/README.md"), warn = FALSE)
   img_paths <- img_paths_readme()
 
   # generate the new paths
@@ -143,7 +145,7 @@ replace_img_paths_readme <- function() {
     file_content <- gsub(img_paths[i], new_paths[i], file_content)
   }
 
-  writeLines(file_content, "docs/README.md")
+  writeLines(file_content, paste0(good_path, "/README.md"))
 
 }
 
@@ -151,7 +153,8 @@ replace_img_paths_readme <- function() {
 
 img_paths_readme <- function() {
 
-  file_content <- paste(readLines("docs/README.md", warn = FALSE), collapse = "\n")
+  good_path <- doc_path()
+  file_content <- paste(readLines(paste0(good_path, "/README.md"), warn = FALSE), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
   # (second one)

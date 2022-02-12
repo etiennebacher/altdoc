@@ -1,5 +1,62 @@
 # Reference 
 
+## Init
+
+### Description
+
+Init Docute, Docsify, or Mkdocs
+
+### Usage
+
+    use_docute()
+
+    use_docsify()
+
+    use_mkdocs(theme = NULL)
+
+### Arguments
+
+<table data-summary="R argblock">
+<tbody>
+<tr class="odd" data-valign="top">
+<td><code>theme</code></td>
+<td><p>Name of the theme to use. Default is basic theme. See Details section.</p></td>
+</tr>
+</tbody>
+</table>
+
+### Details
+
+If you are new to Mkdocs, the themes "readthedocs" and "material" are
+among the most popular and developed. You can also see a list of themes
+here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
+
+### Value
+
+No value returned. Creates files in folder 'docs'.
+
+### Examples
+
+```r
+## Not run: 
+# Create docute documentation
+use_docute()
+
+## End(Not run)
+## Not run: 
+# Create docsify documentation
+use_docsify()
+
+## End(Not run)
+## Not run: 
+# Create mkdocs documentation
+use_mkdocs()
+
+## End(Not run)
+```
+
+
+---
 ## Preview
 
 ### Description
@@ -53,13 +110,13 @@ Reformat Markdown files
 
 To use Docute or Docsify, the format of Markdown files has to follow a
 precise structure. There must be at most one main section (starting with
-'\#') but there can be as many subsections and subsubsections as you
+'#') but there can be as many subsections and subsubsections as you
 want.
 
 If you saw a message saying that `README.md` was slightly modified, it
 is because the README didn't follow these rules. There were probably
 several main sections, which messed up Docute/Docsify documentation.
-Therefore, `altdoc` automatically added a '\#' to all sections and
+Therefore, `altdoc` automatically added a '#' to all sections and
 subsections, except the first one, which is usually the title of the
 package.
 
@@ -124,58 +181,6 @@ No value returned. Updates files in folder 'docs'.
 ## Not run: 
 # Update documentation
 update_docs()
-
-## End(Not run)
-```
-
-
----
-## Use docsify
-
-### Description
-
-Init docsify
-
-### Usage
-
-    use_docsify()
-
-### Value
-
-No value returned. Creates files in folder 'docs'.
-
-### Examples
-
-```r
-## Not run: 
-# Create docsify documentation
-use_docsify()
-
-## End(Not run)
-```
-
-
----
-## Use docute
-
-### Description
-
-Init docute
-
-### Usage
-
-    use_docute()
-
-### Value
-
-No value returned. Creates files in folder 'docs'.
-
-### Examples
-
-```r
-## Not run: 
-# Create docute documentation
-use_docute()
 
 ## End(Not run)
 ```
