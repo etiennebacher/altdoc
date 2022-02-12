@@ -3,6 +3,16 @@ library(usethis)
 library(withr)
 
 
+### Don't run mkdocs in other places than my laptop
+### It requires installing pip3 and mkdocs, which is not possible on CRAN
+### (to my knowledge)
+skip_mkdocs <- function() {
+  skip_on_cran()
+  skip_on_ci()
+  skip_if_not(is_mkdocs())
+}
+
+
 ### Taken from {usethis} (file "R/project.R")
 
 proj <- new.env(parent = emptyenv())

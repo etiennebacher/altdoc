@@ -23,6 +23,7 @@ test_that("docsify: update_docs updates correctly the README", {
 })
 
 test_that("mkdocs: update_docs updates correctly the README", {
+  skip_mkdocs()
   create_local_package()
   use_mkdocs()
   usethis::use_readme_md()
@@ -66,6 +67,7 @@ test_that("docsify: update_docs updates correctly the NEWS", {
 })
 
 test_that("mkdocs: update_docs updates correctly the NEWS", {
+  skip_mkdocs()
   create_local_package()
   usethis::use_news_md()
   cat("Hello", file = "NEWS.md")
@@ -95,6 +97,7 @@ test_that("docute: update_docs shows message when NEWS didn't exist", {
 })
 
 test_that("mkdocs: update_docs shows message when NEWS didn't exist", {
+  skip_mkdocs()
   create_local_package()
   use_mkdocs()
   usethis::use_news_md()
