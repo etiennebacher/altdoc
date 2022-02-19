@@ -203,6 +203,7 @@ gh_url <- function() {
       gh_url <- gsub("https://", "https://github.com/", gh_url)
     }
     gh_url <- gsub(" ", "", gh_url)
+    gh_url <- gsub("#.*", "", gh_url)
 
     return(unique(gh_url))
   }
