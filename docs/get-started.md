@@ -1,12 +1,12 @@
 # Get started
 
-## Before creating the documentation
+## Prerequisites
 
 If you want to use `docsify` or `docute`, you can skip this and go directly to the next section.
 
 If you want to use `mkdocs-readthedocs` or `mkdocs-material`, you will first need to install `mkdocs`. To do that, you will need `python` and `pip`. If you have them, you can simply run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
 
-## Initialize the documentation
+## Initialize
 
 You can use `altdoc` at any stage in the development of your package. When you're ready to build a documentation, just call `use_docsify()`, `use_docute()` or `use_mkdocs()`, according to which documentation generator you prefer.
 
@@ -18,7 +18,7 @@ The `use_*()` functions will pre-populate your documentation with several files:
 * `NEWS` and `CODE_OF_CONDUCT` (if they exist) will be sections;
 * all `.Rd` files will be aggregated in a single file, called `reference.md`. If you don't want some functions to be referenced, you should replace `#'` by `#` in the source code and re-run `devtools::document()`.
 
-## Extend the documentation
+## Extend 
 
 To add some documentation, you can create Markdown files in the 'docs' folder. Adding them to the sidebar will require different actions, according to the documentation generator you use:
 
@@ -28,6 +28,6 @@ To add some documentation, you can create Markdown files in the 'docs' folder. A
 
 * with `mkdocs`, the structure is slightly different. In the folder `docs`, the file `mkdocs.yml` takes care of all the layout and options of your documentation. The subfolder `docs` contains the `.md` files. The subfolder `site` is created automatically, there is no need to modify it.
 
-## Update the documentation
+## Update 
 
 Some files are likely to be modified quite frequently: the README, the NEWS and the `.Rd` files. To automatically update these files in 'docs', run `update_docs()`. Only those files will be modified. 
