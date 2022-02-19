@@ -1,5 +1,11 @@
 # Get started
 
+## Before creating the documentation
+
+If you want to use `docsify` or `docute`, you can skip this and go directly to the next section.
+
+If you want to use `mkdocs-readthedocs` or `mkdocs-material`, you will first need to install `mkdocs`. To do that, you will need `python` and `pip`. If you have them, you can simply run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
+
 ## Initialize the documentation
 
 You can use `altdoc` at any stage in the development of your package. When you're ready to build a documentation, just call `use_docsify()`, `use_docute()` or `use_mkdocs()`, according to which documentation generator you prefer.
