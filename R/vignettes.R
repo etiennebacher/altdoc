@@ -91,10 +91,12 @@ vignettes_differ <- function(x, y) {
   }
 
   x_file <- readLines(x, warn = FALSE)
-  x_content <- gsub("---(.*?)---", "", paste(x_file, collapse = " "))
+  x_file <- x_file[-which(x_file == "")]
+  x_content <- gsub("---(.*?)---", "", paste(x_file, collapse = "\n"))
 
   y_file <- readLines(y, warn = FALSE)
-  y_content <- gsub("---(.*?)---", "", paste(y_file, collapse = " "))
+  y_file <- y_file[-which(y_file == "")]
+  y_content <- gsub("---(.*?)---", "", paste(y_file, collapse = "\n"))
 
   return(!identical(x_content, y_content))
 }
