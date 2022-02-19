@@ -1,6 +1,6 @@
 Type: Package
 Package: altdoc
-Title: Use 'Docsify.js' or 'Docute' to Generate a Package Documentation
+Title: Use 'Docsify.js', 'Docute', or 'Mkdocs' to Generate a Package Documentation
 Version: 0.1.0
 Authors@R: 
     person(given = "Etienne",
@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre", "cph"),
            email = "etienne.bacher@protonmail.com")
 Description: Most developers use 'pkgdown' to create a website for their packages.
-    Other documentation generators exist, such as 'Docute' and 'Docsify.js'. 
+    Other documentation generators exist, such as 'Docute', 'Docsify.js', or 'Mkdocs'. 
     The aim of 'altdoc' is to provide helpers to create, populate, update, and 
     preview websites made with these tools.
 License: MIT + file LICENSE
@@ -24,7 +24,9 @@ Imports:
     tools,
     usethis,
     utils,
-    yesno
+    yesno,
+    jsonlite,
+    yaml
 Suggests: 
     spelling,
     testthat (>= 3.0.0),
