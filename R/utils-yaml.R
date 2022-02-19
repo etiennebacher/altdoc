@@ -1,4 +1,4 @@
-# Modify yaml of vignettes to remove HTML formats in output, remove all
+# Modify yaml of vignettes: remove HTML formats in output, remove all
 # vignette parameters (starting with %\Vignette), and add github_document
 # in output formats.
 

@@ -59,9 +59,8 @@ transform_vignettes <- function() {
         new_vignette <- c(title, new_vignette)
         writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
       }
-
-      cli::cli_progress_update()
     }
+    cli::cli_progress_update()
   }
 
   cli::cli_progress_done()
@@ -127,15 +126,14 @@ get_vignettes_titles <- function() {
     vignettes_title[i, "link"] <- link
   }
 
-  return(
-    jsonlite::toJSON(vignettes_title, pretty = TRUE)
-  )
+  return(vignettes_title)
 }
 
 
 add_vignettes <- function(doctype) {
 
   if (doctype == "docute") {
+
     original_index <- readLines("docs/index.html", warn = FALSE)
     home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
 
@@ -144,13 +142,25 @@ add_vignettes <- function(doctype) {
       "\n{
 					   title: \"Articles\",
 					   children:",
-      get_vignettes_titles(),
+      jsonlite::toJSON(get_vignettes_titles(), pretty = TRUE),
       "},\n"
     )
 
     writeLines(original_index, "docs/index.html")
 
   } else if (doctype == "docsify") {
+
+    original_sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
+    home_line <- which(grepl("\\[Home\\]", original_sidebar))
+    vignettes_titles <- get_vignettes_titles()
+    original_sidebar[home_line] <- paste0(
+      original_sidebar[home_line],
+      "\n* [Articles]()",
+      paste("\n  * [", vignettes_titles$title, "](", vignettes_titles$link, ")",
+            collapse = "", sep = "")
+    )
+
+    writeLines(original_sidebar, "docs/_sidebar.md")
 
   } else if (doctype == "mkdocs") {
 
