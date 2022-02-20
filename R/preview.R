@@ -33,11 +33,10 @@ preview <- function() {
         }
       )
     } else {
-      message_error("index.html was not found. You can run one of
-                    `altdoc::use_*` functions to create it.")
+      cli::cli_alert_danger("index.html was not found. You can run one of `altdoc::use_*` functions to create it.")
     }
   } else {
-    message_error("This function only works in RStudio.")
+    cli::cli_alert_danger("This function only works in RStudio.")
   }
 
 

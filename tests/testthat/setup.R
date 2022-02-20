@@ -56,7 +56,7 @@ create_local_thing <- function(
 
   thing <- match.arg(thing)
   if (fs::dir_exists(dir)) {
-    ui_stop("Target {ui_code('dir')} {ui_path(dir)} already exists.")
+    ui_stop("Target {ui_code('dir')} {.file {dir}} already exists.")
   }
 
   old_project <- proj_get_() # this could be `NULL`, i.e. no active project

@@ -13,8 +13,8 @@ is_mkdocs <- function() {
 # Is mkdocs material installed?
 is_mkdocs_material <- function() {
   if (!is_pip3()) {
-    message_error("Apparently, {.code pip3} is not installed on your system.")
-    message_error("Could not check whether {.code mkdocs-material} is installed.")
+    cli::cli_alert_danger("Apparently, {.code pip3} is not installed on your system.")
+    cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
     return(invisible())
   }
   x <- system("pip3 list --local | grep  mkdocs-material", intern = TRUE)
@@ -65,8 +65,9 @@ final_steps <- function(x) {
   usethis::use_build_ignore("docs")
   good_path <- doc_path()
 
-  message_validate(sprintf("%s initialized.", x))
-  message_validate("Folder 'docs' put in .Rbuildignore.")
+  cli::cli_h1("Docs structure")
+  cli::cli_alert_success(sprintf("%s initialized.", x))
+  cli::cli_alert_success("Folder {.file {'docs'}} put in {.file {'.Rbuildignore'}}.")
   reformat_md(paste0(good_path, "/README.md"))
 
   if (x == "Docute") {
@@ -81,10 +82,10 @@ final_steps <- function(x) {
   }
 
   if (!fs::file_exists("NEWS.md")) {
-    message_info("No changelog to include.")
+    cli::cli_alert_info("No changelog to include.")
   }
   if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
-    message_info("No code of conduct to include.")
+    cli::cli_alert_info("No code of conduct to include.")
   }
 }
 
@@ -100,32 +101,11 @@ check_docs_exists <- function() {
     if (delete_docs) {
       fs::dir_delete("docs")
     } else {
-      message_info("Nothing was modified.")
+      cli::cli_alert_info("Nothing was modified.")
       return(1)
     }
   }
 
-}
-
-# Wrappers for cli messages
-# @param x Message
-
-message_validate <- function(x) {
-  cli::cli_alert_success(
-    strwrap(prefix = " ", initial = "", x)
-  )
-}
-
-message_info <- function(x) {
-  cli::cli_alert_info(
-    strwrap(prefix = " ", initial = "", x)
-  )
-}
-
-message_error <- function(x) {
-  cli::cli_alert_danger(
-    strwrap(prefix = " ", initial = "", x)
-  )
 }
 
 

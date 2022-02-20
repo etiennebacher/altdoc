@@ -31,7 +31,7 @@ update_docs <- function() {
   make_reference()
 
   # Finish
-  message_validate("Documentation updated. See `?altdoc::update_docs` to know
+  cli::cli_alert_success("Documentation updated. See `?altdoc::update_docs` to know
                    what files are concerned.")
 
 }
@@ -46,7 +46,7 @@ update_file <- function(filename) {
     fs::file_copy(orig_file, docs_file, overwrite = TRUE)
     if (filename == "NEWS.md") {
       if (!fs::file_exists(docs_file)) {
-        message_info("NEWS.md was imported for the first time. You should also update {.code docs/mkdocs.yml}.")
+        cli::cli_alert_info("NEWS.md was imported for the first time. You should also update {.file {'docs/mkdocs.yml'}}.")
       }
       changelog <- readLines("NEWS.md", warn = FALSE)
       changelog <- gsub("^## ", "### ", changelog)

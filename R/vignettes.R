@@ -12,68 +12,80 @@
 transform_vignettes <- function() {
 
   if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
-    message_info("No vignettes to transform.")
+    cli::cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
   good_path <- doc_path()
   articles_path <- paste0(good_path, "/articles")
 
-  vignettes <- list.files("vignettes", pattern = ".Rmd")
+  vignettes <- list.files("vignettes", pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
     fs::dir_create(articles_path)
   }
 
-  n <- length(vignettes)
-  i <- 0
-  cli::cli_progress_step("Converting vignettes: {i}/{n}", spinner = TRUE)
-
+  ### Check which vignette is different
+  vignette_is_different <- logical(length(vignettes))
   for (i in seq_along(vignettes)) {
     origin <- paste0("vignettes/", vignettes[i])
     destination <- paste0(articles_path, "/", vignettes[i])
+    vignette_is_different[i] <- vignettes_differ(origin, destination)
+    fs::file_copy(origin, destination, overwrite = TRUE)
+  }
+  if (!any(vignette_is_different)) {
+    cli::cli_alert_info("No new vignette to convert.")
+    return(invisible())
+  }
 
-    if (vignettes_differ(origin, destination)) {
+  to_convert <- which(vignette_is_different)
+  n <- length(to_convert)
+  # can't use message_info with {}
+  cli::cli_alert_info("Found {length(to_convert)} vignette{?s} to convert.")
+  i <- 0
+  cli::cli_progress_step("Converting vignettes: {i}/{n}", spinner = TRUE)
 
-      fs::file_copy(origin, destination, overwrite = TRUE)
-      modify_yaml(destination)
-      output_file <- paste0(substr(vignettes[i], 1, nchar(vignettes[i])-4), ".md")
+  for (i in seq_along(to_convert)) {
+    j <- to_convert[i] # do that for cli progress step
+    origin <- paste0("vignettes/", vignettes[j])
+    destination <- paste0(articles_path, "/", vignettes[j])
 
-      suppressMessages(
-        rmarkdown::render(
-          destination,
-          output_dir = articles_path,
-          output_file = output_file,
-          quiet = TRUE
-        )
+    modify_yaml(destination)
+    output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
+
+    suppressMessages(
+      rmarkdown::render(
+        destination,
+        output_dir = articles_path,
+        output_file = output_file,
+        quiet = TRUE
       )
+    )
 
-      ### If title too long, it was cut in several lines but only the last
-      ### one is read by docute so need to paste the title back together
-      new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
-      title_sep <- grep("=====", new_vignette)
-      if (length(title_sep) == 1) {
-        title <- new_vignette[1:title_sep-1]
-        title <- paste(title, collapse = " ")
+    ### If title too long, it was cut in several lines but only the last
+    ### one is read by docute so need to paste the title back together
+    new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
+    title_sep <- grep("=====", new_vignette)
+    if (length(title_sep) == 1) {
+      title <- new_vignette[1:title_sep-1]
+      title <- paste(title, collapse = " ")
 
-        # for some reason, having a colon in the title breaks the title when
-        # using mkdocs
-        if (doc_type() == "mkdocs") {
-          title <- gsub(":", " - ", title)
-        }
-
-        new_vignette <- new_vignette[-c(1:title_sep-1)]
-        new_vignette <- c(title, new_vignette)
-        writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
+      # for some reason, having a colon in the title breaks the title when
+      # using mkdocs
+      if (doc_type() == "mkdocs") {
+        title <- gsub(":", " - ", title)
       }
+
+      new_vignette <- new_vignette[-c(1:title_sep-1)]
+      new_vignette <- c(title, new_vignette)
+      writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
     }
     cli::cli_progress_update()
   }
 
   cli::cli_progress_done()
-  message_validate(
-    paste0("Vignettes have been converted and put in '", articles_path, "'.")
-  )
+  cli::cli_alert_success("Vignettes have been converted and put in {.file {articles_path}}.")
+  cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 }
 
 
@@ -114,7 +126,7 @@ vignettes_differ <- function(x, y) {
 get_vignettes_titles <- function() {
 
   if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
-    message_info("No vignettes to transform.")
+    cli::cli_alert_info("No vignettes to transform.")
     return(invisible())
   }
 
@@ -154,8 +166,8 @@ add_vignettes <- function() {
 
     original_index <- readLines("docs/index.html", warn = FALSE)
 
-    if (!all(unique(grepl("title: \"Articles\"", original_index)))) {
-      message_info("New vignettes were not added automatically in 'docs/index.html'. You need to check it manually.")
+    if (any(grepl("title: \"Articles\"", original_index))) {
+      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to check it manually.")
       return(invisible())
     }
 
@@ -180,10 +192,12 @@ add_vignettes <- function() {
     original_sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
 
     # Remove the articles / vignettes section to avoid duplicates
-    vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
-    vignette_end <- grep("^\\* \\[", original_sidebar)
-    vignette_end <- vignette_end[vignette_end > vignette_start][1]-1
-    original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
+    if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
+      vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
+      vignette_end <- grep("^\\* \\[", original_sidebar)
+      vignette_end <- vignette_end[vignette_end > vignette_start][1]-1
+      original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
+    }
 
     # Insert articles section just below home
     home_line <- which(grepl("\\[Home\\]", original_sidebar))
@@ -244,9 +258,12 @@ add_vignettes <- function() {
     after_plugin <- gsub("    ", "    - ", after_plugin)
     after_plugin <- gsub("- -", "-", after_plugin)
 
-    # Put reference in a section if it isn't already
+    # Put reference and changelog in a section if it isn't already
     if (length(gregexpr("Reference:", after_plugin)[[1]]) == 1) {
       after_plugin <- gsub("Reference:", "Reference:\n    - Reference:", after_plugin)
+    }
+    if (length(gregexpr("Changelog:", after_plugin)[[1]]) == 1) {
+      after_plugin <- gsub("Changelog:", "Changelog:\n    - Changelog:", after_plugin)
     }
     new_yaml <- paste(before_plugin, after_plugin, sep = "")
 
