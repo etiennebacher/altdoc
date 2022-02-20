@@ -31,7 +31,7 @@ transform_vignettes <- function() {
 
   for (i in seq_along(vignettes)) {
     origin <- paste0("vignettes/", vignettes[i])
-    destination <- paste0("docs/articles/", vignettes[i])
+    destination <- paste0(articles_path, "/", vignettes[i])
 
     if (vignettes_differ(origin, destination)) {
 
@@ -55,6 +55,13 @@ transform_vignettes <- function() {
       if (length(title_sep) == 1) {
         title <- new_vignette[1:title_sep-1]
         title <- paste(title, collapse = " ")
+
+        # for some reason, having a colon in the title breaks the title when
+        # using mkdocs
+        if (doc_type() == "mkdocs") {
+          title <- gsub(":", " - ", title)
+        }
+
         new_vignette <- new_vignette[-c(1:title_sep-1)]
         new_vignette <- c(title, new_vignette)
         writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
@@ -64,10 +71,9 @@ transform_vignettes <- function() {
   }
 
   cli::cli_progress_done()
-  message_validate(paste0("Vignettes have been converted and put in '",
-                          articles_path, "'."))
-
-
+  message_validate(
+    paste0("Vignettes have been converted and put in '", articles_path, "'.")
+  )
 }
 
 
@@ -101,8 +107,9 @@ vignettes_differ <- function(x, y) {
 }
 
 
-# Get titles and filenames of the vignettes
-# This is used to update the sidebar/navbar in the docs
+# Get titles and filenames of the vignettes and returns them in a dataframe
+# with two columns: title and link.
+# This is used to update the sidebar/navbar in the docs.
 
 get_vignettes_titles <- function() {
 
@@ -129,8 +136,17 @@ get_vignettes_titles <- function() {
   return(vignettes_title)
 }
 
+# Add vignettes in the index/sidebar/yaml depending on the tool used.
+# This creates a section "Articles" with every vignettes in docs/articles
 
-add_vignettes <- function(doctype) {
+add_vignettes <- function() {
+
+  doctype <- doc_type()
+
+  vignettes_titles <- get_vignettes_titles()
+  if (!nrow(vignettes_titles) >= 1) {
+    return(invisible())
+  }
 
   if (doctype == "docute") {
 
@@ -142,7 +158,7 @@ add_vignettes <- function(doctype) {
       "\n{
 					   title: \"Articles\",
 					   children:",
-      jsonlite::toJSON(get_vignettes_titles(), pretty = TRUE),
+      jsonlite::toJSON(vignettes_titles, pretty = TRUE),
       "},\n"
     )
 
@@ -152,7 +168,6 @@ add_vignettes <- function(doctype) {
 
     original_sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
     home_line <- which(grepl("\\[Home\\]", original_sidebar))
-    vignettes_titles <- get_vignettes_titles()
     original_sidebar[home_line] <- paste0(
       original_sidebar[home_line],
       "\n* [Articles]()",
@@ -164,6 +179,55 @@ add_vignettes <- function(doctype) {
 
   } else if (doctype == "mkdocs") {
 
-  }
+    vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
 
+    original_yaml <- suppressWarnings(yaml::read_yaml("docs/mkdocs.yml"))
+
+    # If articles are in the navbar, remove them, so that there is no duplicates
+    nav_sections <- unlist(lapply(original_yaml$nav, names))
+    # I will put reference in a section at the end
+    if ("Articles" %in% nav_sections) {
+      original_yaml$nav[[which(nav_sections == "Articles")]] <- NULL
+    }
+    if ("articles" %in% nav_sections) {
+      original_yaml$nav[[which(nav_sections == "articles")]] <- NULL
+    }
+
+    # yaml::as.yaml doesn't format plugins well when there is only one plugin
+    if (length(original_yaml$plugins) == 1) {
+      original_yaml$plugins <- list(original_yaml$plugins)
+    }
+
+    # Create section "Articles" and add vignettes in it
+    list_articles <- list("Articles" = NULL)
+    for (i in 1:nrow(vignettes_titles)) {
+      x <- list(vignettes_titles[i, 2])
+      names(x) <- paste0(vignettes_titles[i, 1])
+      list_articles[["Articles"]] <- append(
+        list_articles[["Articles"]], x, length(list_articles[["Articles"]])
+      )
+    }
+
+    new_nav <- append(original_yaml$nav, list(list_articles), 1)
+    original_yaml$nav <- new_nav
+    new_yaml <- yaml::as.yaml(original_yaml)
+
+    # yaml::as.yaml is quite inconsistent with indents and dash, especially with
+    # plugins, so I fix indents and dashes only for things after plugin (i.e
+    # plugins and nav)
+    # TODO: find a more robust solution
+    before_plugin <- gsub("plugins:.*", "", new_yaml)
+    after_plugin <- gsub(".*?(plugins:)", "\\1", new_yaml)
+    after_plugin <- gsub("- ", "  - ", after_plugin)
+    after_plugin <- gsub("    ", "    - ", after_plugin)
+    after_plugin <- gsub("- -", "-", after_plugin)
+
+    # Put reference in a section if it isn't already
+    if (length(gregexpr("Reference:", after_plugin)[[1]]) == 1) {
+      after_plugin <- gsub("Reference:", "Reference:\n    - Reference:", after_plugin)
+    }
+    new_yaml <- paste(before_plugin, after_plugin, sep = "")
+
+    writeLines(new_yaml, "docs/mkdocs.yml")
+  }
 }
