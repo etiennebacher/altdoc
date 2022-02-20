@@ -18,6 +18,21 @@ The `use_*()` functions will pre-populate your documentation with several files:
 * `NEWS` and `CODE_OF_CONDUCT` (if they exist) will be sections;
 * all `.Rd` files will be aggregated in a single file, called `reference.md`. If you don't want some functions to be referenced, you should replace `#'` by `#` in the source code and re-run `devtools::document()`.
 
+## About vignettes
+
+The three `use_*()` functions have an argument `convert_vignettes`, which defaults to `TRUE`. This means that when initializing the documentation, `altdoc` will copy your vignettes in the folder `docs/articles`, modify their YAML to produce Markdown files, and render them. 
+
+The reason for changing the YAML is that most vignettes are HTML files (even though sometimes they are also available as PDF files). However, a website made with `docsify`, `docute` or `mkdocs` requires Markdown files, and not HTML files. 
+
+<Note type="warning">
+
+There are several reasons why converting and rendering the vignettes automatically might not work. For example, the YAML can be formatted differently than expected, or there could be a call to a figure stored somewhere else in the package folder.
+
+Therefore, **if you don't want to convert vignettes automatically, you can run `use_*(convert_vignettes = FALSE)`**.
+
+</Note>
+
+
 ## Extend 
 
 To add some documentation, you can create Markdown files in the 'docs' folder. Adding them to the sidebar will require different actions, according to the documentation generator you use:
