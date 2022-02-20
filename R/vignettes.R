@@ -151,6 +151,12 @@ add_vignettes <- function() {
   if (doctype == "docute") {
 
     original_index <- readLines("docs/index.html", warn = FALSE)
+
+    if (!all(unique(grepl("title: \"Articles\"", original_index)))) {
+      message_info("New vignettes were not added automatically in 'docs/index.html'. You need to check it manually.")
+      return(invisible())
+    }
+
     home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
 
     original_index[home_line] <- paste0(
@@ -164,9 +170,20 @@ add_vignettes <- function() {
 
     writeLines(original_index, "docs/index.html")
 
+
+
+
   } else if (doctype == "docsify") {
 
     original_sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
+
+    # Remove the articles / vignettes section to avoid duplicates
+    vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
+    vignette_end <- grep("^\\* \\[", original_sidebar)
+    vignette_end <- vignette_end[vignette_end > vignette_start][1]-1
+    original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
+
+    # Insert articles section just below home
     home_line <- which(grepl("\\[Home\\]", original_sidebar))
     original_sidebar[home_line] <- paste0(
       original_sidebar[home_line],
@@ -176,6 +193,9 @@ add_vignettes <- function() {
     )
 
     writeLines(original_sidebar, "docs/_sidebar.md")
+
+
+
 
   } else if (doctype == "mkdocs") {
 
