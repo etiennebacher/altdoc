@@ -142,8 +142,10 @@ get_vignettes_titles <- function() {
 add_vignettes <- function() {
 
   doctype <- doc_type()
-
   vignettes_titles <- get_vignettes_titles()
+  if (is.null(vignettes_titles)) {
+    return(invisible())
+  }
   if (!nrow(vignettes_titles) >= 1) {
     return(invisible())
   }
