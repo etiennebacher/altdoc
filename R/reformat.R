@@ -190,3 +190,47 @@ img_paths_readme <- function() {
   return(img_path)
 
 }
+
+replace_figures_rmd <- function() {
+
+  ### First, extract paths of figures and copy figures to "articles/figures"
+  if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
+    return(invisible())
+  }
+  good_path <- doc_path()
+  figures_path <- paste0(good_path, "/articles/figures")
+  if (!fs::dir_exists(figures_path)) {
+    fs::dir_create(figures_path)
+  }
+  vignettes <- list.files("vignettes", pattern = ".Rmd$")
+
+  for (i in seq_along(vignettes)) {
+
+    file_content <- paste(readLines(paste0("vignettes/", vignettes[i]), warn = FALSE), collapse = "\n")
+
+    x <- unlist(regmatches(
+      file_content,
+      gregexpr("(?<=\\().*?(?=\\))", file_content, perl = TRUE)
+    ))
+    x <- x[grepl("/", x)]
+    x <- x[!grepl("http", x)]
+    x <- gsub("\"", "", x)
+    x <- gsub("\\.\\.", "", x)
+    for (i in seq_along(x)) {
+      if (substr(x[i], 1, 1) == "/") {
+        x[i] <- substr(x[i], 2, nchar(x[i]))
+      }
+    }
+    origin_fig <- x
+    destination_fig <- paste0(figures_path, "/", trimws(basename(origin_fig)))
+
+    if (length(origin_fig) == 0) next
+
+    for (i in seq_along(origin_fig)) {
+      if (fs::file_exists(origin_fig[i])) {
+        fs::file_copy(origin_fig[i], destination_fig[i], overwrite = TRUE)
+      }
+    }
+  }
+
+}
