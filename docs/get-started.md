@@ -28,7 +28,7 @@ Using `convert_vignettes = TRUE` will *not* affect files in the folder `vignette
 
 <Note type="warning">
 
-This feature is not very robust. There are several reasons why converting and rendering the vignettes automatically might not work. For example, the YAML can be formatted differently than expected, or there could be a call to a figure stored somewhere else in the package folder.
+This feature is not very robust. There are several reasons why automatically converting and rendering the vignettes might not work. For example, the YAML can be formatted differently than expected, or there could be a call to a figure stored somewhere else in the package folder.
 
 </Note>
 
