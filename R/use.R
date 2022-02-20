@@ -1,8 +1,8 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
 #' @param convert_vignettes Do you want to convert and import vignettes if you have
-#' some? This will not modify files in the folder 'vignettes'. Importing vignettes
-#' is experimental, set this to FALSE if you have problems with that.s
+#' some? This will not modify files in the folder 'vignettes'. This feature
+#' is experimental.
 #'
 #' @export
 #'
@@ -15,7 +15,7 @@
 #' use_docute()
 #' }
 
-use_docute <- function(convert_vignettes = TRUE) {
+use_docute <- function(convert_vignettes = FALSE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())
@@ -84,7 +84,7 @@ use_docute <- function(convert_vignettes = TRUE) {
 #' }
 
 
-use_docsify <- function(convert_vignettes = TRUE) {
+use_docsify <- function(convert_vignettes = FALSE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())
@@ -166,8 +166,8 @@ use_docsify <- function(convert_vignettes = TRUE) {
 #' section.
 #'
 #' @param convert_vignettes Do you want to convert and import vignettes if you have
-#' some? This will not modify files in the folder 'vignettes'. Importing vignettes
-#' is experimental, set this to FALSE if you have problems with that.
+#' some? This will not modify files in the folder 'vignettes'. This feature
+#' is experimental.
 #'
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
@@ -178,7 +178,7 @@ use_docsify <- function(convert_vignettes = TRUE) {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())

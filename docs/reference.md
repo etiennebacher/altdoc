@@ -8,11 +8,11 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = TRUE)
+    use_docute(convert_vignettes = FALSE)
 
-    use_docsify(convert_vignettes = TRUE)
+    use_docsify(convert_vignettes = FALSE)
 
-    use_mkdocs(theme = NULL, convert_vignettes = TRUE)
+    use_mkdocs(theme = NULL, convert_vignettes = FALSE)
 
 ### Arguments
 
@@ -20,7 +20,7 @@ Init Docute, Docsify, or Mkdocs
 <tbody>
 <tr class="odd" data-valign="top">
 <td><code>convert_vignettes</code></td>
-<td><p>Do you want to convert and import vignettes if you have some? This will not modify files in the folder 'vignettes'. Importing vignettes is experimental, set this to FALSE if you have problems with that.</p></td>
+<td><p>Do you want to convert and import vignettes if you have some? This will not modify files in the folder 'vignettes'. This feature is experimental.</p></td>
 </tr>
 <tr class="even" data-valign="top">
 <td><code>theme</code></td>
