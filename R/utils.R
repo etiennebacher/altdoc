@@ -67,7 +67,7 @@ final_steps <- function(x) {
 
   message_validate(sprintf("%s initialized.", x))
   message_validate("Folder 'docs' put in .Rbuildignore.")
-  reformat_md(paste0(good_path), "/README.md")
+  reformat_md(paste0(good_path, "/README.md"))
 
   if (x == "Docute") {
     index <- readLines("docs/index.html")
