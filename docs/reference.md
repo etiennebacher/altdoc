@@ -8,17 +8,21 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute()
+    use_docute(convert_vignettes = TRUE)
 
-    use_docsify()
+    use_docsify(convert_vignettes = TRUE)
 
-    use_mkdocs(theme = NULL)
+    use_mkdocs(theme = NULL, convert_vignettes = TRUE)
 
 ### Arguments
 
 <table data-summary="R argblock">
 <tbody>
 <tr class="odd" data-valign="top">
+<td><code>convert_vignettes</code></td>
+<td><p>Do you want to convert and import vignettes if you have some? This will not modify files in the folder 'vignettes'. Importing vignettes is experimental, set this to FALSE if you have problems with that.</p></td>
+</tr>
+<tr class="even" data-valign="top">
 <td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details section.</p></td>
 </tr>

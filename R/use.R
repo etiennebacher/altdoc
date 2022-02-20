@@ -1,5 +1,9 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
+#' @param convert_vignettes Do you want to convert and import vignettes if you have
+#' some? This will not modify files in the folder 'vignettes'. Importing vignettes
+#' is experimental, set this to FALSE if you have problems with that.s
+#'
 #' @export
 #'
 #' @return No value returned. Creates files in folder 'docs'.
@@ -11,7 +15,7 @@
 #' use_docute()
 #' }
 
-use_docute <- function() {
+use_docute <- function(convert_vignettes = TRUE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())
@@ -55,9 +59,11 @@ use_docute <- function() {
   final_steps(x = "Docute")
 
   ### VIGNETTES
-  cli::cli_h1("Vignettes")
-  transform_vignettes()
-  add_vignettes()
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Vignettes")
+    transform_vignettes()
+    add_vignettes()
+  }
 
   if (interactive()) {
     cli::cli_par()
@@ -78,7 +84,7 @@ use_docute <- function() {
 #' }
 
 
-use_docsify <- function() {
+use_docsify <- function(convert_vignettes = TRUE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())
@@ -139,9 +145,11 @@ use_docsify <- function() {
   final_steps(x = "Docsify")
 
   ### VIGNETTES
-  cli::cli_h1("Vignettes")
-  transform_vignettes()
-  add_vignettes()
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Vignettes")
+    transform_vignettes()
+    add_vignettes()
+  }
 
   if (interactive()) {
     cli::cli_par()
@@ -157,6 +165,9 @@ use_docsify <- function() {
 #' @param theme Name of the theme to use. Default is basic theme. See Details
 #' section.
 #'
+#' @param convert_vignettes Do you want to convert and import vignettes if you have
+#' some? This will not modify files in the folder 'vignettes'. Importing vignettes
+#' is experimental, set this to FALSE if you have problems with that.
 #'
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
@@ -167,7 +178,7 @@ use_docsify <- function() {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE) {
 
   x <- check_docs_exists()
   if (!is.null(x)) return(invisible())
@@ -263,9 +274,11 @@ if (fs::file_exists("NEWS.md") || fs::file_exists("Changelog.md")) {
   final_steps(x = "Mkdocs")
 
   ### VIGNETTES
-  cli::cli_h1("Vignettes")
-  transform_vignettes()
-  add_vignettes()
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Vignettes")
+    transform_vignettes()
+    add_vignettes()
+  }
 
   if (interactive()) {
     cli::cli_par()

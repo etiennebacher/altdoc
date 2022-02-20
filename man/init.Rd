@@ -6,13 +6,17 @@
 \alias{use_mkdocs}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
-use_docute()
+use_docute(convert_vignettes = TRUE)
 
-use_docsify()
+use_docsify(convert_vignettes = TRUE)
 
-use_mkdocs(theme = NULL)
+use_mkdocs(theme = NULL, convert_vignettes = TRUE)
 }
 \arguments{
+\item{convert_vignettes}{Do you want to convert and import vignettes if you have
+some? This will not modify files in the folder 'vignettes'. Importing vignettes
+is experimental, set this to FALSE if you have problems with that.}
+
 \item{theme}{Name of the theme to use. Default is basic theme. See Details
 section.}
 }
