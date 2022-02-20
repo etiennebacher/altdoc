@@ -63,30 +63,29 @@ import_coc <- function() {
 final_steps <- function(x) {
 
   usethis::use_build_ignore("docs")
+  good_path <- doc_path()
 
   message_validate(sprintf("%s initialized.", x))
   message_validate("Folder 'docs' put in .Rbuildignore.")
-  if (x %in% c("Docute", "Docsify")) {
-    reformat_md("docs/README.md") # placed here so that message is displayed after init message
-  } else if (x == "Mkdocs") {
-    reformat_md("docs/docs/README.md")
-  }
-
+  reformat_md(paste0(good_path), "/README.md")
 
   if (x == "Docute") {
     index <- readLines("docs/index.html")
     if (!fs::file_exists("NEWS.md")) {
       index <- index[-which(grepl("/NEWS", index))]
-      message_info("No changelog to include.")
     }
     if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
-      message_info("No code of conduct to include.")
     }
     writeLines(index, "docs/index.html")
   }
 
-
+  if (!fs::file_exists("NEWS.md")) {
+    message_info("No changelog to include.")
+  }
+  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+    message_info("No code of conduct to include.")
+  }
 }
 
 
