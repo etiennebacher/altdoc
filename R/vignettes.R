@@ -126,7 +126,6 @@ vignettes_differ <- function(x, y) {
 get_vignettes_titles <- function() {
 
   if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
-    cli::cli_alert_info("No vignettes to transform.")
     return(invisible())
   }
 
