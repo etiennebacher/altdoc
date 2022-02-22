@@ -23,7 +23,7 @@ modify_yaml <- function(filename) {
   original_yaml <- yaml::read_yaml(tmp)
 
   if (length(original_yaml$output) == 1) {
-    if (grepl("html_", original_yaml$output))
+    if (grepl("html_", names(original_yaml$output)))
       original_yaml$output <- "github_document: default"
   } else if (length(original_yaml$output) > 1) { # if other outputs present (e.g pdf), keep them
     html_outputs <- names(original_yaml$output)
