@@ -17,7 +17,7 @@ modify_yaml <- function(filename) {
 
   # Save a tmp file (required by yaml::read_yaml)
   tmp <- tempfile()
-  writeLines(yaml, tmp)
+  writeLines(yaml, tmp, useBytes = TRUE)
 
   # Get yaml as a list, remove HTML outputs (but keep pdf if there are some)
   original_yaml <- yaml::read_yaml(tmp)
@@ -62,5 +62,5 @@ modify_yaml <- function(filename) {
   new_yaml <- c("---", new_yaml, "---\n")
 
   new_vignette <- c(new_yaml, new_vignette)
-  writeLines(new_vignette, filename)
+  writeLines(new_vignette, filename, useBytes = TRUE)
 }
