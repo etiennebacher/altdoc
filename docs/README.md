@@ -31,9 +31,10 @@ remotes::install_github("etiennebacher/altdoc")
 
 * preview the site in RStudio Viewer pane
 
-**What this package cannot do:** 
 
-* deal with vignettes. If you already have some, you will have to import them and transform them so that they create Markdown files instead of HTML.
+**Experimental feature (feedback needed):**
+
+* automatically import vignettes, render them to Markdown, and add them to the sidebar or navbar. More details in the section "Get started" on the website.
 
 
 ## Functions
