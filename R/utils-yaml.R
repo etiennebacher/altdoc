@@ -10,17 +10,16 @@ modify_yaml <- function(filename) {
   yaml <- x[yaml_limits[1]:yaml_limits[2]]
   new_vignette <- x[-c(yaml_limits[1]:yaml_limits[2])]
 
-  # Remove the vignette-specific lines
-  yaml <- yaml[!startsWith(yaml, "vignette: >")]
-  yaml <- yaml[!startsWith(yaml, "  %\\Vignette")]
-  yaml <- paste(yaml, collapse = "\n")
-
   # Save a tmp file (required by yaml::read_yaml)
   tmp <- tempfile()
   writeLines(yaml, tmp, useBytes = TRUE)
 
-  # Get yaml as a list, remove HTML outputs (but keep pdf if there are some)
+  # Get yaml as a list, remove vignette options, remove HTML outputs
+  # (but keep pdf if there are some)
   original_yaml <- yaml::read_yaml(tmp)
+  if (!is.null(original_yaml$vignette)) {
+    original_yaml$vignette <- NULL
+  }
 
   if (length(original_yaml$output) == 1) {
     # the condition below is not the same if the output has options (= is
