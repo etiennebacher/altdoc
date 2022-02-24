@@ -71,3 +71,36 @@ modify_yaml <- function(filename) {
   new_vignette <- c(new_yaml, new_vignette)
   writeLines(new_vignette, filename, useBytes = TRUE)
 }
+
+
+extract_import_bib <- function(filename) {
+
+  good_path <- doc_path()
+  articles_path <- paste0(good_path, "/articles")
+
+  # Extract yaml from Rmd
+  x <- readLines(filename, warn = FALSE)
+  yaml_limits <- grep("---", x)[c(1,2)]
+  yaml <- x[yaml_limits[1]:yaml_limits[2]]
+
+  # Save a tmp file (required by yaml::read_yaml)
+  tmp <- tempfile()
+  writeLines(yaml, tmp, useBytes = TRUE)
+
+  # Get yaml as a list, remove vignette options, remove HTML outputs
+  # (but keep pdf if there are some)
+  original_yaml <- yaml::read_yaml(tmp)
+  if (is.null(original_yaml$bibliography))
+    return(invisible())
+
+  bib <- original_yaml$bibliography
+
+  for (i in seq_along(bib)) {
+    fs::file_copy(
+      paste0("vignettes/", bib[i]),
+      paste0(articles_path, "/", bib[i]),
+      overwrite = TRUE
+    )
+  }
+
+}
