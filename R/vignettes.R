@@ -51,6 +51,7 @@ transform_vignettes <- function() {
     destination <- paste0(articles_path, "/", vignettes[j])
 
     modify_yaml(destination)
+    extract_import_bib(destination)
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
 
     suppressMessages(
@@ -80,6 +81,9 @@ transform_vignettes <- function() {
       new_vignette <- c(title, new_vignette)
       writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
     }
+
+    reformat_md(gsub("\\.Rmd", "\\.md", destination))
+
     cli::cli_progress_update()
   }
 
