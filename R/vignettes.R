@@ -59,7 +59,8 @@ transform_vignettes <- function() {
         destination,
         output_dir = articles_path,
         output_file = output_file,
-        quiet = TRUE
+        quiet = TRUE,
+        envir = new.env()
       )
     )
 
