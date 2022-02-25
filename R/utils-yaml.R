@@ -96,6 +96,11 @@ extract_import_bib <- function(filename) {
   bib <- original_yaml$bibliography
 
   for (i in seq_along(bib)) {
+    fs::dir_create(
+      dirname(
+        paste0(articles_path, "/", bib[i])
+      )
+    )
     fs::file_copy(
       paste0("vignettes/", bib[i]),
       paste0(articles_path, "/", bib[i]),
