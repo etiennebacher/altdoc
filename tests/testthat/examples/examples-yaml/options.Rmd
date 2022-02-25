@@ -1,0 +1,14 @@
+---
+title: "Analysing Longitudinal or Panel Data"
+author: Etienne Bacher
+date: 01-01-1970
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysing Longitudinal or Panel Data}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+bibliography: bibliography.bib
+---
+

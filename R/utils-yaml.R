@@ -73,6 +73,8 @@ modify_yaml <- function(filename) {
 }
 
 
+# Find bib files in vignettes, and copy them to docs/articles (+ potential
+# relative path)
 extract_import_bib <- function(filename) {
 
   good_path <- doc_path()

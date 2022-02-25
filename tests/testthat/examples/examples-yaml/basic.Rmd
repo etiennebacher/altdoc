@@ -1,0 +1,10 @@
+---
+title: "Analysing Longitudinal or Panel Data"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysing Longitudinal or Panel Data}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
