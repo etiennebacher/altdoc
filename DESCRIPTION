@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Use 'Docsify.js', 'Docute', or 'Mkdocs' to Generate a Package Documentation
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: 
     person(given = "Etienne",
            family = "Bacher",
@@ -26,7 +26,11 @@ Imports:
     utils,
     yesno,
     jsonlite,
-    yaml
+    yaml,
+    tinkr,
+    xml2
+Remotes:
+    ropensci/tinkr
 Suggests: 
     spelling,
     testthat (>= 3.0.0),

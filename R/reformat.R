@@ -60,50 +60,31 @@ reformat_md <- function(file) {
 
   stopifnot(!is.null(file), is.character(file))
 
-  y <- readLines(file, warn = FALSE)
+  md_doc <- tinkr::to_xml(file)
 
-  # Check if there are several h1 (need to exclude code first)
-  z <- y
-  delim <- which(grepl("```", z))
-  while (length(delim) > 0 && length(delim) %% 2 == 0) {
-    start <- delim[1]+1
-    end <- delim[2]-1
-    z[c(start:end)] <- ""
-    delim <- delim[-c(1, 2)]
+  headers <- md_doc$body
+  headers <- xml2::xml_find_all(headers,
+                                xpath = './/d1:heading',
+                                xml2::xml_ns(headers))
+
+  levels <- as.numeric(xml2::xml_attr(headers, "level"))
+
+  if (length(levels[levels == 1]) <= 1) return(invisible())
+
+  for (i in rev(unique(levels))) { # start by lowest level
+    to_change <- which(xml2::xml_attr(headers, "level") == i)
+    for (j in seq_along(to_change)) {
+      k <- to_change[j]
+      if (k == 1) next
+      xml2::xml_set_attr(headers[k], "level", i + 1)
+    }
   }
 
-  # If several h1, need to transform h1 in h2 (except title), and h2
-  # in h3
-  if (length(which(grepl("^# ", z) == TRUE)) > 1) {
-
-    y <- gsub("^## ", "### ", y)
-    y <- gsub("^# ", "## ", y)
-
-    # Remove # added earlier for package title
-    y <- gsub(paste("^##", pkg_name()), paste("#", pkg_name()), y)
-    if (file == "docs/README.md") {
-      y[1] <- gsub("^##", "#", y[1])
-    }
-
-    # Find code chunks, extract them, remove the # added earlier,
-    # and reinsert them
-    delim <- which(grepl("```", y))
-    while (length(delim) > 0 && length(delim) %% 2 == 0) {
-      start <- delim[1]+1
-      end <- delim[2]-1
-      code <- y[start:end]
-      code <- gsub("##", "#", code)
-      y[start:end] <- code
-      delim <- delim[-c(1, 2)]
-    }
+  tinkr::to_md(md_doc, path = file)
 
     if (file == "docs/README.md") {
       cli::cli_alert_info("{.file {file}} had to be slightly modified. Get more info with `?altdoc:::reformat_md`.")
     }
-
-  }
-
-  writeLines(y, file)
 
 }
 
