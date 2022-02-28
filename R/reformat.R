@@ -83,7 +83,7 @@ reformat_md <- function(file) {
   tinkr::to_md(md_doc, path = file)
 
     if (file == "docs/README.md") {
-      cli::cli_alert_info("{.file {file}} had to be slightly modified. Get more info with `?altdoc:::reformat_md`.")
+      cli::cli_alert_info("{.file {file}} had to be slightly modified. Get more info with {.code ?altdoc:::reformat_md}.")
     }
 
 }
@@ -93,12 +93,14 @@ reformat_md <- function(file) {
 move_img_readme <- function() {
 
   img_paths <- img_paths_readme()
+  if (is.null(img_paths)) return(invisible())
 
   good_path <- doc_path()
+  fs::dir_create(paste0(good_path, "/README_assets"))
   for (i in seq_along(img_paths)) {
     fs::file_copy(
       img_paths[i],
-      paste0(good_path, "/", trimws(basename(img_paths[i]))),
+      paste0(good_path, "/README_assets/", trimws(basename(img_paths[i]))),
       overwrite = T
     )
   }
@@ -122,7 +124,7 @@ replace_img_paths_readme <- function() {
 
   # replace the old paths by the new ones
   for (i in seq_along(img_paths)) {
-    file_content <- gsub(img_paths[i], new_paths[i], file_content)
+    file_content <- gsub(img_paths[i], paste0("README_assets/", new_paths[i]), file_content)
   }
 
   writeLines(file_content, paste0(good_path, "/README.md"))
@@ -172,6 +174,8 @@ img_paths_readme <- function() {
 
 }
 
+
+# Find figures path in vignettes, copy the figures to "articles/figures"
 replace_figures_rmd <- function() {
 
   ### First, extract paths of figures and copy figures to "articles/figures"
