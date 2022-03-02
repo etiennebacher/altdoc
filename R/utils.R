@@ -117,11 +117,10 @@ check_docs_exists <- function() {
 folder_is_empty <- function(x) {
 
   if (length(list.files(x)) == 0) {
-    is_empty <- TRUE
+    return(TRUE)
   } else {
-    is_empty <- FALSE
+    return(FALSE)
   }
-  return(is_empty)
 
 }
 
