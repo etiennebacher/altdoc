@@ -42,6 +42,7 @@ import_changelog <- function() {
   if (fs::file_exists("NEWS.md")) {
     fs::file_copy("NEWS.md", paste0(good_path, "/NEWS.md"))
     changelog <- readLines("NEWS.md", warn = FALSE)
+    changelog <- gsub("^### ", "#### ", changelog)
     changelog <- gsub("^## ", "### ", changelog)
     changelog <- gsub("^# ", "## ", changelog)
     writeLines(changelog, paste0(good_path, "/NEWS.md"))
