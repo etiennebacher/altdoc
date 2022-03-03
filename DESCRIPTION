@@ -32,7 +32,6 @@ Imports:
 Remotes:
     ropensci/tinkr
 Suggests: 
-    rmarkdown,
     spelling,
     testthat (>= 3.0.0),
     withr
