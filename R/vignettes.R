@@ -31,7 +31,9 @@ transform_vignettes <- function() {
     origin <- paste0("vignettes/", vignettes[i])
     destination <- paste0(articles_path, "/", vignettes[i])
     vignette_is_different[i] <- vignettes_differ(origin, destination)
-    fs::file_copy(origin, destination, overwrite = TRUE)
+    if (vignette_is_different[i]) {
+      fs::file_copy(origin, destination, overwrite = TRUE)
+    }
   }
   if (!any(vignette_is_different)) {
     cli::cli_alert_info("No new vignette to convert.")
