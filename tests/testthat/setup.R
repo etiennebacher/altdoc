@@ -2,7 +2,6 @@ library(fs)
 library(usethis)
 library(withr)
 
-
 ### Don't run mkdocs in other places than my laptop
 ### It requires installing pip3 and mkdocs, which is not possible on CRAN
 ### (to my knowledge)
