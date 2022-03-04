@@ -4,7 +4,6 @@
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
 <img src="https://img.shields.io/badge/license-MIT-blue">
-[![Website](https://img.shields.io/badge/Website-Visit-blue)](https://altdoc.etiennebacher.com/#/)
 
 </div>
 
