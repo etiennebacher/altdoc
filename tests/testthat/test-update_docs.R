@@ -103,3 +103,70 @@ test_that("mkdocs: update_docs shows message when NEWS didn't exist", {
   usethis::use_news_md()
   expect_message(update_docs())
 })
+
+test_that("docute: update_docs changes only readme, news or reference", {
+  # setup
+  original_rmd <- readLines(
+    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  use_docute()
+  fs::dir_create("vignettes")
+  writeLines(original_rmd, "vignettes/basic.Rmd")
+  transform_vignettes()
+
+  # test
+  index_before <- readLines("docs/index.html")
+  vignette_before <- readLines("docs/articles/basic.md")
+  update_docs()
+  index_after <- readLines("docs/index.html")
+  vignette_after <- readLines("docs/articles/basic.md")
+  expect_identical(index_before, index_after)
+  expect_identical(vignette_before, vignette_after)
+})
+
+test_that("docsify: update_docs changes only readme, news or reference", {
+  # setup
+  original_rmd <- readLines(
+    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  use_docsify()
+  fs::dir_create("vignettes")
+  writeLines(original_rmd, "vignettes/basic.Rmd")
+  transform_vignettes()
+
+  # test
+  index_before <- readLines("docs/index.html")
+  vignette_before <- readLines("docs/articles/basic.md")
+  update_docs()
+  index_after <- readLines("docs/index.html")
+  vignette_after <- readLines("docs/articles/basic.md")
+  expect_identical(index_before, index_after)
+  expect_identical(vignette_before, vignette_after)
+})
+
+test_that("mkdocs: update_docs changes only readme, news or reference", {
+  skip_mkdocs()
+  # setup
+  original_rmd <- readLines(
+    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  use_mkdocs()
+  fs::dir_create("vignettes")
+  writeLines(original_rmd, "vignettes/basic.Rmd")
+  transform_vignettes()
+
+  # test
+  index_before <- readLines("docs/index.html")
+  vignette_before <- readLines("docs/articles/basic.md")
+  update_docs()
+  index_after <- readLines("docs/index.html")
+  vignette_after <- readLines("docs/articles/basic.md")
+  expect_identical(index_before, index_after)
+  expect_identical(vignette_before, vignette_after)
+})
