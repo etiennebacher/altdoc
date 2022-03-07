@@ -4,7 +4,8 @@
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
 <img src="https://img.shields.io/badge/license-MIT-blue">
-
+<a href = "https://altdoc.etiennebacher.com/#/" target = "_blank"><img src="https://img.shields.io/static/v1?label=Website&message=Visit&color=blue"></a>
+  
 </div>
 
 The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [docute](https://docute.org/), [docsify](https://docsify.js.org/#/), and [mkdocs](https://www.mkdocs.org/). 
