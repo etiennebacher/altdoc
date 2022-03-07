@@ -4,7 +4,7 @@
 
 If you want to use `docsify` or `docute`, you can skip this and go directly to the next section.
 
-If you want to use `mkdocs-readthedocs` or `mkdocs-material`, you will first need to install `mkdocs`. To do that, you will need `python` and `pip`. If you have them, you can simply run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
+If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it. To do that, you will need `python` and `pip`. If you have them, you can run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). Some themes, such as `readthedocs`, are automatically installed with `mkdocs` but most are not. If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
 
 ## Initialize
 
