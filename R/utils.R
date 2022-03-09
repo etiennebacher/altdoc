@@ -96,7 +96,7 @@ final_steps <- function(x) {
 check_docs_exists <- function() {
 
   if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
-    delete_docs <- yesno::yesno(
+    delete_docs <- usethis::ui_yeah(
       "Folder 'docs' already exists. Do you want to delete it?"
     )
     if (delete_docs) {

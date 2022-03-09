@@ -24,7 +24,6 @@ Imports:
     tools,
     usethis,
     utils,
-    yesno,
     jsonlite,
     yaml,
     tinkr,
