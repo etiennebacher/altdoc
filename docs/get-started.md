@@ -35,7 +35,13 @@ This feature is not very robust. There are several reasons why automatically con
 
 ## Extend 
 
-To add some documentation, you can create Markdown files in the 'docs' folder. Adding them to the sidebar will require different actions, according to the documentation generator you use:
+There are two ways to add some documentation.
+
+The first one is to add new vignettes in the 'vignettes' folder. This will require to run `update_docs()` to add them in the website documentation (cf next section). 
+
+The second one is to create (R) Markdown files in the 'docs' folder. One drawback of this approach is that these files will not be accessible on the CRAN page of your package. Also, if you want to switch to another documentation generator later (such as `{pkgdown}`), you will need to convert these files to vignettes.
+
+Finally, if you manually create (R) Markdown files, or if you want to modify the organization of your website, you will need to modify the sidebar. This is done in different files, depending on the documentation generator you use:
 
 * with `docute`, everything is done in `index.html`. This is where you add sections, options, and other extensions documented [here](https://docute.org).
 
@@ -45,4 +51,15 @@ To add some documentation, you can create Markdown files in the 'docs' folder. A
 
 ## Update 
 
-Some files are likely to be modified quite frequently: the README, the NEWS and the `.Rd` files. To automatically update these files in 'docs', run `update_docs()`. Only those files will be modified. 
+Once you have initialized and extended your documentation, you can continue developing your package and call `update_docs()` when you need to update the documentation.
+
+More specifically, `update_docs()` will:
+
+* update the README, the NEWS and the "Reference" section if there were some changes;
+
+* import the License and the Code of Conduct if they were created after having initialized the docs;
+
+* convert new vignettes and update the modified ones.
+
+
+
