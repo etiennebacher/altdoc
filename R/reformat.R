@@ -82,10 +82,6 @@ reformat_md <- function(file) {
 
   tinkr::to_md(md_doc, path = file)
 
-    if (file == "docs/README.md") {
-      cli::cli_alert_info("{.file {file}} had to be slightly modified. Get more info with {.code ?altdoc:::reformat_md}.")
-    }
-
 }
 
 # Copy images/GIF that are in README in 'docs'

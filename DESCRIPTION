@@ -18,15 +18,15 @@ Imports:
     cli,
     fs,
     htmltools,
+    jsonlite,
     rmarkdown,
     rstudioapi,
     servr,
+    tinkr,
     tools,
     usethis,
     utils,
-    jsonlite,
     yaml,
-    tinkr,
     xml2
 Remotes:
     ropensci/tinkr

@@ -86,14 +86,16 @@ test_that("docsify: update_docs shows message when NEWS didn't exist", {
   create_local_package()
   use_docsify()
   usethis::use_news_md()
-  expect_message(update_docs())
+  expect_message(update_docs(),
+                 regexp = "'NEWS / Changelog' was imported for the first time.")
 })
 
 test_that("docute: update_docs shows message when NEWS didn't exist", {
   create_local_package()
   use_docute()
   usethis::use_news_md()
-  expect_message(update_docs())
+  expect_message(update_docs(),
+                 regexp = "'NEWS / Changelog' was imported for the first time.")
 })
 
 test_that("mkdocs: update_docs shows message when NEWS didn't exist", {
@@ -101,72 +103,92 @@ test_that("mkdocs: update_docs shows message when NEWS didn't exist", {
   create_local_package()
   use_mkdocs()
   usethis::use_news_md()
-  expect_message(update_docs())
+  expect_message(update_docs(),
+                 regexp = "'NEWS / Changelog' was imported for the first time.")
 })
 
-test_that("docute: update_docs changes only readme, news or reference", {
-  # setup
-  original_rmd <- readLines(
-    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
-    warn = FALSE
-  )
-  create_local_package()
-  use_docute()
-  fs::dir_create("vignettes")
-  writeLines(original_rmd, "vignettes/basic.Rmd")
-  transform_vignettes()
-
-  # test
-  index_before <- readLines("docs/index.html")
-  vignette_before <- readLines("docs/articles/basic.md")
-  update_docs()
-  index_after <- readLines("docs/index.html")
-  vignette_after <- readLines("docs/articles/basic.md")
-  expect_identical(index_before, index_after)
-  expect_identical(vignette_before, vignette_after)
-})
-
-test_that("docsify: update_docs changes only readme, news or reference", {
-  # setup
-  original_rmd <- readLines(
-    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
-    warn = FALSE
-  )
+test_that("docsify: update_docs shows message when NEWS doesn't exist", {
   create_local_package()
   use_docsify()
-  fs::dir_create("vignettes")
-  writeLines(original_rmd, "vignettes/basic.Rmd")
-  transform_vignettes()
-
-  # test
-  index_before <- readLines("docs/index.html")
-  vignette_before <- readLines("docs/articles/basic.md")
-  update_docs()
-  index_after <- readLines("docs/index.html")
-  vignette_after <- readLines("docs/articles/basic.md")
-  expect_identical(index_before, index_after)
-  expect_identical(vignette_before, vignette_after)
+  expect_message(update_docs(),
+                 regexp = "No 'NEWS / Changelog' to include.")
 })
 
-test_that("mkdocs: update_docs changes only readme, news or reference", {
+test_that("docute: update_docs shows message when NEWS doesn't exist", {
+  create_local_package()
+  use_docute()
+  expect_message(update_docs(),
+                 regexp = "No 'NEWS / Changelog' to include.")
+})
+
+test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
   skip_mkdocs()
+  create_local_package()
+  use_mkdocs()
+  expect_message(update_docs(),
+                 regexp = "No 'NEWS / Changelog' to include.")
+})
+
+test_that("docute: update_docs also transform new/modified vignettes", {
   # setup
-  original_rmd <- readLines(
-    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
+  first_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
+    warn = FALSE
+  )
+  second_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
     warn = FALSE
   )
   create_local_package()
-  use_mkdocs()
   fs::dir_create("vignettes")
-  writeLines(original_rmd, "vignettes/basic.Rmd")
-  transform_vignettes()
+  writeLines(first_rmd, "vignettes/basic.Rmd")
+  use_docute(convert_vignettes = TRUE)
+  writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
-  # test
-  index_before <- readLines("docs/index.html")
-  vignette_before <- readLines("docs/articles/basic.md")
+  expect_false(fs::file_exists("docs/articles/several-outputs.md"))
   update_docs()
-  index_after <- readLines("docs/index.html")
-  vignette_after <- readLines("docs/articles/basic.md")
-  expect_identical(index_before, index_after)
-  expect_identical(vignette_before, vignette_after)
+  expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+})
+
+test_that("docsify: update_docs also transform new/modified vignettes", {
+  # setup
+  first_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
+    warn = FALSE
+  )
+  second_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  fs::dir_create("vignettes")
+  writeLines(first_rmd, "vignettes/basic.Rmd")
+  use_docsify(convert_vignettes = TRUE)
+  writeLines(second_rmd, "vignettes/several-outputs.Rmd")
+
+  expect_false(fs::file_exists("docs/articles/several-outputs.md"))
+  update_docs()
+  expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+})
+
+test_that("mkdocs: update_docs also transform new/modified vignettes", {
+  skip_mkdocs()
+  # setup
+  first_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
+    warn = FALSE
+  )
+  second_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  fs::dir_create("vignettes")
+  writeLines(first_rmd, "vignettes/basic.Rmd")
+  use_mkdocs(convert_vignettes = TRUE)
+  writeLines(second_rmd, "vignettes/several-outputs.Rmd")
+
+  expect_false(fs::file_exists("docs/docs/articles/several-outputs.md"))
+  update_docs()
+  expect_true(fs::file_exists("docs/docs/articles/several-outputs.md"))
 })

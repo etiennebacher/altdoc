@@ -114,13 +114,13 @@ Reformat Markdown files
 
 To use Docute or Docsify, the format of Markdown files has to follow a
 precise structure. There must be at most one main section (starting with
-'\#') but there can be as many subsections and subsubsections as you
+'#') but there can be as many subsections and subsubsections as you
 want.
 
 If you saw a message saying that `README.md` was slightly modified, it
 is because the README didn't follow these rules. There were probably
 several main sections, which messed up Docute/Docsify documentation.
-Therefore, `altdoc` automatically added a '\#' to all sections and
+Therefore, `altdoc` automatically added a '#' to all sections and
 subsections, except the first one, which is usually the title of the
 package.
 
@@ -168,8 +168,9 @@ be modified.
 
 ### Description
 
-Update README, Changelog and Reference sections. This will leave every
-other files unmodified.
+Update README, Changelog, License, Code of Conduct, and Reference
+sections (if they exist). Convert and add new of modified vignettes to
+the documentation. This will leave every other files unmodified.
 
 ### Usage
 
