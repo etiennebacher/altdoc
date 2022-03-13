@@ -10,8 +10,9 @@ update_docs()
 No value returned. Updates files in folder 'docs'.
 }
 \description{
-Update README, Changelog and Reference sections. This will leave every
-other files unmodified.
+Update README, Changelog, License, Code of Conduct, and Reference sections (if
+they exist). Convert and add new of modified vignettes to the documentation.
+This will leave every other files unmodified.
 }
 \examples{
 \dontrun{
