@@ -7,3 +7,4 @@
 ^\.yarnrc$
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+\.gif$
