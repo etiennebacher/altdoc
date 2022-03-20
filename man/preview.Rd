@@ -7,7 +7,8 @@
 preview()
 }
 \value{
-No value returned. If RStudio is used, it shows a site preview in Viewer.
+No value returned. If RStudio is used, it shows a site preview in
+Viewer.
 }
 \description{
 Preview the documentation in a webpage or in viewer

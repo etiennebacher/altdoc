@@ -2,7 +2,8 @@
 #'
 #' @export
 #'
-#' @return No value returned. If RStudio is used, it shows a site preview in Viewer.
+#' @return No value returned. If RStudio is used, it shows a site preview in
+#' Viewer.
 #'
 #' @examples
 #'

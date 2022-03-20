@@ -21,7 +21,8 @@ is experimental.}
 section.}
 }
 \value{
-No value returned. Creates files in folder 'docs'.
+No value returned. Creates files in folder 'docs'. Other files and
+folders are not modified.
 }
 \description{
 Init Docute, Docsify, or Mkdocs

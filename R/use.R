@@ -6,7 +6,8 @@
 #'
 #' @export
 #'
-#' @return No value returned. Creates files in folder 'docs'.
+#' @return No value returned. Creates files in folder 'docs'. Other files and
+#' folders are not modified.
 #' @rdname init
 #'
 #' @examples
