@@ -97,10 +97,11 @@ check_docs_exists <- function() {
 
   if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
     delete_docs <- usethis::ui_yeah(
-      "Folder 'docs' already exists. Do you want to delete it?"
+      "Folder 'docs' already exists. Do you want to replace it?"
     )
     if (delete_docs) {
       fs::dir_delete("docs")
+      return(NULL)
     } else {
       cli::cli_alert_info("Nothing was modified.")
       return(1)
