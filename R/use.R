@@ -1,8 +1,10 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
-#' @param convert_vignettes Do you want to convert and import vignettes if you have
-#' some? This will not modify files in the folder 'vignettes'. This feature
-#' is experimental.
+#' @param convert_vignettes Automatically convert and import vignettes if you
+#' have some. This will not modify files in the folder 'vignettes'.
+#' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
+#' (default), there will be an interactive choice to make in the console to
+#' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
 #'
 #' @export
 #'
@@ -16,9 +18,9 @@
 #' use_docute()
 #' }
 
-use_docute <- function(convert_vignettes = FALSE) {
+use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
-  x <- check_docs_exists()
+  x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
 
   ### INDEX
@@ -85,9 +87,9 @@ use_docute <- function(convert_vignettes = FALSE) {
 #' }
 
 
-use_docsify <- function(convert_vignettes = FALSE) {
+use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
-  x <- check_docs_exists()
+  x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
 
   ### INDEX
@@ -179,9 +181,9 @@ use_docsify <- function(convert_vignettes = FALSE) {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE) {
 
-  x <- check_docs_exists()
+  x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
 
   # Create basic structure
