@@ -8,6 +8,14 @@ test_that("use_mkdocs creates the right files", {
   expect_true(fs::file_exists("docs/docs/reference.md"))
 })
 
+test_that("use_mkdocs: arg 'overwrite' works", {
+  create_local_package()
+  use_mkdocs()
+  fs::file_create("docs/test")
+  use_mkdocs(overwrite = TRUE)
+  expect_false(fs::file_exists("docs/test"))
+})
+
 test_that("argument theme works", {
   create_local_package()
   use_mkdocs(theme = "readthedocs")
