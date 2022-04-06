@@ -8,11 +8,11 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = FALSE)
+    use_docute(convert_vignettes = FALSE, overwrite = FALSE)
 
-    use_docsify(convert_vignettes = FALSE)
+    use_docsify(convert_vignettes = FALSE, overwrite = FALSE)
 
-    use_mkdocs(theme = NULL, convert_vignettes = FALSE)
+    use_mkdocs(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE)
 
 ### Arguments
 
@@ -23,6 +23,10 @@ Init Docute, Docsify, or Mkdocs
 <td><p>Do you want to convert and import vignettes if you have some? This will not modify files in the folder 'vignettes'. This feature is experimental.</p></td>
 </tr>
 <tr class="even" data-valign="top">
+<td><code>overwrite</code></td>
+<td><p>Overwrite the folder 'docs' if it already exists. If <code>FALSE</code> (default), there will be an interactive choice to make in the console to overwrite. If <code>TRUE</code>, the folder 'docs' is automatically overwritten.</p></td>
+</tr>
+<tr class="odd" data-valign="top">
 <td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details section.</p></td>
 </tr>
@@ -37,7 +41,8 @@ here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
 
 ### Value
 
-No value returned. Creates files in folder 'docs'.
+No value returned. Creates files in folder 'docs'. Other files and
+folders are not modified.
 
 ### Examples
 
@@ -114,13 +119,13 @@ Reformat Markdown files
 
 To use Docute or Docsify, the format of Markdown files has to follow a
 precise structure. There must be at most one main section (starting with
-'#') but there can be as many subsections and subsubsections as you
+'\#') but there can be as many subsections and subsubsections as you
 want.
 
 If you saw a message saying that `README.md` was slightly modified, it
 is because the README didn't follow these rules. There were probably
 several main sections, which messed up Docute/Docsify documentation.
-Therefore, `altdoc` automatically added a '#' to all sections and
+Therefore, `altdoc` automatically added a '\#' to all sections and
 subsections, except the first one, which is usually the title of the
 package.
 

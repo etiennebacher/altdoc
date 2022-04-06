@@ -25,6 +25,11 @@ transform_vignettes <- function() {
     fs::dir_create(articles_path)
   }
 
+  for (i in seq_along(vignettes)) {
+    x <- manage_child_vignettes(paste0("vignettes/", vignettes[i]))
+    if (x == "stop") return(invisible())
+  }
+
   ### Check which vignette is different
   vignette_is_different <- logical(length(vignettes))
   for (i in seq_along(vignettes)) {

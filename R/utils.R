@@ -218,3 +218,29 @@ doc_path <- function() {
     return("docs")
   }
 }
+
+
+# Check whether vignettes call child documents
+manage_child_vignettes <- function(file) {
+
+  x  <- tinkr::yarn$new(file)
+
+  children <- x$body
+  children <- xml2::xml_find_all(children, xpath = ".//md:code_block", x$ns)
+  children <- xml2::xml_attr(children, attr = "child")
+
+  children <- children[!is.na(children)]
+  children <- gsub("\"", "", children)
+
+  if(length(children) == 0) return(invisible())
+
+  if (any(grepl("\\.\\.", children))) {
+    cli::cli_alert_danger("Some vignettes call child elements in other folders. {.code altdoc} cannot deal with them.")
+    return("stop")
+  } else {
+    for (i in children) {
+      fs::file_copy(children, paste0("docs/articles/", children), overwrite = TRUE)
+    }
+  }
+
+}
