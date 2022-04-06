@@ -232,7 +232,7 @@ manage_child_vignettes <- function(file) {
   children <- children[!is.na(children)]
   children <- gsub("\"", "", children)
 
-  if(length(children) == 0) return(invisible())
+  if(length(children) == 0) return("continue")
 
   if (any(grepl("\\.\\.", children))) {
     cli::cli_alert_danger("Some vignettes call child elements in other folders. {.code altdoc} cannot deal with them.")
@@ -240,6 +240,7 @@ manage_child_vignettes <- function(file) {
   } else {
     for (i in children) {
       fs::file_copy(children, paste0("docs/articles/", children), overwrite = TRUE)
+      return("continue")
     }
   }
 

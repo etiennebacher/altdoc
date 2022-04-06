@@ -27,7 +27,7 @@ transform_vignettes <- function() {
 
   for (i in seq_along(vignettes)) {
     x <- manage_child_vignettes(paste0("vignettes/", vignettes[i]))
-    if (x == "stop") return(invisible())
+    if (!is.null(x) & x == "stop") return(invisible())
   }
 
   ### Check which vignette is different
