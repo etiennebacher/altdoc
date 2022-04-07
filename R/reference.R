@@ -1,8 +1,7 @@
 # @title Create 'Reference' tab
 #
 # @description
-# Convert .Rd to .md files, move them in 'docs/reference', and generate
-# the JSON to put in 'docs/index.html'
+# Convert and unite .Rd files to 'docs/reference.md'.
 
 make_reference <- function() {
 
