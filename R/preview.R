@@ -37,8 +37,10 @@ preview <- function() {
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
   } else {
-    cli::cli_alert_danger("This function only works in RStudio.")
+    if (fs::file_exists("docs/index.html")) {
+      utils::browseURL("docs/index.html")
+    } else if (fs::file_exists("docs/site/index.html")) {
+      utils::browseURL("docs/site/index.html")
+    }
   }
-
-
 }
