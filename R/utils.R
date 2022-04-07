@@ -127,65 +127,38 @@ folder_is_empty <- function(x) {
 # Get package name
 pkg_name <- function() {
 
-  pkgname <- NULL
-
-  if (file.exists("DESCRIPTION")) {
-    description <- readLines("DESCRIPTION", warn = FALSE)
-    line_with_name <- description[
-      which(startsWith(description, "Package:"))
-    ]
-    pkgname <- gsub("Package: ", "", line_with_name)
-  }
-
-  return(pkgname)
+  desc::desc_get_field("Package", default = NULL)
 
 }
 
 # Get package version
 pkg_version <- function() {
 
-  pkgversion <- NULL
-
-  if (file.exists("DESCRIPTION")) {
-    description <- readLines("DESCRIPTION", warn = FALSE)
-    line_with_name <- description[
-      which(startsWith(description, "Version:"))
-    ]
-    pkgversion <- gsub("Version: ", "", line_with_name)
-  }
-
-  return(pkgversion)
+  as.character(desc::desc_get_version())
 
 }
 
 # Get package Github URL
 gh_url <- function() {
 
-  description <- readLines("DESCRIPTION", warn = FALSE)
-  line_with_url <- description[
-    c(
-      which(startsWith(description, "URL:")),
-      which(startsWith(description, "BugReports:"))
-    )
-  ]
+  gh_urls <- c(
+    desc::desc_get_urls(),
+    desc::desc_get_field("BugReports", default = NULL)
+  )
 
-  check <- length(line_with_url)
-  if (check > 0) {
-    gh_urls <- gsub("URL: ", "", line_with_url)
-    gh_urls <- gsub("BugReports: ", "", gh_urls)
-    gh_urls <- unlist(strsplit(gh_urls, ","))
-    gh_url <- gh_urls[which(grepl("github.com", gh_urls))]
-    gh_url <- gsub("/issues", "", gh_url)
-    if (length(gh_url) == 0) {
-      gh_url <- gh_urls[which(grepl("github.io", gh_urls))]
-      gh_url <- gsub(".github.io", "", gh_url)
-      gh_url <- gsub("https://", "https://github.com/", gh_url)
-    }
-    gh_url <- gsub(" ", "", gh_url)
-    gh_url <- gsub("#.*", "", gh_url)
+  if (length(gh_urls) == 0) return(NULL)
 
-    return(unique(gh_url))
+  gh_url <- gh_urls[which(grepl("github.com", gh_urls))]
+  gh_url <- gsub("/issues", "", gh_url)
+  if (length(gh_url) == 0) {
+    gh_url <- gh_urls[which(grepl("github.io", gh_urls))]
+    gh_url <- gsub(".github.io", "", gh_url)
+    gh_url <- gsub("https://", "https://github.com/", gh_url)
   }
+  gh_url <- gsub(" ", "", gh_url)
+  gh_url <- gsub("#.*", "", gh_url)
+
+  return(unique(gh_url))
 
 }
 
