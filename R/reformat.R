@@ -1,6 +1,7 @@
 #' @title Reformat Markdown files
 #'
 #' @param file Markdown file to reformat
+#' @param first Should the first title also be reformatted? Default is `FALSE`.
 #'
 #' @details
 #'
@@ -56,7 +57,7 @@
 #' Also, if your README includes R comments in code chunks, these will not
 #' be modified.
 
-reformat_md <- function(file) {
+reformat_md <- function(file, first = FALSE) {
 
   stopifnot(!is.null(file), is.character(file))
 
@@ -75,7 +76,7 @@ reformat_md <- function(file) {
     to_change <- which(xml2::xml_attr(headers, "level") == i)
     for (j in seq_along(to_change)) {
       k <- to_change[j]
-      if (k == 1) next
+      if (k == 1 & isFALSE(first)) next
       xml2::xml_set_attr(headers[k], "level", i + 1)
     }
   }

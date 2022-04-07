@@ -102,7 +102,7 @@ Reformat Markdown files
 
 ### Usage
 
-    reformat_md(file)
+    reformat_md(file, first = FALSE)
 
 ### Arguments
 
@@ -111,6 +111,10 @@ Reformat Markdown files
 <tr class="odd" data-valign="top">
 <td><code>file</code></td>
 <td><p>Markdown file to reformat</p></td>
+</tr>
+<tr class="even" data-valign="top">
+<td><code>first</code></td>
+<td><p>Should the first title also be reformatted? Default is <code>FALSE</code>.</p></td>
 </tr>
 </tbody>
 </table>

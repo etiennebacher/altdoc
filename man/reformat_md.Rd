@@ -4,10 +4,12 @@
 \alias{reformat_md}
 \title{Reformat Markdown files}
 \usage{
-reformat_md(file)
+reformat_md(file, first = FALSE)
 }
 \arguments{
 \item{file}{Markdown file to reformat}
+
+\item{first}{Should the first title also be reformatted? Default is \code{FALSE}.}
 }
 \description{
 Reformat Markdown files
