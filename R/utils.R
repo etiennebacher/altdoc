@@ -96,7 +96,7 @@ check_docs_exists <- function(overwrite = FALSE) {
       return(NULL)
     } else {
       delete_docs <- usethis::ui_yeah(
-        "Folder 'docs' already exists. Do you want to replace it?"
+        "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
         fs::dir_delete("docs")
