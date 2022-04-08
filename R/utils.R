@@ -63,7 +63,7 @@ final_steps <- function(x) {
   good_path <- doc_path()
 
   cli::cli_h1("Docs structure")
-  cli::cli_alert_success(sprintf("%s initialized.", x))
+  cli::cli_alert_success("{x} initialized.")
   cli::cli_alert_success("Folder {.file {'docs'}} put in {.file {'.Rbuildignore'}}.")
   reformat_md(paste0(good_path, "/README.md"))
 
