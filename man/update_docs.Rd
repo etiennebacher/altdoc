@@ -4,7 +4,11 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs()
+update_docs(convert_vignettes = FALSE)
+}
+\arguments{
+\item{convert_vignettes}{Automatically convert and import vignettes if you
+have some. This will not modify files in the folder 'vignettes'.}
 }
 \value{
 No value returned. Updates files in folder 'docs'.

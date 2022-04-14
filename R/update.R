@@ -4,6 +4,9 @@
 #' they exist). Convert and add new of modified vignettes to the documentation.
 #' This will leave every other files unmodified.
 #'
+#' @param convert_vignettes Automatically convert and import vignettes if you
+#' have some. This will not modify files in the folder 'vignettes'.
+#'
 #' @export
 #'
 #' @return No value returned. Updates files in folder 'docs'.
@@ -13,7 +16,7 @@
 #' # Update documentation
 #' update_docs()
 #' }
-update_docs <- function() {
+update_docs <- function(convert_vignettes = FALSE) {
 
   good_path <- doc_path()
 
@@ -34,13 +37,17 @@ update_docs <- function() {
   make_reference()
   cli::cli_alert_success("Functions reference have been updated.")
 
-  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
-  cli::cli_alert_success("Documentation updated. See {.code ?altdoc::update_docs} to know what files are concerned.")
-
   # Update vignettes
-  cli::cli_h1("Update vignettes")
-  transform_vignettes()
-  add_vignettes()
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Update vignettes")
+    transform_vignettes()
+    add_vignettes()
+  }
+
+  cli::cli_h1("Complete")
+  cli::cli_alert_success("Documentation updated.")
+  cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
+  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
 
 }
 
