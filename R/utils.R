@@ -187,3 +187,10 @@ doc_path <- function() {
     return("docs")
   }
 }
+
+# https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R
+convert_path <- function (path = ".") {
+  if (path == ".") path <- here::here()
+  path <- normalizePath(path)
+  return(path)
+}
