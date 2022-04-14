@@ -103,36 +103,4 @@ update_file <- function(filename) {
   reformat_md(docs_file)
 }
 
-# Detect how licence files is called: "LICENSE" or "LICENCE"
-# If no license, return "license" for cli message in update_file()
-which_license <- function() {
 
-  x <- list.files(pattern = "\\.md$")
-  license <- x[which(grepl("license", x, ignore.case = TRUE))]
-  licence <- x[which(grepl("licence", x, ignore.case = TRUE))]
-  if (length(license) == 1) {
-    return(license)
-  } else if (length(licence) == 1) {
-    return(licence)
-  } else {
-    return("license")
-  }
-
-}
-
-# Detect how news files is called: "NEWS" or "CHANGELOG"
-# If no news, return "news" for cli message in update_file()
-which_news <- function() {
-
-  x <- list.files(pattern = "\\.md$")
-  news <- x[which(grepl("news", x, ignore.case = TRUE))]
-  changelog <- x[which(grepl("changelog", x, ignore.case = TRUE))]
-  if (length(news) == 1) {
-    return(news)
-  } else if (length(changelog) == 1) {
-    return(changelog)
-  } else {
-    return("news")
-  }
-
-}
