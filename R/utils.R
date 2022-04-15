@@ -22,12 +22,12 @@ is_mkdocs_material <- function() {
 }
 
 
-import_readme <- function(update = FALSE) {
+import_readme <- function() {
 
   good_path <- doc_path()
   if (fs::file_exists("README.md")) {
     fs::file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
-    cli::cli_alert_success("{.file README} {if (update) 'updated' else 'imported'}.")
+    cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
       system.file("docsify/README.md", package = "altdoc"),
@@ -36,11 +36,13 @@ import_readme <- function(update = FALSE) {
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
   reformat_md(paste0(good_path, "/README.md"))
+  move_img_readme()
+  replace_img_paths_readme()
 
 }
 
 
-import_news <- function(update = FALSE) {
+import_news <- function() {
 
   good_path <- doc_path()
   file <- which_news()
@@ -52,20 +54,18 @@ import_news <- function(update = FALSE) {
   if (fs::file_exists(file)) {
     fs::file_copy(file, paste0(good_path, "/NEWS.md"))
     reformat_md(paste0(good_path, "/", file), first = TRUE)
-    cli::cli_alert_success("{.file {file}} {if (update) 'updated' else 'imported'}.")
-  } else {
-    cli::cli_alert_info("No {.file {file}} to include.")
+    cli::cli_alert_success("{.file {file}} imported.")
   }
 
 }
 
 
-import_coc <- function(update = FALSE) {
+import_coc <- function() {
 
   good_path <- doc_path()
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
-    cli::cli_alert_success("{.file Code of Conduct} {if (update) 'updated' else 'imported'}.")
+    cli::cli_alert_success("{.file Code of Conduct} imported.")
   } else {
     cli::cli_alert_info("No {.file Code of Conduct} to include.")
   }
@@ -73,7 +73,7 @@ import_coc <- function(update = FALSE) {
 }
 
 
-import_license <- function(update = FALSE) {
+import_license <- function() {
 
   good_path <- doc_path()
   file <- which_license()
@@ -84,7 +84,7 @@ import_license <- function(update = FALSE) {
 
   if (fs::file_exists(file)) {
     fs::file_copy(file, paste0(good_path, "/LICENSE.md"))
-    cli::cli_alert_success("{.file {file}} {if (update) 'updated' else 'imported'}.")
+    cli::cli_alert_success("{.file {file}} imported.")
   }
 
 }
@@ -95,13 +95,9 @@ build_docs <- function() {
   cli::cli_alert_success("Folder {.file docs} created.")
 
   import_readme()
-  move_img_readme()
-  replace_img_paths_readme()
-
   import_news()
   import_coc()
   import_license()
-
   make_reference()
 }
 
