@@ -29,13 +29,12 @@ update_docs <- function(convert_vignettes = FALSE) {
   reformat_md(paste0(good_path, "/README.md"))
 
   # Update changelog, CoC, License
-  update_file(which_news())
+  update_file("NEWS.md")
   update_file("CODE_OF_CONDUCT.md")
-  update_file(which_license())
+  update_file("LICENSE.md")
 
   # Update functions reference
-  make_reference()
-  cli::cli_alert_success("Functions reference have been updated.")
+  make_reference(update = TRUE)
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {
@@ -61,22 +60,23 @@ update_docs <- function(convert_vignettes = FALSE) {
 
 update_file <- function(filename) {
 
-  filename_message <- if (grepl("NEWS|News|CHANGELOG|Changelog", filename, ignore.case = TRUE)) {
+  filename_message <- if (filename == "NEWS.md") {
     "NEWS / Changelog"
-  } else if (grepl("License|Licence", filename, ignore.case = TRUE)) {
+  } else if (filename == "LICENSE.md") {
     "License / Licence"
-  } else if (grepl("conduct", filename, ignore.case = TRUE)) {
+  } else if (filename == "CODE_OF_CONDUCT.md") {
     "Code of Conduct"
-  } else if (grepl("README", filename, ignore.case = TRUE)) {
+  } else if (filename == "README.md") {
     "README"
   }
 
-  if (!fs::file_exists(filename)) {
-    cli::cli_alert_info("No {.file {filename_message}} to include.")
-    return(invisible())
+  orig_file <- if (filename == "NEWS.md") {
+    which_news()
+  } else if (filename == "LICENSE.md") {
+    which_license()
+  } else {
+    filename
   }
-
-  orig_file <- filename
   docs_file <- paste0(doc_path(), "/", filename)
   file_to_edit <- if (doc_type() == "docute") {
     "docs/index.html"
@@ -84,6 +84,11 @@ update_file <- function(filename) {
     "docs/_sidebar.md"
   } else if (doc_type() == "mkdocs") {
     "docs/mkdocs.yml"
+  }
+
+  if (!fs::file_exists(orig_file)) {
+    cli::cli_alert_info("No {.file {filename_message}} to include.")
+    return(invisible())
   }
 
   if (fs::file_exists(docs_file)) {
@@ -102,5 +107,3 @@ update_file <- function(filename) {
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
   reformat_md(docs_file)
 }
-
-
