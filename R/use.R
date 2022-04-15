@@ -29,7 +29,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
     system.file("docute/index.html", package = "altdoc"),
     title = pkg_name(),
     footer = sprintf(
-      "<a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
+      "<a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
       gh_url(), pkg_name(), pkg_version(),
       utils::packageVersion("altdoc")
     ),
@@ -84,7 +84,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
     system.file("docsify/index.html", package = "altdoc"),
     title = pkg_name(),
     footer = sprintf(
-      "<hr/><a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
+      "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
       gh_url(), pkg_name(), pkg_version(),
       utils::packageVersion("altdoc")
     ),
