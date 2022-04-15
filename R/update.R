@@ -86,7 +86,7 @@ update_file <- function(filename) {
     "docs/mkdocs.yml"
   }
 
-  if (!fs::file_exists(orig_file)) {
+  if (is.null(orig_file) || !fs::file_exists(orig_file)) {
     cli::cli_alert_info("No {.file {filename_message}} to include.")
     return(invisible())
   }

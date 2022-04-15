@@ -21,7 +21,7 @@ test_that("transform_vignettes works on basic vignette", {
   use_docute()
   fs::dir_create("vignettes")
   writeLines(original_rmd, "vignettes/basic.Rmd")
-  expect_message(transform_vignettes(), regexp = "have been converted")
+  expect_message(transform_vignettes(), regexp = "has been converted")
   expect_true(fs::file_exists("docs/articles/basic.Rmd"))
   expect_true(fs::file_exists("docs/articles/basic.md"))
 })
