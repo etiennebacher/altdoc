@@ -183,7 +183,18 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs()
+    update_docs(convert_vignettes = FALSE)
+
+### Arguments
+
+<table data-summary="R argblock">
+<tbody>
+<tr class="odd" data-valign="top">
+<td><code>convert_vignettes</code></td>
+<td><p>Automatically convert and import vignettes if you have some. This will not modify files in the folder 'vignettes'.</p></td>
+</tr>
+</tbody>
+</table>
 
 ### Value
 

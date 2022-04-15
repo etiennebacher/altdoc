@@ -3,7 +3,7 @@
 # @description
 # Convert and unite .Rd files to 'docs/reference.md'.
 
-make_reference <- function() {
+make_reference <- function(update = FALSE) {
 
   good_path <- doc_path()
 
@@ -18,6 +18,8 @@ make_reference <- function() {
 
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
+
+  cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
 }
 
 

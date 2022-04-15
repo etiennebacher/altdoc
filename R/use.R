@@ -29,7 +29,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
     system.file("docute/index.html", package = "altdoc"),
     title = pkg_name(),
     footer = sprintf(
-      "<a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
+      "<a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
       gh_url(), pkg_name(), pkg_version(),
       utils::packageVersion("altdoc")
     ),
@@ -43,23 +43,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
   writeLines(index, "docs/index.html")
 
-  ### README
-  import_readme()
-  move_img_readme()
-  replace_img_paths_readme()
-
-  ### CHANGELOG
-  import_changelog()
-
-  ### CODE OF CONDUCT
-  import_coc()
-
-  ### REFERENCE
-  make_reference()
-
-
-  ### FINAL STEPS
-  final_steps(x = "Docute")
+  build_docs()
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
@@ -67,6 +51,8 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
     transform_vignettes()
     add_vignettes()
   }
+
+  final_steps(x = "docute")
 
   if (interactive()) {
     cli::cli_par()
@@ -98,7 +84,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
     system.file("docsify/index.html", package = "altdoc"),
     title = pkg_name(),
     footer = sprintf(
-      "<hr/><a href='%s'> <code> %s </code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. %s</a>",
+      "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
       gh_url(), pkg_name(), pkg_version(),
       utils::packageVersion("altdoc")
     ),
@@ -112,19 +98,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
   writeLines(index, "docs/index.html")
 
-  ### README
-  import_readme()
-  move_img_readme()
-  replace_img_paths_readme()
-
-  ### CHANGELOG
-  import_changelog()
-
-  ### CODE OF CONDUCT
-  import_coc()
-
-  ### REFERENCE
-  make_reference()
+  build_docs()
 
   ### SIDEBAR
   fs::file_copy(
@@ -135,6 +109,9 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   if (!fs::file_exists("docs/NEWS.md")) {
     sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
   }
+  if (!fs::file_exists("docs/LICENSE.md")) {
+    sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
+  }
   if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
     sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
   }
@@ -144,15 +121,14 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
 
 
-  ### FINAL STEPS
-  final_steps(x = "Docsify")
-
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
     transform_vignettes()
     add_vignettes()
   }
+
+  final_steps(x = "docsify")
 
   if (interactive()) {
     cli::cli_par()
@@ -248,33 +224,33 @@ plugins:
 
 ### Navigation tree
 nav:
-  - Home: README.md",
-if (fs::file_exists("NEWS.md") || fs::file_exists("Changelog.md")) {
-  paste0("\n  - Changelog: NEWS.md")
-},
-"
+  - Home: README.md
+  - Changelog: NEWS.md
   - Reference: reference.md
+  - Code of Conduct: CODE_OF_CONDUCT.md
+  - License: LICENSE.md
     "
   )
   cat(yaml, file = "docs/mkdocs.yml")
 
-  ### README
+  yaml <- readLines("docs/mkdocs.yml", warn = FALSE)
+  if (!fs::file_exists("docs/NEWS.md")) {
+    yaml <- yaml[-which(grepl("NEWS.md", yaml))]
+  }
+  if (!fs::file_exists("docs/LICENSE.md")) {
+    yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
+  }
+  if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+    yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
+  }
+  if (!fs::file_exists("docs/reference.md")) {
+    yaml <- yaml[-which(grepl("reference.md", yaml))]
+  }
+  cat(yaml, file = "docs/mkdocs.yml", sep = "\n")
+
+
   fs::file_delete("docs/docs/index.md")
-  import_readme()
-  move_img_readme()
-  replace_img_paths_readme()
-
-  ### CHANGELOG
-  import_changelog()
-
-  ### CODE OF CONDUCT
-  import_coc()
-
-  ### REFERENCE
-  make_reference()
-
-  ### FINAL STEPS
-  final_steps(x = "Mkdocs")
+  build_docs()
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
@@ -282,6 +258,8 @@ if (fs::file_exists("NEWS.md") || fs::file_exists("Changelog.md")) {
     transform_vignettes()
     add_vignettes()
   }
+
+  final_steps(x = "mkdocs")
 
   if (interactive()) {
     cli::cli_par()

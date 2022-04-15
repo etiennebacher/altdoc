@@ -50,7 +50,7 @@ transform_vignettes <- function() {
   # can't use message_info with {}
   cli::cli_alert_info("Found {length(to_convert)} vignette{?s} to convert.")
   i <- 0
-  cli::cli_progress_step("Converting vignettes: {i}/{n}", spinner = TRUE)
+  cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
 
   for (i in seq_along(to_convert)) {
     j <- to_convert[i] # do that for cli progress step
@@ -62,17 +62,19 @@ transform_vignettes <- function() {
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
 
     suppressMessages(
-      rmarkdown::render(
-        destination,
-        output_dir = articles_path,
-        output_file = output_file,
+      suppressWarnings(
+        rmarkdown::render(
+          destination,
+          output_dir = articles_path,
+          output_file = output_file,
 
-        # https://github.com/rstudio/rmarkdown/issues/2331
-        # https://github.com/r-lib/roxygen2/pull/1304
-        output_options = list(math_method = NULL),
+          # https://github.com/rstudio/rmarkdown/issues/2331
+          # https://github.com/r-lib/roxygen2/pull/1304
+          output_options = list(math_method = NULL),
 
-        quiet = TRUE,
-        envir = new.env()
+          quiet = TRUE,
+          envir = new.env()
+        )
       )
     )
 
@@ -101,7 +103,7 @@ transform_vignettes <- function() {
   }
 
   cli::cli_progress_done()
-  cli::cli_alert_success("Vignettes have been converted and put in {.file {articles_path}}.")
+  cli::cli_alert_success("{cli::qty(n)}Vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}.")
   cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 }
 
@@ -183,7 +185,7 @@ add_vignettes <- function() {
     original_index <- readLines("docs/index.html", warn = FALSE)
 
     if (any(grepl("title: \"Articles\"", original_index))) {
-      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to check it manually.")
+      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
       return(invisible())
     }
 

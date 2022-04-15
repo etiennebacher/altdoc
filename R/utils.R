@@ -27,50 +27,91 @@ import_readme <- function() {
   good_path <- doc_path()
   if (fs::file_exists("README.md")) {
     fs::file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
+    cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
       system.file("docsify/README.md", package = "altdoc"),
       paste0(good_path, "/README.md")
     )
+    cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
+  reformat_md(paste0(good_path, "/README.md"))
+  move_img_readme()
+  replace_img_paths_readme()
 
 }
 
-import_changelog <- function() {
+
+import_news <- function() {
 
   good_path <- doc_path()
-  if (fs::file_exists("NEWS.md")) {
-    fs::file_copy("NEWS.md", paste0(good_path, "/NEWS.md"))
-    reformat_md(paste0(good_path, "/NEWS.md"), first = TRUE)
+  file <- which_news()
+  if (is.null(file)) {
+    cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
+    return(invisible())
+  }
+
+  if (fs::file_exists(file)) {
+    fs::file_copy(file, paste0(good_path, "/NEWS.md"))
+    reformat_md(paste0(good_path, "/", file), first = TRUE)
+    cli::cli_alert_success("{.file {file}} imported.")
   }
 
 }
+
 
 import_coc <- function() {
 
   good_path <- doc_path()
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
+    cli::cli_alert_success("{.file Code of Conduct} imported.")
+  } else {
+    cli::cli_alert_info("No {.file Code of Conduct} to include.")
   }
 
+}
+
+
+import_license <- function() {
+
+  good_path <- doc_path()
+  file <- which_license()
+  if (is.null(file)) {
+    cli::cli_alert_info("No {.file License / Licence} to include.")
+    return(invisible())
+  }
+
+  if (fs::file_exists(file)) {
+    fs::file_copy(file, paste0(good_path, "/LICENSE.md"))
+    cli::cli_alert_success("{.file {file}} imported.")
+  }
+
+}
+
+build_docs <- function() {
+
+  cli::cli_h1("Docs structure")
+  cli::cli_alert_success("Folder {.file docs} created.")
+
+  import_readme()
+  import_news()
+  import_coc()
+  import_license()
+  make_reference()
 }
 
 # Last things to do in initialization
 
 final_steps <- function(x) {
 
-  usethis::use_build_ignore("docs")
-  good_path <- doc_path()
-
-  cli::cli_h1("Docs structure")
-  cli::cli_alert_success("{x} initialized.")
-  cli::cli_alert_success("Folder {.file {'docs'}} put in {.file {'.Rbuildignore'}}.")
-  reformat_md(paste0(good_path, "/README.md"))
-
-  if (x == "Docute") {
+  if (x == "docute") {
     index <- readLines("docs/index.html")
     if (!fs::file_exists("NEWS.md")) {
       index <- index[-which(grepl("/NEWS", index))]
+    }
+    if (!fs::file_exists("LICENSE.md")) {
+      index <- index[-which(grepl("/LICENSE", index))]
     }
     if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
@@ -78,12 +119,13 @@ final_steps <- function(x) {
     writeLines(index, "docs/index.html")
   }
 
-  if (!fs::file_exists("NEWS.md")) {
-    cli::cli_alert_info("No changelog to include.")
-  }
-  if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
-    cli::cli_alert_info("No code of conduct to include.")
-  }
+  suppressMessages({
+    usethis::use_build_ignore("docs")
+  })
+  cli::cli_h1("Complete")
+  cli::cli_alert_success("{tools::toTitleCase(x)} initialized.")
+  cli::cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")
+
 }
 
 
@@ -186,6 +228,40 @@ doc_path <- function() {
   } else if (doc_type %in% c("docsify", "docute")) {
     return("docs")
   }
+}
+
+# Detect how licence files is called: "LICENSE" or "LICENCE"
+# If no license, return "license" for cli message in update_file()
+which_license <- function() {
+
+  x <- list.files(pattern = "\\.md$")
+  license <- x[which(grepl("license", x, ignore.case = TRUE))]
+  licence <- x[which(grepl("licence", x, ignore.case = TRUE))]
+  if (length(license) == 1) {
+    return(license)
+  } else if (length(licence) == 1) {
+    return(licence)
+  } else {
+    return(NULL)
+  }
+
+}
+
+# Detect how news files is called: "NEWS" or "CHANGELOG"
+# If no news, return "news" for cli message in update_file()
+which_news <- function() {
+
+  x <- list.files(pattern = "\\.md$")
+  news <- x[which(grepl("news", x, ignore.case = TRUE))]
+  changelog <- x[which(grepl("changelog", x, ignore.case = TRUE))]
+  if (length(news) == 1) {
+    return(news)
+  } else if (length(changelog) == 1) {
+    return(changelog)
+  } else {
+    return(NULL)
+  }
+
 }
 
 # https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R

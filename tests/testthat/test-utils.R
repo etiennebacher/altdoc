@@ -47,7 +47,7 @@ test_that("import_* functions work", {
 
   usethis::use_news_md()
   expect_false(fs::file_exists("docs/NEWS.md"))
-  import_changelog()
+  import_news()
   expect_true(fs::file_exists("docs/NEWS.md"))
 
 })

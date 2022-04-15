@@ -129,7 +129,7 @@ test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
                  regexp = "No 'NEWS / Changelog' to include.")
 })
 
-test_that("docute: update_docs also transform new/modified vignettes", {
+test_that("docute: update_docs also transform new/modified vignettes if specified", {
   # setup
   first_rmd <- readLines(
     testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
@@ -146,11 +146,11 @@ test_that("docute: update_docs also transform new/modified vignettes", {
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/articles/several-outputs.md"))
-  update_docs()
+  update_docs(convert_vignettes = TRUE)
   expect_true(fs::file_exists("docs/articles/several-outputs.md"))
 })
 
-test_that("docsify: update_docs also transform new/modified vignettes", {
+test_that("docsify: update_docs also transform new/modified vignettes if specified", {
   # setup
   first_rmd <- readLines(
     testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
@@ -167,11 +167,11 @@ test_that("docsify: update_docs also transform new/modified vignettes", {
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/articles/several-outputs.md"))
-  update_docs()
+  update_docs(convert_vignettes = TRUE)
   expect_true(fs::file_exists("docs/articles/several-outputs.md"))
 })
 
-test_that("mkdocs: update_docs also transform new/modified vignettes", {
+test_that("mkdocs: update_docs also transform new/modified vignettes if specified", {
   skip_mkdocs()
   # setup
   first_rmd <- readLines(
@@ -189,7 +189,7 @@ test_that("mkdocs: update_docs also transform new/modified vignettes", {
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/docs/articles/several-outputs.md"))
-  update_docs()
+  update_docs(convert_vignettes = TRUE)
   expect_true(fs::file_exists("docs/docs/articles/several-outputs.md"))
 })
 

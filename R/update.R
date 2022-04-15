@@ -4,6 +4,9 @@
 #' they exist). Convert and add new of modified vignettes to the documentation.
 #' This will leave every other files unmodified.
 #'
+#' @param convert_vignettes Automatically convert and import vignettes if you
+#' have some. This will not modify files in the folder 'vignettes'.
+#'
 #' @export
 #'
 #' @return No value returned. Updates files in folder 'docs'.
@@ -13,7 +16,7 @@
 #' # Update documentation
 #' update_docs()
 #' }
-update_docs <- function() {
+update_docs <- function(convert_vignettes = FALSE) {
 
   good_path <- doc_path()
 
@@ -26,21 +29,24 @@ update_docs <- function() {
   reformat_md(paste0(good_path, "/README.md"))
 
   # Update changelog, CoC, License
-  update_file(which_news())
+  update_file("NEWS.md")
   update_file("CODE_OF_CONDUCT.md")
-  update_file(which_license())
+  update_file("LICENSE.md")
 
   # Update functions reference
-  make_reference()
-  cli::cli_alert_success("Functions reference have been updated.")
-
-  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
-  cli::cli_alert_success("Documentation updated. See {.code ?altdoc::update_docs} to know what files are concerned.")
+  make_reference(update = TRUE)
 
   # Update vignettes
-  cli::cli_h1("Update vignettes")
-  transform_vignettes()
-  add_vignettes()
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Update vignettes")
+    transform_vignettes()
+    add_vignettes()
+  }
+
+  cli::cli_h1("Complete")
+  cli::cli_alert_success("Documentation updated.")
+  cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
+  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
 
 }
 
@@ -54,22 +60,23 @@ update_docs <- function() {
 
 update_file <- function(filename) {
 
-  filename_message <- if (grepl("NEWS|News|CHANGELOG|Changelog", filename, ignore.case = TRUE)) {
+  filename_message <- if (filename == "NEWS.md") {
     "NEWS / Changelog"
-  } else if (grepl("License|Licence", filename, ignore.case = TRUE)) {
+  } else if (filename == "LICENSE.md") {
     "License / Licence"
-  } else if (grepl("conduct", filename, ignore.case = TRUE)) {
+  } else if (filename == "CODE_OF_CONDUCT.md") {
     "Code of Conduct"
-  } else if (grepl("README", filename, ignore.case = TRUE)) {
+  } else if (filename == "README.md") {
     "README"
   }
 
-  if (!fs::file_exists(filename)) {
-    cli::cli_alert_info("No {.file {filename_message}} to include.")
-    return(invisible())
+  orig_file <- if (filename == "NEWS.md") {
+    which_news()
+  } else if (filename == "LICENSE.md") {
+    which_license()
+  } else {
+    filename
   }
-
-  orig_file <- filename
   docs_file <- paste0(doc_path(), "/", filename)
   file_to_edit <- if (doc_type() == "docute") {
     "docs/index.html"
@@ -77,6 +84,11 @@ update_file <- function(filename) {
     "docs/_sidebar.md"
   } else if (doc_type() == "mkdocs") {
     "docs/mkdocs.yml"
+  }
+
+  if (is.null(orig_file) || !fs::file_exists(orig_file)) {
+    cli::cli_alert_info("No {.file {filename_message}} to include.")
+    return(invisible())
   }
 
   if (fs::file_exists(docs_file)) {
@@ -94,38 +106,4 @@ update_file <- function(filename) {
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
   reformat_md(docs_file)
-}
-
-# Detect how licence files is called: "LICENSE" or "LICENCE"
-# If no license, return "license" for cli message in update_file()
-which_license <- function() {
-
-  x <- list.files(pattern = "\\.md$")
-  license <- x[which(grepl("license", x, ignore.case = TRUE))]
-  licence <- x[which(grepl("licence", x, ignore.case = TRUE))]
-  if (length(license) == 1) {
-    return(license)
-  } else if (length(licence) == 1) {
-    return(licence)
-  } else {
-    return("license")
-  }
-
-}
-
-# Detect how news files is called: "NEWS" or "CHANGELOG"
-# If no news, return "news" for cli message in update_file()
-which_news <- function() {
-
-  x <- list.files(pattern = "\\.md$")
-  news <- x[which(grepl("news", x, ignore.case = TRUE))]
-  changelog <- x[which(grepl("changelog", x, ignore.case = TRUE))]
-  if (length(news) == 1) {
-    return(news)
-  } else if (length(changelog) == 1) {
-    return(changelog)
-  } else {
-    return("news")
-  }
-
 }
