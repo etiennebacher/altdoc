@@ -1,5 +1,6 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
+#' @param path Path to local R package with documentation to be converted.
 #' @param convert_vignettes Automatically convert and import vignettes if you
 #' have some. This will not modify files in the folder 'vignettes'.
 #' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
@@ -18,7 +19,8 @@
 #' use_docute()
 #' }
 
-use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
+use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
+                       path = here::here()) {
 
   x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
@@ -73,7 +75,8 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 #' }
 
 
-use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
+use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
+                        path = here::here()) {
 
   x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
@@ -157,7 +160,8 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE,
+                       path = here::here()) {
 
   x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
