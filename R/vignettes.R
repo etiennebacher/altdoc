@@ -12,7 +12,7 @@
 transform_vignettes <- function() {
 
   if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
-    cli::cli_alert_info("No vignettes to convert")
+    cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
@@ -22,7 +22,7 @@ transform_vignettes <- function() {
   vignettes <- list.files("vignettes", pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
-    fs::dir_create(articles_path)
+    dir_create(articles_path)
   }
 
   for (i in seq_along(vignettes)) {
@@ -37,20 +37,20 @@ transform_vignettes <- function() {
     destination <- paste0(articles_path, "/", vignettes[i])
     vignette_is_different[i] <- vignettes_differ(origin, destination)
     if (vignette_is_different[i]) {
-      fs::file_copy(origin, destination, overwrite = TRUE)
+      file_copy(origin, destination, overwrite = TRUE)
     }
   }
   if (!any(vignette_is_different)) {
-    cli::cli_alert_info("No new vignette to convert.")
+    cli_alert_info("No new vignette to convert.")
     return(invisible())
   }
 
   to_convert <- which(vignette_is_different)
   n <- length(to_convert)
   # can't use message_info with {}
-  cli::cli_alert_info("Found {length(to_convert)} vignette{?s} to convert.")
+  cli_alert_info("Found {length(to_convert)} vignette{?s} to convert.")
   i <- 0
-  cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+  cli_progress_step("Converting {qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
 
   for (i in seq_along(to_convert)) {
     j <- to_convert[i] # do that for cli progress step
@@ -99,12 +99,12 @@ transform_vignettes <- function() {
 
     reformat_md(gsub("\\.Rmd", "\\.md", destination))
 
-    cli::cli_progress_update()
+    cli_progress_update()
   }
 
-  cli::cli_progress_done()
-  cli::cli_alert_success("{cli::qty(n)}Vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}.")
-  cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
+  cli_progress_done()
+  cli_alert_success("{qty(n)}Vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}.")
+  cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 }
 
 
@@ -185,7 +185,7 @@ add_vignettes <- function() {
     original_index <- readLines("docs/index.html", warn = FALSE)
 
     if (any(grepl("title: \"Articles\"", original_index))) {
-      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
+      cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
       return(invisible())
     }
 
@@ -310,7 +310,7 @@ manage_child_vignettes <- function(file) {
     return("stop")
   } else {
     for (i in children) {
-      fs::file_copy(children, paste0("docs/articles/", children), overwrite = TRUE)
+      file_copy(children, paste0("docs/articles/", children), overwrite = TRUE)
       return("continue")
     }
   }

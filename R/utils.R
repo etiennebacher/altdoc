@@ -1,3 +1,7 @@
+#' @import cli
+#' @import fs
+NULL
+
 # Is pip3 installed?
 is_pip3 <- function() {
   x <- try(system2("pip3", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
@@ -13,8 +17,8 @@ is_mkdocs <- function() {
 # Is mkdocs material installed?
 is_mkdocs_material <- function() {
   if (!is_pip3()) {
-    cli::cli_alert_danger("Apparently, {.code pip3} is not installed on your system.")
-    cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
+    cli_alert_danger("Apparently, {.code pip3} is not installed on your system.")
+    cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
     return(invisible())
   }
   x <- system("pip3 list --local | grep  mkdocs-material", intern = TRUE)
@@ -25,15 +29,15 @@ is_mkdocs_material <- function() {
 import_readme <- function() {
 
   good_path <- doc_path()
-  if (fs::file_exists("README.md")) {
-    fs::file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
-    cli::cli_alert_success("{.file README} imported.")
+  if (file_exists("README.md")) {
+    file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
+    cli_alert_success("{.file README} imported.")
   } else {
-    fs::file_copy(
+    file_copy(
       system.file("docsify/README.md", package = "altdoc"),
       paste0(good_path, "/README.md")
     )
-    cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
+    cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
   reformat_md(paste0(good_path, "/README.md"))
   move_img_readme()
@@ -47,14 +51,14 @@ import_news <- function() {
   good_path <- doc_path()
   file <- which_news()
   if (is.null(file)) {
-    cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
+    cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }
 
-  if (fs::file_exists(file)) {
-    fs::file_copy(file, paste0(good_path, "/NEWS.md"))
+  if (file_exists(file)) {
+    file_copy(file, paste0(good_path, "/NEWS.md"))
     reformat_md(paste0(good_path, "/", file), first = TRUE)
-    cli::cli_alert_success("{.file {file}} imported.")
+    cli_alert_success("{.file {file}} imported.")
   }
 
 }
@@ -63,11 +67,11 @@ import_news <- function() {
 import_coc <- function() {
 
   good_path <- doc_path()
-  if (fs::file_exists("CODE_OF_CONDUCT.md")) {
-    fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
-    cli::cli_alert_success("{.file Code of Conduct} imported.")
+  if (file_exists("CODE_OF_CONDUCT.md")) {
+    file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
+    cli_alert_success("{.file Code of Conduct} imported.")
   } else {
-    cli::cli_alert_info("No {.file Code of Conduct} to include.")
+    cli_alert_info("No {.file Code of Conduct} to include.")
   }
 
 }
@@ -78,21 +82,21 @@ import_license <- function() {
   good_path <- doc_path()
   file <- which_license()
   if (is.null(file)) {
-    cli::cli_alert_info("No {.file License / Licence} to include.")
+    cli_alert_info("No {.file License / Licence} to include.")
     return(invisible())
   }
 
-  if (fs::file_exists(file)) {
-    fs::file_copy(file, paste0(good_path, "/LICENSE.md"))
-    cli::cli_alert_success("{.file {file}} imported.")
+  if (file_exists(file)) {
+    file_copy(file, paste0(good_path, "/LICENSE.md"))
+    cli_alert_success("{.file {file}} imported.")
   }
 
 }
 
 build_docs <- function() {
 
-  cli::cli_h1("Docs structure")
-  cli::cli_alert_success("Folder {.file docs} created.")
+  cli_h1("Docs structure")
+  cli_alert_success("Folder {.file docs} created.")
 
   import_readme()
   import_news()
@@ -107,13 +111,13 @@ final_steps <- function(x) {
 
   if (x == "docute") {
     index <- readLines("docs/index.html")
-    if (!fs::file_exists("NEWS.md")) {
+    if (!file_exists("NEWS.md")) {
       index <- index[-which(grepl("/NEWS", index))]
     }
-    if (!fs::file_exists("LICENSE.md")) {
+    if (!file_exists("LICENSE.md")) {
       index <- index[-which(grepl("/LICENSE", index))]
     }
-    if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+    if (!file_exists("CODE_OF_CONDUCT.md")) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
     }
     writeLines(index, "docs/index.html")
@@ -122,9 +126,9 @@ final_steps <- function(x) {
   suppressMessages({
     usethis::use_build_ignore("docs")
   })
-  cli::cli_h1("Complete")
-  cli::cli_alert_success("{tools::toTitleCase(x)} initialized.")
-  cli::cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")
+  cli_h1("Complete")
+  cli_alert_success("{tools::toTitleCase(x)} initialized.")
+  cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")
 
 }
 
@@ -132,19 +136,19 @@ final_steps <- function(x) {
 # Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function(overwrite = FALSE) {
-  if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
+  if (dir_exists("docs") && !folder_is_empty("docs")) {
     if (isTRUE(overwrite)) {
-      fs::dir_delete("docs")
+      dir_delete("docs")
       return(NULL)
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        fs::dir_delete("docs")
+        dir_delete("docs")
         return(NULL)
       } else {
-        cli::cli_alert_info("Nothing was modified.")
+        cli_alert_info("Nothing was modified.")
         return(1)
       }
     }
@@ -208,11 +212,11 @@ gh_url <- function() {
 # Get the tool that was used
 doc_type <- function() {
 
-  if (!fs::dir_exists("docs")) return(NULL)
+  if (!dir_exists("docs")) return(NULL)
 
-  if (fs::file_exists("docs/mkdocs.yml")) return("mkdocs")
+  if (file_exists("docs/mkdocs.yml")) return("mkdocs")
 
-  if (fs::file_exists("docs/index.html")) {
+  if (file_exists("docs/index.html")) {
     file <- paste(readLines("docs/index.html", warn = FALSE), collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")

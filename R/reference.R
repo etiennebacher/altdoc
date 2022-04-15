@@ -7,7 +7,7 @@ make_reference <- function(update = FALSE) {
 
   good_path <- doc_path()
 
-  if (fs::file_exists(paste0(good_path, "/reference.md"))) fs::file_delete(paste0(good_path, "/reference.md"))
+  if (file_exists(paste0(good_path, "/reference.md"))) file_delete(paste0(good_path, "/reference.md"))
 
   files <- list.files("man", full.names = TRUE)
   files <- files[grepl("\\.Rd", files)]
@@ -16,10 +16,10 @@ make_reference <- function(update = FALSE) {
     rd2md(x)
   })
 
-  fs::file_create(paste0(good_path, "/reference.md"))
+  file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
 
-  cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
+  cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
 }
 
 

@@ -20,7 +20,7 @@ update_docs <- function(convert_vignettes = FALSE) {
 
   good_path <- doc_path()
 
-  cli::cli_h1("Update basic files")
+  cli_h1("Update basic files")
 
   # Update README
   update_file("README.md")
@@ -38,15 +38,15 @@ update_docs <- function(convert_vignettes = FALSE) {
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Update vignettes")
+    cli_h1("Update vignettes")
     transform_vignettes()
     add_vignettes()
   }
 
-  cli::cli_h1("Complete")
-  cli::cli_alert_success("Documentation updated.")
-  cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
-  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
+  cli_h1("Complete")
+  cli_alert_success("Documentation updated.")
+  cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
+  cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::reformat_md}.")
 
 }
 
@@ -86,24 +86,24 @@ update_file <- function(filename) {
     "docs/mkdocs.yml"
   }
 
-  if (is.null(orig_file) || !fs::file_exists(orig_file)) {
-    cli::cli_alert_info("No {.file {filename_message}} to include.")
+  if (is.null(orig_file) || !file_exists(orig_file)) {
+    cli_alert_info("No {.file {filename_message}} to include.")
     return(invisible())
   }
 
-  if (fs::file_exists(docs_file)) {
+  if (file_exists(docs_file)) {
     x <- readLines(orig_file, warn = FALSE)
     y <- readLines(docs_file, warn = FALSE)
     if (identical(x, y)) {
-      cli::cli_alert_info("No changes in {.file {filename_message}}.")
+      cli_alert_info("No changes in {.file {filename_message}}.")
       return(invisible())
     } else {
-      cli::cli_alert_success("{.file {filename_message}} updated.")
+      cli_alert_success("{.file {filename_message}} updated.")
     }
   } else {
-    cli::cli_alert_info("{.file {filename_message}} was imported for the first time. You should also update {.file {file_to_edit}}.")
+    cli_alert_info("{.file {filename_message}} was imported for the first time. You should also update {.file {file_to_edit}}.")
   }
 
-  fs::file_copy(orig_file, docs_file, overwrite = TRUE)
+  file_copy(orig_file, docs_file, overwrite = TRUE)
   reformat_md(docs_file)
 }

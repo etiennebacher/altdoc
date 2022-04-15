@@ -24,7 +24,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   if (!is.null(x)) return(invisible())
 
   ### INDEX
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
+  if (!dir_exists("docs")) dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docute/index.html", package = "altdoc"),
     title = pkg_name(),
@@ -47,7 +47,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
+    cli_h1("Vignettes")
     transform_vignettes()
     add_vignettes()
   }
@@ -55,9 +55,9 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   final_steps(x = "docute")
 
   if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
+    cli_par()
+    cli_end()
+    cli_alert("Running preview...")
     preview()
   }
 }
@@ -79,7 +79,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   if (!is.null(x)) return(invisible())
 
   ### INDEX
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
+  if (!dir_exists("docs")) dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docsify/index.html", package = "altdoc"),
     title = pkg_name(),
@@ -101,21 +101,21 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   build_docs()
 
   ### SIDEBAR
-  fs::file_copy(
+  file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
     "docs/_sidebar.md"
   )
   sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
-  if (!fs::file_exists("docs/NEWS.md")) {
+  if (!file_exists("docs/NEWS.md")) {
     sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
   }
-  if (!fs::file_exists("docs/LICENSE.md")) {
+  if (!file_exists("docs/LICENSE.md")) {
     sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
   }
-  if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+  if (!file_exists("docs/CODE_OF_CONDUCT.md")) {
     sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
   }
-  if (!fs::file_exists("docs/reference.md")) {
+  if (!file_exists("docs/reference.md")) {
     sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
   }
   cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
@@ -123,7 +123,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
+    cli_h1("Vignettes")
     transform_vignettes()
     add_vignettes()
   }
@@ -131,9 +131,9 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   final_steps(x = "docsify")
 
   if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
+    cli_par()
+    cli_end()
+    cli_alert("Running preview...")
     preview()
   }
 }
@@ -164,16 +164,16 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALS
 
   # Create basic structure
   if (!is_mkdocs()) {
-    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
-    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
-    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
+    cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
+    cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
+    cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
     return(invisible())
   }
 
   if (!is.null(theme) && theme == "material") {
     if (!is_mkdocs_material()) {
-      cli::cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
-      cli::cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
+      cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
+      cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
       return(invisible())
     }
   }
@@ -234,27 +234,27 @@ nav:
   cat(yaml, file = "docs/mkdocs.yml")
 
   yaml <- readLines("docs/mkdocs.yml", warn = FALSE)
-  if (!fs::file_exists("docs/NEWS.md")) {
+  if (!file_exists("docs/NEWS.md")) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }
-  if (!fs::file_exists("docs/LICENSE.md")) {
+  if (!file_exists("docs/LICENSE.md")) {
     yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
   }
-  if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+  if (!file_exists("docs/CODE_OF_CONDUCT.md")) {
     yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
   }
-  if (!fs::file_exists("docs/reference.md")) {
+  if (!file_exists("docs/reference.md")) {
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
   cat(yaml, file = "docs/mkdocs.yml", sep = "\n")
 
 
-  fs::file_delete("docs/docs/index.md")
+  file_delete("docs/docs/index.md")
   build_docs()
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
+    cli_h1("Vignettes")
     transform_vignettes()
     add_vignettes()
   }
@@ -262,9 +262,9 @@ nav:
   final_steps(x = "mkdocs")
 
   if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
+    cli_par()
+    cli_end()
+    cli_alert("Running preview...")
     preview()
   }
 }

@@ -140,14 +140,14 @@ test_that("docute: update_docs also transform new/modified vignettes if specifie
     warn = FALSE
   )
   create_local_package()
-  fs::dir_create("vignettes")
+  dir_create("vignettes")
   writeLines(first_rmd, "vignettes/basic.Rmd")
   use_docute(convert_vignettes = TRUE)
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
-  expect_false(fs::file_exists("docs/articles/several-outputs.md"))
+  expect_false(file_exists("docs/articles/several-outputs.md"))
   update_docs(convert_vignettes = TRUE)
-  expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+  expect_true(file_exists("docs/articles/several-outputs.md"))
 })
 
 test_that("docsify: update_docs also transform new/modified vignettes if specified", {
@@ -161,14 +161,14 @@ test_that("docsify: update_docs also transform new/modified vignettes if specifi
     warn = FALSE
   )
   create_local_package()
-  fs::dir_create("vignettes")
+  dir_create("vignettes")
   writeLines(first_rmd, "vignettes/basic.Rmd")
   use_docsify(convert_vignettes = TRUE)
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
-  expect_false(fs::file_exists("docs/articles/several-outputs.md"))
+  expect_false(file_exists("docs/articles/several-outputs.md"))
   update_docs(convert_vignettes = TRUE)
-  expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+  expect_true(file_exists("docs/articles/several-outputs.md"))
 })
 
 test_that("mkdocs: update_docs also transform new/modified vignettes if specified", {
@@ -183,13 +183,13 @@ test_that("mkdocs: update_docs also transform new/modified vignettes if specifie
     warn = FALSE
   )
   create_local_package()
-  fs::dir_create("vignettes")
+  dir_create("vignettes")
   writeLines(first_rmd, "vignettes/basic.Rmd")
   use_mkdocs(convert_vignettes = TRUE)
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
-  expect_false(fs::file_exists("docs/docs/articles/several-outputs.md"))
+  expect_false(file_exists("docs/docs/articles/several-outputs.md"))
   update_docs(convert_vignettes = TRUE)
-  expect_true(fs::file_exists("docs/docs/articles/several-outputs.md"))
+  expect_true(file_exists("docs/docs/articles/several-outputs.md"))
 })
 

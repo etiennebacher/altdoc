@@ -15,9 +15,9 @@
 preview <- function() {
 
   if (rstudioapi::isAvailable()) {
-    if (fs::file_exists("docs/index.html")) {
+    if (file_exists("docs/index.html")) {
       servr::httw("docs/")
-    } else if (fs::file_exists("docs/site/index.html")) {
+    } else if (file_exists("docs/site/index.html")) {
       # first build
       # parenthesis in bash script keep "cd docs" only temporary
       system("(cd docs && mkdocs build -q)")
@@ -34,12 +34,12 @@ preview <- function() {
         }
       )
     } else {
-      cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
+      cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
   } else {
-    if (fs::file_exists("docs/index.html")) {
+    if (file_exists("docs/index.html")) {
       utils::browseURL("docs/index.html")
-    } else if (fs::file_exists("docs/site/index.html")) {
+    } else if (file_exists("docs/site/index.html")) {
       utils::browseURL("docs/site/index.html")
     }
   }

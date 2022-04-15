@@ -54,7 +54,7 @@ create_local_thing <- function(
 ) {
 
   thing <- match.arg(thing)
-  if (fs::dir_exists(dir)) {
+  if (dir_exists(dir)) {
     ui_stop("Target {ui_code('dir')} {.file {dir}} already exists.")
   }
 
@@ -63,7 +63,7 @@ create_local_thing <- function(
 
   defer(
     {
-      fs::dir_delete(dir)
+      dir_delete(dir)
     },
     envir = env
   )

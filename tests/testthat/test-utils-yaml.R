@@ -2,7 +2,7 @@ test_that("modify_yaml works on basic yaml", {
 
   # don't directly modify the example
   tmp <- tempfile()
-  fs::file_copy(
+  file_copy(
     testthat::test_path("examples/examples-yaml", "basic.Rmd"),
     tmp
   )
@@ -21,7 +21,7 @@ test_that("modify_yaml works with other options", {
 
   # don't directly modify the example
   tmp <- tempfile()
-  fs::file_copy(
+  file_copy(
     testthat::test_path("examples/examples-yaml", "options.Rmd"),
     tmp
   )
@@ -45,7 +45,7 @@ test_that("modify_yaml only removes html output and keep other formats options",
 
   # don't directly modify the example
   tmp <- tempfile()
-  fs::file_copy(
+  file_copy(
     testthat::test_path("examples/examples-yaml", "several-outputs.Rmd"),
     tmp
   )
@@ -68,14 +68,14 @@ test_that("extract_import_bib works", {
   use_docute()
 
   # create vignette and bib file
-  fs::dir_create("vignettes")
+  dir_create("vignettes")
   writeLines(original_rmd, "vignettes/options.Rmd")
-  fs::file_create("vignettes/bibliography.bib")
+  file_create("vignettes/bibliography.bib")
   writeLines("hello this is the biblio", "vignettes/bibliography.bib")
-  fs::dir_create("docs/articles")
+  dir_create("docs/articles")
   extract_import_bib("vignettes/options.Rmd")
 
-  expect_true(fs::file_exists("docs/articles/bibliography.bib"))
+  expect_true(file_exists("docs/articles/bibliography.bib"))
   bib <- readLines("docs/articles/bibliography.bib", warn = FALSE)
   expect_true(bib == "hello this is the biblio")
 })

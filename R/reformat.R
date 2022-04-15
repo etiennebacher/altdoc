@@ -93,9 +93,9 @@ move_img_readme <- function() {
   if (is.null(img_paths)) return(invisible())
 
   good_path <- doc_path()
-  fs::dir_create(paste0(good_path, "/README_assets"))
+  dir_create(paste0(good_path, "/README_assets"))
   for (i in seq_along(img_paths)) {
-    fs::file_copy(
+    file_copy(
       img_paths[i],
       paste0(good_path, "/README_assets/", trimws(basename(img_paths[i]))),
       overwrite = T
@@ -181,8 +181,8 @@ replace_figures_rmd <- function() {
   }
   good_path <- doc_path()
   figures_path <- paste0(good_path, "/articles/figures")
-  if (!fs::dir_exists(figures_path)) {
-    fs::dir_create(figures_path)
+  if (!dir_exists(figures_path)) {
+    dir_create(figures_path)
   }
   vignettes <- list.files("vignettes", pattern = ".Rmd$")
 
@@ -209,8 +209,8 @@ replace_figures_rmd <- function() {
     if (length(origin_fig) == 0) next
 
     for (i in seq_along(origin_fig)) {
-      if (fs::file_exists(origin_fig[i])) {
-        fs::file_copy(origin_fig[i], destination_fig[i], overwrite = TRUE)
+      if (file_exists(origin_fig[i])) {
+        file_copy(origin_fig[i], destination_fig[i], overwrite = TRUE)
       }
     }
   }
