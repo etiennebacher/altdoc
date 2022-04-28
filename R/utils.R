@@ -25,6 +25,29 @@ is_mkdocs_material <- function() {
   return(length(x) > 1)
 }
 
+# create index.html for docute and docsify
+create_index <- function(x) {
+
+  index <- htmltools::htmlTemplate(
+    system.file(paste0(x, "/index.html"), package = "altdoc"),
+    title = pkg_name(),
+    footer = sprintf(
+      "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
+      gh_url(), pkg_name(), pkg_version(),
+      utils::packageVersion("altdoc")
+    ),
+    github_link = gh_url()
+  )
+
+  # regex stuff to correct footer
+  index <- as.character(index)
+  index <- gsub("&lt;", "<", index)
+  index <- gsub("&gt;", ">", index)
+  index <- gsub("\\r\\n", "\\\n", index)
+
+  writeLines(index, "docs/index.html")
+}
+
 
 import_readme <- function() {
 
@@ -138,21 +161,25 @@ final_steps <- function(x) {
 check_docs_exists <- function(overwrite = FALSE) {
   if (dir_exists("docs") && !folder_is_empty("docs")) {
     if (isTRUE(overwrite)) {
-      dir_delete("docs")
-      return(NULL)
+      fs::dir_delete("docs")
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        dir_delete("docs")
-        return(NULL)
+        fs::dir_delete("docs")
       } else {
         cli_alert_info("Nothing was modified.")
         return(1)
       }
     }
   }
+
+  if (!fs::dir_exists("docs")) {
+    fs::dir_create("docs")
+  }
+
+  return(NULL)
 }
 
 
