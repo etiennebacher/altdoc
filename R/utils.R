@@ -21,6 +21,29 @@ is_mkdocs_material <- function() {
   return(length(x) > 1)
 }
 
+# create index.html for docute and docsify
+create_index <- function(x) {
+
+  index <- htmltools::htmlTemplate(
+    system.file(paste0(x, "/index.html"), package = "altdoc"),
+    title = pkg_name(),
+    footer = sprintf(
+      "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
+      gh_url(), pkg_name(), pkg_version(),
+      utils::packageVersion("altdoc")
+    ),
+    github_link = gh_url()
+  )
+
+  # regex stuff to correct footer
+  index <- as.character(index)
+  index <- gsub("&lt;", "<", index)
+  index <- gsub("&gt;", ">", index)
+  index <- gsub("\\r\\n", "\\\n", index)
+
+  writeLines(index, "docs/index.html")
+}
+
 
 import_readme <- function() {
 

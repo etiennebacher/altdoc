@@ -23,24 +23,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
 
-  ### INDEX
-  index <- htmltools::htmlTemplate(
-    system.file("docute/index.html", package = "altdoc"),
-    title = pkg_name(),
-    footer = sprintf(
-      "<a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
-      gh_url(), pkg_name(), pkg_version(),
-      utils::packageVersion("altdoc")
-    ),
-    github_link = gh_url()
-  )
-  # regex stuff to correct footer
-  index <- as.character(index)
-  index <- gsub("&lt;", "<", index)
-  index <- gsub("&gt;", ">", index)
-  index <- gsub("\\r\\n", "\\\n", index)
-
-  writeLines(index, "docs/index.html")
+  create_index("docute")
 
   build_docs()
 
@@ -77,24 +60,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   x <- check_docs_exists(overwrite = overwrite)
   if (!is.null(x)) return(invisible())
 
-  ### INDEX
-  index <- htmltools::htmlTemplate(
-    system.file("docsify/index.html", package = "altdoc"),
-    title = pkg_name(),
-    footer = sprintf(
-      "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
-      gh_url(), pkg_name(), pkg_version(),
-      utils::packageVersion("altdoc")
-    ),
-    repo = gh_url()
-  )
-  # regex stuff to correct footer
-  index <- as.character(index)
-  index <- gsub("&lt;", "<", index)
-  index <- gsub("&gt;", ">", index)
-  index <- gsub("\\r\\n", "\\\n", index)
-
-  writeLines(index, "docs/index.html")
+  create_index("docsify")
 
   build_docs()
 
