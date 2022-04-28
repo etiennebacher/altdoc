@@ -135,20 +135,24 @@ check_docs_exists <- function(overwrite = FALSE) {
   if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
     if (isTRUE(overwrite)) {
       fs::dir_delete("docs")
-      return(NULL)
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
         fs::dir_delete("docs")
-        return(NULL)
       } else {
         cli::cli_alert_info("Nothing was modified.")
         return(1)
       }
     }
   }
+
+  if (!fs::dir_exists("docs")) {
+    fs::dir_create("docs")
+  }
+
+  return(NULL)
 }
 
 

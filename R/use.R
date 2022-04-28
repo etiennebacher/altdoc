@@ -24,7 +24,6 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   if (!is.null(x)) return(invisible())
 
   ### INDEX
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docute/index.html", package = "altdoc"),
     title = pkg_name(),
@@ -79,7 +78,6 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
   if (!is.null(x)) return(invisible())
 
   ### INDEX
-  if (!fs::dir_exists("docs")) fs::dir_create("docs")
   index <- htmltools::htmlTemplate(
     system.file("docsify/index.html", package = "altdoc"),
     title = pkg_name(),
