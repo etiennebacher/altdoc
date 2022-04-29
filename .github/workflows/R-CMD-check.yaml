@@ -22,7 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
       - uses: r-lib/actions/setup-pandoc@master
       - name: Install specific dep 
-        run: sudo apt-get install -y libxslt1-dev
+        run: sudo apt-get install -y libxslt1-dev libcurl4-openssl-dev
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
