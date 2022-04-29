@@ -30,7 +30,7 @@ jobs:
       - name: Install specific dep 
         run: sudo apt-get install -y libxslt1-dev libcurl4-openssl-dev
       - name: Install requirements
-        run: python3 -m pip install -r mkdocs mkdocs-material
+        run: python3 -m pip install mkdocs mkdocs-material
         
       - name: Install dependencies
         run: |
