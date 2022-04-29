@@ -19,13 +19,10 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@v2
+        with: 
+          use-public-rspm: true
       - uses: r-lib/actions/setup-pandoc@master
-      
-      - name: Use Rstudio CDN
-        run: |
-          cat('options(repos = "https://packagemanager.rstudio.com/all/latest")', file = "~/.Rprofile", append = TRUE) 
-        shell: Rscript {0}
       
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
