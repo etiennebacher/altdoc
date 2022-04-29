@@ -112,7 +112,7 @@ test_that("mkdocs: update_docs works when NEWS didn't exist", {
   usethis::use_news_md()
   expect_message(update_docs(),
                  regexp = "'NEWS / Changelog' was imported for the first time.")
-  expect_true(fs::file_exists("docs/NEWS.md"))
+  expect_true(fs::file_exists("docs/docs/NEWS.md"))
 })
 
 test_that("docsify: update_docs shows message when NEWS doesn't exist", {
@@ -213,7 +213,7 @@ test_that("mkdocs: update_docs works when CoC didn't exist", {
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   expect_message(update_docs(),
                  regexp = "'Code of Conduct' was imported for the first time.")
-  expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
+  expect_true(fs::file_exists("docs/docs/CODE_OF_CONDUCT.md"))
 })
 
 test_that("docsify: update_docs shows message when CoC doesn't exist", {
@@ -315,7 +315,7 @@ test_that("mkdocs: update_docs works when License didn't exist", {
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   expect_message(update_docs(),
                  regexp = "'License / Licence' was imported for the first time.")
-  expect_true(fs::file_exists("docs/LICENSE.md"))
+  expect_true(fs::file_exists("docs/docs/LICENSE.md"))
 })
 
 test_that("docsify: update_docs shows message when License doesn't exist", {
