@@ -17,8 +17,8 @@ is_mkdocs_material <- function() {
     cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
     return(invisible())
   }
-  x <- system("pip3 list --local | grep  mkdocs-material", intern = TRUE)
-  return(length(x) > 1)
+  x <- grepl("mkdocs-material", system("pip3 list --local", intern = TRUE))
+  return(any(x))
 }
 
 # create index.html for docute and docsify
