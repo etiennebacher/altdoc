@@ -7,7 +7,6 @@ library(withr)
 ### (to my knowledge)
 skip_mkdocs <- function() {
   skip_on_cran()
-  # skip_on_ci()
   skip_if_not(is_mkdocs())
 }
 
