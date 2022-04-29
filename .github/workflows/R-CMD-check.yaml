@@ -24,7 +24,7 @@ jobs:
       
       - name: Use Rstudio CDN
         run: |
-          cat('options(repos = "https://packagemanager.rstudio.com/all/__linux__/bionic/latest")', file = "~/.Rprofile", append = TRUE) 
+          cat('options(repos = "https://packagemanager.rstudio.com/all/latest")', file = "~/.Rprofile", append = TRUE) 
         shell: Rscript {0}
       
       - name: Set up Python ${{ matrix.python-version }}
