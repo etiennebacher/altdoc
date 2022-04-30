@@ -3,6 +3,7 @@
 <h1> altdoc </h1>
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
+<img src="https://codecov.io/gh/etiennebacher/altdoc/branch/master/graph/badge.svg">
 <img src="https://img.shields.io/badge/license-MIT-blue">
 <a href = "https://altdoc.etiennebacher.com/#/" target = "_blank"><img src="https://img.shields.io/static/v1?label=Website&message=Visit&color=blue"></a>
   
