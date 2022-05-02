@@ -82,8 +82,8 @@ test_that("replace_figures_rmd works", {
   use_docute(convert_vignettes = FALSE)
   fs::dir_create("vignettes/figures")
   fs::dir_create("docs/articles/figures")
-  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/hex-conductor.png", mode = if(.Platform$OS.type == "windows") "wb")
-  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/figures/hex-conductor-2.png", mode = if(.Platform$OS.type == "windows") "wb")
+  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/hex-conductor.png", mode = if(.Platform$OS.type == "windows") "wb" else 'w')
+  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/figures/hex-conductor-2.png", mode = if(.Platform$OS.type == "windows") "wb" else 'w')
   writeLines(original_rmd, "vignettes/with-figure.Rmd")
 
   replace_figures_rmd()
