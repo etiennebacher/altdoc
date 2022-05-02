@@ -1,5 +1,4 @@
 test_that("reformat_md works", {
-
   # Need to write and read to avoid all \n differences
   tmp <- fs::file_temp(ext = ".md")
   txt <- "# Package
@@ -33,8 +32,10 @@ Hello again
   expect_identical(prod, ref)
 })
 
-test_that("reformat_md: arg 'first' works", {
 
+
+
+test_that("reformat_md: arg 'first' works", {
   # Need to write and read to avoid all \n differences
   tmp <- fs::file_temp(ext = ".md")
   txt <- "# Package
@@ -66,4 +67,26 @@ Hello again
   ref <- readLines(testthat::test_path("examples/examples-reformat/after-first-true.md"), warn = FALSE)
 
   expect_identical(prod, ref)
+})
+
+
+
+
+test_that("replace_figures_rmd works", {
+  # setup
+  original_rmd <- readLines(
+    testthat::test_path("examples/examples-vignettes", "with-figure.Rmd"),
+    warn = FALSE
+  )
+  create_local_package()
+  use_docute(convert_vignettes = FALSE)
+  fs::dir_create("vignettes/figures")
+  fs::dir_create("docs/articles/figures")
+  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/hex-conductor.png", mode = if(.Platform$OS.type == "windows") "wb")
+  download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/figures/hex-conductor-2.png", mode = if(.Platform$OS.type == "windows") "wb")
+  writeLines(original_rmd, "vignettes/with-figure.Rmd")
+
+  replace_figures_rmd()
+  expect_true(fs::file_exists("docs/articles/figures/hex-conductor.png"))
+  expect_true(fs::file_exists("docs/articles/figures/hex-conductor-2.png"))
 })

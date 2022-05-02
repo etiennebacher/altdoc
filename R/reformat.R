@@ -190,17 +190,22 @@ replace_figures_rmd <- function() {
 
     file_content <- paste(readLines(paste0("vignettes/", vignettes[i]), warn = FALSE), collapse = "\n")
 
+    # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
     x <- unlist(regmatches(
       file_content,
-      gregexpr("(?<=\\().*?(?=\\))", file_content, perl = TRUE)
+      gregexpr("(?:\\(|:\\s+)(?!http)([^\\s]+\\.(?:jpe?g|gif|png|svg|pdf))", file_content, perl = TRUE)
     ))
-    x <- x[grepl("/", x)]
-    x <- x[!grepl("http", x)]
     x <- gsub("\"", "", x)
+    x <- gsub(":| ", "", x)
+    x <- gsub("!", "", x)
+    x <- gsub("\\(|\\)|\\[|\\]", "", x)
     x <- gsub("\\.\\.", "", x)
-    for (i in seq_along(x)) {
-      if (substr(x[i], 1, 1) == "/") {
-        x[i] <- substr(x[i], 2, nchar(x[i]))
+    for (j in seq_along(x)) {
+      if (substr(x[j], 1, 1) == "/") {
+        x[j] <- substr(x[j], 2, nchar(x[j]))
+      }
+      if (!startsWith(x[j], "vignettes")) {
+        x[j] <- paste0("vignettes/", x[j])
       }
     }
     origin_fig <- x
@@ -208,9 +213,9 @@ replace_figures_rmd <- function() {
 
     if (length(origin_fig) == 0) next
 
-    for (i in seq_along(origin_fig)) {
-      if (fs::file_exists(origin_fig[i])) {
-        fs::file_copy(origin_fig[i], destination_fig[i], overwrite = TRUE)
+    for (j in seq_along(origin_fig)) {
+      if (fs::file_exists(origin_fig[j])) {
+        fs::file_copy(origin_fig[j], destination_fig[j], overwrite = TRUE)
       }
     }
   }
