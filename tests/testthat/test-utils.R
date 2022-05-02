@@ -51,10 +51,3 @@ test_that("import_* functions work", {
   expect_true(fs::file_exists("docs/NEWS.md"))
 
 })
-
-# test_that("is_mkdocs() works", {
-#   testthat::skip_on_ci()
-#   create_local_package()
-#   expect_false(is_mkdocs())
-#   expect_false(is_mkdocs_material())
-# })

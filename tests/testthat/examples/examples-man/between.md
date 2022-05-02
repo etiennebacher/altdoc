@@ -1,4 +1,3 @@
-## Examples/examples-between
 
 ### Description
 
@@ -12,7 +11,7 @@ remote tables.
 
 ### Arguments
 
-<table data-summary="R argblock">
+<table>
 <tbody>
 <tr class="odd" data-valign="top">
 <td><code>x</code></td>
