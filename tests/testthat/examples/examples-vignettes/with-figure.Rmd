@@ -1,0 +1,23 @@
+---
+title: "Analysing Longitudinal or Panel Data"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysing Longitudinal or Panel Data}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+Hello this is a vignette.
+
+Here's some code:
+
+```{r}
+print(mtcars)
+```
+
+Here's a figure: ![](hex-conductor.png)
+
+Here's a link to a figure: <img src="https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png">
+
+Here's another figure: ![](figures/hex-conductor-2.png)
