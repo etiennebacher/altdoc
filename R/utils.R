@@ -140,6 +140,21 @@ final_steps <- function(x) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
     }
     writeLines(index, "docs/index.html")
+  } else if (x == "docsify") {
+    sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
+    if (!fs::file_exists("docs/NEWS.md")) {
+      sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
+    }
+    if (!fs::file_exists("docs/LICENSE.md")) {
+      sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
+    }
+    if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+      sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
+    }
+    if (!fs::file_exists("docs/reference.md")) {
+      sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
+    }
+    cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
   }
 
   suppressMessages({
