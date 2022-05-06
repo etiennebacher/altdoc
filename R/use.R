@@ -67,26 +67,10 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
   build_docs()
 
-  ### SIDEBAR
-  file_copy(
+  fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
     "docs/_sidebar.md"
   )
-  sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
-  if (!file_exists("docs/NEWS.md")) {
-    sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
-  }
-  if (!file_exists("docs/LICENSE.md")) {
-    sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
-  }
-  if (!file_exists("docs/CODE_OF_CONDUCT.md")) {
-    sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
-  }
-  if (!file_exists("docs/reference.md")) {
-    sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
-  }
-  cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
-
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
