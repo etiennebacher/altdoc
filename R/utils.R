@@ -21,6 +21,12 @@ is_mkdocs_material <- function() {
   return(any(x))
 }
 
+# Is sphinx installed?
+is_sphinx <- function() {
+  x <- try(system2("sphinx-build", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  return(!inherits(x, "try-error"))
+}
+
 # create index.html for docute and docsify
 create_index <- function(x) {
 
