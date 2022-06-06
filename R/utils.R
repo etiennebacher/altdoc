@@ -41,15 +41,15 @@ create_index <- function(x, path = ".") {
   index <- gsub("&gt;", ">", index)
   index <- gsub("\\r\\n", "\\\n", index)
 
-  writeLines(index, paste0(path, "/docs/index.html"))
+  writeLines(index, fs::path_abs("docs/index.html", start = path))
 }
 
 
 import_readme <- function(path = ".") {
 
   good_path <- doc_path(path = path)
-  if (fs::file_exists(paste0(path, "/README.md"))) {
-    fs::file_copy(paste0(path, "/README.md"), paste0(good_path, "/README.md"), overwrite = TRUE)
+  if (fs::file_exists(fs::path_abs("README.md", start = path))) {
+    fs::file_copy(fs::path_abs("README.md", start = path), paste0(good_path, "/README.md"), overwrite = TRUE)
     cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
@@ -130,34 +130,34 @@ final_steps <- function(x, path = ".") {
 
   if (x == "docute") {
 
-    index <- readLines(paste0(path, "/docs/index.html"))
-    if (!fs::file_exists(paste0(path, "/NEWS.md"))) {
+    index <- readLines(fs::path_abs("docs/index.html", start = path))
+    if (!fs::file_exists(fs::path_abs("NEWS.md", start = path))) {
       index <- index[-which(grepl("/NEWS", index))]
     }
-    if (!fs::file_exists(paste0(path, "/LICENSE.md"))) {
+    if (!fs::file_exists(fs::path_abs("LICENSE.md", start = path))) {
       index <- index[-which(grepl("/LICENSE", index))]
     }
-    if (!fs::file_exists(paste0(path, "/CODE_OF_CONDUCT.md"))) {
+    if (!fs::file_exists(fs::path_abs("CODE_OF_CONDUCT.md", start = path))) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
     }
-    writeLines(index, paste0(path, "/docs/index.html"))
+    writeLines(index, fs::path_abs("docs/index.html", start = path))
 
   } else if (x == "docsify") {
 
-    sidebar <- readLines(paste0(path, "/docs/_sidebar.md"), warn = FALSE)
-    if (!fs::file_exists(paste0(path, "/docs/NEWS.md"))) {
+    sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
+    if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
       sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
     }
-    if (!fs::file_exists(paste0(path, "/docs/LICENSE.md"))) {
+    if (!fs::file_exists(fs::path_abs("docs/LICENSE.md", start = path))) {
       sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
     }
-    if (!fs::file_exists(paste0(path, "/docs/CODE_OF_CONDUCT.md"))) {
+    if (!fs::file_exists(fs::path_abs("docs/CODE_OF_CONDUCT.md", start = path))) {
       sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
     }
-    if (!fs::file_exists(paste0(path, "/docs/reference.md"))) {
+    if (!fs::file_exists(fs::path_abs("docs/reference.md", start = path))) {
       sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
     }
-    cat(sidebar, file = paste0(path, "/docs/_sidebar.md"), sep = "\n")
+    cat(sidebar, file = fs::path_abs("docs/_sidebar.md", start = path), sep = "\n")
   }
 
   suppressMessages({
@@ -180,15 +180,15 @@ final_steps <- function(x, path = ".") {
 # Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function(overwrite = FALSE, path = ".") {
-  if (fs::dir_exists(paste0(path, "/docs")) && !folder_is_empty(paste0(path, "/docs"))) {
+  if (fs::dir_exists(fs::path_abs("docs", start = path)) && !folder_is_empty(fs::path_abs("docs", start = path))) {
     if (isTRUE(overwrite)) {
-      fs::dir_delete(paste0(path, "/docs"))
+      fs::dir_delete(fs::path_abs("docs", start = path))
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        fs::dir_delete(paste0(path, "/docs"))
+        fs::dir_delete(fs::path_abs("docs", start = path))
       } else {
         cli::cli_alert_info("Nothing was modified.")
         return(1)
@@ -196,8 +196,8 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
     }
   }
 
-  if (!fs::dir_exists(paste0(path, "/docs"))) {
-    fs::dir_create(paste0(path, "/docs"))
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
+    fs::dir_create(fs::path_abs("docs", start = path))
   }
 
   return(NULL)
@@ -260,12 +260,12 @@ gh_url <- function() {
 # Get the tool that was used
 doc_type <- function(path = ".") {
 
-  if (!fs::dir_exists(paste0(path, "/docs"))) return(NULL)
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) return(NULL)
 
-  if (fs::file_exists(paste0(path, "/docs/mkdocs.yml"))) return("mkdocs")
+  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
 
-  if (fs::file_exists(paste0(path, "/docs/index.html"))) {
-    file <- paste(readLines(paste0(path, "/docs/index.html"), warn = FALSE),
+  if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
+    file <- paste(readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE),
                   collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
@@ -277,9 +277,9 @@ doc_type <- function(path = ".") {
 doc_path <- function(path = ".") {
   doc_type <- doc_type(path = path)
   if (doc_type == "mkdocs") {
-    return(paste0(path, "/docs/docs"))
+    return(fs::path_abs("docs/docs", start = path))
   } else if (doc_type %in% c("docsify", "docute")) {
-    return(paste0(path, "/docs"))
+    return(fs::path_abs("docs", start = path))
   }
 }
 

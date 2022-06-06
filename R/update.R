@@ -77,15 +77,15 @@ update_file <- function(filename, path = ".") {
   } else if (filename == "LICENSE.md") {
     which_license()
   } else {
-    paste0(path, "/", filename)
+    fs::path_abs(filename, start = path)
   }
   docs_file <- paste0(doc_path(path = path), "/", filename)
   file_to_edit <- if (doc_type(path = path) == "docute") {
-    paste0(path, "/docs/index.html")
+    fs::path_abs("docs/index.html", start = path)
   } else if (doc_type(path = path) == "docsify") {
-    paste0(path, "/docs/_sidebar.md")
+    fs::path_abs("docs/_sidebar.md", start = path)
   } else if (doc_type(path = path) == "mkdocs") {
-    paste0(path, "/docs/mkdocs.yml")
+    fs::path_abs("docs/mkdocs.yml", start = path)
   }
 
   if (is.null(orig_file) || !fs::file_exists(orig_file)) {

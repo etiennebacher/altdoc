@@ -11,7 +11,7 @@
 
 transform_vignettes <- function(path = path) {
 
-  vignettes_path <- paste0(path, "/vignettes")
+  vignettes_path <- fs::path_abs("vignettes", start = path)
 
   if (!file.exists(vignettes_path) | folder_is_empty(vignettes_path)) {
     cli::cli_alert_info("No vignettes to convert")
@@ -149,7 +149,7 @@ vignettes_differ <- function(x, y) {
 
 get_vignettes_titles <- function(path = path) {
 
-  vignettes_path <- paste0(path, "/vignettes")
+  vignettes_path <- fs::path_abs("vignettes", start = path)
 
   if (!file.exists(vignettes_path) | folder_is_empty(vignettes_path)) {
     return(invisible())
@@ -189,7 +189,7 @@ add_vignettes <- function(path = path) {
 
   if (doctype == "docute") {
 
-    original_index <- readLines(paste0(path, "/docs/index.html"), warn = FALSE)
+    original_index <- readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE)
 
     if (any(grepl("title: \"Articles\"", original_index))) {
       cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
@@ -207,11 +207,11 @@ add_vignettes <- function(path = path) {
       "},\n"
     )
 
-    writeLines(original_index, paste0(path, "/docs/index.html"))
+    writeLines(original_index, fs::path_abs("docs/index.html", start = path))
 
   } else if (doctype == "docsify") {
 
-    original_sidebar <- readLines(paste0(path, "/docs/_sidebar.md"), warn = FALSE)
+    original_sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
 
     # Remove the articles / vignettes section to avoid duplicates
     if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
@@ -230,14 +230,14 @@ add_vignettes <- function(path = path) {
             collapse = "", sep = "")
     )
 
-    writeLines(original_sidebar, paste0(path, "/docs/_sidebar.md"))
+    writeLines(original_sidebar, fs::path_abs("docs/_sidebar.md", start = path))
 
   } else if (doctype == "mkdocs") {
 
     vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
 
     original_yaml <- suppressWarnings(
-      yaml::read_yaml(paste0(path, "/docs/mkdocs.yml"))
+      yaml::read_yaml(fs::path_abs("docs/mkdocs.yml", start = path))
     )
 
     # If articles are in the navbar, remove them, so that there is no duplicates
@@ -288,7 +288,7 @@ add_vignettes <- function(path = path) {
     }
     new_yaml <- paste(before_plugin, after_plugin, sep = "")
 
-    writeLines(new_yaml, paste0(path, "/docs/mkdocs.yml"))
+    writeLines(new_yaml, fs::path_abs("docs/mkdocs.yml", start = path))
   }
 }
 
@@ -313,7 +313,7 @@ manage_child_vignettes <- function(file, path = path) {
     return("stop")
   } else {
     for (i in children) {
-      fs::file_copy(children, paste0(path, "/docs/articles/", children), overwrite = TRUE)
+      fs::file_copy(children, fs::path_abs(paste0("docs/articles/", children), start = path), overwrite = TRUE)
       return("continue")
     }
   }

@@ -175,7 +175,7 @@ img_paths_readme <- function(path = ".") {
 # Find figures path in vignettes, copy the figures to "articles/figures"
 replace_figures_rmd <- function(path = ".") {
 
-  vignettes_path <- paste0(path, "/vignettes")
+  vignettes_path <- fs::path_abs("vignettes", start = path)
 
   ### First, extract paths of figures and copy figures to "articles/figures"
   if (!file.exists(vignettes_path) |

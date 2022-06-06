@@ -16,19 +16,19 @@
 preview <- function(path = ".") {
 
   if (rstudioapi::isAvailable()) {
-    if (fs::file_exists(paste0(path, "/docs/index.html"))) {
-      servr::httw(paste0(path, "/docs/"))
-    } else if (fs::file_exists(paste0(path, "/docs/site/index.html"))) {
+    if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
+      servr::httw(fs::path_abs("docs/"))
+    } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
       # first build
       # parenthesis in bash script keep "cd docs" only temporary
-      system(paste0("(cd ", path, "/docs && mkdocs build -q)"))
+      system(paste0("(cd ", fs::path_abs("docs", start = path), " && mkdocs build -q)"))
       # stop it directly to avoid opening the browser
       servr::daemon_stop()
 
       # getwd has to be used outside of httw, not working otherwise
       servr::httw(
-        paste0(path, "/docs/site"),
-        watch = paste0(path, "/docs/"),
+        fs::path_abs("docs/site", start = path),
+        watch = fs::path_abs("docs/", start = path),
         handler = function(files) {
           system("cd .. && mkdocs build -q")
         }
@@ -37,10 +37,10 @@ preview <- function(path = ".") {
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
   } else {
-    if (fs::file_exists(paste0(path, "/docs/index.html"))) {
-      utils::browseURL(paste0(path, "/docs/index.html"))
-    } else if (fs::file_exists(paste0(path, "/docs/site/index.html"))) {
-      utils::browseURL(paste0(path, "/docs/site/index.html"))
+    if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
+      utils::browseURL(fs::path_abs("docs/index.html", start = path))
+    } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
+      utils::browseURL(fs::path_abs("docs/site/index.html", start = path))
     }
   }
 }

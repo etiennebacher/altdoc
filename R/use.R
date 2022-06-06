@@ -73,7 +73,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
-    paste0(path, "/docs/_sidebar.md")
+    fs::path_abs("docs/_sidebar.md", start = path)
   )
 
   ### VIGNETTES
@@ -137,7 +137,7 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE,
   }
 
   system(paste0("mkdocs new ", path, "/docs -q"))
-  system("cd docs && mkdocs build -q")
+  system(paste0("cd ", path, "/docs && mkdocs build -q"))
 
   yaml <- paste0(
     "
@@ -189,25 +189,25 @@ nav:
   - License: LICENSE.md
     "
   )
-  cat(yaml, file = paste0(path, "/docs/mkdocs.yml"))
+  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
-  yaml <- readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE)
-  if (!fs::file_exists(paste0(path, "/docs/NEWS.md"))) {
+  yaml <- readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE)
+  if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }
-  if (!fs::file_exists(paste0(path, "/docs/LICENSE.md"))) {
+  if (!fs::file_exists(fs::path_abs("docs/LICENSE.md", start = path))) {
     yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
   }
-  if (!fs::file_exists(paste0(path, "/docs/CODE_OF_CONDUCT.md"))) {
+  if (!fs::file_exists(fs::path_abs("docs/CODE_OF_CONDUCT.md", start = path))) {
     yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
   }
-  if (!fs::file_exists(paste0(path, "/docs/reference.md"))) {
+  if (!fs::file_exists(fs::path_abs("docs/reference.md", start = path))) {
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
-  cat(yaml, file = paste0(path, "/docs/mkdocs.yml", sep = "\n"))
+  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
 
-  fs::file_delete(paste0(path, "/docs/docs/index.md"))
+  fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
   build_docs(path = path)
 
   ### VIGNETTES

@@ -20,7 +20,7 @@ test_that("argument theme works", {
   create_local_package()
   use_mkdocs(theme = "readthedocs", path = getwd())
   path <- getwd()
-  yaml <- paste(readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE), collapse = "")
+  yaml <- paste(readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE), collapse = "")
   expect_true(grepl("name: readthedocs", yaml))
 })
 
@@ -28,6 +28,6 @@ test_that("argument theme works", {
   create_local_package()
   use_mkdocs(theme = "material", path = getwd())
   path <- getwd()
-  yaml <- paste(readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE), collapse = "")
+  yaml <- paste(readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE), collapse = "")
   expect_true(grepl("name: material", yaml))
 })
