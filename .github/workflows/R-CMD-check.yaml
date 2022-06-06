@@ -40,10 +40,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
-      - name: Install specific dependencies
-        run: sudo apt-get install -y libxslt1-dev libcurl4-openssl-dev
-      - name: Install Mkdocs
-        run: python3 -m pip install mkdocs mkdocs-material
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install mkdocs            # install mkdocs
+          python3 -m pip install mkdocs-material   # install material theme
 
       - name: Install dependencies
         run: |
