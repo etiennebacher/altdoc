@@ -22,7 +22,7 @@ is_mkdocs_material <- function() {
 }
 
 # create index.html for docute and docsify
-create_index <- function(x) {
+create_index <- function(x, path = ".") {
 
   index <- htmltools::htmlTemplate(
     system.file(paste0(x, "/index.html"), package = "altdoc"),
@@ -41,15 +41,15 @@ create_index <- function(x) {
   index <- gsub("&gt;", ">", index)
   index <- gsub("\\r\\n", "\\\n", index)
 
-  writeLines(index, "docs/index.html")
+  writeLines(index, fs::path_abs("docs/index.html", start = path))
 }
 
 
-import_readme <- function() {
+import_readme <- function(path = ".") {
 
-  good_path <- doc_path()
-  if (fs::file_exists("README.md")) {
-    fs::file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
+  good_path <- doc_path(path = path)
+  if (fs::file_exists(fs::path_abs("README.md", start = path))) {
+    fs::file_copy(fs::path_abs("README.md", start = path), paste0(good_path, "/README.md"), overwrite = TRUE)
     cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
@@ -59,15 +59,15 @@ import_readme <- function() {
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
   reformat_md(paste0(good_path, "/README.md"))
-  move_img_readme()
-  replace_img_paths_readme()
+  move_img_readme(path = path)
+  replace_img_paths_readme(path = path)
 
 }
 
 
-import_news <- function() {
+import_news <- function(path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file <- which_news()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
@@ -83,9 +83,9 @@ import_news <- function() {
 }
 
 
-import_coc <- function() {
+import_coc <- function(path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
     cli::cli_alert_success("{.file Code of Conduct} imported.")
@@ -96,9 +96,9 @@ import_coc <- function() {
 }
 
 
-import_license <- function() {
+import_license <- function(path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file <- which_license()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file License / Licence} to include.")
@@ -112,49 +112,52 @@ import_license <- function() {
 
 }
 
-build_docs <- function() {
+build_docs <- function(path = ".") {
 
   cli::cli_h1("Docs structure")
   cli::cli_alert_success("Folder {.file docs} created.")
 
-  import_readme()
-  import_news()
-  import_coc()
-  import_license()
-  make_reference()
+  import_readme(path = path)
+  import_news(path = path)
+  import_coc(path = path)
+  import_license(path = path)
+  make_reference(path = path)
 }
 
 # Last things to do in initialization
 
-final_steps <- function(x) {
+final_steps <- function(x, path = ".") {
 
   if (x == "docute") {
-    index <- readLines("docs/index.html")
-    if (!fs::file_exists("NEWS.md")) {
+
+    index <- readLines(fs::path_abs("docs/index.html", start = path))
+    if (!fs::file_exists(fs::path_abs("NEWS.md", start = path))) {
       index <- index[-which(grepl("/NEWS", index))]
     }
-    if (!fs::file_exists("LICENSE.md")) {
+    if (!fs::file_exists(fs::path_abs("LICENSE.md", start = path))) {
       index <- index[-which(grepl("/LICENSE", index))]
     }
-    if (!fs::file_exists("CODE_OF_CONDUCT.md")) {
+    if (!fs::file_exists(fs::path_abs("CODE_OF_CONDUCT.md", start = path))) {
       index <- index[-which(grepl("/CODE_OF_CONDUCT", index))]
     }
-    writeLines(index, "docs/index.html")
+    writeLines(index, fs::path_abs("docs/index.html", start = path))
+
   } else if (x == "docsify") {
-    sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
-    if (!fs::file_exists("docs/NEWS.md")) {
+
+    sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
+    if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
       sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
     }
-    if (!fs::file_exists("docs/LICENSE.md")) {
+    if (!fs::file_exists(fs::path_abs("docs/LICENSE.md", start = path))) {
       sidebar <- sidebar[-which(grepl("LICENSE.md", sidebar))]
     }
-    if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+    if (!fs::file_exists(fs::path_abs("docs/CODE_OF_CONDUCT.md", start = path))) {
       sidebar <- sidebar[-which(grepl("CODE_OF_CONDUCT.md", sidebar))]
     }
-    if (!fs::file_exists("docs/reference.md")) {
+    if (!fs::file_exists(fs::path_abs("docs/reference.md", start = path))) {
       sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
     }
-    cat(sidebar, file = "docs/_sidebar.md", sep = "\n")
+    cat(sidebar, file = fs::path_abs("docs/_sidebar.md", start = path), sep = "\n")
   }
 
   suppressMessages({
@@ -176,16 +179,16 @@ final_steps <- function(x) {
 
 # Check that folder 'docs' does not already exist, or is empty.
 
-check_docs_exists <- function(overwrite = FALSE) {
-  if (fs::dir_exists("docs") && !folder_is_empty("docs")) {
+check_docs_exists <- function(overwrite = FALSE, path = ".") {
+  if (fs::dir_exists(fs::path_abs("docs", start = path)) && !folder_is_empty(fs::path_abs("docs", start = path))) {
     if (isTRUE(overwrite)) {
-      fs::dir_delete("docs")
+      fs::dir_delete(fs::path_abs("docs", start = path))
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        fs::dir_delete("docs")
+        fs::dir_delete(fs::path_abs("docs", start = path))
       } else {
         cli::cli_alert_info("Nothing was modified.")
         return(1)
@@ -193,8 +196,8 @@ check_docs_exists <- function(overwrite = FALSE) {
     }
   }
 
-  if (!fs::dir_exists("docs")) {
-    fs::dir_create("docs")
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
+    fs::dir_create(fs::path_abs("docs", start = path))
   }
 
   return(NULL)
@@ -255,14 +258,15 @@ gh_url <- function() {
 
 
 # Get the tool that was used
-doc_type <- function() {
+doc_type <- function(path = ".") {
 
-  if (!fs::dir_exists("docs")) return(NULL)
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) return(NULL)
 
-  if (fs::file_exists("docs/mkdocs.yml")) return("mkdocs")
+  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
 
-  if (fs::file_exists("docs/index.html")) {
-    file <- paste(readLines("docs/index.html", warn = FALSE), collapse = "")
+  if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
+    file <- paste(readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE),
+                  collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
   }
@@ -270,21 +274,20 @@ doc_type <- function() {
 }
 
 # Get the path for files
-doc_path <- function() {
-  doc_type <- doc_type()
+doc_path <- function(path = ".") {
+  doc_type <- doc_type(path = path)
   if (doc_type == "mkdocs") {
-    return("docs/docs")
+    return(fs::path_abs("docs/docs", start = path))
   } else if (doc_type %in% c("docsify", "docute")) {
-    return("docs")
+    return(fs::path_abs("docs", start = path))
   }
 }
 
-
 # Detect how licence files is called: "LICENSE" or "LICENCE"
 # If no license, return "license" for cli message in update_file()
-which_license <- function() {
+which_license <- function(path = ".") {
 
-  x <- list.files(pattern = "\\.md$")
+  x <- list.files(path = path, pattern = "\\.md$")
   license <- x[which(grepl("license", x, ignore.case = TRUE))]
   licence <- x[which(grepl("licence", x, ignore.case = TRUE))]
   if (length(license) == 1) {
@@ -299,9 +302,9 @@ which_license <- function() {
 
 # Detect how news files is called: "NEWS" or "CHANGELOG"
 # If no news, return "news" for cli message in update_file()
-which_news <- function() {
+which_news <- function(path = ".") {
 
-  x <- list.files(pattern = "\\.md$")
+  x <- list.files(path = path, pattern = "\\.md$")
   news <- x[which(grepl("news", x, ignore.case = TRUE))]
   changelog <- x[which(grepl("changelog", x, ignore.case = TRUE))]
   if (length(news) == 1) {
@@ -312,4 +315,11 @@ which_news <- function() {
     return(NULL)
   }
 
+}
+
+# https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R
+convert_path <- function (path = ".") {
+  if (path == ".") path <- here::here()
+  path <- normalizePath(path)
+  return(path)
 }

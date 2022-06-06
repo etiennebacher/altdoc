@@ -9,31 +9,36 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-transform_vignettes <- function() {
+transform_vignettes <- function(path = path) {
 
-  if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
+  vignettes_path <- fs::path_abs("vignettes", start = path)
+
+  if (!file.exists(vignettes_path) | folder_is_empty(vignettes_path)) {
     cli::cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
-  vignettes <- list.files("vignettes", pattern = ".Rmd$")
+  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
     fs::dir_create(articles_path)
   }
 
   for (i in seq_along(vignettes)) {
-    x <- manage_child_vignettes(paste0("vignettes/", vignettes[i]))
+    x <- manage_child_vignettes(
+      paste0(vignettes_path, "/", vignettes[i]),
+      path = path
+    )
     if (!is.null(x) & x == "stop") return(invisible())
   }
 
   ### Check which vignette is different
   vignette_is_different <- logical(length(vignettes))
   for (i in seq_along(vignettes)) {
-    origin <- paste0("vignettes/", vignettes[i])
+    origin <- paste0(vignettes_path, "/", vignettes[i])
     destination <- paste0(articles_path, "/", vignettes[i])
     vignette_is_different[i] <- vignettes_differ(origin, destination)
     if (vignette_is_different[i]) {
@@ -54,11 +59,11 @@ transform_vignettes <- function() {
 
   for (i in seq_along(to_convert)) {
     j <- to_convert[i] # do that for cli progress step
-    origin <- paste0("vignettes/", vignettes[j])
+    origin <- paste0(vignettes_path, "/", vignettes[j])
     destination <- paste0(articles_path, "/", vignettes[j])
 
     modify_yaml(destination)
-    extract_import_bib(destination)
+    extract_import_bib(destination, path = path)
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
 
     suppressMessages(
@@ -88,7 +93,7 @@ transform_vignettes <- function() {
 
       # for some reason, having a colon in the title breaks the title when
       # using mkdocs
-      if (doc_type() == "mkdocs") {
+      if (doc_type(path = path) == "mkdocs") {
         title <- gsub(":", " - ", title)
       }
 
@@ -142,13 +147,15 @@ vignettes_differ <- function(x, y) {
 # with two columns: title and link.
 # This is used to update the sidebar/navbar in the docs.
 
-get_vignettes_titles <- function() {
+get_vignettes_titles <- function(path = path) {
 
-  if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
+  vignettes_path <- fs::path_abs("vignettes", start = path)
+
+  if (!file.exists(vignettes_path) | folder_is_empty(vignettes_path)) {
     return(invisible())
   }
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   vignettes <- list.files(paste0(good_path, "/articles"), pattern = ".Rmd")
 
   vignettes_title <- data.frame(title = NULL, link = NULL)
@@ -169,10 +176,10 @@ get_vignettes_titles <- function() {
 # Add vignettes in the index/sidebar/yaml depending on the tool used.
 # This creates a section "Articles" with every vignettes in docs/articles
 
-add_vignettes <- function() {
+add_vignettes <- function(path = path) {
 
-  doctype <- doc_type()
-  vignettes_titles <- get_vignettes_titles()
+  doctype <- doc_type(path = path)
+  vignettes_titles <- get_vignettes_titles(path = path)
   if (is.null(vignettes_titles)) {
     return(invisible())
   }
@@ -182,7 +189,7 @@ add_vignettes <- function() {
 
   if (doctype == "docute") {
 
-    original_index <- readLines("docs/index.html", warn = FALSE)
+    original_index <- readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE)
 
     if (any(grepl("title: \"Articles\"", original_index))) {
       cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
@@ -200,14 +207,11 @@ add_vignettes <- function() {
       "},\n"
     )
 
-    writeLines(original_index, "docs/index.html")
-
-
-
+    writeLines(original_index, fs::path_abs("docs/index.html", start = path))
 
   } else if (doctype == "docsify") {
 
-    original_sidebar <- readLines("docs/_sidebar.md", warn = FALSE)
+    original_sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
 
     # Remove the articles / vignettes section to avoid duplicates
     if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
@@ -226,16 +230,15 @@ add_vignettes <- function() {
             collapse = "", sep = "")
     )
 
-    writeLines(original_sidebar, "docs/_sidebar.md")
-
-
-
+    writeLines(original_sidebar, fs::path_abs("docs/_sidebar.md", start = path))
 
   } else if (doctype == "mkdocs") {
 
     vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
 
-    original_yaml <- suppressWarnings(yaml::read_yaml("docs/mkdocs.yml"))
+    original_yaml <- suppressWarnings(
+      yaml::read_yaml(fs::path_abs("docs/mkdocs.yml", start = path))
+    )
 
     # If articles are in the navbar, remove them, so that there is no duplicates
     nav_sections <- unlist(lapply(original_yaml$nav, names))
@@ -285,14 +288,14 @@ add_vignettes <- function() {
     }
     new_yaml <- paste(before_plugin, after_plugin, sep = "")
 
-    writeLines(new_yaml, "docs/mkdocs.yml")
+    writeLines(new_yaml, fs::path_abs("docs/mkdocs.yml", start = path))
   }
 }
 
 
 
 # Check whether vignettes call child documents
-manage_child_vignettes <- function(file) {
+manage_child_vignettes <- function(file, path = path) {
 
   x  <- tinkr::yarn$new(file)
 
@@ -310,7 +313,7 @@ manage_child_vignettes <- function(file) {
     return("stop")
   } else {
     for (i in children) {
-      fs::file_copy(children, paste0("docs/articles/", children), overwrite = TRUE)
+      fs::file_copy(children, fs::path_abs(paste0("docs/articles/", children), start = path), overwrite = TRUE)
       return("continue")
     }
   }

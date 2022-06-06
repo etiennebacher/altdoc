@@ -6,6 +6,7 @@
 #'
 #' @param convert_vignettes Automatically convert and import vignettes if you
 #' have some. This will not modify files in the folder 'vignettes'.
+#' @param path Path. Default is the package root (detected with `here::here()`).
 #'
 #' @export
 #'
@@ -16,31 +17,32 @@
 #' # Update documentation
 #' update_docs()
 #' }
-update_docs <- function(convert_vignettes = FALSE) {
+update_docs <- function(convert_vignettes = FALSE, path = ".") {
 
-  good_path <- doc_path()
+  path <- convert_path(path)
+  good_path <- doc_path(path = path)
 
   cli::cli_h1("Update basic files")
 
   # Update README
   update_file("README.md")
-  move_img_readme()
-  replace_img_paths_readme()
+  move_img_readme(path = path)
+  replace_img_paths_readme(path = path)
   reformat_md(paste0(good_path, "/README.md"))
 
   # Update changelog, CoC, License
-  update_file("NEWS.md")
-  update_file("CODE_OF_CONDUCT.md")
-  update_file("LICENSE.md")
+  update_file("NEWS.md", path = path)
+  update_file("CODE_OF_CONDUCT.md", path = path)
+  update_file("LICENSE.md", path = path)
 
   # Update functions reference
-  make_reference(update = TRUE)
+  make_reference(update = TRUE, path = path)
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Update vignettes")
-    transform_vignettes()
-    add_vignettes()
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
   cli::cli_h1("Complete")
@@ -58,7 +60,7 @@ update_docs <- function(convert_vignettes = FALSE) {
 #         - if it changed: overwrite it
 #         - if it didn't: info message
 
-update_file <- function(filename) {
+update_file <- function(filename, path = ".") {
 
   filename_message <- if (filename == "NEWS.md") {
     "NEWS / Changelog"
@@ -75,15 +77,15 @@ update_file <- function(filename) {
   } else if (filename == "LICENSE.md") {
     which_license()
   } else {
-    filename
+    fs::path_abs(filename, start = path)
   }
-  docs_file <- paste0(doc_path(), "/", filename)
-  file_to_edit <- if (doc_type() == "docute") {
-    "docs/index.html"
-  } else if (doc_type() == "docsify") {
-    "docs/_sidebar.md"
-  } else if (doc_type() == "mkdocs") {
-    "docs/mkdocs.yml"
+  docs_file <- paste0(doc_path(path = path), "/", filename)
+  file_to_edit <- if (doc_type(path = path) == "docute") {
+    fs::path_abs("docs/index.html", start = path)
+  } else if (doc_type(path = path) == "docsify") {
+    fs::path_abs("docs/_sidebar.md", start = path)
+  } else if (doc_type(path = path) == "mkdocs") {
+    fs::path_abs("docs/mkdocs.yml", start = path)
   }
 
   if (is.null(orig_file) || !fs::file_exists(orig_file)) {

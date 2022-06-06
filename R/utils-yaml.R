@@ -75,9 +75,9 @@ modify_yaml <- function(filename) {
 
 # Find bib files in vignettes, and copy them to docs/articles (+ potential
 # relative path)
-extract_import_bib <- function(filename) {
+extract_import_bib <- function(filename, path = path) {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
   # Extract yaml from Rmd

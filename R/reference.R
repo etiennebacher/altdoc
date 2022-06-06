@@ -3,9 +3,9 @@
 # @description
 # Convert and unite .Rd files to 'docs/reference.md'.
 
-make_reference <- function(update = FALSE) {
+make_reference <- function(update = FALSE, path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
 
   if (fs::file_exists(paste0(good_path, "/reference.md"))) fs::file_delete(paste0(good_path, "/reference.md"))
 

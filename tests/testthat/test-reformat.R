@@ -79,7 +79,7 @@ test_that("replace_figures_rmd works", {
     warn = FALSE
   )
   create_local_package()
-  use_docute(convert_vignettes = FALSE)
+  use_docute(convert_vignettes = FALSE, path = getwd())
   fs::dir_create("vignettes/figures")
   fs::dir_create("docs/articles/figures")
   download.file("https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png", "vignettes/hex-conductor.png", mode = if(.Platform$OS.type == "windows") "wb" else 'w')
