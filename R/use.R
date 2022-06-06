@@ -136,8 +136,8 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE,
     }
   }
 
-  system(paste0("mkdocs new ", path, "/docs -q"))
-  system(paste0("cd ", path, "/docs && mkdocs build -q"))
+  system(paste0("mkdocs new ", fs::path_abs("docs", start = path), " -q"))
+  system(paste0("cd ", fs::path_abs("docs", start = path), " && mkdocs build -q"))
 
   yaml <- paste0(
     "
