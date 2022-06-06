@@ -168,6 +168,13 @@ final_steps <- function(x) {
   cli_alert_success("{tools::toTitleCase(x)} initialized.")
   cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")
 
+  if (interactive()) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
+    preview()
+  }
+
 }
 
 
