@@ -49,11 +49,11 @@ create_index <- function(x) {
 }
 
 
-import_readme <- function() {
+import_readme <- function(path = here::here()) {
 
-  good_path <- doc_path()
-  if (file_exists("README.md")) {
-    file_copy("README.md", paste0(good_path, "/README.md"), overwrite = TRUE)
+  good_path <- doc_path(path = path)
+  if (file_exists(paste0(path, "/README.md"))) {
+    file_copy(paste0(path, "/README.md"), paste0(good_path, "/README.md"), overwrite = TRUE)
     cli_alert_success("{.file README} imported.")
   } else {
     file_copy(
@@ -69,9 +69,9 @@ import_readme <- function() {
 }
 
 
-import_news <- function() {
+import_news <- function(path = here::here()) {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file <- which_news()
   if (is.null(file)) {
     cli_alert_info("No {.file NEWS / Changelog} to include.")
@@ -87,9 +87,9 @@ import_news <- function() {
 }
 
 
-import_coc <- function() {
+import_coc <- function(path = here::here()) {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   if (file_exists("CODE_OF_CONDUCT.md")) {
     file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
     cli_alert_success("{.file Code of Conduct} imported.")
@@ -100,9 +100,9 @@ import_coc <- function() {
 }
 
 
-import_license <- function() {
+import_license <- function(path = here::here()) {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file <- which_license()
   if (is.null(file)) {
     cli_alert_info("No {.file License / Licence} to include.")
@@ -116,7 +116,7 @@ import_license <- function() {
 
 }
 
-build_docs <- function() {
+build_docs <- function(path = here::here()) {
 
   cli_h1("Docs structure")
   cli_alert_success("Folder {.file docs} created.")
@@ -252,14 +252,15 @@ gh_url <- function() {
 
 
 # Get the tool that was used
-doc_type <- function() {
+doc_type <- function(path = here::here()) {
 
-  if (!dir_exists("docs")) return(NULL)
+  if (!dir_exists(paste0(path, "/docs"))) return(NULL)
 
-  if (file_exists("docs/mkdocs.yml")) return("mkdocs")
+  if (file_exists(paste0(path, "/docs/mkdocs.yml"))) return("mkdocs")
 
-  if (file_exists("docs/index.html")) {
-    file <- paste(readLines("docs/index.html", warn = FALSE), collapse = "")
+  if (file_exists(paste0(path, "/docs/index.html"))) {
+    file <- paste(readLines(paste0(path, "/docs/index.html"), warn = FALSE),
+                  collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
   }
@@ -267,12 +268,12 @@ doc_type <- function() {
 }
 
 # Get the path for files
-doc_path <- function() {
-  doc_type <- doc_type()
+doc_path <- function(path = here::here()) {
+  doc_type <- doc_type(path = path)
   if (doc_type == "mkdocs") {
-    return("docs/docs")
+    return(paste0(path, "/docs/docs"))
   } else if (doc_type %in% c("docsify", "docute")) {
-    return("docs")
+    return(paste0(path, "/docs"))
   }
 }
 

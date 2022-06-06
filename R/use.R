@@ -1,11 +1,12 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
-#' @param path Path to local R package with documentation to be converted.
 #' @param convert_vignettes Automatically convert and import vignettes if you
 #' have some. This will not modify files in the folder 'vignettes'.
 #' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
+#' @param path Path to local R package with documentation to be converted.
+#' Default is the package root (detected with `here::here()`).
 #'
 #' @export
 #'
@@ -27,7 +28,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
   create_index("docute")
 
-  build_docs()
+  build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
