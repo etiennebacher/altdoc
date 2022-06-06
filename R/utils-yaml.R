@@ -75,9 +75,9 @@ modify_yaml <- function(filename) {
 
 # Find bib files in vignettes, and copy them to docs/articles (+ potential
 # relative path)
-extract_import_bib <- function(filename) {
+extract_import_bib <- function(filename, path = path) {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
   # Extract yaml from Rmd
@@ -98,12 +98,12 @@ extract_import_bib <- function(filename) {
   bib <- original_yaml$bibliography
 
   for (i in seq_along(bib)) {
-    dir_create(
+    fs::dir_create(
       dirname(
         paste0(articles_path, "/", bib[i])
       )
     )
-    file_copy(
+    fs::file_copy(
       paste0("vignettes/", bib[i]),
       paste0(articles_path, "/", bib[i]),
       overwrite = TRUE

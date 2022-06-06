@@ -6,15 +6,15 @@
 \alias{use_mkdocs}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
-use_docute(convert_vignettes = FALSE, overwrite = FALSE, path = here::here())
+use_docute(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
 
-use_docsify(convert_vignettes = FALSE, overwrite = FALSE, path = here::here())
+use_docsify(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
 
 use_mkdocs(
   theme = NULL,
   convert_vignettes = FALSE,
   overwrite = FALSE,
-  path = here::here()
+  path = "."
 )
 }
 \arguments{
@@ -26,8 +26,7 @@ is experimental.}
 (default), there will be an interactive choice to make in the console to
 overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 
-\item{path}{Path to local R package with documentation to be converted.
-Default is the package root (detected with \code{here::here()}).}
+\item{path}{Path. Default is the package root (detected with \code{here::here()}).}
 
 \item{theme}{Name of the theme to use. Default is basic theme. See Details
 section.}

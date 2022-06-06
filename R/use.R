@@ -5,8 +5,7 @@
 #' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
-#' @param path Path to local R package with documentation to be converted.
-#' Default is the package root (detected with `here::here()`).
+#' @param path Path. Default is the package root (detected with `here::here()`).
 #'
 #' @export
 #'
@@ -21,28 +20,30 @@
 #' }
 
 use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
-                       path = here::here()) {
+                       path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
-  create_index("docute")
+  create_index("docute", path = path)
 
   build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    cli::cli_h1("Vignettes")
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps(x = "docute")
+  final_steps(x = "docute", path = path)
 
   if (interactive()) {
-    cli_par()
-    cli_end()
-    cli_alert("Running preview...")
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
     preview()
   }
 }
@@ -59,33 +60,35 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
 
 use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
-                        path = here::here()) {
+                        path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
-  create_index("docsify")
+  create_index("docsify", path = path)
 
-  build_docs()
+  build_docs(path = path)
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
-    "docs/_sidebar.md"
+    paste0(path, "/docs/_sidebar.md")
   )
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    cli::cli_h1("Vignettes")
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps(x = "docsify")
+  final_steps(x = "docsify", path = path)
 
   if (interactive()) {
-    cli_par()
-    cli_end()
-    cli_alert("Running preview...")
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
     preview()
   }
 }
@@ -109,29 +112,31 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE,
-                       path = here::here()) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE,
+                       overwrite = FALSE, path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
   # Create basic structure
   if (!is_mkdocs()) {
-    cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
-    cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
-    cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
+    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
+    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
+    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
     return(invisible())
   }
 
   if (!is.null(theme) && theme == "material") {
     if (!is_mkdocs_material()) {
-      cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
-      cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
+      cli::cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
+      cli::cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
       return(invisible())
     }
   }
 
-  system("mkdocs new docs -q")
+  system(paste0("mkdocs new ", path, "/docs -q"))
   system("cd docs && mkdocs build -q")
 
   yaml <- paste0(
@@ -184,40 +189,40 @@ nav:
   - License: LICENSE.md
     "
   )
-  cat(yaml, file = "docs/mkdocs.yml")
+  cat(yaml, file = paste0(path, "/docs/mkdocs.yml"))
 
-  yaml <- readLines("docs/mkdocs.yml", warn = FALSE)
-  if (!file_exists("docs/NEWS.md")) {
+  yaml <- readLines(paste0(path, "/docs/mkdocs.yml"), warn = FALSE)
+  if (!fs::file_exists(paste0(path, "/docs/NEWS.md"))) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }
-  if (!file_exists("docs/LICENSE.md")) {
+  if (!fs::file_exists(paste0(path, "/docs/LICENSE.md"))) {
     yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
   }
-  if (!file_exists("docs/CODE_OF_CONDUCT.md")) {
+  if (!fs::file_exists(paste0(path, "/docs/CODE_OF_CONDUCT.md"))) {
     yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
   }
-  if (!file_exists("docs/reference.md")) {
+  if (!fs::file_exists(paste0(path, "/docs/reference.md"))) {
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
-  cat(yaml, file = "docs/mkdocs.yml", sep = "\n")
+  cat(yaml, file = paste0(path, "/docs/mkdocs.yml", sep = "\n"))
 
 
-  file_delete("docs/docs/index.md")
-  build_docs()
+  fs::file_delete(paste0(path, "/docs/docs/index.md"))
+  build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
-    cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    cli::cli_h1("Vignettes")
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps(x = "mkdocs")
+  final_steps(x = "mkdocs", path = path)
 
   if (interactive()) {
-    cli_par()
-    cli_end()
-    cli_alert("Running preview...")
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
     preview()
   }
 }

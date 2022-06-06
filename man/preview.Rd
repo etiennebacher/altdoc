@@ -4,7 +4,10 @@
 \alias{preview}
 \title{Preview the documentation in a webpage or in viewer}
 \usage{
-preview()
+preview(path = ".")
+}
+\arguments{
+\item{path}{Path. Default is the package root (detected with \code{here::here()}).}
 }
 \value{
 No value returned. If RStudio is used, it shows a site preview in

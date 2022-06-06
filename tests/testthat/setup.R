@@ -28,7 +28,7 @@ proj_set_ <- function(path) {
 ### Taken from {usethis} (file "tests/testthat/helper.R")
 
 create_local_package <- function(
-  dir = file_temp(pattern = "testpkg"),
+  dir = fs::file_temp(pattern = "testpkg"),
   env = parent.frame(),
   rstudio = TRUE
 ) {
@@ -37,7 +37,7 @@ create_local_package <- function(
 
 
 create_local_project <- function(
-  dir = file_temp(pattern = "testproj"),
+  dir = fs::file_temp(pattern = "testproj"),
   env = parent.frame(),
   rstudio = FALSE
 ) {
@@ -46,14 +46,14 @@ create_local_project <- function(
 
 
 create_local_thing <- function(
-  dir = file_temp(pattern = pattern),
+  dir = fs::file_temp(pattern = pattern),
   env = parent.frame(),
   rstudio = FALSE,
   thing = c("package", "project")
 ) {
 
   thing <- match.arg(thing)
-  if (dir_exists(dir)) {
+  if (fs::dir_exists(dir)) {
     ui_stop("Target {ui_code('dir')} {.file {dir}} already exists.")
   }
 
@@ -62,7 +62,7 @@ create_local_thing <- function(
 
   defer(
     {
-      dir_delete(dir)
+      fs::dir_delete(dir)
     },
     envir = env
   )
@@ -89,5 +89,5 @@ create_local_thing <- function(
 }
 
 
-expect_proj_file <- function(...) expect_true(file_exists(proj_path(...)))
+expect_proj_file <- function(...) expect_true(fs::file_exists(proj_path(...)))
 

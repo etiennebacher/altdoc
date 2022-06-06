@@ -1,5 +1,6 @@
 #' Preview the documentation in a webpage or in viewer
 #'
+#' @param path Path. Default is the package root (detected with `here::here()`).
 #' @export
 #'
 #' @return No value returned. If RStudio is used, it shows a site preview in
@@ -12,12 +13,12 @@
 #' preview()
 #' }
 
-preview <- function(path = here::here()) {
+preview <- function(path = ".") {
 
   if (rstudioapi::isAvailable()) {
-    if (file_exists(paste0(path, "/docs/index.html"))) {
+    if (fs::file_exists(paste0(path, "/docs/index.html"))) {
       servr::httw(paste0(path, "/docs/"))
-    } else if (file_exists(paste0(path, "/docs/site/index.html"))) {
+    } else if (fs::file_exists(paste0(path, "/docs/site/index.html"))) {
       # first build
       # parenthesis in bash script keep "cd docs" only temporary
       system(paste0("(cd ", path, "/docs && mkdocs build -q)"))
@@ -33,12 +34,12 @@ preview <- function(path = here::here()) {
         }
       )
     } else {
-      cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
+      cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
   } else {
-    if (file_exists(paste0(path, "/docs/index.html"))) {
+    if (fs::file_exists(paste0(path, "/docs/index.html"))) {
       utils::browseURL(paste0(path, "/docs/index.html"))
-    } else if (file_exists(paste0(path, "/docs/site/index.html"))) {
+    } else if (fs::file_exists(paste0(path, "/docs/site/index.html"))) {
       utils::browseURL(paste0(path, "/docs/site/index.html"))
     }
   }
