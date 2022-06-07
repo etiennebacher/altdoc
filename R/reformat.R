@@ -87,12 +87,12 @@ reformat_md <- function(file, first = FALSE) {
 
 # Copy images/GIF that are in README in 'docs'
 
-move_img_readme <- function() {
+move_img_readme <- function(path = ".") {
 
-  img_paths <- img_paths_readme()
+  img_paths <- img_paths_readme(path = path)
   if (is.null(img_paths)) return(invisible())
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   fs::dir_create(paste0(good_path, "/README_assets"))
   for (i in seq_along(img_paths)) {
     fs::file_copy(
@@ -106,11 +106,11 @@ move_img_readme <- function() {
 
 # Replace image paths in README
 
-replace_img_paths_readme <- function() {
+replace_img_paths_readme <- function(path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file_content <- readLines(paste0(good_path, "/README.md"), warn = FALSE)
-  img_paths <- img_paths_readme()
+  img_paths <- img_paths_readme(path = path)
 
   # generate the new paths
   new_paths <- unlist(lapply(img_paths, function(x) {
@@ -130,9 +130,9 @@ replace_img_paths_readme <- function() {
 
 # Get the paths of images/GIF in README
 
-img_paths_readme <- function() {
+img_paths_readme <- function(path = ".") {
 
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   file_content <- paste(readLines(paste0(good_path, "/README.md"), warn = FALSE), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
@@ -173,22 +173,25 @@ img_paths_readme <- function() {
 
 
 # Find figures path in vignettes, copy the figures to "articles/figures"
-replace_figures_rmd <- function() {
+replace_figures_rmd <- function(path = ".") {
+
+  vignettes_path <- fs::path_abs("vignettes", start = path)
 
   ### First, extract paths of figures and copy figures to "articles/figures"
-  if (!file.exists("vignettes") | folder_is_empty("vignettes")) {
+  if (!file.exists(vignettes_path) |
+      folder_is_empty(vignettes_path)) {
     return(invisible())
   }
-  good_path <- doc_path()
+  good_path <- doc_path(path = path)
   figures_path <- paste0(good_path, "/articles/figures")
   if (!fs::dir_exists(figures_path)) {
     fs::dir_create(figures_path)
   }
-  vignettes <- list.files("vignettes", pattern = ".Rmd$")
+  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   for (i in seq_along(vignettes)) {
 
-    file_content <- paste(readLines(paste0("vignettes/", vignettes[i]), warn = FALSE), collapse = "\n")
+    file_content <- paste(readLines(paste0(vignettes_path, "/", vignettes[i]), warn = FALSE), collapse = "\n")
 
     # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
     x <- unlist(regmatches(
@@ -205,7 +208,7 @@ replace_figures_rmd <- function() {
         x[j] <- substr(x[j], 2, nchar(x[j]))
       }
       if (!startsWith(x[j], "vignettes")) {
-        x[j] <- paste0("vignettes/", x[j])
+        x[j] <- paste0(vignettes_path, "/", x[j])
       }
     }
     origin_fig <- x

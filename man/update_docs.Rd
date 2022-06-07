@@ -4,11 +4,13 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(convert_vignettes = FALSE)
+update_docs(convert_vignettes = FALSE, path = ".")
 }
 \arguments{
 \item{convert_vignettes}{Automatically convert and import vignettes if you
 have some. This will not modify files in the folder 'vignettes'.}
+
+\item{path}{Path. Default is the package root (detected with \code{here::here()}).}
 }
 \value{
 No value returned. Updates files in folder 'docs'.

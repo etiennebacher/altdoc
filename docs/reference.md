@@ -8,11 +8,16 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = FALSE, overwrite = FALSE)
+    use_docute(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
 
-    use_docsify(convert_vignettes = FALSE, overwrite = FALSE)
+    use_docsify(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
 
-    use_mkdocs(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE)
+    use_mkdocs(
+      theme = NULL,
+      convert_vignettes = FALSE,
+      overwrite = FALSE,
+      path = "."
+    )
 
 ### Arguments
 
@@ -32,6 +37,11 @@ make in the console to overwrite. If <code>TRUE</code>, the folder
 'docs' is automatically overwritten.</p></td>
 </tr>
 <tr class="odd" data-valign="top">
+<td><code>path</code></td>
+<td><p>Path. Default is the package root (detected with
+<code>here::here()</code>).</p></td>
+</tr>
+<tr class="even" data-valign="top">
 <td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
@@ -80,7 +90,19 @@ Preview the documentation in a webpage or in viewer
 
 ### Usage
 
-    preview()
+    preview(path = ".")
+
+### Arguments
+
+<table>
+<tbody>
+<tr class="odd" data-valign="top">
+<td><code>path</code></td>
+<td><p>Path. Default is the package root (detected with
+<code>here::here()</code>).</p></td>
+</tr>
+</tbody>
+</table>
 
 ### Value
 
@@ -189,7 +211,7 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(convert_vignettes = FALSE)
+    update_docs(convert_vignettes = FALSE, path = ".")
 
 ### Arguments
 
@@ -199,6 +221,11 @@ the documentation. This will leave every other files unmodified.
 <td><code>convert_vignettes</code></td>
 <td><p>Automatically convert and import vignettes if you have some. This
 will not modify files in the folder 'vignettes'.</p></td>
+</tr>
+<tr class="even" data-valign="top">
+<td><code>path</code></td>
+<td><p>Path. Default is the package root (detected with
+<code>here::here()</code>).</p></td>
 </tr>
 </tbody>
 </table>

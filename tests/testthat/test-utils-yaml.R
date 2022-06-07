@@ -65,7 +65,7 @@ test_that("modify_yaml only removes html output and keep other formats options",
 test_that("extract_import_bib works", {
   original_rmd <- readLines(testthat::test_path("examples/examples-yaml", "options.Rmd"))
   create_local_package()
-  use_docute()
+  use_docute(path = getwd())
 
   # create vignette and bib file
   fs::dir_create("vignettes")
@@ -73,7 +73,7 @@ test_that("extract_import_bib works", {
   fs::file_create("vignettes/bibliography.bib")
   writeLines("hello this is the biblio", "vignettes/bibliography.bib")
   fs::dir_create("docs/articles")
-  extract_import_bib("vignettes/options.Rmd")
+  extract_import_bib("vignettes/options.Rmd", path = getwd())
 
   expect_true(fs::file_exists("docs/articles/bibliography.bib"))
   bib <- readLines("docs/articles/bibliography.bib", warn = FALSE)

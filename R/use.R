@@ -5,6 +5,7 @@
 #' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
+#' @param path Path. Default is the package root (detected with `here::here()`).
 #'
 #' @export
 #'
@@ -18,23 +19,33 @@
 #' use_docute()
 #' }
 
-use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
+use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
+                       path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
-  create_index("docute")
+  create_index("docute", path = path)
 
-  build_docs()
+  build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps("docute")
+  final_steps(x = "docute", path = path)
+
+  if (interactive()) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
+    preview()
+  }
 }
 
 #' @export
@@ -48,28 +59,38 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 #' }
 
 
-use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
+use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
+                        path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
-  create_index("docsify")
+  create_index("docsify", path = path)
 
-  build_docs()
+  build_docs(path = path)
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
-    "docs/_sidebar.md"
+    fs::path_abs("docs/_sidebar.md", start = path)
   )
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps("docsify")
+  final_steps(x = "docsify", path = path)
+
+  if (interactive()) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
+    preview()
+  }
 }
 
 
@@ -91,9 +112,12 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE) {
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALSE) {
+use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE,
+                       overwrite = FALSE, path = ".") {
 
-  x <- check_docs_exists(overwrite = overwrite)
+  path <- convert_path(path)
+
+  x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
 
   # Create basic structure
@@ -112,8 +136,8 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE, overwrite = FALS
     }
   }
 
-  system("mkdocs new docs -q")
-  system("cd docs && mkdocs build -q")
+  system(paste0("mkdocs new ", fs::path_abs("docs", start = path), " -q"))
+  system(paste0("cd ", fs::path_abs("docs", start = path), " && mkdocs build -q"))
 
   yaml <- paste0(
     "
@@ -165,33 +189,40 @@ nav:
   - License: LICENSE.md
     "
   )
-  cat(yaml, file = "docs/mkdocs.yml")
+  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
-  yaml <- readLines("docs/mkdocs.yml", warn = FALSE)
-  if (!fs::file_exists("docs/NEWS.md")) {
+  yaml <- readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE)
+  if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }
-  if (!fs::file_exists("docs/LICENSE.md")) {
+  if (!fs::file_exists(fs::path_abs("docs/LICENSE.md", start = path))) {
     yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
   }
-  if (!fs::file_exists("docs/CODE_OF_CONDUCT.md")) {
+  if (!fs::file_exists(fs::path_abs("docs/CODE_OF_CONDUCT.md", start = path))) {
     yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
   }
-  if (!fs::file_exists("docs/reference.md")) {
+  if (!fs::file_exists(fs::path_abs("docs/reference.md", start = path))) {
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
-  cat(yaml, file = "docs/mkdocs.yml", sep = "\n")
+  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
 
-  fs::file_delete("docs/docs/index.md")
-  build_docs()
+  fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
+  build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
-    transform_vignettes()
-    add_vignettes()
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
   }
 
-  final_steps("mkdocs")
+  final_steps(x = "mkdocs", path = path)
+
+  if (interactive()) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert("Running preview...")
+    preview()
+  }
 }
