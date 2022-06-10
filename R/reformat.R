@@ -183,9 +183,9 @@ replace_figures_rmd <- function(path = ".") {
     return(invisible())
   }
   good_path <- doc_path(path = path)
-  figures_path <- paste0(good_path, "/articles/figures")
-  if (!fs::dir_exists(figures_path)) {
-    fs::dir_create(figures_path)
+  articles_path <- paste0(good_path, "/articles")
+  if (!fs::dir_exists(articles_path)) {
+    fs::dir_create(articles_path)
   }
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
@@ -212,7 +212,7 @@ replace_figures_rmd <- function(path = ".") {
       }
     }
     origin_fig <- x
-    destination_fig <- paste0(figures_path, "/", trimws(basename(origin_fig)))
+    destination_fig <- paste0(articles_path, "/", trimws(basename(origin_fig)))
 
     if (length(origin_fig) == 0) next
 

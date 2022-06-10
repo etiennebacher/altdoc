@@ -50,6 +50,9 @@ transform_vignettes <- function(path = path) {
     return(invisible())
   }
 
+  # needs to be first, otherwise compilation will fail
+  replace_figures_rmd()
+
   to_convert <- which(vignette_is_different)
   n <- length(to_convert)
   # can't use message_info with {}
@@ -124,6 +127,7 @@ transform_vignettes <- function(path = path) {
   fails <- which(conversion_worked == FALSE)
 
   cli::cli_progress_done()
+  # indent bullet points
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
   if (length(successes) > 0) {
