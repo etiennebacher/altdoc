@@ -53,9 +53,11 @@ transform_vignettes <- function(path = path) {
   to_convert <- which(vignette_is_different)
   n <- length(to_convert)
   # can't use message_info with {}
-  cli::cli_alert_info("Found {length(to_convert)} vignette{?s} to convert.")
+  cli::cli_alert_info("Found {n} vignette{?s} to convert.")
   i <- 0
   cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+
+  conversion_worked <- vector(length = n)
 
   for (i in seq_along(to_convert)) {
     j <- to_convert[i] # do that for cli progress step
@@ -66,49 +68,88 @@ transform_vignettes <- function(path = path) {
     extract_import_bib(destination, path = path)
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
 
-    suppressMessages(
-      suppressWarnings(
-        rmarkdown::render(
-          destination,
-          output_dir = articles_path,
-          output_file = output_file,
+    tryCatch(
+      {
+        suppressMessages(
+          suppressWarnings(
+            rmarkdown::render(
+              destination,
+              output_dir = articles_path,
+              output_file = output_file,
 
-          # https://github.com/rstudio/rmarkdown/issues/2331
-          # https://github.com/r-lib/roxygen2/pull/1304
-          output_options = list(math_method = NULL),
+              # https://github.com/rstudio/rmarkdown/issues/2331
+              # https://github.com/r-lib/roxygen2/pull/1304
+              output_options = list(math_method = NULL),
 
-          quiet = TRUE,
-          envir = new.env()
+              quiet = TRUE,
+              envir = new.env()
+            )
+          )
         )
-      )
-    )
 
-    ### If title too long, it was cut in several lines but only the last
-    ### one is read by docute so need to paste the title back together
-    new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
-    title_sep <- grep("=====", new_vignette)
-    if (length(title_sep) == 1) {
-      title <- new_vignette[1:title_sep-1]
-      title <- paste(title, collapse = " ")
+        ### If title too long, it was cut in several lines but only the last
+        ### one is read by docute so need to paste the title back together
+        new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
+        title_sep <- grep("=====", new_vignette)
+        if (length(title_sep) == 1) {
+          title <- new_vignette[1:title_sep-1]
+          title <- paste(title, collapse = " ")
 
-      # for some reason, having a colon in the title breaks the title when
-      # using mkdocs
-      if (doc_type(path = path) == "mkdocs") {
-        title <- gsub(":", " - ", title)
+          # for some reason, having a colon in the title breaks the title when
+          # using mkdocs
+          if (doc_type(path = path) == "mkdocs") {
+            title <- gsub(":", " - ", title)
+          }
+
+          new_vignette <- new_vignette[-c(1:title_sep-1)]
+          new_vignette <- c(title, new_vignette)
+          writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
+        }
+
+        reformat_md(gsub("\\.Rmd", "\\.md", destination))
+
+        conversion_worked[i] <- TRUE
+      },
+
+      error = function(e) {
+        fs::file_delete(gsub("\\.md$", "\\.Rmd", destination))
+        conversion_worked[i] <- FALSE
       }
-
-      new_vignette <- new_vignette[-c(1:title_sep-1)]
-      new_vignette <- c(title, new_vignette)
-      writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
-    }
-
-    reformat_md(gsub("\\.Rmd", "\\.md", destination))
+    )
 
     cli::cli_progress_update()
   }
 
+  successes <- which(conversion_worked == TRUE)
+  fails <- which(conversion_worked == FALSE)
+
   cli::cli_progress_done()
-  cli::cli_alert_success("{cli::qty(n)}Vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}.")
+  cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+  if (length(successes) > 0) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}:")
+    cli::cli_ul(id = "list-success")
+    for (i in seq_along(successes)) {
+      cli::cli_li("{.file {vignettes[to_convert[successes[i]]]}}")
+    }
+    cli::cli_par()
+    cli::cli_end(id = "list-success")
+  }
+
+  if (length(fails) > 0) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following vignette{?s}:")
+    cli::cli_ul(id = "list-fail")
+    for (i in seq_along(fails)) {
+      cli::cli_li("{.file {vignettes[to_convert[fails[i]]]}}")
+    }
+    cli::cli_par()
+    cli::cli_end(id = "list-fail")
+  }
+
   cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 }
 

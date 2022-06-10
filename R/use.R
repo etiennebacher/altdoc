@@ -40,12 +40,6 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
   final_steps(x = "docute", path = path)
 
-  if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
-    preview()
-  }
 }
 
 #' @export
@@ -85,12 +79,6 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
 
   final_steps(x = "docsify", path = path)
 
-  if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
-    preview()
-  }
 }
 
 
@@ -218,11 +206,4 @@ nav:
   }
 
   final_steps(x = "mkdocs", path = path)
-
-  if (interactive()) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert("Running preview...")
-    preview()
-  }
 }
