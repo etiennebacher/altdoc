@@ -154,7 +154,10 @@ transform_vignettes <- function(path = path) {
     cli::cli_end(id = "list-fail")
   }
 
+  fix_rmd_figures_path(path)
+
   cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
+
 }
 
 

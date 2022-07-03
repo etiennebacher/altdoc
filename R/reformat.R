@@ -184,9 +184,14 @@ replace_figures_rmd <- function(path = ".") {
   }
   good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
+
   if (!fs::dir_exists(articles_path)) {
     fs::dir_create(articles_path)
   }
+  if (!fs::dir_exists(paste0(articles_path, "/figures"))) {
+    fs::dir_create(paste0(articles_path, "/figures"))
+  }
+
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   for (i in seq_along(vignettes)) {
@@ -203,16 +208,28 @@ replace_figures_rmd <- function(path = ".") {
     x <- gsub("!", "", x)
     x <- gsub("\\(|\\)|\\[|\\]", "", x)
     x <- gsub("\\.\\.", "", x)
+
+    new_file_content <- file_content
+
     for (j in seq_along(x)) {
+
+      new_file_content <- gsub(
+        x[j],
+        paste0("figures/", x[j]),
+        new_file_content
+      )
+
       if (substr(x[j], 1, 1) == "/") {
         x[j] <- substr(x[j], 2, nchar(x[j]))
       }
       if (!startsWith(x[j], "vignettes")) {
         x[j] <- paste0(vignettes_path, "/", x[j])
       }
+
     }
     origin_fig <- x
-    destination_fig <- paste0(articles_path, "/", trimws(basename(origin_fig)))
+    destination_fig <- paste0(articles_path, "/figures/", trimws(basename(origin_fig)))
+    writeLines(new_file_content, paste0(articles_path, "/", vignettes[i]))
 
     if (length(origin_fig) == 0) next
 
@@ -221,6 +238,50 @@ replace_figures_rmd <- function(path = ".") {
         fs::file_copy(origin_fig[j], destination_fig[j], overwrite = TRUE)
       }
     }
+  }
+
+}
+
+
+# Change figure paths in articles
+#
+# Rmd files in "articles" need to have img paths starting with
+# "figures/" in order to compile.
+# However, docute and docsify need the paths in the .md files to
+# start with "articles/figures/" so I need to add "articles/"
+# just before "figures/" in the img paths, *after* compilation.
+
+fix_rmd_figures_path <- function(path = ".") {
+
+  good_path <- doc_path(path = path)
+
+  if (!fs::dir_exists(paste0(good_path, "/articles/figures"))) {
+    return(invisible())
+  }
+
+  articles <- list.files(
+    paste0(good_path, "/articles"),
+    full.names = TRUE,
+    pattern = "\\.md$"
+  )
+
+  warn <- FALSE
+  for (i in articles) {
+
+    orig <- readLines(i, warn = FALSE)
+    if (doc_type() %in% c("docsify", "docute")) {
+      mod <- gsub('"figures/', '"articles/figures/', orig)
+      mod <- gsub("'figures/", "'articles/figures/", mod)
+      writeLines(mod, i)
+    }
+    if (!warn && any(grepl("<img", orig))) {
+      warn <- TRUE
+    }
+  }
+
+  if (doc_type() == "mkdocs" && warn) {
+    cli::cli_alert_warning("HTML image tag {.code <img>} was detected in at least one article.")
+    cli::cli_alert_warning("Mkdocs recommends using Markdown syntax instead of HTML tags. Some images might not be displayed in the articles.")
   }
 
 }
