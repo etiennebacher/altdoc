@@ -17,7 +17,7 @@
 #' # Update documentation
 #' update_docs()
 #' }
-update_docs <- function(convert_vignettes = FALSE, path = ".") {
+update_docs <- function(convert_vignettes = TRUE, path = ".") {
 
   path <- convert_path(path)
   good_path <- doc_path(path = path)

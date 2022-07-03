@@ -8,13 +8,13 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
+    use_docute(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
 
-    use_docsify(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
+    use_docsify(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
 
     use_mkdocs(
       theme = NULL,
-      convert_vignettes = FALSE,
+      convert_vignettes = TRUE,
       overwrite = FALSE,
       path = "."
     )
@@ -211,7 +211,7 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(convert_vignettes = FALSE, path = ".")
+    update_docs(convert_vignettes = TRUE, path = ".")
 
 ### Arguments
 

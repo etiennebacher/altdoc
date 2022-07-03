@@ -4,7 +4,7 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(convert_vignettes = FALSE, path = ".")
+update_docs(convert_vignettes = TRUE, path = ".")
 }
 \arguments{
 \item{convert_vignettes}{Automatically convert and import vignettes if you
