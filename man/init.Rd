@@ -6,13 +6,13 @@
 \alias{use_mkdocs}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
-use_docute(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
+use_docute(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
 
-use_docsify(convert_vignettes = FALSE, overwrite = FALSE, path = ".")
+use_docsify(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
 
 use_mkdocs(
   theme = NULL,
-  convert_vignettes = FALSE,
+  convert_vignettes = TRUE,
   overwrite = FALSE,
   path = "."
 )

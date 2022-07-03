@@ -19,7 +19,7 @@
 #' use_docute()
 #' }
 
-use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
+use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
                        path = ".") {
 
   path <- convert_path(path)
@@ -53,7 +53,7 @@ use_docute <- function(convert_vignettes = FALSE, overwrite = FALSE,
 #' }
 
 
-use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
+use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
                         path = ".") {
 
   path <- convert_path(path)
@@ -100,7 +100,7 @@ use_docsify <- function(convert_vignettes = FALSE, overwrite = FALSE,
 #' use_mkdocs()
 #' }
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = FALSE,
+use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
                        overwrite = FALSE, path = ".") {
 
   path <- convert_path(path)
