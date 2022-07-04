@@ -20,15 +20,19 @@ The `use_*()` functions will pre-populate your documentation with several files:
 
 ## About vignettes
 
-When initializing the documentation, `altdoc` can copy your vignettes in the folder `docs/articles`, modify their YAML to produce Markdown files, render them, and include them in the docs structure. To do that, run `use_*(convert_vignettes = TRUE)` (this argument is `FALSE` by default).
+When initializing the documentation, `altdoc` can copy your vignettes in the folder `docs/articles`, modify their YAML to produce Markdown files, render them, and include them in the docs structure. This is controlled by the argument `convert_vignettes` in `use_*()` (this argument is `TRUE` by default).
 
 The reason for changing the YAML is that most vignettes are HTML files (even though sometimes they are also available as PDF files). However, a website made with `docsify`, `docute` or `mkdocs` requires Markdown files, and not HTML files. 
 
+<Note type="info">
+
 Using `convert_vignettes = TRUE` will *not* affect files in the folder `vignettes`.
+
+</Note>
 
 <Note type="warning">
 
-This feature is not very robust. There are several reasons why automatically converting and rendering the vignettes might not work. For example, the YAML can be formatted differently than expected, or there could be a call to a figure stored somewhere else in the package folder.
+There are several reasons why automatically converting and rendering the vignettes might not work. When using `use_*()`, `altdoc` will let you know which vignettes could be converted and which couldn't. 
 
 </Note>
 
