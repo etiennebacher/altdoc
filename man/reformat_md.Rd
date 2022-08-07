@@ -25,7 +25,9 @@ main sections, which messed up Docute/Docsify documentation. Therefore,
 \code{altdoc} automatically added a '#' to all sections and subsections,
 except the first one, which is usually the title of the package.
 
-For example, if your README looked like this:\preformatted{# Package
+For example, if your README looked like this:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# Package
 
 # Installation
 
@@ -38,9 +40,11 @@ Hello
 # Demo
 
 Hello again
-}
+}\if{html}{\out{</div>}}
 
-It will now look like that:\preformatted{# Package
+It will now look like that:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# Package
 
 ## Installation
 
@@ -53,7 +57,7 @@ Hello
 ## Demo
 
 Hello again
-}
+}\if{html}{\out{</div>}}
 
 Note that the main structure is preserved: "Stable version" and "Dev
 version" are still subsections of "Installation".

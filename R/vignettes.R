@@ -345,10 +345,9 @@ add_vignettes <- function(path = path) {
 # Check whether vignettes call child documents
 manage_child_vignettes <- function(file, path = path) {
 
-  x  <- tinkr::yarn$new(file)
+  children <- xml2::read_xml(commonmark::markdown_xml(file))
 
-  children <- x$body
-  children <- xml2::xml_find_all(children, xpath = ".//md:code_block", x$ns)
+  children <- xml2::xml_find_all(children, xpath = ".//md:code_block")
   children <- xml2::xml_attr(children, attr = "child")
 
   children <- children[!is.na(children)]

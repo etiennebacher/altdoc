@@ -61,12 +61,18 @@ reformat_md <- function(file, first = FALSE) {
 
   stopifnot(!is.null(file), is.character(file))
 
-  md_doc <- tinkr::to_xml(file)
 
-  headers <- md_doc$body
-  headers <- xml2::xml_find_all(headers,
+  ### Code partly taken from https://github.com/ropensci/tinkr/blob/main/R/to_md.R
+  ### (tinkr is not on CRAN, which is why I take their code)
+
+
+  md_file <- readLines(file, warn = FALSE)
+
+  md_doc <- xml2::read_xml(commonmark::markdown_xml(md_file))
+
+  headers <- xml2::xml_find_all(md_doc,
                                 xpath = './/d1:heading',
-                                xml2::xml_ns(headers))
+                                xml2::xml_ns(md_doc))
 
   levels <- as.numeric(xml2::xml_attr(headers, "level"))
 
@@ -81,7 +87,11 @@ reformat_md <- function(file, first = FALSE) {
     }
   }
 
-  tinkr::to_md(md_doc, path = file)
+  stylesheet <- xml2::read_xml(system.file("extdata", "xml2md_gfm.xsl", package = "altdoc"))
+
+  out <- xslt::xml_xslt(md_doc, stylesheet = stylesheet)
+  writeLines(out, file)
+
 
 }
 
