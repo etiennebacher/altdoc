@@ -48,12 +48,9 @@ jobs:
           python3 -m pip install mkdocs-material   # install material theme
 
       - name: Install R dependencies
-        run: |
-          install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-      - name: Check
-        run: |
-          options(crayon.enabled = TRUE)
-          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-        shell: Rscript {0}
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
