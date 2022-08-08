@@ -111,3 +111,15 @@ extract_import_bib <- function(filename, path = path) {
   }
 
 }
+
+# Taken from https://github.com/ropensci/tinkr/blob/main/R/utils.R
+# (only returns the body in my case)
+split_yaml_body = function(x) {
+  i <- grep('^---\\s*$', x)
+  n <- length(x)
+  res <- if (n < 2 || length(i) < 2 || (i[1] > 1 && !is_blank(x[seq(i[1] - 1)]))) {
+    return(x)
+  } else {
+    return(if (i[2] == n) character() else x[(i[2] + 1):n])
+  }
+}

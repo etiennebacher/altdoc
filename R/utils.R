@@ -329,3 +329,8 @@ convert_path <- function (path = ".") {
   path <- normalizePath(path)
   return(path)
 }
+
+# taken from https://github.com/ropensci/tinkr/blob/main/R/md_ns.R
+md_ns <- function() {
+  structure(c(md = "http://commonmark.org/xml/1.0"), class = "xml_namespace")
+}

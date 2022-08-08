@@ -345,9 +345,15 @@ add_vignettes <- function(path = path) {
 # Check whether vignettes call child documents
 manage_child_vignettes <- function(file, path = path) {
 
-  children <- xml2::read_xml(commonmark::markdown_xml(file))
+  x <- readLines(file, warn = FALSE)
 
-  children <- xml2::xml_find_all(children, xpath = ".//md:code_block")
+  children <- xml2::read_xml(
+    commonmark::markdown_xml(
+      split_yaml_body(x)
+    )
+  )
+
+  children <- xml2::xml_find_all(children, xpath = ".//md:code_block", md_ns())
   children <- xml2::xml_attr(children, attr = "child")
 
   children <- children[!is.na(children)]
