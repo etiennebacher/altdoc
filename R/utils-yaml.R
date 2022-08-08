@@ -123,3 +123,12 @@ split_yaml_body = function(x) {
     return(if (i[2] == n) character() else x[(i[2] + 1):n])
   }
 }
+
+# Same source as above
+is_blank <- function (x) {
+  if (length(x)) {
+    all(grepl("^\\s*$", x))
+  } else {
+    TRUE
+  }
+}
