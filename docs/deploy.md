@@ -2,7 +2,7 @@
 
 ## How to deploy
 
-`docsify.js` and `docute` documentations can be deployed with several tools, which are detailed respectively [here](https://docsify.js.org/#/deploy) and [here](https://docute.org/guide/deployment). I'll just focus on GitHub Pages and Netlify here.
+`docsify.js`, `docute` and `mkdocs` documentations can be deployed with several tools, which are detailed respectively [here](https://docsify.js.org/#/deploy), [here](https://docute.egoist.dev/guide/deployment) and [here](https://www.mkdocs.org/user-guide/deploying-your-docs/). I'll just focus on GitHub Pages and Netlify here.
 
 
 ### GitHub Pages

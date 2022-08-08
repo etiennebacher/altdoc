@@ -15,7 +15,7 @@ This will create the folder 'docs'. If it already exists, a message will ask whe
 The `use_*()` functions will pre-populate your documentation with several files:
 
 * the `README` will be the homepage;
-* `NEWS` and `CODE_OF_CONDUCT` (if they exist) will be sections;
+* `NEWS`, `LICENSE` and `CODE_OF_CONDUCT` (if they exist) will be sections;
 * all `.Rd` files will be aggregated in a single file, called `reference.md`. If you don't want some functions to be referenced, you should replace `#'` by `#` in the source code and re-run `devtools::document()`.
 
 ## About vignettes
