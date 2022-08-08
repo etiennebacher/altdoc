@@ -1,3 +1,3 @@
-# altdoc 0.1.0.9000
+# altdoc 0.1.0
 
 * First version.

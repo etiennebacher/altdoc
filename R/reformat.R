@@ -56,6 +56,9 @@
 #'
 #' Also, if your README includes R comments in code chunks, these will not
 #' be modified.
+#'
+#' @return The original Markdown file, which was modified like the example above.
+#' @noRd
 
 reformat_md <- function(file, first = FALSE) {
 
