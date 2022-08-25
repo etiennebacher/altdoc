@@ -17,6 +17,12 @@
 #' \dontrun{
 #' # Create docute documentation
 #' use_docute()
+#'
+#' # Create docsify documentation
+#' use_docsify()
+#'
+#' # Create mkdocs documentation
+#' use_mkdocs()
 #' }
 
 use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
@@ -45,13 +51,6 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' @export
 #'
 #' @rdname init
-#'
-#' @examples
-#' \dontrun{
-#' # Create docsify documentation
-#' use_docsify()
-#' }
-
 
 use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
                         path = ".") {
@@ -94,11 +93,6 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
 #' @rdname init
-#' @examples
-#' \dontrun{
-#' # Create mkdocs documentation
-#' use_mkdocs()
-#' }
 
 use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
                        overwrite = FALSE, path = ".") {
