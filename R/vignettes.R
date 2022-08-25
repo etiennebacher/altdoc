@@ -71,55 +71,50 @@ transform_vignettes <- function(path = path) {
     extract_import_bib(destination, path = path)
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
 
-    print(paste0("Destination: ", destination))
-    print(paste0("Output dir: ", articles_path))
-    print(paste0("Output file: ", output_file))
-    fs::dir_tree()
-
-    # tryCatch(
-    #   {
-    #     suppressMessages(
-    #       suppressWarnings(
+    tryCatch(
+      {
+        suppressMessages(
+          suppressWarnings(
             rmarkdown::render(
               destination,
               output_dir = articles_path,
               output_file = output_file,
 
-              # quiet = TRUE,
+              quiet = TRUE,
               envir = new.env()
             )
-    #       )
-    #     )
-    #
-    #     ### If title too long, it was cut in several lines but only the last
-    #     ### one is read by docute so need to paste the title back together
-    #     new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
-    #     title_sep <- grep("=====", new_vignette)
-    #     if (length(title_sep) == 1) {
-    #       title <- new_vignette[1:title_sep-1]
-    #       title <- paste(title, collapse = " ")
-    #
-    #       # for some reason, having a colon in the title breaks the title when
-    #       # using mkdocs
-    #       if (doc_type(path = path) == "mkdocs") {
-    #         title <- gsub(":", " - ", title)
-    #       }
-    #
-    #       new_vignette <- new_vignette[-c(1:title_sep-1)]
-    #       new_vignette <- c(title, new_vignette)
-    #       writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
-    #     }
-    #
-    #     reformat_md(gsub("\\.Rmd", "\\.md", destination))
-    #
-    #     conversion_worked[i] <- TRUE
-    #   },
-    #
-    #   error = function(e) {
-    #     fs::file_delete(gsub("\\.md$", "\\.Rmd", destination))
-    #     conversion_worked[i] <- FALSE
-    #   }
-    # )
+          )
+        )
+
+        ### If title too long, it was cut in several lines but only the last
+        ### one is read by docute so need to paste the title back together
+        new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
+        title_sep <- grep("=====", new_vignette)
+        if (length(title_sep) == 1) {
+          title <- new_vignette[1:title_sep-1]
+          title <- paste(title, collapse = " ")
+
+          # for some reason, having a colon in the title breaks the title when
+          # using mkdocs
+          if (doc_type(path = path) == "mkdocs") {
+            title <- gsub(":", " - ", title)
+          }
+
+          new_vignette <- new_vignette[-c(1:title_sep-1)]
+          new_vignette <- c(title, new_vignette)
+          writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
+        }
+
+        reformat_md(gsub("\\.Rmd", "\\.md", destination))
+
+        conversion_worked[i] <- TRUE
+      },
+
+      error = function(e) {
+        fs::file_delete(gsub("\\.md$", "\\.Rmd", destination))
+        conversion_worked[i] <- FALSE
+      }
+    )
 
     cli::cli_progress_update()
   }
