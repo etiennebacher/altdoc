@@ -85,10 +85,6 @@ transform_vignettes <- function(path = path) {
               output_dir = articles_path,
               output_file = output_file,
 
-              # https://github.com/rstudio/rmarkdown/issues/2331
-              # https://github.com/r-lib/roxygen2/pull/1304
-              output_options = list(math_method = NULL),
-
               # quiet = TRUE,
               envir = new.env()
             )
