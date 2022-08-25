@@ -45,12 +45,10 @@ If you are new to Mkdocs, the themes "readthedocs" and "material" are among the 
 \dontrun{
 # Create docute documentation
 use_docute()
-}
-\dontrun{
+
 # Create docsify documentation
 use_docsify()
-}
-\dontrun{
+
 # Create mkdocs documentation
 use_mkdocs()
 }
