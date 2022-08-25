@@ -21,8 +21,6 @@ transform_vignettes <- function(path = path) {
   good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
-  print(paste0("Articles path: ", articles_path))
-
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
@@ -72,6 +70,10 @@ transform_vignettes <- function(path = path) {
     modify_yaml(destination)
     extract_import_bib(destination, path = path)
     output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
+
+    print(paste0("Destination: ", destination))
+    print(paste0("Output dir: ", articles_path))
+    print(paste0("Output file: ", output_file))
 
     tryCatch(
       {
