@@ -20,8 +20,7 @@ preview <- function(path = ".") {
       servr::httw(fs::path_abs("docs/"))
     } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
       # first build
-      # parenthesis in bash script keep "cd docs" only temporary
-      system(paste0("(cd ", fs::path_abs("docs", start = path), " && mkdocs build -q)"))
+      system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))
       # stop it directly to avoid opening the browser
       servr::daemon_stop()
 
@@ -30,7 +29,7 @@ preview <- function(path = ".") {
         fs::path_abs("docs/site", start = path),
         watch = fs::path_abs("docs/", start = path),
         handler = function(files) {
-          system("cd .. && mkdocs build -q")
+          system2("cd", ".. && mkdocs build -q")
         }
       )
     } else {

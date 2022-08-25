@@ -17,7 +17,7 @@ is_mkdocs_material <- function() {
     cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
     return(invisible())
   }
-  x <- grepl("mkdocs-material", system("pip3 list --local", intern = TRUE))
+  x <- grepl("mkdocs-material", system2("pip3", "list --local", stdout = TRUE))
   return(any(x))
 }
 
