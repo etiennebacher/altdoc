@@ -91,7 +91,8 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' is experimental.
 #'
 #' @details
-#' If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
+#' If you are new to Mkdocs, the themes "readthedocs" and "material" are among
+#' the most popular and developed. You can also see a list of themes here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 #' @rdname init
 
 use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,

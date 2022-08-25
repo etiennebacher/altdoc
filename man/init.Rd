@@ -39,7 +39,8 @@ folders are not modified.
 Init Docute, Docsify, or Mkdocs
 }
 \details{
-If you are new to Mkdocs, the themes "readthedocs" and "material" are among the most popular and developed. You can also see a list of themes here: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes.
+If you are new to Mkdocs, the themes "readthedocs" and "material" are among
+the most popular and developed. You can also see a list of themes here: \url{https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes}.
 }
 \examples{
 \dontrun{
