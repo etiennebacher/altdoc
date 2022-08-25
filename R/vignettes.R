@@ -21,6 +21,8 @@ transform_vignettes <- function(path = path) {
   good_path <- doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
+  print(paste0("Articles path: ", articles_path))
+
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {

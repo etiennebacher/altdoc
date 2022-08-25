@@ -18,7 +18,7 @@ test_that("transform_vignettes works on basic vignette", {
     warn = FALSE
   )
   create_local_package()
-  use_docute(path = getwd())
+  use_docute(path = getwd(), convert_vignettes = FALSE)
   fs::dir_create("vignettes")
   writeLines(original_rmd, "vignettes/basic.Rmd")
   expect_message(transform_vignettes(path = getwd()), regexp = "has been converted")
@@ -32,7 +32,7 @@ test_that("transform_vignettes doesn't change anything if no change in vignettes
     warn = FALSE
   )
   create_local_package()
-  use_docute(path = getwd())
+  use_docute(path = getwd(), convert_vignettes = FALSE)
   fs::dir_create("vignettes")
   writeLines(original_rmd, "vignettes/basic.Rmd")
   transform_vignettes(path = getwd())
