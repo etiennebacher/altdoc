@@ -73,8 +73,8 @@ transform_vignettes <- function(path = path) {
 
     tryCatch(
       {
-        suppressMessages(
-          suppressWarnings(
+        # suppressMessages(
+        #   suppressWarnings(
             rmarkdown::render(
               destination,
               output_dir = articles_path,
@@ -87,8 +87,8 @@ transform_vignettes <- function(path = path) {
               quiet = TRUE,
               envir = new.env()
             )
-          )
-        )
+        #   )
+        # )
 
         ### If title too long, it was cut in several lines but only the last
         ### one is read by docute so need to paste the title back together
