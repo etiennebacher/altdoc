@@ -37,6 +37,7 @@ test_that("transform_vignettes doesn't change anything if no change in vignettes
   writeLines(original_rmd, "vignettes/basic.Rmd")
   transform_vignettes(path = getwd())
   before <- fs::dir_tree()
+  print(before)
   vignette_before <- readLines("docs/articles/basic.Rmd", warn = FALSE)
   expect_message(transform_vignettes(path = getwd()), regexp = "No new vignette to convert")
   after <- fs::dir_tree()
