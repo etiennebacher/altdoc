@@ -36,7 +36,9 @@ remotes::install_github("etiennebacher/altdoc")
 
 **Experimental feature (feedback needed):**
 
-* automatically import vignettes, render them to Markdown, and add them to the sidebar or navbar. More details in the section "Get started" on the website.
+* automatically import vignettes, render them to Markdown, and add them to the 
+sidebar or navbar. *This feature requires `rmarkdown` version 2.15 or higher*.
+More details in the section "Get started" on the website.
 
 
 ## Functions
