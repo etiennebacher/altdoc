@@ -19,7 +19,7 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
 
   path <- convert_path(path)
 
-  if (!fs::dir_exists(paste0(path, "/docs"))) {
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
     cli::cli_alert_danger("Folder {.file docs} doesn't exist. You must create it with one of the {.code use_*()} functions first.")
     return(invisible())
   }
