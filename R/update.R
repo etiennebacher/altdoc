@@ -13,8 +13,11 @@
 #' @return No value returned. Updates files in folder 'docs'.
 #'
 #' @examples
+#' if (interactive()) {
 #' # Update documentation
 #' update_docs()
+#' }
+
 update_docs <- function(convert_vignettes = TRUE, path = ".") {
 
   path <- convert_path(path)
