@@ -21,8 +21,6 @@ they exist). Convert and add new of modified vignettes to the documentation.
 This will leave every other files unmodified.
 }
 \examples{
-\dontrun{
 # Update documentation
 update_docs()
-}
 }

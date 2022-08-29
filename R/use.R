@@ -14,7 +14,6 @@
 #' @rdname init
 #'
 #' @examples
-#' \dontrun{
 #' # Create docute documentation
 #' use_docute()
 #'
@@ -23,12 +22,16 @@
 #'
 #' # Create mkdocs documentation
 #' use_mkdocs()
-#' }
 
 use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
                        path = ".") {
 
   path <- convert_path(path)
+
+  if (!dir_is_package(path)) {
+    cli::cli_alert_danger("{.code altdoc} only works in packages.")
+    return(invisible())
+  }
 
   x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
@@ -56,6 +59,11 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
                         path = ".") {
 
   path <- convert_path(path)
+
+  if (!dir_is_package(path)) {
+    cli::cli_alert_danger("{.code altdoc} only works in packages.")
+    return(invisible())
+  }
 
   x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())
@@ -99,6 +107,11 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
                        overwrite = FALSE, path = ".") {
 
   path <- convert_path(path)
+
+  if (!dir_is_package(path)) {
+    cli::cli_alert_danger("{.code altdoc} only works in packages.")
+    return(invisible())
+  }
 
   x <- check_docs_exists(overwrite = overwrite, path = path)
   if (!is.null(x)) return(invisible())

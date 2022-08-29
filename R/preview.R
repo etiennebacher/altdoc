@@ -8,10 +8,8 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' # Preview documentation
 #' preview()
-#' }
 
 preview <- function(path = ".") {
 

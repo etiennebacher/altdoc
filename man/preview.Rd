@@ -18,8 +18,6 @@ Preview the documentation in a webpage or in viewer
 }
 \examples{
 
-\dontrun{
 # Preview documentation
 preview()
-}
 }

@@ -63,7 +63,6 @@ folders are not modified.
 ### Examples
 
 ```r
-## Not run: 
 # Create docute documentation
 use_docute()
 
@@ -72,8 +71,6 @@ use_docsify()
 
 # Create mkdocs documentation
 use_mkdocs()
-
-## End(Not run)
 ```
 
 
@@ -108,11 +105,8 @@ Viewer.
 ### Examples
 
 ```r
-## Not run: 
 # Preview documentation
 preview()
-
-## End(Not run)
 ```
 
 
@@ -153,11 +147,8 @@ No value returned. Updates files in folder 'docs'.
 ### Examples
 
 ```r
-## Not run: 
 # Update documentation
 update_docs()
-
-## End(Not run)
 ```
 
 

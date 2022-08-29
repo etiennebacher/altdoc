@@ -13,13 +13,17 @@
 #' @return No value returned. Updates files in folder 'docs'.
 #'
 #' @examples
-#' \dontrun{
 #' # Update documentation
 #' update_docs()
-#' }
 update_docs <- function(convert_vignettes = TRUE, path = ".") {
 
   path <- convert_path(path)
+
+  if (!fs::dir_exists(paste0(path, "/docs"))) {
+    cli::cli_alert_danger("Folder {.file docs} doesn't exist. You must create it with one of the {.code use_*()} functions first.")
+    return(invisible())
+  }
+
   good_path <- doc_path(path = path)
 
   cli::cli_h1("Update basic files")

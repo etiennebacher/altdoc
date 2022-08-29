@@ -334,3 +334,7 @@ convert_path <- function (path = ".") {
 md_ns <- function() {
   structure(c(md = "http://commonmark.org/xml/1.0"), class = "xml_namespace")
 }
+
+dir_is_package <- function(path) {
+  fs::file_exists(paste0(path, "/DESCRIPTION"))
+}
