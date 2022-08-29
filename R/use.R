@@ -14,6 +14,7 @@
 #' @rdname init
 #'
 #' @examples
+#' if (interactive()) {
 #' # Create docute documentation
 #' use_docute()
 #'
@@ -22,6 +23,7 @@
 #'
 #' # Create mkdocs documentation
 #' use_mkdocs()
+#' }
 
 use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
                        path = ".") {

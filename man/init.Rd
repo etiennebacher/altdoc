@@ -43,6 +43,7 @@ If you are new to Mkdocs, the themes "readthedocs" and "material" are among
 the most popular and developed. You can also see a list of themes here: \url{https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes}.
 }
 \examples{
+if (interactive()) {
 # Create docute documentation
 use_docute()
 
@@ -51,4 +52,5 @@ use_docsify()
 
 # Create mkdocs documentation
 use_mkdocs()
+}
 }

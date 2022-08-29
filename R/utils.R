@@ -186,11 +186,6 @@ final_steps <- function(x, path = ".") {
 # Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function(overwrite = FALSE, path = ".") {
-
-  if (on_ci()) {
-    return(1)
-  }
-
   if (fs::dir_exists(fs::path_abs("docs", start = path)) &&
       !folder_is_empty(fs::path_abs("docs", start = path))) {
     if (isTRUE(overwrite)) {
@@ -343,8 +338,4 @@ md_ns <- function() {
 
 dir_is_package <- function(path) {
   fs::file_exists(fs::path_abs("DESCRIPTION", start = path))
-}
-
-on_ci <- function() {
-  isTRUE(as.logical(Sys.getenv("CI")))
 }
