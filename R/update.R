@@ -41,6 +41,10 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
   update_file("NEWS.md", path = path)
   update_file("CODE_OF_CONDUCT.md", path = path)
   update_file("LICENSE.md", path = path)
+  if (need_to_bump_version(path)) {
+    update_version_number(path)
+    cli::cli_alert_success("Bumped version in documentation footer.")
+  }
 
   # Update functions reference
   make_reference(update = TRUE, path = path)
@@ -115,4 +119,25 @@ update_file <- function(filename, path = ".") {
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
   reformat_md(docs_file)
+}
+
+update_version_number <- function(path) {
+  doc_type <- doc_type(path)
+  if (doc_type %in% c("docute", "docsify")) {
+    index <- readLines("docs/index.html", warn = FALSE)
+    index2 <- gsub("\\t", "", index)
+    index2 <- trimws(index2)
+    if (doc_type == "docsify") {
+      footer <- which(grepl("^var footer =", index2))
+    } else if (doc_type == "docute") {
+      footer <- which(grepl("^footer:", index2))
+    }
+    if (length(footer) != 1) return(invisible)
+    old_footer <- get_footer(path)
+    new_footer <- gsub(doc_version(path), pkg_version(path), old_footer)
+    index[footer] <- new_footer
+    writeLines(index, "docs/index.html")
+  } else if (doc_type == "mkdocs") {
+    # TODO ? Or is it linked to the github page ?
+  }
 }
