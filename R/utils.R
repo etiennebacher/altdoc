@@ -55,7 +55,11 @@ import_readme <- function(path = ".") {
 
   good_path <- doc_path(path = path)
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
-    fs::file_copy(fs::path_abs("README.md", start = path), paste0(good_path, "/README.md"), overwrite = TRUE)
+    fs::file_copy(
+      fs::path_abs("README.md", start = path),
+      paste0(good_path, "/README.md"),
+      overwrite = TRUE
+    )
     cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
@@ -93,7 +97,10 @@ import_coc <- function(path = ".") {
 
   good_path <- doc_path(path = path)
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
-    fs::file_copy("CODE_OF_CONDUCT.md", paste0(good_path, "/CODE_OF_CONDUCT.md"))
+    fs::file_copy(
+      "CODE_OF_CONDUCT.md",
+      paste0(good_path, "/CODE_OF_CONDUCT.md")
+    )
     cli::cli_alert_success("{.file Code of Conduct} imported.")
   } else {
     cli::cli_alert_info("No {.file Code of Conduct} to include.")
@@ -227,16 +234,12 @@ folder_is_empty <- function(x) {
 
 # Get package name
 pkg_name <- function() {
-
   desc::desc_get_field("Package", default = NULL)
-
 }
 
 # Get package version
 pkg_version <- function() {
-
   as.character(desc::desc_get_version())
-
 }
 
 # Get package Github URL
@@ -329,11 +332,6 @@ convert_path <- function (path = ".") {
   if (path == ".") path <- here::here()
   path <- normalizePath(path)
   return(path)
-}
-
-# taken from https://github.com/ropensci/tinkr/blob/main/R/md_ns.R
-md_ns <- function() {
-  structure(c(md = "http://commonmark.org/xml/1.0"), class = "xml_namespace")
 }
 
 dir_is_package <- function(path) {
