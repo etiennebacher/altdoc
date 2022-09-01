@@ -63,6 +63,7 @@ folders are not modified.
 ### Examples
 
 ```r
+if (interactive()) {
 # Create docute documentation
 use_docute()
 
@@ -71,6 +72,7 @@ use_docsify()
 
 # Create mkdocs documentation
 use_mkdocs()
+}
 ```
 
 
@@ -147,8 +149,10 @@ No value returned. Updates files in folder 'docs'.
 ### Examples
 
 ```r
+if (interactive()) {
 # Update documentation
 update_docs()
+}
 ```
 
 
