@@ -9,3 +9,4 @@
 ^CRAN-RELEASE$
 \.gif$
 ^codecov\.yml$
+^CRAN-SUBMISSION$

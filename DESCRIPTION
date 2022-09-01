@@ -16,7 +16,6 @@ URL: https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
 Imports: 
     cli,
-    commonmark,
     desc,
     fs,
     here,
@@ -25,11 +24,11 @@ Imports:
     rmarkdown,
     rstudioapi,
     servr,
+    tinkr,
     tools,
     usethis,
     utils,
     xml2,
-    xslt,
     yaml
 Suggests: 
     covr,
