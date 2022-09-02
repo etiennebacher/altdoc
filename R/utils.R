@@ -53,7 +53,7 @@ create_index <- function(x, path = ".") {
 
 import_readme <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
     fs::file_copy(
       fs::path_abs("README.md", start = path),
@@ -77,7 +77,7 @@ import_readme <- function(path = ".") {
 
 import_news <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   file <- which_news()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
@@ -95,7 +95,7 @@ import_news <- function(path = ".") {
 
 import_coc <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy(
       "CODE_OF_CONDUCT.md",
@@ -111,7 +111,7 @@ import_coc <- function(path = ".") {
 
 import_license <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   file <- which_license()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file License / Licence} to include.")
@@ -193,16 +193,18 @@ final_steps <- function(x, path = ".") {
 # Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function(overwrite = FALSE, path = ".") {
-  if (fs::dir_exists(fs::path_abs("docs", start = path)) &&
-      !folder_is_empty(fs::path_abs("docs", start = path))) {
+
+  path_to_docs <- fs::path_abs("docs", start = path)
+
+  if (fs::dir_exists(path_to_docs) && !folder_is_empty(path_to_docs)) {
     if (isTRUE(overwrite)) {
-      fs::dir_delete(fs::path_abs("docs", start = path))
+      fs::dir_delete(path_to_docs)
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        fs::dir_delete(fs::path_abs("docs", start = path))
+        fs::dir_delete(path_to_docs)
       } else {
         cli::cli_alert_info("Nothing was modified.")
         return(1)
@@ -210,8 +212,8 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
     }
   }
 
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
-    fs::dir_create(fs::path_abs("docs", start = path))
+  if (!fs::dir_exists(path_to_docs)) {
+    fs::dir_create(path_to_docs)
   }
 
   return(NULL)
