@@ -225,6 +225,31 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
   }
 }
 
+check_tools <- function(tool, theme) {
+  if (tool == "mkdocs") {
+    if (!is_mkdocs()) {
+      cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
+      cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
+      cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
+      stop_quietly()
+    }
+
+    if (!is.null(theme) && theme == "material") {
+      if (!is_mkdocs_material()) {
+        cli::cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
+        cli::cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
+        stop_quietly()
+      }
+    }
+  } else if (tool == "sphinx") {
+    if (!is_sphinx()) {
+      cli::cli_alert_danger("Apparently, {.code sphinx} is not installed on your system.")
+      cli::cli_alert_info("See here to know how to install it: {.url https://www.sphinx-doc.org/en/master/usage/installation.html}")
+      stop_quietly()
+    }
+  }
+}
+
 
 # https://stackoverflow.com/a/42945293/11598948
 stop_quietly <- function() {

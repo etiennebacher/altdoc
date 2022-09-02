@@ -87,22 +87,7 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
   path <- convert_path(path)
   check_is_package(path)
   check_docs_exists(overwrite, path)
-
-  # Create basic structure
-  if (!is_mkdocs()) {
-    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
-    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
-    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
-    return(invisible())
-  }
-
-  if (!is.null(theme) && theme == "material") {
-    if (!is_mkdocs_material()) {
-      cli::cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
-      cli::cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
-      return(invisible())
-    }
-  }
+  check_tools("mkdocs", theme)
 
   system2("mkdocs", paste("new", fs::path_abs("docs", start = path), "-q"))
   system2("cd", paste(fs::path_abs("docs", start = path), "&& mkdocs build -q"))
