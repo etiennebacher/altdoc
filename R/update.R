@@ -124,7 +124,7 @@ update_file <- function(file, path = ".") {
 update_version_number <- function(path) {
   doc_type <- doc_type(path)
   if (doc_type %in% c("docute", "docsify")) {
-    index <- readLines("docs/index.html", warn = FALSE)
+    index <- .readlines("docs/index.html")
     index2 <- gsub("\\t", "", index)
     index2 <- trimws(index2)
     if (doc_type == "docsify") {
