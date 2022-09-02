@@ -130,11 +130,11 @@ build_docs <- function(path = ".") {
   cli::cli_h1("Docs structure")
   cli::cli_alert_success("Folder {.file docs} created.")
 
-  import_readme(path = path)
-  import_news(path = path)
-  import_coc(path = path)
-  import_license(path = path)
-  make_reference(path = path)
+  import_readme(path)
+  import_news(path)
+  import_coc(path)
+  import_license(path)
+  make_reference(path)
 }
 
 # Last things to do in initialization

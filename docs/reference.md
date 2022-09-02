@@ -23,25 +23,25 @@ Init Docute, Docsify, or Mkdocs
 
 <table>
 <tbody>
-<tr class="odd" data-valign="top">
+<tr class="odd" style="vertical-align: top;">
 <td><code>convert_vignettes</code></td>
 <td><p>Do you want to convert and import vignettes if you have some?
 This will not modify files in the folder 'vignettes'. This feature is
 experimental.</p></td>
 </tr>
-<tr class="even" data-valign="top">
+<tr class="even" style="vertical-align: top;">
 <td><code>overwrite</code></td>
 <td><p>Overwrite the folder 'docs' if it already exists. If
 <code>FALSE</code> (default), there will be an interactive choice to
 make in the console to overwrite. If <code>TRUE</code>, the folder
 'docs' is automatically overwritten.</p></td>
 </tr>
-<tr class="odd" data-valign="top">
+<tr class="odd" style="vertical-align: top;">
 <td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
 </tr>
-<tr class="even" data-valign="top">
+<tr class="even" style="vertical-align: top;">
 <td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
@@ -91,7 +91,7 @@ Preview the documentation in a webpage or in viewer
 
 <table>
 <tbody>
-<tr class="odd" data-valign="top">
+<tr class="odd" style="vertical-align: top;">
 <td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
@@ -129,12 +129,12 @@ the documentation. This will leave every other files unmodified.
 
 <table>
 <tbody>
-<tr class="odd" data-valign="top">
+<tr class="odd" style="vertical-align: top;">
 <td><code>convert_vignettes</code></td>
 <td><p>Automatically convert and import vignettes if you have some. This
 will not modify files in the folder 'vignettes'.</p></td>
 </tr>
-<tr class="even" data-valign="top">
+<tr class="even" style="vertical-align: top;">
 <td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>

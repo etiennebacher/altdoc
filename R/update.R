@@ -27,29 +27,29 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
     return(invisible())
   }
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
 
   cli::cli_h1("Update basic files")
 
   # Update README
   update_file("README.md")
-  move_img_readme(path = path)
-  replace_img_paths_readme(path = path)
+  move_img_readme(path)
+  replace_img_paths_readme(path)
   reformat_md(paste0(good_path, "/README.md"))
 
   # Update changelog, CoC, License
-  update_file("NEWS.md", path = path)
-  update_file("CODE_OF_CONDUCT.md", path = path)
-  update_file("LICENSE.md", path = path)
+  update_file("NEWS.md", path)
+  update_file("CODE_OF_CONDUCT.md", path)
+  update_file("LICENSE.md", path)
 
   # Update functions reference
-  make_reference(update = TRUE, path = path)
+  make_reference(update = TRUE, path)
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Update vignettes")
-    transform_vignettes(path = path)
-    add_vignettes(path = path)
+    transform_vignettes(path)
+    add_vignettes(path)
   }
 
   cli::cli_h1("Complete")
@@ -67,36 +67,36 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
 #         - if it changed: overwrite it
 #         - if it didn't: info message
 
-update_file <- function(filename, path = ".") {
+update_file <- function(file, path = ".") {
 
-  filename_message <- if (filename == "NEWS.md") {
+  file_message <- if (file == "NEWS.md") {
     "NEWS / Changelog"
-  } else if (filename == "LICENSE.md") {
+  } else if (file == "LICENSE.md") {
     "License / Licence"
-  } else if (filename == "CODE_OF_CONDUCT.md") {
+  } else if (file == "CODE_OF_CONDUCT.md") {
     "Code of Conduct"
-  } else if (filename == "README.md") {
+  } else if (file == "README.md") {
     "README"
   }
 
-  orig_file <- if (filename == "NEWS.md") {
+  orig_file <- if (file == "NEWS.md") {
     which_news()
-  } else if (filename == "LICENSE.md") {
+  } else if (file == "LICENSE.md") {
     which_license()
   } else {
-    fs::path_abs(filename, start = path)
+    fs::path_abs(file, start = path)
   }
-  docs_file <- paste0(doc_path(path = path), "/", filename)
-  file_to_edit <- if (doc_type(path = path) == "docute") {
+  docs_file <- paste0(doc_path(path), "/", file)
+  file_to_edit <- if (doc_type(path) == "docute") {
     fs::path_abs("docs/index.html", start = path)
-  } else if (doc_type(path = path) == "docsify") {
+  } else if (doc_type(path) == "docsify") {
     fs::path_abs("docs/_sidebar.md", start = path)
-  } else if (doc_type(path = path) == "mkdocs") {
+  } else if (doc_type(path) == "mkdocs") {
     fs::path_abs("docs/mkdocs.yml", start = path)
   }
 
   if (is.null(orig_file) || !fs::file_exists(orig_file)) {
-    cli::cli_alert_info("No {.file {filename_message}} to include.")
+    cli::cli_alert_info("No {.file {file_message}} to include.")
     return(invisible())
   }
 
@@ -104,13 +104,13 @@ update_file <- function(filename, path = ".") {
     x <- .readlines(orig_file)
     y <- .readlines(docs_file)
     if (identical(x, y)) {
-      cli::cli_alert_info("No changes in {.file {filename_message}}.")
+      cli::cli_alert_info("No changes in {.file {file_message}}.")
       return(invisible())
     } else {
-      cli::cli_alert_success("{.file {filename_message}} updated.")
+      cli::cli_alert_success("{.file {file_message}} updated.")
     }
   } else {
-    cli::cli_alert_info("{.file {filename_message}} was imported for the first time. You should also update {.file {file_to_edit}}.")
+    cli::cli_alert_info("{.file {file_message}} was imported for the first time. You should also update {.file {file_to_edit}}.")
   }
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
