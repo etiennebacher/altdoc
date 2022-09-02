@@ -29,25 +29,14 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
                        path = ".") {
 
   path <- convert_path(path)
-
-  if (!dir_is_package(path)) {
-    cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    stop_quietly()
-  }
-
+  check_is_package(path)
   check_docs_exists(overwrite, path)
 
   create_index("docute", path)
   build_docs(path)
-
-  if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
-    transform_vignettes(path)
-    add_vignettes(path)
-  }
+  build_vignettes(convert_vignettes, path)
 
   final_steps(x = "docute", path)
-
 }
 
 #' @export
@@ -58,12 +47,7 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
                         path = ".") {
 
   path <- convert_path(path)
-
-  if (!dir_is_package(path)) {
-    cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    stop_quietly()
-  }
-
+  check_is_package(path)
   check_docs_exists(overwrite, path)
 
   create_index("docsify", path = path)
@@ -75,12 +59,7 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
     fs::path_abs("docs/_sidebar.md", start = path)
   )
 
-  ### VIGNETTES
-  if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
-    transform_vignettes(path = path)
-    add_vignettes(path = path)
-  }
+  build_vignettes(convert_vignettes, path)
 
   final_steps(x = "docsify", path = path)
 
@@ -98,19 +77,15 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #'
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among
-#' the most popular and developed. You can also see a list of themes here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
+#' the most popular and developed. You can also see a list of themes here:
+#' <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 #' @rdname init
 
 use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
                        overwrite = FALSE, path = ".") {
 
   path <- convert_path(path)
-
-  if (!dir_is_package(path)) {
-    cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    stop_quietly()
-  }
-
+  check_is_package(path)
   check_docs_exists(overwrite, path)
 
   # Create basic structure
@@ -202,12 +177,7 @@ nav:
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
-  ### VIGNETTES
-  if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
-    transform_vignettes(path = path)
-    add_vignettes(path = path)
-  }
+  build_vignettes(convert_vignettes, path)
 
   final_steps(x = "mkdocs", path = path)
 }

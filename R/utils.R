@@ -137,6 +137,14 @@ build_docs <- function(path = ".") {
   make_reference(update = FALSE, path)
 }
 
+build_vignettes <- function(convert_vignettes, path) {
+  if (isTRUE(convert_vignettes)) {
+    cli::cli_h1("Vignettes")
+    transform_vignettes(path = path)
+    add_vignettes(path = path)
+  }
+}
+
 # Last things to do in initialization
 
 final_steps <- function(x, path = ".") {
@@ -345,7 +353,14 @@ convert_path <- function (path = ".") {
 dir_is_package <- function(path) {
   fs::file_exists(fs::path_abs("DESCRIPTION", start = path))
 }
+check_is_package <- function(path) {
+  if (!dir_is_package(path)) {
+    cli::cli_alert_danger("{.code altdoc} only works in packages.")
+    stop_quietly()
+  }
+}
 
 .readlines <- function(x) {
   readLines(x, warn = FALSE)
 }
+
