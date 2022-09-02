@@ -95,7 +95,7 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
   yaml <- paste0(
     "
 ### Basic information
-site_name: ", pkg_name(),
+site_name: ", pkg_name(path),
 if (!is.null(theme)) {
   paste0("
 theme:
@@ -126,8 +126,8 @@ if (!is.null(theme) && theme == "material") {
 "
 
 ### Repo information
-repo_url: ", gh_url(), "
-repo_name: ", pkg_name(), "
+repo_url: ", gh_url(path), "
+repo_name: ", pkg_name(path), "
 
 ### Plugins
 plugins:
