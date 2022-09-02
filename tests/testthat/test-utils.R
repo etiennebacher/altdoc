@@ -64,6 +64,7 @@ test_that("need_to_bump_version() works", {
   expect_true(need_to_bump_version(getwd()))
   update_version_number(getwd())
   expect_equal(doc_version(getwd()), "0.1.0")
+  expect_equal(altdoc_version_in_footer(getwd()), altdoc_version())
 })
 
 test_that("need_to_bump_version() works", {
@@ -78,4 +79,5 @@ test_that("need_to_bump_version() works", {
   expect_true(need_to_bump_version(getwd()))
   update_version_number(getwd())
   expect_equal(doc_version(getwd()), "0.1.0")
+  expect_equal(altdoc_version_in_footer(getwd()), altdoc_version())
 })

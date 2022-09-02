@@ -36,7 +36,7 @@ create_index <- function(x, path = ".") {
     footer = sprintf(
       "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
       gh_url(path), pkg_name(path), pkg_version(path),
-      utils::packageVersion("altdoc")
+      altdoc_version()
     ),
     github_link = gh_url(path)
   )
@@ -360,8 +360,23 @@ doc_version <- function(path) {
   ))[1]
 }
 
+altdoc_version_in_footer <- function(path) {
+  footer <- get_footer(path)
+  unlist(regmatches(
+    footer, gregexpr("(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)", footer)
+  ))[2]
+}
+
+altdoc_version <- function() {
+  as.character(utils::packageVersion("altdoc"))
+}
+
 need_to_bump_version <- function(path) {
   doc_version(path) != pkg_version(path)
+}
+
+need_to_bump_altdoc_version <- function(path) {
+  altdoc_version_in_footer(path) != altdoc_version()
 }
 
 .readlines <- function(x) {
