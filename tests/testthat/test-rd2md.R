@@ -8,9 +8,9 @@
 #   prod <- writeLines(prod, tmp)
 #   # remove the header because it changes depending on whether test on cran
 #   # or on local machine
-#   prod <- readLines(tmp, warn = FALSE)[-1]
+#   prod <- .readlines(tmp)[-1]
 #
-#   ref <- readLines(testthat::test_path("examples/examples-man/between.md"), warn = FALSE)
+#   ref <- .readlines(testthat::test_path("examples/examples-man/between.md"))
 #
 #   expect_identical(prod, ref)
 # })

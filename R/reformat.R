@@ -114,7 +114,7 @@ move_img_readme <- function(path = ".") {
 replace_img_paths_readme <- function(path = ".") {
 
   good_path <- doc_path(path = path)
-  file_content <- readLines(paste0(good_path, "/README.md"), warn = FALSE)
+  file_content <- .readlines(paste0(good_path, "/README.md"))
   img_paths <- img_paths_readme(path = path)
 
   # generate the new paths
@@ -138,7 +138,7 @@ replace_img_paths_readme <- function(path = ".") {
 img_paths_readme <- function(path = ".") {
 
   good_path <- doc_path(path = path)
-  file_content <- paste(readLines(paste0(good_path, "/README.md"), warn = FALSE), collapse = "\n")
+  file_content <- paste(.readlines(paste0(good_path, "/README.md")), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
   # (second one)
@@ -201,7 +201,7 @@ replace_figures_rmd <- function(path = ".") {
 
   for (i in seq_along(vignettes)) {
 
-    file_content <- paste(readLines(paste0(vignettes_path, "/", vignettes[i]), warn = FALSE), collapse = "\n")
+    file_content <- paste(.readlines(paste0(vignettes_path, "/", vignettes[i])), collapse = "\n")
 
     # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
     x <- unlist(regmatches(
@@ -273,7 +273,7 @@ fix_rmd_figures_path <- function(path = ".") {
   warn <- FALSE
   for (i in articles) {
 
-    orig <- readLines(i, warn = FALSE)
+    orig <- .readlines(i)
     if (doc_type() %in% c("docsify", "docute")) {
       mod <- gsub('"figures/', '"articles/figures/', orig)
       mod <- gsub("'figures/", "'articles/figures/", mod)

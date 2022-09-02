@@ -53,7 +53,7 @@ create_index <- function(x, path = ".") {
 
 import_readme <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
     fs::file_copy(
       fs::path_abs("README.md", start = path),
@@ -77,7 +77,7 @@ import_readme <- function(path = ".") {
 
 import_news <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   file <- which_news()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
@@ -95,7 +95,7 @@ import_news <- function(path = ".") {
 
 import_coc <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy(
       "CODE_OF_CONDUCT.md",
@@ -111,7 +111,7 @@ import_coc <- function(path = ".") {
 
 import_license <- function(path = ".") {
 
-  good_path <- doc_path(path = path)
+  good_path <- doc_path(path)
   file <- which_license()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file License / Licence} to include.")
@@ -130,11 +130,11 @@ build_docs <- function(path = ".") {
   cli::cli_h1("Docs structure")
   cli::cli_alert_success("Folder {.file docs} created.")
 
-  import_readme(path = path)
-  import_news(path = path)
-  import_coc(path = path)
-  import_license(path = path)
-  make_reference(path = path)
+  import_readme(path)
+  import_news(path)
+  import_coc(path)
+  import_license(path)
+  make_reference(update = FALSE, path)
 }
 
 # Last things to do in initialization
@@ -143,7 +143,7 @@ final_steps <- function(x, path = ".") {
 
   if (x == "docute") {
 
-    index <- readLines(fs::path_abs("docs/index.html", start = path))
+    index <- .readlines(fs::path_abs("docs/index.html", start = path))
     if (!fs::file_exists(fs::path_abs("NEWS.md", start = path))) {
       index <- index[-which(grepl("/NEWS", index))]
     }
@@ -157,7 +157,7 @@ final_steps <- function(x, path = ".") {
 
   } else if (x == "docsify") {
 
-    sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
+    sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
     if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
       sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
     }
@@ -193,16 +193,18 @@ final_steps <- function(x, path = ".") {
 # Check that folder 'docs' does not already exist, or is empty.
 
 check_docs_exists <- function(overwrite = FALSE, path = ".") {
-  if (fs::dir_exists(fs::path_abs("docs", start = path)) &&
-      !folder_is_empty(fs::path_abs("docs", start = path))) {
+
+  path_to_docs <- fs::path_abs("docs", start = path)
+
+  if (fs::dir_exists(path_to_docs) && !folder_is_empty(path_to_docs)) {
     if (isTRUE(overwrite)) {
-      fs::dir_delete(fs::path_abs("docs", start = path))
+      fs::dir_delete(path_to_docs)
     } else {
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
       if (delete_docs) {
-        fs::dir_delete(fs::path_abs("docs", start = path))
+        fs::dir_delete(path_to_docs)
       } else {
         cli::cli_alert_info("Nothing was modified.")
         return(1)
@@ -210,8 +212,8 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
     }
   }
 
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
-    fs::dir_create(fs::path_abs("docs", start = path))
+  if (!fs::dir_exists(path_to_docs)) {
+    fs::dir_create(path_to_docs)
   }
 
   return(NULL)
@@ -271,7 +273,7 @@ doc_type <- function(path = ".") {
   if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
 
   if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-    file <- paste(readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE),
+    file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
                   collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
@@ -337,7 +339,7 @@ dir_is_package <- function(path) {
 get_footer <- function(path) {
   doc_type <- doc_type(path)
   if (doc_type %in% c("docute", "docsify")) {
-    index <- readLines("docs/index.html", warn = FALSE)
+    index <- .readlines("docs/index.html")
     index <- gsub("\\t", "", index)
     index <- trimws(index)
     if (doc_type == "docsify") {
@@ -360,4 +362,8 @@ doc_version <- function(path) {
 
 need_to_bump_version <- function(path) {
   doc_version(path) != pkg_version(path)
+}
+
+.readlines <- function(x) {
+  readLines(x, warn = FALSE)
 }

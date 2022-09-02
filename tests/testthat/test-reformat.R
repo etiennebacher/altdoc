@@ -26,8 +26,8 @@ Hello again
 "
   cat(txt, file = tmp)
   reformat_md(tmp)
-  prod <- readLines(tmp, warn = FALSE)
-  ref <- readLines(testthat::test_path("examples/examples-reformat/after-first-false.md"), warn = FALSE)
+  prod <- .readlines(tmp)
+  ref <- .readlines(testthat::test_path("examples/examples-reformat/after-first-false.md"))
 
   expect_identical(prod, ref)
 })
@@ -63,8 +63,8 @@ Hello again
 "
   cat(txt, file = tmp)
   reformat_md(tmp, first = TRUE)
-  prod <- readLines(tmp, warn = FALSE)
-  ref <- readLines(testthat::test_path("examples/examples-reformat/after-first-true.md"), warn = FALSE)
+  prod <- .readlines(tmp)
+  ref <- .readlines(testthat::test_path("examples/examples-reformat/after-first-true.md"))
 
   expect_identical(prod, ref)
 })
@@ -74,9 +74,8 @@ Hello again
 
 test_that("replace_figures_rmd works", {
   # setup
-  original_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "with-figure.Rmd"),
-    warn = FALSE
+  original_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "with-figure.Rmd")
   )
   create_local_package()
   use_docute(convert_vignettes = FALSE, path = getwd())

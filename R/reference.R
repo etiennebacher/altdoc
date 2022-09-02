@@ -39,7 +39,7 @@ rd2md <- function(rdfile) {
   cat("\n\n---", file = tmp_md, append = TRUE)
 
   # Get function title and remove HTML tags left
-  md <- readLines(tmp_md, warn = FALSE)
+  md <- .readlines(tmp_md)
   md <- md[-c(1:10)]
 
   # Title to put in sidebar

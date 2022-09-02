@@ -189,24 +189,23 @@ nav:
   )
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
-  yaml <- readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE)
-  if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
+  fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
+  build_docs(path = path)
+
+  yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
+  if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }
-  if (!fs::file_exists(fs::path_abs("docs/LICENSE.md", start = path))) {
+  if (!fs::file_exists(fs::path_abs("docs/docs/LICENSE.md", start = path))) {
     yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
   }
-  if (!fs::file_exists(fs::path_abs("docs/CODE_OF_CONDUCT.md", start = path))) {
+  if (!fs::file_exists(fs::path_abs("docs/docs/CODE_OF_CONDUCT.md", start = path))) {
     yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
   }
-  if (!fs::file_exists(fs::path_abs("docs/reference.md", start = path))) {
+  if (!fs::file_exists(fs::path_abs("docs/docs/reference.md", start = path))) {
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
-
-
-  fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
-  build_docs(path = path)
 
   ### VIGNETTES
   if (isTRUE(convert_vignettes)) {

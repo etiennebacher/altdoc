@@ -5,7 +5,7 @@
 modify_yaml <- function(filename) {
 
   # Extract yaml from Rmd
-  x <- readLines(filename, warn = FALSE)
+  x <- .readlines(filename)
   yaml_limits <- grep("---", x)[c(1,2)]
   yaml <- x[yaml_limits[1]:yaml_limits[2]]
   new_vignette <- x[-c(yaml_limits[1]:yaml_limits[2])]
@@ -81,7 +81,7 @@ extract_import_bib <- function(filename, path = path) {
   articles_path <- paste0(good_path, "/articles")
 
   # Extract yaml from Rmd
-  x <- readLines(filename, warn = FALSE)
+  x <- .readlines(filename)
   yaml_limits <- grep("---", x)[c(1,2)]
   yaml <- x[yaml_limits[1]:yaml_limits[2]]
 

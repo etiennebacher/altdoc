@@ -14,8 +14,7 @@ test_that("nothing changes if no vignettes folder or if empty", {
 
 test_that("transform_vignettes works on basic vignette", {
   original_rmd <- readLines(
-    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
-    warn = FALSE
+    testthat::test_path("examples/examples-yaml", "basic.Rmd")
   )
   create_local_package()
   use_docute(path = getwd(), convert_vignettes = FALSE)
@@ -28,8 +27,7 @@ test_that("transform_vignettes works on basic vignette", {
 
 test_that("transform_vignettes doesn't change anything if no change in vignettes", {
   original_rmd <- readLines(
-    testthat::test_path("examples/examples-yaml", "basic.Rmd"),
-    warn = FALSE
+    testthat::test_path("examples/examples-yaml", "basic.Rmd")
   )
   create_local_package()
   use_docute(path = getwd(), convert_vignettes = FALSE)
