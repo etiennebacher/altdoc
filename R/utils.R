@@ -207,7 +207,7 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
         fs::dir_delete(path_to_docs)
       } else {
         cli::cli_alert_info("Nothing was modified.")
-        return(1)
+        stop_quietly()
       }
     }
   }
@@ -215,8 +215,14 @@ check_docs_exists <- function(overwrite = FALSE, path = ".") {
   if (!fs::dir_exists(path_to_docs)) {
     fs::dir_create(path_to_docs)
   }
+}
 
-  return(NULL)
+
+# https://stackoverflow.com/a/42945293/11598948
+stop_quietly <- function() {
+  opt <- options(show.error.messages = FALSE)
+  on.exit(options(opt))
+  stop()
 }
 
 

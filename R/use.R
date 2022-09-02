@@ -32,24 +32,21 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 
   if (!dir_is_package(path)) {
     cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    return(invisible())
+    stop_quietly()
   }
 
-  x <- check_docs_exists(overwrite = overwrite, path = path)
-  if (!is.null(x)) return(invisible())
+  check_docs_exists(overwrite, path)
 
-  create_index("docute", path = path)
+  create_index("docute", path)
+  build_docs(path)
 
-  build_docs(path = path)
-
-  ### VIGNETTES
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
-    transform_vignettes(path = path)
-    add_vignettes(path = path)
+    transform_vignettes(path)
+    add_vignettes(path)
   }
 
-  final_steps(x = "docute", path = path)
+  final_steps(x = "docute", path)
 
 }
 
@@ -64,11 +61,10 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 
   if (!dir_is_package(path)) {
     cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    return(invisible())
+    stop_quietly()
   }
 
-  x <- check_docs_exists(overwrite = overwrite, path = path)
-  if (!is.null(x)) return(invisible())
+  check_docs_exists(overwrite, path)
 
   create_index("docsify", path = path)
 
@@ -112,11 +108,10 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
 
   if (!dir_is_package(path)) {
     cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    return(invisible())
+    stop_quietly()
   }
 
-  x <- check_docs_exists(overwrite = overwrite, path = path)
-  if (!is.null(x)) return(invisible())
+  check_docs_exists(overwrite, path)
 
   # Create basic structure
   if (!is_mkdocs()) {
