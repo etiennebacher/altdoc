@@ -13,7 +13,7 @@ test_that("nothing changes if no vignettes folder or if empty", {
 })
 
 test_that("transform_vignettes works on basic vignette", {
-  original_rmd <- readLines(
+  original_rmd <- .readlines(
     testthat::test_path("examples/examples-yaml", "basic.Rmd")
   )
   create_local_package()
@@ -26,7 +26,7 @@ test_that("transform_vignettes works on basic vignette", {
 })
 
 test_that("transform_vignettes doesn't change anything if no change in vignettes", {
-  original_rmd <- readLines(
+  original_rmd <- .readlines(
     testthat::test_path("examples/examples-yaml", "basic.Rmd")
   )
   create_local_package()
@@ -35,10 +35,10 @@ test_that("transform_vignettes doesn't change anything if no change in vignettes
   writeLines(original_rmd, "vignettes/basic.Rmd")
   transform_vignettes(path = getwd())
   before <- fs::dir_tree()
-  vignette_before <- readLines("docs/articles/basic.Rmd", warn = FALSE)
+  vignette_before <- .readlines("docs/articles/basic.Rmd")
   expect_message(transform_vignettes(path = getwd()), regexp = "No new vignette to convert")
   after <- fs::dir_tree()
-  vignette_after <- readLines("docs/articles/basic.Rmd", warn = FALSE)
+  vignette_after <- .readlines("docs/articles/basic.Rmd")
   expect_identical(before, after)
   expect_identical(vignette_before, vignette_after)
 })

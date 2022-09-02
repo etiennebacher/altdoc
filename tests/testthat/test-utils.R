@@ -20,14 +20,14 @@ test_that("check_docs_exists() works", {
 
 test_that("pkg_name() works", {
   create_local_package()
-  expect_true(is.character(pkg_name()))
-  expect_true(nchar(pkg_name()) > 0)
+  expect_true(is.character(pkg_name(getwd())))
+  expect_true(nchar(pkg_name(getwd())) > 0)
 })
 
 test_that("pkg_version() works", {
   create_local_package()
-  expect_true(is.character(pkg_version()))
-  expect_true(nchar(pkg_version()) > 0)
+  expect_true(is.character(pkg_version(".")))
+  expect_true(nchar(pkg_version(".")) > 0)
 })
 
 test_that("import_* functions work", {
@@ -50,4 +50,34 @@ test_that("import_* functions work", {
   import_news()
   expect_true(fs::file_exists("docs/NEWS.md"))
 
+})
+
+test_that("need_to_bump_version() works", {
+  create_local_package()
+  use_docute(path = getwd())
+
+  expect_equal(doc_version(getwd()), "0.0.0.9000")
+  expect_false(need_to_bump_version(getwd()))
+
+  desc::desc_set_version("0.1.0")
+
+  expect_true(need_to_bump_version(getwd()))
+  update_version_number(getwd())
+  expect_equal(doc_version(getwd()), "0.1.0")
+  expect_equal(altdoc_version_in_footer(getwd()), altdoc_version())
+})
+
+test_that("need_to_bump_version() works", {
+  create_local_package()
+  use_docsify(path = getwd())
+
+  expect_equal(doc_version(getwd()), "0.0.0.9000")
+  expect_false(need_to_bump_version(getwd()))
+
+  desc::desc_set_version("0.1.0")
+
+  expect_true(need_to_bump_version(getwd()))
+  update_version_number(getwd())
+  expect_equal(doc_version(getwd()), "0.1.0")
+  expect_equal(altdoc_version_in_footer(getwd()), altdoc_version())
 })
