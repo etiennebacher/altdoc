@@ -95,8 +95,6 @@ update_file <- function(file, path = ".") {
     fs::path_abs("docs/mkdocs.yml", start = path)
   }
 
-  file_message <- tools::file_path_sans_ext(file)
-
   if (is.null(orig_file) || !fs::file_exists(orig_file)) {
     cli::cli_alert_info("No {.file {file_message}} to include.")
     return(invisible())
