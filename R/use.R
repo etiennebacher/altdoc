@@ -89,8 +89,13 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
   check_docs_exists(overwrite, path)
   check_tools("mkdocs", theme)
 
-  system2("mkdocs", paste("new", fs::path_abs("docs", start = path), "-q"))
-  system2("cd", paste(fs::path_abs("docs", start = path), "&& mkdocs build -q"))
+  if (is_windows() & interactive()) {
+    shell(paste("mkdocs new", fs::path_abs("docs", start = path), "-q"))
+    shell(paste("cd", fs::path_abs("docs", start = path), "&& mkdocs build -q"))
+  } else {
+    system2("mkdocs", paste("new", fs::path_abs("docs", start = path), "-q"))
+    system2("cd", paste(fs::path_abs("docs", start = path), "&& mkdocs build -q"))
+  }
 
   yaml <- paste0(
     "

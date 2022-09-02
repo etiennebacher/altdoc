@@ -18,7 +18,11 @@ preview <- function(path = ".") {
       servr::httw(fs::path_abs("docs/"))
     } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
       # first build
-      system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))
+      if (is_windows()) {
+        shell(paste("cd", fs::path_abs("docs", start = path), " && mkdocs build -q"))
+      } else {
+        system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))
+      }
       # stop it directly to avoid opening the browser
       servr::daemon_stop()
 

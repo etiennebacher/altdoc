@@ -1,12 +1,6 @@
-# @title Create 'Reference' tab
-#
-# @description
 # Convert and unite .Rd files to 'docs/reference.md'.
-
 make_reference <- function(update = FALSE, path = ".") {
-
   good_path <- doc_path(path = path)
-
   if (fs::file_exists(paste0(good_path, "/reference.md"))) fs::file_delete(paste0(good_path, "/reference.md"))
 
   files <- list.files("man", full.names = TRUE)
@@ -23,11 +17,7 @@ make_reference <- function(update = FALSE, path = ".") {
 }
 
 
-# Convert Rd files to Markdown
-#
-# @param rdfile Filename
-#
-
+# Convert Rd file to Markdown
 rd2md <- function(rdfile) {
 
   tmp_html <- tempfile(fileext = ".html")
@@ -54,7 +44,6 @@ rd2md <- function(rdfile) {
     md
   )
 
-
   # Syntax used for examples is four spaces, which prevents code
   # highlighting. So I need to put backticks before and after the examples
   # and remove the four spaces.
@@ -71,9 +60,7 @@ rd2md <- function(rdfile) {
       md[i] <- gsub("    ", "", md[i])
     }
   }
-
   md
-
 }
 
 
