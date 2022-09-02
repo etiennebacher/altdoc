@@ -13,7 +13,12 @@ The goal of `altdoc` is to facilitate the use of documentation generators as alt
 
 ## Installation
 
-This package is only available in development version for now:
+You can install the CRAN version:
+```r
+install.packages("altdoc")
+```
+
+You can also install the development version to have the latest bug fixes:
 ```r
 # install.packages("remotes")
 remotes::install_github("etiennebacher/altdoc")
