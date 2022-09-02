@@ -134,7 +134,7 @@ build_docs <- function(path = ".") {
   import_news(path)
   import_coc(path)
   import_license(path)
-  make_reference(path)
+  make_reference(update = FALSE, path)
 }
 
 # Last things to do in initialization
