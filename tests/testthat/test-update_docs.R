@@ -4,11 +4,11 @@ test_that("docute: update_docs updates correctly the README", {
   create_local_package()
   use_docute(path = getwd())
   usethis::use_readme_md()
-  readme1 <- readLines("README.md", warn = FALSE)
-  readme2 <- readLines("docs/README.md", warn = FALSE)
+  readme1 <- .readlines("README.md")
+  readme2 <- .readlines("docs/README.md")
   expect_false(identical(readme1, readme2))
   update_docs(path = getwd())
-  readme2 <- readLines("docs/README.md", warn = FALSE)
+  readme2 <- .readlines("docs/README.md")
   expect_true(identical(readme1, readme2))
 })
 
@@ -16,11 +16,11 @@ test_that("docsify: update_docs updates correctly the README", {
   create_local_package()
   use_docsify(path = getwd())
   usethis::use_readme_md()
-  readme1 <- readLines("README.md", warn = FALSE)
-  readme2 <- readLines("docs/README.md", warn = FALSE)
+  readme1 <- .readlines("README.md")
+  readme2 <- .readlines("docs/README.md")
   expect_false(identical(readme1, readme2))
   update_docs(path = getwd())
-  readme2 <- readLines("docs/README.md", warn = FALSE)
+  readme2 <- .readlines("docs/README.md")
   expect_true(identical(readme1, readme2))
 })
 
@@ -29,11 +29,11 @@ test_that("mkdocs: update_docs updates correctly the README", {
   create_local_package()
   use_mkdocs(path = getwd())
   usethis::use_readme_md()
-  readme1 <- readLines("README.md", warn = FALSE)
-  readme2 <- readLines("docs/docs/README.md", warn = FALSE)
+  readme1 <- .readlines("README.md")
+  readme2 <- .readlines("docs/docs/README.md")
   expect_false(identical(readme1, readme2))
   update_docs(path = getwd())
-  readme2 <- readLines("docs/docs/README.md", warn = FALSE)
+  readme2 <- .readlines("docs/docs/README.md")
   expect_true(identical(readme1, readme2))
 })
 
@@ -47,12 +47,12 @@ test_that("docute: update_docs updates correctly the NEWS", {
   writeLines("Hello", con = "NEWS.md")
   use_docute(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
-  news1 <- readLines("NEWS.md", warn = FALSE)
-  news2 <- readLines("docs/NEWS.md", warn = FALSE)
+  news1 <- .readlines("NEWS.md")
+  news2 <- .readlines("docs/NEWS.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/NEWS.md", warn = FALSE)
+  news2 <- .readlines("docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
@@ -62,12 +62,12 @@ test_that("docsify: update_docs updates correctly the NEWS", {
   writeLines("Hello", con = "NEWS.md")
   use_docsify(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
-  news1 <- readLines("NEWS.md", warn = FALSE)
-  news2 <- readLines("docs/NEWS.md", warn = FALSE)
+  news1 <- .readlines("NEWS.md")
+  news2 <- .readlines("docs/NEWS.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/NEWS.md", warn = FALSE)
+  news2 <- .readlines("docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
@@ -78,12 +78,12 @@ test_that("mkdocs: update_docs updates correctly the NEWS", {
   writeLines("Hello", con = "NEWS.md")
   use_mkdocs(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
-  news1 <- readLines("NEWS.md", warn = FALSE)
-  news2 <- readLines("docs/docs/NEWS.md", warn = FALSE)
+  news1 <- .readlines("NEWS.md")
+  news2 <- .readlines("docs/docs/NEWS.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/docs/NEWS.md", warn = FALSE)
+  news2 <- .readlines("docs/docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
@@ -148,12 +148,12 @@ test_that("docute: update_docs updates correctly the CoC", {
   writeLines("Hello", con = "CODE_OF_CONDUCT.md")
   use_docute(path = getwd())
   writeLines("Hello again", con = "CODE_OF_CONDUCT.md")
-  news1 <- readLines("CODE_OF_CONDUCT.md", warn = FALSE)
-  news2 <- readLines("docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news1 <- .readlines("CODE_OF_CONDUCT.md")
+  news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
@@ -163,12 +163,12 @@ test_that("docsify: update_docs updates correctly the CoC", {
   writeLines("Hello", con = "CODE_OF_CONDUCT.md")
   use_docsify(path = getwd())
   writeLines("Hello again", con = "CODE_OF_CONDUCT.md")
-  news1 <- readLines("CODE_OF_CONDUCT.md", warn = FALSE)
-  news2 <- readLines("docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news1 <- .readlines("CODE_OF_CONDUCT.md")
+  news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
@@ -179,12 +179,12 @@ test_that("mkdocs: update_docs updates correctly the CoC", {
   writeLines("Hello", con = "CODE_OF_CONDUCT.md")
   use_mkdocs(path = getwd())
   writeLines("Hello again", con = "CODE_OF_CONDUCT.md")
-  news1 <- readLines("CODE_OF_CONDUCT.md", warn = FALSE)
-  news2 <- readLines("docs/docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news1 <- .readlines("CODE_OF_CONDUCT.md")
+  news2 <- .readlines("docs/docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/docs/CODE_OF_CONDUCT.md", warn = FALSE)
+  news2 <- .readlines("docs/docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
@@ -250,12 +250,12 @@ test_that("docute: update_docs updates correctly the License", {
   writeLines("Hello", con = "LICENSE.md")
   use_docute(path = getwd())
   writeLines("Hello again", con = "LICENSE.md")
-  news1 <- readLines("LICENSE.md", warn = FALSE)
-  news2 <- readLines("docs/LICENSE.md", warn = FALSE)
+  news1 <- .readlines("LICENSE.md")
+  news2 <- .readlines("docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/LICENSE.md", warn = FALSE)
+  news2 <- .readlines("docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
@@ -265,12 +265,12 @@ test_that("docsify: update_docs updates correctly the License", {
   writeLines("Hello", con = "LICENSE.md")
   use_docsify(path = getwd())
   writeLines("Hello again", con = "LICENSE.md")
-  news1 <- readLines("LICENSE.md", warn = FALSE)
-  news2 <- readLines("docs/LICENSE.md", warn = FALSE)
+  news1 <- .readlines("LICENSE.md")
+  news2 <- .readlines("docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/LICENSE.md", warn = FALSE)
+  news2 <- .readlines("docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
@@ -281,12 +281,12 @@ test_that("mkdocs: update_docs updates correctly the License", {
   writeLines("Hello", con = "LICENSE.md")
   use_mkdocs(path = getwd())
   writeLines("Hello again", con = "LICENSE.md")
-  news1 <- readLines("LICENSE.md", warn = FALSE)
-  news2 <- readLines("docs/docs/LICENSE.md", warn = FALSE)
+  news1 <- .readlines("LICENSE.md")
+  news2 <- .readlines("docs/docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
   update_docs(path = getwd())
-  news2 <- readLines("docs/docs/LICENSE.md", warn = FALSE)
+  news2 <- .readlines("docs/docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
@@ -346,13 +346,11 @@ test_that("mkdocs: update_docs shows message when License doesn't exist", {
 
 test_that("docute: update_docs also transform new/modified vignettes if specified", {
   # setup
-  first_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
-    warn = FALSE
+  first_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd")
   )
-  second_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
-    warn = FALSE
+  second_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd")
   )
   create_local_package()
   fs::dir_create("vignettes")
@@ -367,13 +365,11 @@ test_that("docute: update_docs also transform new/modified vignettes if specifie
 
 test_that("docsify: update_docs also transform new/modified vignettes if specified", {
   # setup
-  first_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
-    warn = FALSE
+  first_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd")
   )
-  second_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
-    warn = FALSE
+  second_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd")
   )
   create_local_package()
   fs::dir_create("vignettes")
@@ -389,13 +385,11 @@ test_that("docsify: update_docs also transform new/modified vignettes if specifi
 test_that("mkdocs: update_docs also transform new/modified vignettes if specified", {
   skip_mkdocs()
   # setup
-  first_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "basic.Rmd"),
-    warn = FALSE
+  first_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "basic.Rmd")
   )
-  second_rmd <- readLines(
-    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd"),
-    warn = FALSE
+  second_rmd <- .readlines(
+    testthat::test_path("examples/examples-vignettes", "several-outputs.Rmd")
   )
   create_local_package()
   fs::dir_create("vignettes")

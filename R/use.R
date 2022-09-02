@@ -192,7 +192,7 @@ nav:
   fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
   build_docs(path = path)
 
-  yaml <- readLines(fs::path_abs("docs/mkdocs.yml", start = path), warn = FALSE)
+  yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
   if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
     yaml <- yaml[-which(grepl("NEWS.md", yaml))]
   }

@@ -87,7 +87,7 @@ transform_vignettes <- function(path = path) {
 
         ### If title too long, it was cut in several lines but only the last
         ### one is read by docute so need to paste the title back together
-        new_vignette <- readLines(gsub("\\.Rmd", "\\.md", destination), warn = FALSE)
+        new_vignette <- .readlines(gsub("\\.Rmd", "\\.md", destination))
         title_sep <- grep("=====", new_vignette)
         if (length(title_sep) == 1) {
           title <- new_vignette[1:title_sep-1]
@@ -174,11 +174,11 @@ vignettes_differ <- function(x, y) {
     return(TRUE)
   }
 
-  x_file <- readLines(x, warn = FALSE)
+  x_file <- .readlines(x)
   x_file <- x_file[-which(x_file == "")]
   x_content <- gsub("---(.*?)---", "", paste(x_file, collapse = "\n"))
 
-  y_file <- readLines(y, warn = FALSE)
+  y_file <- .readlines(y)
   y_file <- y_file[-which(y_file == "")]
   y_content <- gsub("---(.*?)---", "", paste(y_file, collapse = "\n"))
 
@@ -203,7 +203,7 @@ get_vignettes_titles <- function(path = path) {
 
   vignettes_title <- data.frame(title = NULL, link = NULL)
   for (i in seq_along(vignettes)) {
-    x <- readLines(paste0(good_path, "/articles/", vignettes[i]), warn = FALSE)
+    x <- .readlines(paste0(good_path, "/articles/", vignettes[i]))
     title <- x[startsWith(x, "title: ")]
     title <- gsub("title: ", "", title)
     vignettes_title[i, "title"] <- title
@@ -232,7 +232,7 @@ add_vignettes <- function(path = path) {
 
   if (doctype == "docute") {
 
-    original_index <- readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE)
+    original_index <- .readlines(fs::path_abs("docs/index.html", start = path))
 
     if (any(grepl("title: \"Articles\"", original_index))) {
       cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
@@ -254,7 +254,7 @@ add_vignettes <- function(path = path) {
 
   } else if (doctype == "docsify") {
 
-    original_sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
+    original_sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
 
     # Remove the articles / vignettes section to avoid duplicates
     if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {

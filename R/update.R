@@ -101,8 +101,8 @@ update_file <- function(filename, path = ".") {
   }
 
   if (fs::file_exists(docs_file)) {
-    x <- readLines(orig_file, warn = FALSE)
-    y <- readLines(docs_file, warn = FALSE)
+    x <- .readlines(orig_file)
+    y <- .readlines(docs_file)
     if (identical(x, y)) {
       cli::cli_alert_info("No changes in {.file {filename_message}}.")
       return(invisible())

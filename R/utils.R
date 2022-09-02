@@ -143,7 +143,7 @@ final_steps <- function(x, path = ".") {
 
   if (x == "docute") {
 
-    index <- readLines(fs::path_abs("docs/index.html", start = path))
+    index <- .readlines(fs::path_abs("docs/index.html", start = path))
     if (!fs::file_exists(fs::path_abs("NEWS.md", start = path))) {
       index <- index[-which(grepl("/NEWS", index))]
     }
@@ -157,7 +157,7 @@ final_steps <- function(x, path = ".") {
 
   } else if (x == "docsify") {
 
-    sidebar <- readLines(fs::path_abs("docs/_sidebar.md", start = path), warn = FALSE)
+    sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
     if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
       sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]
     }
@@ -275,7 +275,7 @@ doc_type <- function(path = ".") {
   if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
 
   if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-    file <- paste(readLines(fs::path_abs("docs/index.html", start = path), warn = FALSE),
+    file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
                   collapse = "")
     if (grepl("docute", file)) return("docute")
     if (grepl("docsify", file)) return("docsify")
@@ -336,4 +336,8 @@ convert_path <- function (path = ".") {
 
 dir_is_package <- function(path) {
   fs::file_exists(fs::path_abs("DESCRIPTION", start = path))
+}
+
+.readlines <- function(x) {
+  readLines(x, warn = FALSE)
 }
