@@ -26,7 +26,7 @@
 }
 
 # Is mkdocs material installed?
-..is_mkdocs_material <- function() {
+.is_mkdocs_material <- function() {
   if (!.is_pip3()) {
     cli::cli_alert_danger("Apparently, {.code pip3} is not installed on your system.")
     cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")

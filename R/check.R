@@ -48,7 +48,7 @@
     }
 
     if (!is.null(theme) && theme == "material") {
-      if (!..is_mkdocs_material()) {
+      if (!.is_mkdocs_material()) {
         cli::cli_alert_danger("Apparently, {.code mkdocs-material} is not installed on your system.")
         cli::cli_alert_info("You can install it with {.code pip3 install mkdocs-material} in your terminal.")
         .stop_quietly()
