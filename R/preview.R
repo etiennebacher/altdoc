@@ -18,7 +18,7 @@ preview <- function(path = ".") {
       servr::httw(fs::path_abs("docs/"))
     } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
       # first build
-      if (is_windows()) {
+      if (.is_windows()) {
         shell(paste("cd", fs::path_abs("docs", start = path), " && mkdocs build -q"))
       } else {
         system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))

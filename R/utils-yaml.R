@@ -2,7 +2,7 @@
 # vignette parameters (starting with %\Vignette), and add github_document
 # in output formats.
 
-modify_yaml <- function(filename) {
+.modify_yaml <- function(filename) {
 
   # Extract yaml from Rmd
   x <- .readlines(filename)
@@ -75,9 +75,9 @@ modify_yaml <- function(filename) {
 
 # Find bib files in vignettes, and copy them to docs/articles (+ potential
 # relative path)
-extract_import_bib <- function(filename, path = path) {
+.extract_import_bib <- function(filename, path = path) {
 
-  good_path <- doc_path(path = path)
+  good_path <- .doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
   # Extract yaml from Rmd
@@ -114,10 +114,10 @@ extract_import_bib <- function(filename, path = path) {
 
 # Taken from https://github.com/ropensci/tinkr/blob/main/R/utils.R
 # (only returns the body in my case)
-split_yaml_body = function(x) {
+.split_yaml_body = function(x) {
   i <- grep('^---\\s*$', x)
   n <- length(x)
-  res <- if (n < 2 || length(i) < 2 || (i[1] > 1 && !is_blank(x[seq(i[1] - 1)]))) {
+  res <- if (n < 2 || length(i) < 2 || (i[1] > 1 && !.is_blank(x[seq(i[1] - 1)]))) {
     return(x)
   } else {
     return(if (i[2] == n) character() else x[(i[2] + 1):n])
@@ -125,7 +125,7 @@ split_yaml_body = function(x) {
 }
 
 # Same source as above
-is_blank <- function (x) {
+.is_blank <- function (x) {
   if (length(x)) {
     all(grepl("^\\s*$", x))
   } else {

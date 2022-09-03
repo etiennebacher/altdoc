@@ -28,15 +28,15 @@
 use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
                        path = ".") {
 
-  path <- convert_path(path)
-  check_is_package(path)
-  check_docs_exists(overwrite, path)
+  path <- .convert_path(path)
+  .check_is_package(path)
+  .check_docs_exists(overwrite, path)
 
-  create_index("docute", path)
-  build_docs(path)
-  build_vignettes(convert_vignettes, path)
+  .create_index("docute", path)
+  .build_docs(path)
+  .build_vignettes(convert_vignettes, path)
 
-  final_steps(x = "docute", path)
+  .final_steps(x = "docute", path)
 }
 
 #' @export
@@ -46,22 +46,22 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
                         path = ".") {
 
-  path <- convert_path(path)
-  check_is_package(path)
-  check_docs_exists(overwrite, path)
+  path <- .convert_path(path)
+  .check_is_package(path)
+  .check_docs_exists(overwrite, path)
 
-  create_index("docsify", path = path)
+  .create_index("docsify", path = path)
 
-  build_docs(path = path)
+  .build_docs(path = path)
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
     fs::path_abs("docs/_sidebar.md", start = path)
   )
 
-  build_vignettes(convert_vignettes, path)
+  .build_vignettes(convert_vignettes, path)
 
-  final_steps(x = "docsify", path = path)
+  .final_steps(x = "docsify", path = path)
 
 }
 
@@ -84,12 +84,12 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
                        overwrite = FALSE, path = ".") {
 
-  path <- convert_path(path)
-  check_is_package(path)
-  check_docs_exists(overwrite, path)
-  check_tools("mkdocs", theme)
+  path <- .convert_path(path)
+  .check_is_package(path)
+  .check_docs_exists(overwrite, path)
+  .check_tools("mkdocs", theme)
 
-  if (is_windows() & interactive()) {
+  if (.is_windows() & interactive()) {
     shell(paste("mkdocs new", fs::path_abs("docs", start = path), "-q"))
     shell(paste("cd", fs::path_abs("docs", start = path), "&& mkdocs build -q"))
   } else {
@@ -100,7 +100,7 @@ use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
   yaml <- paste0(
     "
 ### Basic information
-site_name: ", pkg_name(path),
+site_name: ", .pkg_name(path),
 if (!is.null(theme)) {
   paste0("
 theme:
@@ -131,8 +131,8 @@ if (!is.null(theme) && theme == "material") {
 "
 
 ### Repo information
-repo_url: ", gh_url(path), "
-repo_name: ", pkg_name(path), "
+repo_url: ", .gh_url(path), "
+repo_name: ", .pkg_name(path), "
 
 ### Plugins
 plugins:
@@ -150,7 +150,7 @@ nav:
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
   fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
-  build_docs(path = path)
+  .build_docs(path = path)
 
   yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
   if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
@@ -167,7 +167,7 @@ nav:
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
-  build_vignettes(convert_vignettes, path)
+  .build_vignettes(convert_vignettes, path)
 
-  final_steps(x = "mkdocs", path = path)
+  .final_steps(x = "mkdocs", path = path)
 }

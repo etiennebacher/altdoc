@@ -1,13 +1,13 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-make_reference <- function(update = FALSE, path = ".") {
-  good_path <- doc_path(path = path)
+.make_reference <- function(update = FALSE, path = ".") {
+  good_path <- .doc_path(path = path)
   if (fs::file_exists(paste0(good_path, "/reference.md"))) fs::file_delete(paste0(good_path, "/reference.md"))
 
   files <- list.files("man", full.names = TRUE)
   files <- files[grepl("\\.Rd", files)]
 
   all_rd_as_md <- lapply(files, function(x){
-    rd2md(x)
+    .rd2md(x)
   })
 
   fs::file_create(paste0(good_path, "/reference.md"))
@@ -18,7 +18,7 @@ make_reference <- function(update = FALSE, path = ".") {
 
 
 # Convert Rd file to Markdown
-rd2md <- function(rdfile) {
+.rd2md <- function(rdfile) {
 
   tmp_html <- tempfile(fileext = ".html")
   tmp_md <- tempfile(fileext = ".md")
