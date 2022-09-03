@@ -1,15 +1,15 @@
 # Create index.html for docute and docsify ------------------
 
-create_index <- function(x, path = ".") {
+.create_index <- function(x, path = ".") {
   index <- htmltools::htmlTemplate(
     system.file(paste0(x, "/index.html"), package = "altdoc"),
-    title = pkg_name(path),
+    title = .pkg_name(path),
     footer = sprintf(
       "<hr/><a href='%s'> <code>%s</code> v. %s </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code>altdoc</code> v. %s</a>",
-      gh_url(path), pkg_name(path), pkg_version(path),
+      .gh_url(path), .pkg_name(path), .pkg_version(path),
       altdoc_version()
     ),
-    github_link = gh_url(path)
+    github_link = .gh_url(path)
   )
 
   # regex stuff to correct footer
@@ -25,8 +25,8 @@ create_index <- function(x, path = ".") {
 
 # Import files: README, license, news, CoC ------------------
 
-import_readme <- function(path = ".") {
-  good_path <- doc_path(path)
+.import_readme <- function(path = ".") {
+  good_path <- .doc_path(path)
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
     fs::file_copy(
       fs::path_abs("README.md", start = path),
@@ -41,29 +41,29 @@ import_readme <- function(path = ".") {
     )
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
-  reformat_md(paste0(good_path, "/README.md"))
-  move_img_readme(path = path)
-  replace_img_paths_readme(path = path)
+  .reformat_md(paste0(good_path, "/README.md"))
+  .move_img_readme(path = path)
+  replace_.img_paths_readme(path = path)
 }
 
 
-import_news <- function(path = ".") {
-  good_path <- doc_path(path)
-  file <- which_news()
+.import_news <- function(path = ".") {
+  good_path <- .doc_path(path)
+  file <- .which_news()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }
   if (fs::file_exists(file)) {
     fs::file_copy(file, paste0(good_path, "/NEWS.md"))
-    reformat_md(paste0(good_path, "/", file), first = TRUE)
+    .reformat_md(paste0(good_path, "/", file), first = TRUE)
     cli::cli_alert_success("{.file {file}} imported.")
   }
 }
 
 
-import_coc <- function(path = ".") {
-  good_path <- doc_path(path)
+.import_coc <- function(path = ".") {
+  good_path <- .doc_path(path)
   if (fs::file_exists("CODE_OF_CONDUCT.md")) {
     fs::file_copy(
       "CODE_OF_CONDUCT.md",
@@ -76,9 +76,9 @@ import_coc <- function(path = ".") {
 }
 
 
-import_license <- function(path = ".") {
-  good_path <- doc_path(path)
-  file <- which_license()
+.import_license <- function(path = ".") {
+  good_path <- .doc_path(path)
+  file <- .which_license()
   if (is.null(file)) {
     cli::cli_alert_info("No {.file License / Licence} to include.")
     return(invisible())
@@ -93,21 +93,21 @@ import_license <- function(path = ".") {
 
 # Build docs and vignettes ---------------------
 
-build_docs <- function(path = ".") {
+.build_docs <- function(path = ".") {
   cli::cli_h1("Docs structure")
   cli::cli_alert_success("Folder {.file docs} created.")
-  import_readme(path)
-  import_news(path)
-  import_coc(path)
-  import_license(path)
-  make_reference(update = FALSE, path)
+  .import_readme(path)
+  .import_news(path)
+  .import_coc(path)
+  .import_license(path)
+  .make_reference(update = FALSE, path)
 }
 
-build_vignettes <- function(convert_vignettes, path) {
+.build_vignettes <- function(convert_vignettes, path) {
   if (isTRUE(convert_vignettes)) {
     cli::cli_h1("Vignettes")
-    transform_vignettes(path = path)
-    add_vignettes(path = path)
+    .transform_vignettes(path = path)
+    .add_vignettes(path = path)
   }
 }
 
@@ -115,12 +115,12 @@ build_vignettes <- function(convert_vignettes, path) {
 
 # Last things to do in initialization -------------------
 
-final_steps <- function(x, path = ".") {
+.final_steps <- function(x, path = ".") {
 
   if (x == "docute") {
-    final_steps_docute(path)
+    .final_steps_docute(path)
   } else if (x == "docsify") {
-    final_steps_docsify(path)
+    .final_steps_docsify(path)
   }
 
   suppressMessages({
@@ -140,7 +140,7 @@ final_steps <- function(x, path = ".") {
 }
 
 
-final_steps_docute <- function(path) {
+.final_steps_docute <- function(path) {
   index <- .readlines(fs::path_abs("docs/index.html", start = path))
   if (!fs::file_exists(fs::path_abs("NEWS.md", start = path))) {
     index <- index[-which(grepl("/NEWS", index))]
@@ -154,7 +154,7 @@ final_steps_docute <- function(path) {
   writeLines(index, fs::path_abs("docs/index.html", start = path))
 }
 
-final_steps_docsify <- function(path) {
+.final_steps_docsify <- function(path) {
   sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
   if (!fs::file_exists(fs::path_abs("docs/NEWS.md", start = path))) {
     sidebar <- sidebar[-which(grepl("NEWS.md", sidebar))]

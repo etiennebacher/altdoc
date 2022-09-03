@@ -1,10 +1,10 @@
 # Copy images/GIF that are in README in 'docs'
 
-move_img_readme <- function(path = ".") {
-  img_paths <- img_paths_readme(path)
+.move_img_readme <- function(path = ".") {
+  img_paths <- .img_paths_readme(path)
   if (is.null(img_paths)) return(invisible())
 
-  good_path <- doc_path(path)
+  good_path <- .doc_path(path)
   fs::dir_create(paste0(good_path, "/README_assets"))
   for (i in seq_along(img_paths)) {
     fs::file_copy(
@@ -17,10 +17,10 @@ move_img_readme <- function(path = ".") {
 
 # Replace image paths in README
 
-replace_img_paths_readme <- function(path = ".") {
-  good_path <- doc_path(path)
+replace_.img_paths_readme <- function(path = ".") {
+  good_path <- .doc_path(path)
   file_content <- .readlines(paste0(good_path, "/README.md"))
-  img_paths <- img_paths_readme(path)
+  img_paths <- .img_paths_readme(path)
 
   # generate the new paths
   new_paths <- unlist(lapply(img_paths, function(x) {
@@ -38,9 +38,9 @@ replace_img_paths_readme <- function(path = ".") {
 
 # Get the paths of images/GIF in README
 
-img_paths_readme <- function(path = ".") {
+.img_paths_readme <- function(path = ".") {
 
-  good_path <- doc_path(path)
+  good_path <- .doc_path(path)
   file_content <- paste(.readlines(paste0(good_path, "/README.md")), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
@@ -80,15 +80,15 @@ img_paths_readme <- function(path = ".") {
 
 
 # Find figures path in vignettes, copy the figures to "articles/figures"
-replace_figures_rmd <- function(path = ".") {
+.replace_figures_rmd <- function(path = ".") {
   vignettes_path <- fs::path_abs("vignettes", start = path)
 
   # Extract paths of figures and copy figures to "articles/figures"
   if (!file.exists(vignettes_path) |
-      folder_is_empty(vignettes_path)) {
+      .folder_is_empty(vignettes_path)) {
     return(invisible())
   }
-  good_path <- doc_path(path)
+  good_path <- .doc_path(path)
   articles_path <- paste0(good_path, "/articles")
 
   if (!fs::dir_exists(articles_path)) {
@@ -156,9 +156,9 @@ replace_figures_rmd <- function(path = ".") {
 # start with "articles/figures/" so I need to add "articles/"
 # just before "figures/" in the img paths, *after* compilation.
 
-fix_rmd_figures_path <- function(path = ".") {
+.fix_rmd_figures_path <- function(path = ".") {
 
-  good_path <- doc_path(path)
+  good_path <- .doc_path(path)
 
   if (!fs::dir_exists(paste0(good_path, "/articles/figures"))) {
     return(invisible())
@@ -174,7 +174,7 @@ fix_rmd_figures_path <- function(path = ".") {
   for (i in articles) {
 
     orig <- .readlines(i)
-    if (doc_type() %in% c("docsify", "docute")) {
+    if (.doc_type() %in% c("docsify", "docute")) {
       mod <- gsub('"figures/', '"articles/figures/', orig)
       mod <- gsub("'figures/", "'articles/figures/", mod)
       writeLines(mod, i)
@@ -184,7 +184,7 @@ fix_rmd_figures_path <- function(path = ".") {
     }
   }
 
-  if (doc_type() == "mkdocs" && warn) {
+  if (.doc_type() == "mkdocs" && warn) {
     cli::cli_alert_warning("HTML image tag {.code <img>} was detected in at least one article.")
     cli::cli_alert_warning("Mkdocs recommends using Markdown syntax instead of HTML tags. Some images might not be displayed in the articles.")
   }

@@ -60,7 +60,7 @@
 #' @return The original Markdown file, which was modified like the example above.
 #' @noRd
 
-reformat_md <- function(file, first = FALSE) {
+.reformat_md <- function(file, first = FALSE) {
 
   stopifnot(!is.null(file), is.character(file))
 
