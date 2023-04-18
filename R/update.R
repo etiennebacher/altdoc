@@ -18,7 +18,8 @@
 #' update_docs()
 #' }
 
-update_docs <- function(convert_vignettes = TRUE, path = ".") {
+update_docs <- function(convert_vignettes = TRUE, path = ".",
+                        custom_reference = NULL) {
 
   path <- .convert_path(path)
 
@@ -50,7 +51,7 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
   }
 
   # Update functions reference
-  .make_reference(update = TRUE, path)
+  .make_reference(update = TRUE, path, custom_reference)
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {

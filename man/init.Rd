@@ -6,15 +6,26 @@
 \alias{use_mkdocs}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
-use_docute(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+use_docute(
+  convert_vignettes = TRUE,
+  overwrite = FALSE,
+  path = ".",
+  custom_reference = NULL
+)
 
-use_docsify(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+use_docsify(
+  convert_vignettes = TRUE,
+  overwrite = FALSE,
+  path = ".",
+  custom_reference = NULL
+)
 
 use_mkdocs(
   theme = NULL,
   convert_vignettes = TRUE,
   overwrite = FALSE,
-  path = "."
+  path = ".",
+  custom_reference = NULL
 )
 }
 \arguments{
@@ -27,6 +38,9 @@ is experimental.}
 overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}
+
+\item{custom_reference}{Path to the file that will be sourced to generate the
+"Reference" section.}
 
 \item{theme}{Name of the theme to use. Default is basic theme. See Details
 section.}
