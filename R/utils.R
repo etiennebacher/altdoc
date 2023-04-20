@@ -187,3 +187,59 @@
   readLines(x, warn = FALSE)
 }
 
+
+# Autolink news, PR, and people in NEWS
+.parse_news <- function(path, news_path) {
+  orig_news <- readLines(news_path, warn = FALSE)
+  orig_news <- paste(orig_news, collapse = "\n")
+  new_news <- orig_news
+
+  ### Issues
+
+  issues_pr <- regmatches(orig_news, gregexpr("#\\d+", orig_news))[[1]]
+  if (length(issues_pr) > 0) {
+    issues_pr_link <- paste0(.gh_url(path), "/issues/", gsub("#", "", issues_pr))
+
+    issues_pr_out <- data.frame(
+      in_text = issues_pr,
+      replacement = paste0("[", issues_pr, "](", issues_pr_link, ")"),
+      nchar = nchar(issues_pr)
+    ) |>
+      unique()
+
+    issues_pr_out <- issues_pr_out[order(issues_pr_out$nchar, decreasing = TRUE),]
+
+    for (i in seq_len(nrow(issues_pr_out))) {
+      new_news <- gsub(issues_pr_out[i, "in_text"],
+                       issues_pr_out[i, "replacement"],
+                       new_news)
+    }
+  }
+
+
+  ### People
+
+  people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,15})\\b", orig_news))[[1]]
+  people <- gsub("^ ", "", people)
+
+  if (length(people) > 0) {
+    people_link <- paste0("https://github.com/", gsub(" @", "", people))
+
+    people_out <- data.frame(
+      in_text = people,
+      replacement = paste0("[", people, "](", people_link, ")"),
+      nchar = nchar(people)
+    ) |>
+      unique()
+
+    people_out <- people_out[order(people_out$nchar, decreasing = TRUE),]
+
+    for (i in seq_len(nrow(people_out))) {
+      new_news <- gsub(people_out[i, "in_text"],
+                       people_out[i, "replacement"],
+                       new_news)
+    }
+  }
+
+  cat(new_news, file = news_path)
+}
