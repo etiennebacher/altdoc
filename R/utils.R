@@ -224,7 +224,7 @@
   people <- gsub("^ ", "", people)
 
   if (length(people) > 0) {
-    people_link <- paste0("https://github.com/", gsub(" @", "", people))
+    people_link <- paste0("https://github.com/", gsub("@", "", people))
 
     people_out <- data.frame(
       in_text = people,
