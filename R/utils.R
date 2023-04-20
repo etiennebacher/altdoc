@@ -220,7 +220,7 @@
 
   ### People
 
-  people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,15})\\b", orig_news))[[1]]
+  people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))[[1]]
   people <- gsub("^ ", "", people)
 
   if (length(people) > 0) {
