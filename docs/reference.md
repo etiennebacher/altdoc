@@ -8,15 +8,26 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+    use_docute(
+      convert_vignettes = TRUE,
+      overwrite = FALSE,
+      path = ".",
+      custom_reference = NULL
+    )
 
-    use_docsify(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+    use_docsify(
+      convert_vignettes = TRUE,
+      overwrite = FALSE,
+      path = ".",
+      custom_reference = NULL
+    )
 
     use_mkdocs(
       theme = NULL,
       convert_vignettes = TRUE,
       overwrite = FALSE,
-      path = "."
+      path = ".",
+      custom_reference = NULL
     )
 
 ### Arguments
@@ -42,6 +53,11 @@ make in the console to overwrite. If <code>TRUE</code>, the folder
 <code>here::here()</code>).</p></td>
 </tr>
 <tr class="even" style="vertical-align: top;">
+<td><code>custom_reference</code></td>
+<td><p>Path to the file that will be sourced to generate the "Reference"
+section.</p></td>
+</tr>
+<tr class="odd" style="vertical-align: top;">
 <td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
@@ -123,7 +139,7 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(convert_vignettes = TRUE, path = ".")
+    update_docs(convert_vignettes = TRUE, path = ".", custom_reference = NULL)
 
 ### Arguments
 

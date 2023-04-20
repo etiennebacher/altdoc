@@ -11,6 +11,23 @@
 
 The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [docute](https://docute.org/), [docsify](https://docsify.js.org/#/), and [mkdocs](https://www.mkdocs.org/). 
 
+## Demos
+
+Some of my packages use `altdoc` to generate documentation:
+
+* [altdoc](https://altdoc.etiennebacher.com/) itself (uses Docute)
+
+* [conductor](https://conductor.etiennebacher.com/) (uses Docsify)
+
+
+Other packages don't use `altdoc` but you can get the same results:
+
+* [firebase](https://firebase.john-coene.com/) by John Coene (uses Mkdocs, theme Material)
+
+* [sever](https://sever.john-coene.com/) by John Coene (uses Mkdocs, theme readthedocs)
+
+
+
 ## Installation
 
 You can install the CRAN version:

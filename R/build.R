@@ -57,6 +57,7 @@
   if (fs::file_exists(file)) {
     fs::file_copy(file, paste0(good_path, "/NEWS.md"))
     .reformat_md(paste0(good_path, "/", file), first = TRUE)
+    .parse_news(path, paste0(good_path, "/NEWS.md"))
     cli::cli_alert_success("{.file {file}} imported.")
   }
 }

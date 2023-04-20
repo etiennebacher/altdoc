@@ -40,6 +40,7 @@ update_docs <- function(convert_vignettes = TRUE, path = ".",
 
   # Update changelog, CoC, License
   .update_file("NEWS.md", path, first = TRUE)
+  .parse_news(path, paste0(good_path, "/NEWS.md"))
   .update_file("CODE_OF_CONDUCT.md", path)
   .update_file("LICENSE.md", path)
   if (.need_to_bump_version(path)) {
