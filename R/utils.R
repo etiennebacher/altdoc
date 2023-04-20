@@ -210,9 +210,10 @@
     issues_pr_out <- issues_pr_out[order(issues_pr_out$nchar, decreasing = TRUE),]
 
     for (i in seq_len(nrow(issues_pr_out))) {
-      new_news <- gsub(issues_pr_out[i, "in_text"],
+      new_news <- gsub(paste0(issues_pr_out[i, "in_text"], "(?![0-9])"),
                        issues_pr_out[i, "replacement"],
-                       new_news)
+                       new_news,
+                       perl = TRUE)
     }
   }
 
