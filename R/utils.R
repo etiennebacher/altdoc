@@ -127,7 +127,7 @@
 # If no news, return "news" for cli message in .update_file()
 .which_news <- function(path = ".") {
   x <- list.files(path = path, pattern = "\\.md$")
-  news <- x[which(grepl("^news$", x, ignore.case = TRUE))]
+  news <- x[which(grepl("news.md", x, ignore.case = TRUE))]
   changelog <- x[which(grepl("changelog", x, ignore.case = TRUE))]
   if (length(news) == 1) {
     return(news)
