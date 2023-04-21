@@ -7,12 +7,19 @@
   of their articles.
   
 
-### New features
-
+### Major changes
+  
 * `update_docs()` now updates the package version as well as altdoc version in 
   the footer.
+  
 * The NEWS or Changelog file included in the docs now automatically links issues,
   pull requests and users (only works for projects on Github).
+  
+* Vignettes are now always rendered by `use_*()` or `update_docs()`. Previously,
+  they were only rendered if their content changed. This was problematic because
+  the code in a vignette can have different output while the vignette in itself
+  doesn't change.
+
 
 
 # altdoc 0.1.0
