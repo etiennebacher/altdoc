@@ -35,17 +35,6 @@
     if (!is.null(x) & x == "stop") return(invisible())
   }
 
-  ### Check which vignette is different
-  vignette_is_different <- logical(length(vignettes))
-  for (i in seq_along(vignettes)) {
-    origin <- paste0(vignettes_path, "/", vignettes[i])
-    destination <- paste0(articles_path, "/", vignettes[i])
-    vignette_is_different[i] <- .vignettes_differ(origin, destination)
-    if (vignette_is_different[i]) {
-      fs::file_copy(origin, destination, overwrite = TRUE)
-    }
-  }
-
   # needs to be first, otherwise compilation will fail
   .replace_figures_rmd()
 
