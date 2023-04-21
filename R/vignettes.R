@@ -38,8 +38,7 @@
   # needs to be first, otherwise compilation will fail
   .replace_figures_rmd()
 
-  to_convert <- which(vignette_is_different)
-  n <- length(to_convert)
+  n <- length(vignettes)
   # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
   i <- 0
@@ -47,14 +46,14 @@
 
   conversion_worked <- vector(length = n)
 
-  for (i in seq_along(to_convert)) {
-    j <- to_convert[i] # do that for cli progress step
-    origin <- paste0(vignettes_path, "/", vignettes[j])
-    destination <- paste0(articles_path, "/", vignettes[j])
+  for (i in seq_along(vignettes)) {
+    j <- vignettes[i] # do that for cli progress step
+    origin <- paste0(vignettes_path, "/", j)
+    destination <- paste0(articles_path, "/", j)
 
     .modify_yaml(destination)
     .extract_import_bib(destination, path = path)
-    output_file <- paste0(substr(vignettes[j], 1, nchar(vignettes[j])-4), ".md")
+    output_file <- paste0(substr(j, 1, nchar(j)-4), ".md")
 
     tryCatch(
       {
@@ -116,7 +115,7 @@
     cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}:")
     cli::cli_ul(id = "list-success")
     for (i in seq_along(successes)) {
-      cli::cli_li("{.file {vignettes[to_convert[successes[i]]]}}")
+      cli::cli_li("{.file {vignettes[successes[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-success")
@@ -128,7 +127,7 @@
     cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following vignette{?s}:")
     cli::cli_ul(id = "list-fail")
     for (i in seq_along(fails)) {
-      cli::cli_li("{.file {vignettes[to_convert[fails[i]]]}}")
+      cli::cli_li("{.file {vignettes[fails[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-fail")
