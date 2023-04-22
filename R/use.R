@@ -169,3 +169,31 @@ nav:
 
   .final_steps(x = "mkdocs", path = path)
 }
+
+
+#' @export
+#'
+#' @rdname init
+
+use_quarto <- function(path = ".", overwrite = FALSE,
+                       custom_reference = NULL) {
+
+  path <- .convert_path(path)
+  .check_is_package(path)
+  .check_docs_exists(overwrite, path)
+
+  if (.is_windows() & interactive()) {
+    shell(paste("quarto create-project", fs::path_abs("docs", start = path),
+                "--type website --quiet"))
+  } else {
+    system2("quarto", paste("create-project", fs::path_abs("docs", start = path),
+                            "--type website --quiet"))
+  }
+
+  # .build_docs(path = path, custom_reference)
+  #
+  # .build_vignettes(path)
+  #
+  # .final_steps(x = "quarto", path = path)
+
+}

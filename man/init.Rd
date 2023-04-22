@@ -4,6 +4,7 @@
 \alias{use_docute}
 \alias{use_docsify}
 \alias{use_mkdocs}
+\alias{use_quarto}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
 use_docute(path = ".", overwrite = FALSE, custom_reference = NULL)
@@ -16,6 +17,8 @@ use_mkdocs(
   overwrite = FALSE,
   custom_reference = NULL
 )
+
+use_quarto(path = ".", overwrite = FALSE, custom_reference = NULL)
 }
 \arguments{
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}

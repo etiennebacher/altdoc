@@ -60,5 +60,11 @@
       cli::cli_alert_info("See here to know how to install it: {.url https://www.sphinx-doc.org/en/master/usage/installation.html}")
       .stop_quietly()
     }
+  } else if (tool == "quarto") {
+    if (!.is_quarto()) {
+      cli::cli_alert_danger("Apparently, {.code quarto} is not installed on your system.")
+      cli::cli_alert_info("See here to know how to install it: {.url https://quarto.org/docs/get-started/}")
+      .stop_quietly()
+    }
   }
 }

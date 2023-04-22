@@ -42,6 +42,12 @@
   return(!inherits(x, "try-error"))
 }
 
+# Is quarto installed?
+.is_quarto <- function() {
+  x <- try(system2("quarto", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  return(!inherits(x, "try-error"))
+}
+
 
 # https://stackoverflow.com/a/42945293/11598948
 .stop_quietly <- function() {
@@ -90,6 +96,7 @@
 .doc_type <- function(path = ".") {
   if (!fs::dir_exists(fs::path_abs("docs", start = path))) return(NULL)
   if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
+  if (fs::file_exists(fs::path_abs("docs/_quarto.yml", start = path))) return("quarto")
   if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
     file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
                   collapse = "")

@@ -36,6 +36,12 @@ preview <- function(path = ".") {
           system2("cd", ".. && mkdocs build -q")
         }
       )
+    } else if (doctype == "quarto") {
+      if (.is_windows()) {
+        shell(paste("cd", fs::path_abs("docs", start = path), " && quarto preview --quiet"))
+      } else {
+        system2("cd", paste(fs::path_abs("docs", start = path), " && quarto preview --quiet"))
+      }
     } else {
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
