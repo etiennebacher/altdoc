@@ -18,7 +18,11 @@
 * Vignettes are now always rendered by `use_*()` or `update_docs()`. Previously,
   they were only rendered if their content changed. This was problematic because
   the code in a vignette can have different output while the vignette in itself
-  doesn't change.
+  doesn't change (#37).
+  
+* New argument `custom_reference` in `use_*()` and `update_docs()`. If it is a
+  path to a custom R file then it uses this file to build the "Reference" section
+  in the docs (#35).
 
 
 

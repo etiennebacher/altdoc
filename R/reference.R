@@ -1,7 +1,19 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.make_reference <- function(update = FALSE, path = ".") {
+.make_reference <- function(update = FALSE, path = ".",
+                            custom_reference = NULL) {
+
+  cli::cli_h1("Building reference")
+  if (!is.null(custom_reference)) {
+    cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
+    source(custom_reference, echo = FALSE)
+    cli::cli_alert_success("Custom file for {.pkg Reference} finished running.")
+    return(invisible)
+  }
+
   good_path <- .doc_path(path = path)
-  if (fs::file_exists(paste0(good_path, "/reference.md"))) fs::file_delete(paste0(good_path, "/reference.md"))
+  if (fs::file_exists(paste0(good_path, "/reference.md"))) {
+    fs::file_delete(paste0(good_path, "/reference.md"))
+  }
 
   files <- list.files("man", full.names = TRUE)
   files <- files[grepl("\\.Rd", files)]

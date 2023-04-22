@@ -4,13 +4,16 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(convert_vignettes = TRUE, path = ".")
+update_docs(convert_vignettes = TRUE, path = ".", custom_reference = NULL)
 }
 \arguments{
 \item{convert_vignettes}{Automatically convert and import vignettes if you
 have some. This will not modify files in the folder 'vignettes'.}
 
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}
+
+\item{custom_reference}{Path to the file that will be sourced to generate the
+"Reference" section.}
 }
 \value{
 No value returned. Updates files in folder 'docs'.

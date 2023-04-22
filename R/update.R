@@ -7,6 +7,8 @@
 #' @param convert_vignettes Automatically convert and import vignettes if you
 #' have some. This will not modify files in the folder 'vignettes'.
 #' @param path Path. Default is the package root (detected with `here::here()`).
+#' @param custom_reference Path to the file that will be sourced to generate the
+#' "Reference" section.
 #'
 #' @export
 #'
@@ -18,7 +20,8 @@
 #' update_docs()
 #' }
 
-update_docs <- function(convert_vignettes = TRUE, path = ".") {
+update_docs <- function(convert_vignettes = TRUE, path = ".",
+                        custom_reference = NULL) {
 
   path <- .convert_path(path)
 
@@ -51,7 +54,7 @@ update_docs <- function(convert_vignettes = TRUE, path = ".") {
   }
 
   # Update functions reference
-  .make_reference(update = TRUE, path)
+  .make_reference(update = TRUE, path, custom_reference)
 
   # Update vignettes
   if (isTRUE(convert_vignettes)) {

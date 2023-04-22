@@ -6,6 +6,8 @@
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
 #' @param path Path. Default is the package root (detected with `here::here()`).
+#' @param custom_reference Path to the file that will be sourced to generate the
+#' "Reference" section.
 #'
 #' @export
 #'
@@ -26,14 +28,14 @@
 #' }
 
 use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
-                       path = ".") {
+                       path = ".", custom_reference = NULL) {
 
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
   .create_index("docute", path)
-  .build_docs(path)
+  .build_docs(path, custom_reference)
   .build_vignettes(convert_vignettes, path)
 
   .final_steps(x = "docute", path)
@@ -44,7 +46,7 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
-                        path = ".") {
+                        path = ".", custom_reference = NULL) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -52,7 +54,7 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 
   .create_index("docsify", path = path)
 
-  .build_docs(path = path)
+  .build_docs(path = path, custom_reference)
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
@@ -70,10 +72,11 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #'
 #' @param theme Name of the theme to use. Default is basic theme. See Details
 #' section.
-#'
 #' @param convert_vignettes Do you want to convert and import vignettes if you have
 #' some? This will not modify files in the folder 'vignettes'. This feature
 #' is experimental.
+#' @param custom_reference Path to the file that will be sourced to generate the
+#' "Reference" section.
 #'
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among
@@ -82,7 +85,8 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' @rdname init
 
 use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
-                       overwrite = FALSE, path = ".") {
+                       overwrite = FALSE, path = ".",
+                       custom_reference = NULL) {
 
   path <- .convert_path(path)
   .check_is_package(path)
