@@ -4,8 +4,6 @@
 #' they exist). Convert and add new of modified vignettes to the documentation.
 #' This will leave every other files unmodified.
 #'
-#' @param convert_vignettes Automatically convert and import vignettes if you
-#' have some. This will not modify files in the folder 'vignettes'.
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param custom_reference Path to the file that will be sourced to generate the
 #' "Reference" section.
@@ -20,7 +18,7 @@
 #' update_docs()
 #' }
 
-update_docs <- function(convert_vignettes = TRUE, path = ".",
+update_docs <- function(path = ".",
                         custom_reference = NULL) {
 
   path <- .convert_path(path)
@@ -57,11 +55,9 @@ update_docs <- function(convert_vignettes = TRUE, path = ".",
   .make_reference(update = TRUE, path, custom_reference)
 
   # Update vignettes
-  if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Update vignettes")
-    .transform_vignettes(path)
-    .add_vignettes(path)
-  }
+  cli::cli_h1("Update vignettes")
+  .transform_vignettes(path)
+  .add_vignettes(path)
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")

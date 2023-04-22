@@ -8,41 +8,41 @@ Init Docute, Docsify, or Mkdocs
 
 ### Usage
 
-    use_docute(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+    use_docute(path = ".", overwrite = FALSE, custom_reference = NULL)
 
-    use_docsify(convert_vignettes = TRUE, overwrite = FALSE, path = ".")
+    use_docsify(path = ".", overwrite = FALSE, custom_reference = NULL)
 
     use_mkdocs(
       theme = NULL,
-      convert_vignettes = TRUE,
+      path = ".",
       overwrite = FALSE,
-      path = "."
+      custom_reference = NULL
     )
 
 ### Arguments
 
 <table>
 <tbody>
-<tr class="odd" style="vertical-align: top;">
-<td><code>convert_vignettes</code></td>
-<td><p>Do you want to convert and import vignettes if you have some?
-This will not modify files in the folder 'vignettes'. This feature is
-experimental.</p></td>
+<tr class="odd">
+<td><code id="use_docute_:_path">path</code></td>
+<td><p>Path. Default is the package root (detected with
+<code>here::here()</code>).</p></td>
 </tr>
-<tr class="even" style="vertical-align: top;">
-<td><code>overwrite</code></td>
+<tr class="even">
+<td><code id="use_docute_:_overwrite">overwrite</code></td>
 <td><p>Overwrite the folder 'docs' if it already exists. If
 <code>FALSE</code> (default), there will be an interactive choice to
 make in the console to overwrite. If <code>TRUE</code>, the folder
 'docs' is automatically overwritten.</p></td>
 </tr>
-<tr class="odd" style="vertical-align: top;">
-<td><code>path</code></td>
-<td><p>Path. Default is the package root (detected with
-<code>here::here()</code>).</p></td>
+<tr class="odd">
+<td><code
+id="use_docute_:_custom_reference">custom_reference</code></td>
+<td><p>Path to the file that will be sourced to generate the "Reference"
+section.</p></td>
 </tr>
-<tr class="even" style="vertical-align: top;">
-<td><code>theme</code></td>
+<tr class="even">
+<td><code id="use_docute_:_theme">theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
 </tr>
@@ -91,8 +91,8 @@ Preview the documentation in a webpage or in viewer
 
 <table>
 <tbody>
-<tr class="odd" style="vertical-align: top;">
-<td><code>path</code></td>
+<tr class="odd">
+<td><code id="preview_:_path">path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
 </tr>
@@ -123,21 +123,22 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(convert_vignettes = TRUE, path = ".")
+    update_docs(path = ".", custom_reference = NULL)
 
 ### Arguments
 
 <table>
 <tbody>
-<tr class="odd" style="vertical-align: top;">
-<td><code>convert_vignettes</code></td>
-<td><p>Automatically convert and import vignettes if you have some. This
-will not modify files in the folder 'vignettes'.</p></td>
-</tr>
-<tr class="even" style="vertical-align: top;">
-<td><code>path</code></td>
+<tr class="odd">
+<td><code id="update_docs_:_path">path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
+</tr>
+<tr class="even">
+<td><code
+id="update_docs_:_custom_reference">custom_reference</code></td>
+<td><p>Path to the file that will be sourced to generate the "Reference"
+section.</p></td>
 </tr>
 </tbody>
 </table>
