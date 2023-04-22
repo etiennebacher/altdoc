@@ -7,6 +7,8 @@
 #' @param convert_vignettes Automatically convert and import vignettes if you
 #' have some. This will not modify files in the folder 'vignettes'.
 #' @param path Path. Default is the package root (detected with `here::here()`).
+#' @param custom_reference Path to the file that will be sourced to generate the
+#' "Reference" section.
 #'
 #' @export
 #'
