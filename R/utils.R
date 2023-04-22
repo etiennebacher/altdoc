@@ -190,6 +190,9 @@
 
 # Autolink news, PR, and people in NEWS
 .parse_news <- function(path, news_path) {
+
+  if (!fs::file_exists(news_path)) return(invisible())
+
   orig_news <- readLines(news_path, warn = FALSE)
   orig_news <- paste(orig_news, collapse = "\n")
   new_news <- orig_news

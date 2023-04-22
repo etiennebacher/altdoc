@@ -60,7 +60,7 @@ create_local_thing <- function(
   old_project <- proj_get_() # this could be `NULL`, i.e. no active project
   old_wd <- getwd() # not necessarily same as `old_project`
 
-  defer(
+  withr::defer(
     {
       fs::dir_delete(dir)
     },
