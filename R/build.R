@@ -116,11 +116,12 @@
 
 .final_steps <- function(x, path = ".") {
 
-  if (x == "docute") {
-    .final_steps_docute(path)
-  } else if (x == "docsify") {
-    .final_steps_docsify(path)
-  }
+  switch(
+    x,
+    "docute" = .final_steps_docute(path),
+    "docsify" = .final_steps_docsify(path),
+    "quarto" = .final_steps_quarto(path)
+  )
 
   suppressMessages({
     usethis::use_build_ignore("docs")
@@ -168,4 +169,50 @@
     sidebar <- sidebar[-which(grepl("reference.md", sidebar))]
   }
   cat(sidebar, file = fs::path_abs("docs/_sidebar.md", start = path), sep = "\n")
+}
+
+.final_steps_quarto <- function(path) {
+
+  good_path <- .doc_path(path)
+  new_yaml <- orig_yaml <- yaml::yaml.load_file(paste0(good_path, "/_quarto.yml"))
+
+  new_yaml$website$title <- .pkg_name(path)
+
+  nav_right <- list()
+
+  nav_right[[length(nav_right) + 1]] <- list(
+    href = "reference.md",
+    text = "Reference"
+  )
+
+  if (!is.null(.which_news())) {
+    nav_right[[length(nav_right) + 1]] <- list(
+      href = .which_news(),
+      text = "Changelog"
+    )
+  }
+  if (!is.null(.which_license())) {
+    nav_right[[length(nav_right) + 1]] <- list(
+      href = .which_license(),
+      text = "License"
+    )
+  }
+
+  new_yaml$website$navbar$right <- nav_right
+
+  # Package "yaml" converts TRUE to "yes" which errors with quarto
+  # https://github.com/vubiostat/r-yaml/issues/30#issuecomment-398548676
+  yaml::write_yaml(
+    new_yaml,
+    file = paste0(good_path, "/_quarto.yml"),
+    indent.mapping.sequence = TRUE,
+    handlers = list(logical = function(x) {
+      if (inherits(x, "logical")) {
+        x <- tolower(as.character(x))
+        class(x) <- "verbatim"
+      }
+      x
+    })
+  )
+
 }

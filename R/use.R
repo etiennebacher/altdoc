@@ -190,10 +190,10 @@ use_quarto <- function(path = ".", overwrite = FALSE,
                             "--type website --quiet"))
   }
 
-  # .build_docs(path = path, custom_reference)
-  #
-  # .build_vignettes(path)
-  #
-  # .final_steps(x = "quarto", path = path)
+  .build_docs(path = path, custom_reference)
+
+  .build_vignettes(path)
+
+  .final_steps(x = "quarto", path = path)
 
 }
