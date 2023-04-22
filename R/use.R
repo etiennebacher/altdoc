@@ -1,7 +1,5 @@
 #' Init Docute, Docsify, or Mkdocs
 #'
-#' @param convert_vignettes Automatically convert and import vignettes if you
-#' have some. This will not modify files in the folder 'vignettes'.
 #' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
@@ -27,8 +25,8 @@
 #' use_mkdocs()
 #' }
 
-use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
-                       path = ".", custom_reference = NULL) {
+use_docute <- function(path = ".", overwrite = FALSE,
+                       custom_reference = NULL) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -36,7 +34,7 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 
   .create_index("docute", path)
   .build_docs(path, custom_reference)
-  .build_vignettes(convert_vignettes, path)
+  .build_vignettes(path)
 
   .final_steps(x = "docute", path)
 }
@@ -45,8 +43,8 @@ use_docute <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #'
 #' @rdname init
 
-use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
-                        path = ".", custom_reference = NULL) {
+use_docsify <- function(path = ".", overwrite = FALSE,
+                        custom_reference = NULL) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -61,7 +59,7 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
     fs::path_abs("docs/_sidebar.md", start = path)
   )
 
-  .build_vignettes(convert_vignettes, path)
+  .build_vignettes(path)
 
   .final_steps(x = "docsify", path = path)
 
@@ -72,11 +70,6 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #'
 #' @param theme Name of the theme to use. Default is basic theme. See Details
 #' section.
-#' @param convert_vignettes Do you want to convert and import vignettes if you have
-#' some? This will not modify files in the folder 'vignettes'. This feature
-#' is experimental.
-#' @param custom_reference Path to the file that will be sourced to generate the
-#' "Reference" section.
 #'
 #' @details
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among
@@ -84,8 +77,9 @@ use_docsify <- function(convert_vignettes = TRUE, overwrite = FALSE,
 #' <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 #' @rdname init
 
-use_mkdocs <- function(theme = NULL, convert_vignettes = TRUE,
-                       overwrite = FALSE, path = ".",
+use_mkdocs <- function(theme = NULL,
+                       path = ".",
+                       overwrite = FALSE,
                        custom_reference = NULL) {
 
   path <- .convert_path(path)
@@ -171,7 +165,7 @@ nav:
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
-  .build_vignettes(convert_vignettes, path)
+  .build_vignettes(path)
 
   .final_steps(x = "mkdocs", path = path)
 }

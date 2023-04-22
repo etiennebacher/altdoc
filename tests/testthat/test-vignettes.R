@@ -1,6 +1,6 @@
 test_that("nothing changes if no vignettes folder or if empty", {
   create_local_package()
-  use_docute(convert_vignettes = FALSE, path = getwd())
+  use_docute(path = getwd())
   before <- fs::dir_tree("docs")
   .transform_vignettes(path = getwd())
   after1 <- fs::dir_tree("docs")
@@ -17,15 +17,14 @@ test_that(".transform_vignettes works on basic vignette", {
     testthat::test_path("examples/examples-yaml", "basic.Rmd")
   )
   create_local_package()
-  use_docute(path = getwd(), convert_vignettes = FALSE)
   fs::dir_create("vignettes")
   writeLines(original_rmd, "vignettes/basic.Rmd")
+
   expect_message(
-    .transform_vignettes(path = getwd()),
-    "following vignette has been converted"
-  )
-  expect_message(
-    .add_vignettes(path = getwd()),
+    expect_message(
+      use_docute(path = getwd()),
+      "following vignette has been converted"
+    ),
     "Don't forget to check"
   )
   expect_true(fs::file_exists("docs/articles/basic.Rmd"))

@@ -14,10 +14,14 @@
 - The NEWS or Changelog file included in the docs now automatically links issues,
   pull requests and users (only works for projects on Github).
 
-- Vignettes are now always rendered by `use_*()` or `update_docs()`. Previously,
-  they were only rendered if their content changed. This was problematic because
-  the code in a vignette can have different output while the vignette in itself
-  doesn't change.
+- Vignettes are now always rendered by `use_*()` or `update_docs()`. Therefore,
+  the argument `convert_vignettes` is removed. Previously, they were only rendered
+  if their content changed. This was problematic because the code in a vignette
+  can have different output while the vignette in itself doesn't change ([#37](https://github.com/etiennebacher/altdoc/issues/37), [#38](https://github.com/etiennebacher/altdoc/issues/38)).
+
+- New argument `custom_reference` in `use_*()` and `update_docs()`. If it is a
+  path to a custom R file then it uses this file to build the "Reference" section
+  in the docs ([#35](https://github.com/etiennebacher/altdoc/issues/35)).
 
 ## altdoc 0.1.0
 

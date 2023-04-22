@@ -104,12 +104,10 @@
   .make_reference(update = FALSE, path, custom_reference)
 }
 
-.build_vignettes <- function(convert_vignettes, path) {
-  if (isTRUE(convert_vignettes)) {
-    cli::cli_h1("Vignettes")
-    .transform_vignettes(path = path)
-    .add_vignettes(path = path)
-  }
+.build_vignettes <- function(path) {
+  cli::cli_h1("Vignettes")
+  .transform_vignettes(path = path)
+  .add_vignettes(path = path)
 }
 
 
