@@ -75,7 +75,7 @@
   md <- md[-c(1:10)]
 
   # Title to put in sidebar
-  title <- gsub(".Rd", "", rdfile)
+  title <- gsub("\\.Rd", "", rdfile)
   title <- gsub("man/", "", title)
   title <- gsub("_", " ", title)
   initial <- substr(title, 1, 1)
