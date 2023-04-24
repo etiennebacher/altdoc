@@ -185,7 +185,8 @@
     doctype,
     "docute" = fs::path_abs("docs/index.html", start = path),
     "docsify" = fs::path_abs("docs/_sidebar.md", start = path),
-    "mkdocs" = fs::path_abs("docs/mkdocs.yaml", start = path)
+    "mkdocs" = fs::path_abs("docs/mkdocs.yaml", start = path),
+    "quarto" = fs::path_abs("docs/_quarto.yml", start = path)
   )
   cli::cli_alert_warning(
     cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")

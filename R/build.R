@@ -41,9 +41,20 @@
     )
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
+
   .reformat_md(paste0(good_path, "/README.md"))
   .move_img_readme(path = path)
   .replace_img_paths_readme(path = path)
+
+  # quarto homepage must be called "index"
+  if (.doc_type() == "quarto") {
+    fs::file_delete(paste0(good_path, "/index.qmd"))
+    cat("---\ntoc: false\n---\n\n", file = paste0(good_path, "/index.md"))
+    tmp <- .readlines(paste0(good_path, "/README.md"))
+    tmp <- paste(tmp, collapse = "\n")
+    cat(tmp, file = paste0(good_path, "/index.md"), append = TRUE)
+    fs::file_delete(paste0(good_path, "/README.md"))
+  }
 }
 
 
@@ -178,6 +189,18 @@
 
   new_yaml$website$title <- .pkg_name(path)
 
+  ### Left: Home, vignettes
+
+  nav_left <- list(
+    list(
+      href = "index.md",
+      text = "Home"
+    )
+  )
+  new_yaml$website$navbar$left <- nav_left
+
+  ### Right: reference, changelog, license
+
   nav_right <- list()
 
   nav_right[[length(nav_right) + 1]] <- list(
@@ -197,7 +220,6 @@
       text = "License"
     )
   }
-
   new_yaml$website$navbar$right <- nav_right
 
   # Package "yaml" converts TRUE to "yes" which errors with quarto
