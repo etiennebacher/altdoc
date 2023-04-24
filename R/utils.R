@@ -225,6 +225,7 @@
 
   people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))[[1]]
   people <- gsub("^ ", "", people)
+  people <- gsub("^(", "", people)
 
   if (length(people) > 0) {
     people_link <- paste0("https://github.com/", gsub("@", "", people))
