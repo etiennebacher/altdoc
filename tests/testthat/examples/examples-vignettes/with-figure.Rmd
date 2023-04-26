@@ -18,6 +18,6 @@ print(mtcars)
 
 Here's a figure: ![](hex-conductor.png)
 
-Here's a link to a figure: <img src="https://raw.githubusercontent.com/etiennebacher/conductor/master/hex-conductor.png">
+Here's a link to a figure: <img src="https://raw.githubusercontent.com/etiennebacher/altdoc/main/inst/misc/hex-conductor.png">
 
 Here's another figure: ![](figures/hex-conductor-2.png)
