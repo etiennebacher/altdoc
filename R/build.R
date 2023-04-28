@@ -189,6 +189,9 @@
 
   new_yaml$website$title <- .pkg_name(path)
 
+  new_yaml$website[["repo-url"]] <- .gh_url(path)
+  new_yaml$website[["repo-actions"]] <- "[edit, issue]"
+
   ### Left: Home, vignettes
 
   nav_left <- list(
