@@ -190,7 +190,7 @@
   new_yaml$website$title <- .pkg_name(path)
 
   new_yaml$website[["repo-url"]] <- .gh_url(path)
-  new_yaml$website[["repo-actions"]] <- "[edit, issue]"
+  new_yaml$website[["repo-actions"]] <- c("edit", "issue")
 
   ### Left: Home, vignettes
 
