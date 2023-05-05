@@ -36,6 +36,13 @@ preview <- function(path = ".") {
           system2("cd", ".. && mkdocs build -q")
         }
       )
+    } else if (doctype == "quarto") {
+      cli::cli_alert_info("Rendering the website...")
+      x <- processx::run("quarto", c("render", "docs"), echo = FALSE, spinner = TRUE)
+      cli::cli_alert_info("Previewing the website...")
+      invisible(capture.output(
+        processx::process$new("quarto", c("preview", "docs"))
+      ))
     } else {
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
