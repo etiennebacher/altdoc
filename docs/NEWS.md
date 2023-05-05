@@ -23,6 +23,10 @@
   path to a custom R file then it uses this file to build the "Reference" section
   in the docs ([#35](https://github.com/etiennebacher/altdoc/issues/35)).
 
+#### Minor changes
+
+- Fix some CRAN failures.
+
 ## altdoc 0.1.0
 
 - First version.

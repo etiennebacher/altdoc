@@ -1,4 +1,4 @@
-# altdoc 0.1.0.9000 (development)
+# altdoc 0.2.0 
 
 ### Breaking changes
 
@@ -23,6 +23,10 @@
 * New argument `custom_reference` in `use_*()` and `update_docs()`. If it is a
   path to a custom R file then it uses this file to build the "Reference" section
   in the docs (#35).
+  
+### Minor changes
+
+* Fix some CRAN failures.
 
 
 
