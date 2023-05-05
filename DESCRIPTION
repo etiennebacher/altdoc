@@ -20,6 +20,7 @@ Imports:
     fs,
     here,
     htmltools,
+    processx,
     rmarkdown,
     rstudioapi,
     servr,
