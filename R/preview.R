@@ -17,34 +17,38 @@ preview <- function(path = ".") {
 
   if (rstudioapi::isAvailable()) {
     if (doctype %in% c("docute", "docsify")) {
-      servr::httw(fs::path_abs("docs/"))
-    } else if (doctype == "mkdocs") {
-      # first build
-      if (.is_windows()) {
-        shell(paste("cd", fs::path_abs("docs", start = path), " && mkdocs build -q"))
-      } else {
-        system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))
-      }
-      # stop it directly to avoid opening the browser
-      servr::daemon_stop()
 
-      # getwd has to be used outside of httw, not working otherwise
-      servr::httw(
-        fs::path_abs("docs/site", start = path),
-        watch = fs::path_abs("docs/", start = path),
-        handler = function(files) {
-          system2("cd", ".. && mkdocs build -q")
-        }
-      )
+      servr::httw(fs::path_abs("docs/"))
+
+    } else if (doctype == "mkdocs") {
+
+      # first build
+      cli::cli_alert_info("Rendering the website...")
+      system2("python", paste0("-m mkdocs build -f ",
+                               fs::path_abs("docs"),
+                               "/mkdocs.yml -q"))
+      invisible(capture.output(
+        processx::process$new("python", paste0("-m mkdocs serve -f ",
+                                               fs::path_abs("docs"),
+                                               "/mkdocs.yml"))
+      ))
+
+      cli::cli_alert_info("Previewing the website...")
+      servr::httw(fs::path_abs("docs/site"))
+
     } else if (doctype == "quarto") {
+
       cli::cli_alert_info("Rendering the website...")
       x <- processx::run("quarto", c("render", "docs"), echo = FALSE, spinner = TRUE)
       cli::cli_alert_info("Previewing the website...")
       invisible(capture.output(
         processx::process$new("quarto", c("preview", "docs"))
       ))
+
     } else {
+
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
+
     }
   } else {
     if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {

@@ -21,7 +21,14 @@
 
 # Is mkdocs installed?
 .is_mkdocs <- function() {
-  x <- try(system2("mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  # windows...
+  # https://github.com/mkdocs/mkdocs/issues/1038
+  if (.is_windows()) {
+    x <- try(system2("python", args = c("-m", "mkdocs", "--version"),
+                     stdout = TRUE, stderr = TRUE), silent = TRUE)
+  } else {
+    x <- try(system2("mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  }
   return(!inherits(x, "try-error"))
 }
 
