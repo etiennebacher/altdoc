@@ -25,6 +25,7 @@ test_that("argument theme works", {
 })
 
 test_that("argument theme works", {
+  skip_if_not(.is_mkdocs_material())
   create_local_package()
   use_mkdocs(theme = "material", path = getwd())
   path <- getwd()

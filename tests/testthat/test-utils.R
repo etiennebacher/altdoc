@@ -45,7 +45,12 @@ test_that("import_* functions work", {
   .import_coc()
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
 
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   expect_false(fs::file_exists("docs/NEWS.md"))
   .import_news()
   expect_true(fs::file_exists("docs/NEWS.md"))

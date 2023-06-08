@@ -43,7 +43,13 @@ test_that("mkdocs: update_docs updates correctly the README", {
 
 test_that("docute: update_docs updates correctly the NEWS", {
   create_local_package()
-  usethis::use_news_md()
+  # https://github.com/cynkra/fledge/issues/683
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   writeLines("Hello", con = "NEWS.md")
   use_docute(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
@@ -58,7 +64,12 @@ test_that("docute: update_docs updates correctly the NEWS", {
 
 test_that("docsify: update_docs updates correctly the NEWS", {
   create_local_package()
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   writeLines("Hello", con = "NEWS.md")
   use_docsify(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
@@ -74,7 +85,12 @@ test_that("docsify: update_docs updates correctly the NEWS", {
 test_that("mkdocs: update_docs updates correctly the NEWS", {
   skip_mkdocs()
   create_local_package()
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   writeLines("Hello", con = "NEWS.md")
   use_mkdocs(path = getwd())
   writeLines("Hello again", con = "NEWS.md")
@@ -90,7 +106,12 @@ test_that("mkdocs: update_docs updates correctly the NEWS", {
 test_that("docsify: update_docs works when NEWS didn't exist", {
   create_local_package()
   use_docsify(path = getwd())
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   expect_message(update_docs(path = getwd()),
                  regexp = "'NEWS / Changelog' was imported for the first time.")
   expect_true(fs::file_exists("docs/NEWS.md"))
@@ -99,7 +120,12 @@ test_that("docsify: update_docs works when NEWS didn't exist", {
 test_that("docute: update_docs works when NEWS didn't exist", {
   create_local_package()
   use_docute(path = getwd())
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   expect_message(update_docs(path = getwd()),
                  regexp = "'NEWS / Changelog' was imported for the first time.")
   expect_true(fs::file_exists("docs/NEWS.md"))
@@ -109,7 +135,12 @@ test_that("mkdocs: update_docs works when NEWS didn't exist", {
   skip_mkdocs()
   create_local_package()
   use_mkdocs(path = getwd())
-  usethis::use_news_md()
+  withr::with_options(
+    list(repos = c("CRAN" = "https://cloud.r-project.org")),
+    {
+      usethis::use_news_md()
+    }
+  )
   expect_message(update_docs(path = getwd()),
                  regexp = "'NEWS / Changelog' was imported for the first time.")
   expect_true(fs::file_exists("docs/docs/NEWS.md"))

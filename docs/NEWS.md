@@ -1,4 +1,9 @@
-## altdoc 0.1.0.9000 (development)
+## altdoc 0.2.1
+
+- Fix test failures on CRAN due to the new version of `usethis`
+  (see [https://github.com/cynkra/fledge/issues/683](https://github.com/cynkra/fledge/issues/683)).
+
+## altdoc 0.2.0
 
 #### Breaking changes
 

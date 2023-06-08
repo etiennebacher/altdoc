@@ -23,26 +23,25 @@ Init Docute, Docsify, or Mkdocs
 
 <table>
 <tbody>
-<tr class="odd">
-<td><code id="use_docute_:_path">path</code></td>
+<tr class="odd" style="vertical-align: top;">
+<td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
 </tr>
-<tr class="even">
-<td><code id="use_docute_:_overwrite">overwrite</code></td>
+<tr class="even" style="vertical-align: top;">
+<td><code>overwrite</code></td>
 <td><p>Overwrite the folder 'docs' if it already exists. If
 <code>FALSE</code> (default), there will be an interactive choice to
 make in the console to overwrite. If <code>TRUE</code>, the folder
 'docs' is automatically overwritten.</p></td>
 </tr>
-<tr class="odd">
-<td><code
-id="use_docute_:_custom_reference">custom_reference</code></td>
+<tr class="odd" style="vertical-align: top;">
+<td><code>custom_reference</code></td>
 <td><p>Path to the file that will be sourced to generate the "Reference"
 section.</p></td>
 </tr>
-<tr class="even">
-<td><code id="use_docute_:_theme">theme</code></td>
+<tr class="even" style="vertical-align: top;">
+<td><code>theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
 </tr>
@@ -91,8 +90,8 @@ Preview the documentation in a webpage or in viewer
 
 <table>
 <tbody>
-<tr class="odd">
-<td><code id="preview_:_path">path</code></td>
+<tr class="odd" style="vertical-align: top;">
+<td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
 </tr>
@@ -129,14 +128,13 @@ the documentation. This will leave every other files unmodified.
 
 <table>
 <tbody>
-<tr class="odd">
-<td><code id="update_docs_:_path">path</code></td>
+<tr class="odd" style="vertical-align: top;">
+<td><code>path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
 </tr>
-<tr class="even">
-<td><code
-id="update_docs_:_custom_reference">custom_reference</code></td>
+<tr class="even" style="vertical-align: top;">
+<td><code>custom_reference</code></td>
 <td><p>Path to the file that will be sourced to generate the "Reference"
 section.</p></td>
 </tr>
