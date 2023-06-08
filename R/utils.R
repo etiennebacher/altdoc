@@ -210,6 +210,9 @@
     ) |>
       unique()
 
+    # need to go in decreasing order of characters so that we don't insert the
+    # link for #78 in "#783" for instance
+
     issues_pr_out <- issues_pr_out[order(issues_pr_out$nchar, decreasing = TRUE),]
 
     for (i in seq_len(nrow(issues_pr_out))) {
