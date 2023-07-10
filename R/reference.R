@@ -1,4 +1,4 @@
-# Convert and unite .Rd files to 'docs/reference.md'.
+# Convert and unite .Rd files to 'docs/reference.Rmd'.
 .make_reference <- function(update = FALSE, path = ".",
                             custom_reference = NULL) {
 
@@ -11,8 +11,8 @@
   }
 
   good_path <- .doc_path(path = path)
-  if (fs::file_exists(paste0(good_path, "/reference.md"))) {
-    fs::file_delete(paste0(good_path, "/reference.md"))
+  if (fs::file_exists(paste0(good_path, "/reference.Rmd"))) {
+    fs::file_delete(paste0(good_path, "/reference.Rmd"))
   }
 
   files <- list.files("man", full.names = TRUE)
@@ -22,8 +22,22 @@
     .rd2md(x)
   })
 
-  fs::file_create(paste0(good_path, "/reference.md"))
-  writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
+  fs::file_create(file.path(good_path, "/reference.Rmd"))
+  writeLines(c("# Reference \n", unlist(all_rd_as_md)), file.path(good_path, "/reference.Rmd"))
+
+  # render Rmarkdown and cleanup
+  rmarkdown::render(input = file.path(good_path, "reference.Rmd"),
+                    output_file = file.path(good_path, "reference.md"),
+                    output_format = "github_document",
+                    quiet = TRUE,
+                    clean = TRUE)
+  fs::file_delete(file.path(good_path, "reference.Rmd"))
+  fs::file_delete(file.path(good_path, "reference.html"))
+
+  # fix headers
+  tmp <- readLines(file.path(good_path, "reference.md"))
+  tmp <- gsub("## \\\\#\\\\#", "##", tmp)
+  writeLines(tmp, file.path(good_path, "reference.md"))
 
   cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
 }
@@ -63,8 +77,12 @@
   if (length(start_examples) != 0) {
     examples <- md[start_examples:length(md)]
     not_empty_lines <- which(examples != "")[-1]
-    examples[not_empty_lines[1]] <-
-      paste0("```r\n", examples[not_empty_lines[1]])
+    # do not render if interactive() or \dontrun{}. This is drastic and could be improved in the future
+    if (any(grepl("interactive|dontrun", examples))) {
+      examples[not_empty_lines[1]] <- paste0("```r\n", examples[not_empty_lines[1]])
+    } else {
+      examples[not_empty_lines[1]] <- paste0("```{r}\n", examples[not_empty_lines[1]])
+    }
     examples[not_empty_lines[length(not_empty_lines)-1]] <-
       paste0(examples[not_empty_lines[length(not_empty_lines)-1]], "\n```")
     md[start_examples:length(md)] <- examples
