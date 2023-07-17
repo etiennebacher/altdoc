@@ -7,9 +7,11 @@
 #' Viewer.
 #'
 #' @examples
-#'
+#' if (interactive()) {
 #' # Preview documentation
 #' preview()
+#' }
+
 
 preview <- function(path = ".") {
 
