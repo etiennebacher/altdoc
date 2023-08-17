@@ -34,8 +34,6 @@ update_docs <- function(path = ".",
 
   # Update README
   .update_file("README.md")
-  .move_img_readme(path)
-  .replace_img_paths_readme(path)
   .reformat_md(paste0(good_path, "/README.md"))
 
   # Update changelog, CoC, License
