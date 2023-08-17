@@ -18,9 +18,7 @@
     return(invisible())
   }
 
-  good_path <- .doc_path(path = path)
-  articles_path <- paste0(good_path, "/articles")
-
+  articles_path <- paste0(.doc_path(path = path), "/articles")
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
@@ -28,6 +26,7 @@
   }
 
   n <- length(vignettes)
+
   # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
   i <- 0
@@ -59,7 +58,7 @@
       },
 
       error = function(e) {
-        fs::file_delete(gsub("\\.md$", "\\.Rmd", destination))
+        fs::file_delete(destination)
         conversion_worked[i] <- FALSE
       }
     )
