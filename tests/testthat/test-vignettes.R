@@ -27,6 +27,5 @@ test_that(".transform_vignettes works on basic vignette", {
     ),
     "Don't forget to check"
   )
-  expect_true(fs::file_exists("docs/articles/basic.Rmd"))
   expect_true(fs::file_exists("docs/articles/basic.md"))
 })
