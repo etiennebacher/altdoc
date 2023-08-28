@@ -9,7 +9,7 @@
   
 </div>
 
-The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [docute](https://docute.org/), [docsify](https://docsify.js.org/#/), and [mkdocs](https://www.mkdocs.org/). 
+The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [docute](https://docute.egoist.dev//), [docsify](https://docsify.js.org/#/), and [mkdocs](https://www.mkdocs.org/). 
 
 ## Demos
 
@@ -78,7 +78,7 @@ More details on the package and the deployment are available on the [website](ht
 
 Options for each site generator can be found on their own website:
 
-* [Docute](https://docute.org/)
+* [Docute](https://docute.egoist.dev//)
 
 * [Docsify](https://docsify.js.org/)
 

@@ -42,7 +42,7 @@ The second one is to create (R) Markdown files in the 'docs' folder. One drawbac
 
 Finally, if you manually create (R) Markdown files, or if you want to modify the organization of your website, you will need to modify the sidebar. This is done in different files, depending on the documentation generator you use:
 
-* with `docute`, everything is done in `index.html`. This is where you add sections, options, and other extensions documented [here](https://docute.org).
+* with `docute`, everything is done in `index.html`. This is where you add sections, options, and other extensions documented [here](https://docute.egoist.dev/).
 
 * with `docsify.js`, the organization of the sidebar is made in `_sidebar.md`, and options and extensions are dealt with in `index.html` (and detailed [here](https://docsify.js.org/#/)).
 
