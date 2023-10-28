@@ -42,6 +42,8 @@
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
   .reformat_md(paste0(good_path, "/README.md"))
+  .move_img_readme(path = path)
+  .replace_img_paths_readme(path = path)
 }
 
 

@@ -60,13 +60,15 @@ here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 No value returned. Creates files in folder 'docs'. Other files and
 folders are not modified.
 
-Note that vignettes are no longer automatically added to the file that
-defines the structure of the website. Developers must now manually
-update this structure and the order of their articles. The name of the
-file defining the structure of the website lives at the root of `⁠/docs⁠`
-and differs based on the selected site builder (`use_docsify()` =
-`⁠_sidebar.md⁠`; `use_docute()` = `index.html`; `use_mkdocs()` =
-`mkdocs.yml`).
+### Vignettes
+
+Note that although vignettes are automatically moved to the `⁠/docs⁠`
+folder, they are no longer automatically specified in the website
+structure-defining file. Developers must now manually update this file
+and the desired order of their articles. This file lives at the root of
+`⁠/docs⁠` and its name differs based on the selected site builder
+(`use_docsify()` = `⁠_sidebar.md⁠`; `use_docute()` = `index.html`;
+`use_mkdocs()` = `mkdocs.yml`).
 
 ### Examples
 
