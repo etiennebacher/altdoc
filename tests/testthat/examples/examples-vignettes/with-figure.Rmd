@@ -14,6 +14,8 @@ Here's some code:
 
 ```{r}
 print(mtcars)
+
+plot(mtcars$mpg)
 ```
 
 Here's a figure: ![](hex-conductor.png)

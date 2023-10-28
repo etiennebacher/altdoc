@@ -77,3 +77,72 @@
 
   img_path
 }
+
+# Find figures path in vignettes, copy the figures to "articles/figures"
+.replace_figures_rmd <- function(path = ".") {
+  vignettes_path <- fs::path_abs("vignettes", start = path)
+
+  # Extract paths of figures and copy figures to "articles/figures"
+  if (!file.exists(vignettes_path) |
+      .folder_is_empty(vignettes_path)) {
+    return(invisible())
+  }
+  good_path <- .doc_path(path)
+  articles_path <- paste0(good_path, "/articles")
+
+  if (!fs::dir_exists(articles_path)) {
+    fs::dir_create(articles_path)
+  }
+  if (!fs::dir_exists(paste0(articles_path, "/figures"))) {
+    fs::dir_create(paste0(articles_path, "/figures"))
+  }
+
+  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
+
+  for (i in seq_along(vignettes)) {
+
+    file_content <- paste(.readlines(paste0(vignettes_path, "/", vignettes[i])), collapse = "\n")
+
+    # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
+    x <- unlist(regmatches(
+      file_content,
+      gregexpr("(?:\\(|:\\s+)(?!http)([^\\s]+\\.(?:jpe?g|gif|png|svg|pdf))", file_content, perl = TRUE)
+    ))
+    x <- gsub("\"", "", x)
+    x <- gsub(":| ", "", x)
+    x <- gsub("!", "", x)
+    x <- gsub("\\(|\\)|\\[|\\]", "", x)
+    x <- gsub("\\.\\.", "", x)
+
+    new_file_content <- file_content
+
+    for (j in seq_along(x)) {
+
+      new_file_content <- gsub(
+        x[j],
+        paste0("figures/", x[j]),
+        new_file_content
+      )
+
+      if (substr(x[j], 1, 1) == "/") {
+        x[j] <- substr(x[j], 2, nchar(x[j]))
+      }
+      if (!startsWith(x[j], "vignettes")) {
+        x[j] <- paste0(vignettes_path, "/", x[j])
+      }
+
+    }
+    origin_fig <- x
+    destination_fig <- paste0(articles_path, "/figures/", trimws(basename(origin_fig)))
+    writeLines(new_file_content, paste0(articles_path, "/", vignettes[i]))
+
+    if (length(origin_fig) == 0) next
+
+    for (j in seq_along(origin_fig)) {
+      if (fs::file_exists(origin_fig[j])) {
+        fs::file_copy(origin_fig[j], destination_fig[j], overwrite = TRUE)
+      }
+    }
+  }
+}
+
