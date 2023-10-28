@@ -1,47 +1,5 @@
 # Reference 
 
-## Custom-doc-name
-
-### Description
-
-Function description
-
-### Usage
-
-    foo()
-
-### My Section
-
-    x <- data.frame(PRODUCT = c("A", "B", "C"), PCT_OF_SALE = c("20%", "50%", "30%"))
-    knitr::kable(x)
-
-<table>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">PRODUCT</td>
-<td style="text-align: left;">PCT_OF_SALE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">20%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">B</td>
-<td style="text-align: left;">50%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">C</td>
-<td style="text-align: left;">30%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
-
-
----
 ## Init
 
 ### Description
@@ -102,6 +60,14 @@ here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 No value returned. Creates files in folder 'docs'. Other files and
 folders are not modified.
 
+Note that vignettes are no longer automatically added to the file that
+defines the structure of the website. Developers must now manually
+update this structure and the order of their articles. The name of the
+file defining the structure of the website lives at the root of `⁠/docs⁠`
+and differs based on the selected site builder (`use_docsify()` =
+`⁠_sidebar.md⁠`; `use_docute()` = `index.html`; `use_mkdocs()` =
+`mkdocs.yml`).
+
 ### Examples
 
 ```r
@@ -149,8 +115,10 @@ Viewer.
 ### Examples
 
 ```r
+if (interactive()) {
 # Preview documentation
 preview()
+}
 ```
 
 
