@@ -99,50 +99,25 @@
 
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
-  for (i in seq_along(vignettes)) {
+  # Move images generated through code
+  vignettes_folders <- gsub(".Rmd", "_files", vignettes)
+  vignettes_folders <- paste0(articles_path, "/", vignettes_folders, "/figure-gfm")
+  vignettes_imgs <- list.files(vignettes_folders, pattern = ".png$", full.names = TRUE)
+  fig_path <- paste0(articles_path, "/figures")
 
-    file_content <- paste(.readlines(paste0(vignettes_path, "/", vignettes[i])), collapse = "\n")
+  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
-    # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
-    x <- unlist(regmatches(
-      file_content,
-      gregexpr("(?:\\(|:\\s+)(?!http)([^\\s]+\\.(?:jpe?g|gif|png|svg|pdf))", file_content, perl = TRUE)
-    ))
-    x <- gsub("\"", "", x)
-    x <- gsub(":| ", "", x)
-    x <- gsub("!", "", x)
-    x <- gsub("\\(|\\)|\\[|\\]", "", x)
-    x <- gsub("\\.\\.", "", x)
+  vignettes_imgs_short <- list.files(vignettes_folders, pattern = ".png$")
+  replacement <- list.files(vignettes_folders, pattern = ".png$")
+  replacement <- paste0("articles/figures/", vignettes_imgs_short)
+  fs::file_move(vignettes_imgs, fig_path)
 
-    new_file_content <- file_content
-
-    for (j in seq_along(x)) {
-
-      new_file_content <- gsub(
-        x[j],
-        paste0("figures/", x[j]),
-        new_file_content
-      )
-
-      if (substr(x[j], 1, 1) == "/") {
-        x[j] <- substr(x[j], 2, nchar(x[j]))
-      }
-      if (!startsWith(x[j], "vignettes")) {
-        x[j] <- paste0(vignettes_path, "/", x[j])
-      }
-
+  for (y in vignettes_md) {
+    tx  <- readLines(y)
+    for (i in seq_along(vignettes_imgs)) {
+      print(replacement[i])
+      tx <- gsub(vignettes_imgs[i], replacement[i], tx, fixed = TRUE)
     }
-    origin_fig <- x
-    destination_fig <- paste0(articles_path, "/figures/", trimws(basename(origin_fig)))
-    writeLines(new_file_content, paste0(articles_path, "/", vignettes[i]))
-
-    if (length(origin_fig) == 0) next
-
-    for (j in seq_along(origin_fig)) {
-      if (fs::file_exists(origin_fig[j])) {
-        fs::file_copy(origin_fig[j], destination_fig[j], overwrite = TRUE)
-      }
-    }
+  writeLines(tx, con=y)
   }
 }
-

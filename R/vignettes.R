@@ -66,6 +66,9 @@
     cli::cli_progress_update()
   }
 
+  # needs to be first, otherwise compilation will fail
+  .replace_figures_rmd()
+
   successes <- which(conversion_worked == TRUE)
   fails <- which(conversion_worked == FALSE)
 
