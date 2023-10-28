@@ -33,6 +33,13 @@ section.}
 \value{
 No value returned. Creates files in folder 'docs'. Other files and
 folders are not modified.
+
+Note that vignettes are no longer automatically added to the file that
+defines the structure of the website. Developers must now manually update
+this structure and the order of their articles. The name of the file defining
+the structure of the website lives at the root of \verb{/docs} and differs based
+on the selected site builder (\code{use_docsify()} = \verb{_sidebar.md};
+\code{use_docute()} = \code{index.html}; \code{use_mkdocs()} = \code{mkdocs.yml}).
 }
 \description{
 Init Docute, Docsify, or Mkdocs
