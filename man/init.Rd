@@ -6,15 +6,26 @@
 \alias{use_mkdocs}
 \title{Init Docute, Docsify, or Mkdocs}
 \usage{
-use_docute(path = ".", overwrite = FALSE, custom_reference = NULL)
+use_docute(
+  path = ".",
+  overwrite = FALSE,
+  custom_reference = NULL,
+  quarto = FALSE
+)
 
-use_docsify(path = ".", overwrite = FALSE, custom_reference = NULL)
+use_docsify(
+  path = ".",
+  overwrite = FALSE,
+  custom_reference = NULL,
+  quarto = FALSE
+)
 
 use_mkdocs(
   theme = NULL,
   path = ".",
   overwrite = FALSE,
-  custom_reference = NULL
+  custom_reference = NULL,
+  quarto = FALSE
 )
 }
 \arguments{
@@ -26,6 +37,9 @@ overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 
 \item{custom_reference}{Path to the file that will be sourced to generate the
 "Reference" section.}
+
+\item{quarto}{Logical. Whether to use quarto to render Rd documentation files
+(Reference).}
 
 \item{theme}{Name of the theme to use. Default is basic theme. See Details
 section.}

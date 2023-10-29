@@ -1,6 +1,6 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .make_reference <- function(update = FALSE, path = ".",
-                            custom_reference = NULL) {
+                            custom_reference = NULL, quarto = FALSE) {
 
   cli::cli_h1("Building reference")
   if (!is.null(custom_reference)) {
@@ -19,7 +19,17 @@
   files <- files[grepl("\\.Rd", files)]
 
   all_rd_as_md <- lapply(files, function(x){
-    .rd2md(x)
+    if (quarto) {
+      source_file <- list.files("man", pattern = ".Rd$")
+      source_file <- paste0("man/", source_file)
+      target_dir <- "man"
+      lapply(source_file, .rd_to_qmd, target_dir)
+      source_file <- list.files("man", pattern = ".qmd$")
+      source_file <- paste0("man/", source_file)
+      lapply(source_file, .qmd_to_md)
+    } else {
+      .rd2md(x)
+    }
   })
 
   fs::file_create(paste0(good_path, "/reference.md"))
