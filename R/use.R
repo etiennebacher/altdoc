@@ -178,7 +178,7 @@ nav:
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 
-  .build_vignettes(path, quarto = quarto)
+  .build_vignettes(path)
 
   .final_steps(x = "mkdocs", path = path)
 }
