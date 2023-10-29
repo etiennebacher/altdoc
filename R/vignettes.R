@@ -18,27 +18,15 @@
     return(invisible())
   }
 
-  good_path <- .doc_path(path = path)
-  articles_path <- paste0(good_path, "/articles")
-
+  articles_path <- paste0(.doc_path(path = path), "/articles")
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   if (!file.exists(articles_path)) {
     fs::dir_create(articles_path)
   }
 
-  for (i in seq_along(vignettes)) {
-    x <- .manage_child_vignettes(
-      paste0(vignettes_path, "/", vignettes[i]),
-      path = path
-    )
-    if (!is.null(x) & x == "stop") return(invisible())
-  }
-
-  # needs to be first, otherwise compilation will fail
-  .replace_figures_rmd()
-
   n <- length(vignettes)
+
   # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
   i <- 0
@@ -50,9 +38,6 @@
     j <- vignettes[i] # do that for cli progress step
     origin <- paste0(vignettes_path, "/", j)
     destination <- paste0(articles_path, "/", j)
-
-    .modify_yaml(destination)
-    .extract_import_bib(destination, path = path)
     output_file <- paste0(substr(j, 1, nchar(j)-4), ".md")
 
     tryCatch(
@@ -60,47 +45,29 @@
         suppressMessages(
           suppressWarnings(
             rmarkdown::render(
-              destination,
+              origin,
               output_dir = articles_path,
               output_file = output_file,
+              output_format = "github_document",
               quiet = TRUE,
               envir = new.env()
             )
           )
         )
-
-        ### If title too long, it was cut in several lines but only the last
-        ### one is read by docute so need to paste the title back together
-        new_vignette <- .readlines(gsub("\\.Rmd", "\\.md", destination))
-        title_sep <- grep("=====", new_vignette)
-        if (length(title_sep) == 1) {
-          title <- new_vignette[1:title_sep-1]
-          title <- paste(title, collapse = " ")
-
-          # for some reason, having a colon in the title breaks the title when
-          # using mkdocs
-          if (.doc_type(path = path) == "mkdocs") {
-            title <- gsub(":", " - ", title)
-          }
-
-          new_vignette <- new_vignette[-c(1:title_sep-1)]
-          new_vignette <- c(title, new_vignette)
-          writeLines(new_vignette, gsub("\\.Rmd", "\\.md", destination))
-        }
-
-        .reformat_md(gsub("\\.Rmd", "\\.md", destination))
-
         conversion_worked[i] <- TRUE
       },
 
       error = function(e) {
-        fs::file_delete(gsub("\\.md$", "\\.Rmd", destination))
+        fs::file_delete(destination)
         conversion_worked[i] <- FALSE
       }
     )
 
     cli::cli_progress_update()
   }
+
+  # needs to be first, otherwise compilation will fail
+  .replace_figures_rmd()
 
   successes <- which(conversion_worked == TRUE)
   fails <- which(conversion_worked == FALSE)
@@ -132,8 +99,6 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
-
-  .fix_rmd_figures_path(path)
 
   cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 
@@ -190,31 +155,4 @@
   cli::cli_alert_warning(
     cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
   )
-}
-
-
-
-# Check whether vignettes call child documents
-.manage_child_vignettes <- function(file, path = path) {
-
-  x <- tinkr::yarn$new(file)
-
-  children <- x$body
-  children <- xml2::xml_find_all(children, xpath = ".//md:code_block", x$ns)
-  children <- xml2::xml_attr(children, attr = "child")
-  children <- children[!is.na(children)]
-  children <- gsub("\"", "", children)
-
-  if(length(children) == 0) return("continue")
-
-  if (any(grepl("\\.\\.", children))) {
-    cli::cli_alert_danger("Some vignettes call child elements in other folders. {.code altdoc} cannot deal with them.")
-    return("stop")
-  } else {
-    for (i in children) {
-      fs::file_copy(children, fs::path_abs(paste0("docs/articles/", children), start = path), overwrite = TRUE)
-      return("continue")
-    }
-  }
-
 }

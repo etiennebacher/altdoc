@@ -78,7 +78,6 @@
   img_path
 }
 
-
 # Find figures path in vignettes, copy the figures to "articles/figures"
 .replace_figures_rmd <- function(path = ".") {
   vignettes_path <- fs::path_abs("vignettes", start = path)
@@ -100,92 +99,24 @@
 
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
-  for (i in seq_along(vignettes)) {
+  # Move images generated through code
+  vignettes_folders <- gsub(".Rmd", "_files", vignettes)
+  vignettes_folders <- paste0(articles_path, "/", vignettes_folders, "/figure-gfm")
+  vignettes_imgs <- list.files(vignettes_folders, pattern = ".png$", full.names = TRUE)
+  fig_path <- paste0(articles_path, "/figures")
 
-    file_content <- paste(.readlines(paste0(vignettes_path, "/", vignettes[i])), collapse = "\n")
+  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
-    # regex: https://gist.github.com/ttscoff/dbf4737b04e1635e1d20
-    x <- unlist(regmatches(
-      file_content,
-      gregexpr("(?:\\(|:\\s+)(?!http)([^\\s]+\\.(?:jpe?g|gif|png|svg|pdf))", file_content, perl = TRUE)
-    ))
-    x <- gsub("\"", "", x)
-    x <- gsub(":| ", "", x)
-    x <- gsub("!", "", x)
-    x <- gsub("\\(|\\)|\\[|\\]", "", x)
-    x <- gsub("\\.\\.", "", x)
+  vignettes_imgs_short <- list.files(vignettes_folders, pattern = ".png$")
+  replacement <- list.files(vignettes_folders, pattern = ".png$")
+  replacement <- paste0("articles/figures/", vignettes_imgs_short)
+  fs::file_move(vignettes_imgs, fig_path)
 
-    new_file_content <- file_content
-
-    for (j in seq_along(x)) {
-
-      new_file_content <- gsub(
-        x[j],
-        paste0("figures/", x[j]),
-        new_file_content
-      )
-
-      if (substr(x[j], 1, 1) == "/") {
-        x[j] <- substr(x[j], 2, nchar(x[j]))
-      }
-      if (!startsWith(x[j], "vignettes")) {
-        x[j] <- paste0(vignettes_path, "/", x[j])
-      }
-
+  for (y in vignettes_md) {
+    tx  <- readLines(y)
+    for (i in seq_along(vignettes_imgs)) {
+      tx <- gsub(vignettes_imgs[i], replacement[i], tx, fixed = TRUE)
     }
-    origin_fig <- x
-    destination_fig <- paste0(articles_path, "/figures/", trimws(basename(origin_fig)))
-    writeLines(new_file_content, paste0(articles_path, "/", vignettes[i]))
-
-    if (length(origin_fig) == 0) next
-
-    for (j in seq_along(origin_fig)) {
-      if (fs::file_exists(origin_fig[j])) {
-        fs::file_copy(origin_fig[j], destination_fig[j], overwrite = TRUE)
-      }
-    }
-  }
-}
-
-
-# Change figure paths in articles
-#
-# Rmd files in "articles" need to have img paths starting with
-# "figures/" in order to compile.
-# However, docute and docsify need the paths in the .md files to
-# start with "articles/figures/" so I need to add "articles/"
-# just before "figures/" in the img paths, *after* compilation.
-
-.fix_rmd_figures_path <- function(path = ".") {
-
-  good_path <- .doc_path(path)
-
-  if (!fs::dir_exists(paste0(good_path, "/articles/figures"))) {
-    return(invisible())
-  }
-
-  articles <- list.files(
-    paste0(good_path, "/articles"),
-    full.names = TRUE,
-    pattern = "\\.md$"
-  )
-
-  warn <- FALSE
-  for (i in articles) {
-
-    orig <- .readlines(i)
-    if (.doc_type() %in% c("docsify", "docute")) {
-      mod <- gsub('"figures/', '"articles/figures/', orig)
-      mod <- gsub("'figures/", "'articles/figures/", mod)
-      writeLines(mod, i)
-    }
-    if (!warn && any(grepl("<img", orig))) {
-      warn <- TRUE
-    }
-  }
-
-  if (.doc_type() == "mkdocs" && warn) {
-    cli::cli_alert_warning("HTML image tag {.code <img>} was detected in at least one article.")
-    cli::cli_alert_warning("Mkdocs recommends using Markdown syntax instead of HTML tags. Some images might not be displayed in the articles.")
+  writeLines(tx, con=y)
   }
 }

@@ -11,6 +11,16 @@
 #'
 #' @return No value returned. Creates files in folder 'docs'. Other files and
 #' folders are not modified.
+#'
+#' @details
+#' # Vignettes
+#' Note that although vignettes are automatically moved to the `/docs` folder,
+#' they are no longer automatically specified in the website structure-defining
+#' file. Developers must now manually update this file and the desired order of
+#' their articles. This file lives at the root of `/docs` and its name differs
+#' based on the selected site builder (`use_docsify()` = `_sidebar.md`;
+#' `use_docute()` = `index.html`; `use_mkdocs()` = `mkdocs.yml`).
+#'
 #' @rdname init
 #'
 #' @examples

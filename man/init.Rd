@@ -42,6 +42,15 @@ If you are new to Mkdocs, the themes "readthedocs" and "material" are among
 the most popular and developed. You can also see a list of themes here:
 \url{https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes}.
 }
+\section{Vignettes}{
+Note that although vignettes are automatically moved to the \verb{/docs} folder,
+they are no longer automatically specified in the website structure-defining
+file. Developers must now manually update this file and the desired order of
+their articles. This file lives at the root of \verb{/docs} and its name differs
+based on the selected site builder (\code{use_docsify()} = \verb{_sidebar.md};
+\code{use_docute()} = \code{index.html}; \code{use_mkdocs()} = \code{mkdocs.yml}).
+}
+
 \examples{
 if (interactive()) {
 # Create docute documentation

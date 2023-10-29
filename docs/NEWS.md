@@ -14,7 +14,10 @@
 
 - Vignettes are no longer automatically added to the file that defines the structure
   of the website. Developers must now manually update this structure and the order
-  of their articles.
+  of their articles. Note that the name of the file defining the structure of the
+  website differs based on the selected site builder. This file lives at the root
+  of `/docs` (`use_docsify()` = `_sidebar.md`; `use_docute()` = `index.html`;
+  `use_mkdocs()` = `mkdocs.yml`).
 
 #### Major changes
 
