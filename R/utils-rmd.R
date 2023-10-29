@@ -115,7 +115,6 @@
   for (y in vignettes_md) {
     tx  <- readLines(y)
     for (i in seq_along(vignettes_imgs)) {
-      print(replacement[i])
       tx <- gsub(vignettes_imgs[i], replacement[i], tx, fixed = TRUE)
     }
   writeLines(tx, con=y)
