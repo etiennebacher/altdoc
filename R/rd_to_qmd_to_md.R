@@ -26,6 +26,8 @@
   idx = grepl("<.code", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
+  pkg <- utils::packageName()
+  pkg_load <- paste0("library(", pkg, ")")
   idx = which(tmp == "<h3>Examples</h3>")
   if (length(idx) == 1) {
     ex = tmp[(idx + 1):length(tmp)]
@@ -35,7 +37,7 @@
     ex = gsub("&gt;", ">", ex)
     ex = ex[!grepl("## Not run:", ex)]
     ex = ex[!grepl("## End", ex)]
-    tmp = c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", "library(marginaleffects)", ex, "```")
+    tmp = c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", pkg_load, ex, "```")
   }
 
   # cleanup equations
