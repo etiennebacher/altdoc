@@ -87,10 +87,8 @@
       altdoc:::.folder_is_empty(vignettes_path)) {
     return(invisible())
   }
-  articles_path <- "docs/articles/"
   good_path <- altdoc:::.doc_path(path)
-  articles_path_full <- paste0(good_path, "/articles")
-
+  articles_path <- paste0(good_path, "/articles/")
 
   if (!fs::dir_exists(articles_path)) {
     fs::dir_create(articles_path)
@@ -104,8 +102,7 @@
   # Move images generated through code
   vignettes_folders <- gsub(".Rmd", "_files", vignettes)
   vignettes_folders <- paste0(articles_path, vignettes_folders, "/figure-gfm")
-  fig_path <- gsub(articles_path, "docs/articles/figures/", vignettes_folders)
-  # fig_path <- "articles/figures"
+  fig_path <- gsub("articles/", "articles/figures/", vignettes_folders)
 
   lapply(seq_along(vignettes_folders), function(x) {
     if (dir.exists(vignettes_folders[x])) {
@@ -113,7 +110,7 @@
     }
   })
 
-  vignettes_md <- list.files(articles_path_full, pattern = ".md$", full.names = TRUE)
+  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
   # Edit vignettes to update figure URLs
   for (y in vignettes_md) {
