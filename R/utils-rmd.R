@@ -84,39 +84,42 @@
 
   # Extract paths of figures and copy figures to "articles/figures"
   if (!file.exists(vignettes_path) |
-      .folder_is_empty(vignettes_path)) {
+      altdoc:::.folder_is_empty(vignettes_path)) {
     return(invisible())
   }
-  good_path <- .doc_path(path)
-  articles_path <- paste0(good_path, "/articles")
+  articles_path <- "docs/articles/"
+  good_path <- altdoc:::.doc_path(path)
+  articles_path_full <- paste0(good_path, "/articles")
+
 
   if (!fs::dir_exists(articles_path)) {
     fs::dir_create(articles_path)
   }
-  if (!fs::dir_exists(paste0(articles_path, "/figures"))) {
-    fs::dir_create(paste0(articles_path, "/figures"))
+  if (!fs::dir_exists(paste0(articles_path, "figures"))) {
+    fs::dir_create(paste0(articles_path, "figures"))
   }
 
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   # Move images generated through code
   vignettes_folders <- gsub(".Rmd", "_files", vignettes)
-  vignettes_folders <- paste0(articles_path, "/", vignettes_folders, "/figure-gfm")
-  vignettes_imgs <- list.files(vignettes_folders, pattern = ".png$", full.names = TRUE)
-  fig_path <- paste0(articles_path, "/figures")
+  vignettes_folders <- paste0(articles_path, vignettes_folders, "/figure-gfm")
+  fig_path <- gsub(articles_path, "docs/articles/figures/", vignettes_folders)
+  # fig_path <- "articles/figures"
 
-  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
+  lapply(seq_along(vignettes_folders), function(x) {
+    if (dir.exists(vignettes_folders[x])) {
+      fs::dir_copy(vignettes_folders[x], fig_path[x])
+    }
+  })
 
-  vignettes_imgs_short <- list.files(vignettes_folders, pattern = ".png$")
-  replacement <- list.files(vignettes_folders, pattern = ".png$")
-  replacement <- paste0("articles/figures/", vignettes_imgs_short)
-  fs::file_move(vignettes_imgs, fig_path)
+  vignettes_md <- list.files(articles_path_full, pattern = ".md$", full.names = TRUE)
 
+  # Edit vignettes to update figure URLs
   for (y in vignettes_md) {
     tx  <- readLines(y)
-    for (i in seq_along(vignettes_imgs)) {
-      tx <- gsub(vignettes_imgs[i], replacement[i], tx, fixed = TRUE)
-    }
-  writeLines(tx, con=y)
+    tx <- gsub('articles/', 'articles/figures/', tx, fixed = TRUE)
+    writeLines(tx, con = y)
   }
+
 }
