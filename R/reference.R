@@ -18,19 +18,17 @@
   files <- list.files("man", full.names = TRUE)
   files <- files[grepl("\\.Rd", files)]
 
-  all_rd_as_md <- lapply(files, function(x){
-    if (quarto) {
-      source_file <- list.files("man", pattern = ".Rd$")
-      source_file <- paste0("man/", source_file)
-      target_dir <- "man"
-      lapply(source_file, .rd_to_qmd, target_dir)
-      source_file <- list.files("man", pattern = ".qmd$")
-      source_file <- paste0("man/", source_file)
-      lapply(source_file, .qmd_to_md)
+  if (quarto) {
+    lapply(files, function(x){
+      .rd_to_qmd(x, target_dir = "man")
+      x_qmd <- gsub("Rd", "qmd", x)
+      .qmd_to_md(x_qmd)
+      })
+    x_md <- gsub("Rd", "md", files)
+    all_rd_as_md <- lapply(x_md, readLines, warn = FALSE)
     } else {
-      .rd2md(x)
-    }
-  })
+      all_rd_as_md <- lapply(files, .rd2md)
+      }
 
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
