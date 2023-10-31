@@ -115,7 +115,7 @@
   # Edit vignettes to update figure URLs
   for (y in vignettes_md) {
     tx  <- readLines(y)
-    tx <- gsub('articles/', 'articles/figures/', tx, fixed = TRUE)
+    tx <- gsub('docs/articles/', 'articles/figures/', tx, fixed = TRUE)
     writeLines(tx, con = y)
   }
 
