@@ -84,11 +84,10 @@
 
   # Extract paths of figures and copy figures to "articles/figures"
   if (!file.exists(vignettes_path) |
-      altdoc:::.folder_is_empty(vignettes_path)) {
+      .folder_is_empty(vignettes_path)) {
     return(invisible())
   }
-  good_path <- altdoc:::.doc_path(path)
-  articles_path <- paste0(good_path, "/articles/")
+  articles_path <- "docs/articles/"
 
   if (!fs::dir_exists(articles_path)) {
     fs::dir_create(articles_path)
@@ -100,15 +99,20 @@
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
   # Move images generated through code
-  vignettes_folders <- gsub(".Rmd", "_files", vignettes)
-  vignettes_folders <- paste0(articles_path, vignettes_folders, "/figure-gfm")
+  vignettes_folders0 <- gsub(".Rmd", "_files", vignettes)
+  vignettes_folders0 <- paste0(articles_path, vignettes_folders0)
+  vignettes_folders <- paste0(vignettes_folders0, "/figure-gfm")
   fig_path <- gsub("articles/", "articles/figures/", vignettes_folders)
 
   lapply(seq_along(vignettes_folders), function(x) {
     if (dir.exists(vignettes_folders[x])) {
+      # fs::file_move(vignettes_folders[x], fig_path[x])
       fs::dir_copy(vignettes_folders[x], fig_path[x])
+      # fs::dir_copy works but not fs::file_move
     }
   })
+  # file.remove(vignettes_folders0)
+  # Cannot clean files: permission denied
 
   vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
