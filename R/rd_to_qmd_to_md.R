@@ -26,7 +26,7 @@
   idx = grepl("<.code", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
-  pkg <- utils::packageName()
+  pkg <- basename(getwd())
   pkg_load <- paste0("library(", pkg, ")")
   idx = which(tmp == "<h3>Examples</h3>")
   if (length(idx) == 1) {

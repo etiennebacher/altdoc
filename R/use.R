@@ -38,7 +38,7 @@
 #' }
 
 use_docute <- function(path = ".", overwrite = FALSE,
-                       custom_reference = NULL, quarto = FALSE) {
+                       custom_reference = NULL, quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -56,7 +56,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(path = ".", overwrite = FALSE,
-                        custom_reference = NULL, quarto = FALSE) {
+                        custom_reference = NULL, quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -93,7 +93,7 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = FALSE) {
+                       quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)

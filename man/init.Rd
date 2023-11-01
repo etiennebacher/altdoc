@@ -10,14 +10,14 @@ use_docute(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = FALSE
+  quarto = TRUE
 )
 
 use_docsify(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = FALSE
+  quarto = TRUE
 )
 
 use_mkdocs(
@@ -25,7 +25,7 @@ use_mkdocs(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = FALSE
+  quarto = TRUE
 )
 }
 \arguments{
