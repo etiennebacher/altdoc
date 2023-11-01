@@ -80,46 +80,14 @@
 
 # Find figures path in vignettes, copy the figures to "articles/figures"
 .replace_figures_rmd <- function(path = ".") {
-  vignettes_path <- fs::path_abs("vignettes", start = path)
-
-  # Extract paths of figures and copy figures to "articles/figures"
-  if (!file.exists(vignettes_path) |
-      .folder_is_empty(vignettes_path)) {
-    return(invisible())
-  }
   articles_path <- "docs/articles/"
-
-  if (!fs::dir_exists(articles_path)) {
-    fs::dir_create(articles_path)
-  }
-  if (!fs::dir_exists(paste0(articles_path, "figures"))) {
-    fs::dir_create(paste0(articles_path, "figures"))
-  }
-
-  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
-
-  # Move images generated through code
-  vignettes_folders0 <- gsub(".Rmd", "_files", vignettes)
-  vignettes_folders0 <- paste0(articles_path, vignettes_folders0)
-  vignettes_folders <- paste0(vignettes_folders0, "/figure-gfm")
-  fig_path <- gsub("articles/", "articles/figures/", vignettes_folders)
-
-  lapply(seq_along(vignettes_folders), function(x) {
-    if (dir.exists(vignettes_folders[x])) {
-      # fs::file_move(vignettes_folders[x], fig_path[x])
-      fs::dir_copy(vignettes_folders[x], fig_path[x])
-      # fs::dir_copy works but not fs::file_move
-    }
-  })
-  # file.remove(vignettes_folders0)
-  # Cannot clean files: permission denied
-
   vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
   # Edit vignettes to update figure URLs
   for (y in vignettes_md) {
     tx  <- readLines(y)
-    tx <- gsub('docs/articles/', 'articles/figures/', tx, fixed = TRUE)
+    tx <- gsub('![](', '![](articles/figures/', tx, fixed = TRUE)
+    tx <- gsub('<img src="', '<img src="articles/figures/', tx, fixed = TRUE)
     writeLines(tx, con = y)
   }
 

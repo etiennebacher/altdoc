@@ -34,11 +34,17 @@
 
   conversion_worked <- vector(length = n)
 
+  fs::dir_copy(vignettes_path, articles_path)
+  vignettes_path2 <- paste0(articles_path, "/vignettes/")
+  figure_path <- paste0(articles_path, "/figures/")
+  file.rename(vignettes_path2, figure_path)
+
   for (i in seq_along(vignettes)) {
     j <- vignettes[i] # do that for cli progress step
-    origin <- paste0(vignettes_path, "/", j)
-    destination <- paste0(articles_path, "/", j)
-    output_file <- paste0(substr(j, 1, nchar(j)-4), ".md")
+    origin <- paste0(figure_path, j)
+
+    # destination <- paste0(articles_path, "/", j)
+    output_file <- gsub(".Rmd", ".md", j)
 
     tryCatch(
       {
@@ -46,8 +52,6 @@
           suppressWarnings(
             rmarkdown::render(
               origin,
-              output_dir = articles_path,
-              output_file = output_file,
               output_format = "github_document",
               quiet = TRUE,
               envir = new.env()
@@ -58,15 +62,17 @@
       },
 
       error = function(e) {
-        fs::file_delete(destination)
+        # fs::file_delete(destination)
         conversion_worked[i] <- FALSE
       }
     )
 
+    md_file <- paste0(figure_path, output_file)
+    fs::file_move(md_file, articles_path)
+
     cli::cli_progress_update()
   }
 
-  # needs to be first, otherwise compilation will fail
   .replace_figures_rmd()
 
   successes <- which(conversion_worked == TRUE)
