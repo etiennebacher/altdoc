@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-ultimately, this vignette in the `altdoc` package should make it way easier to test vignette features.
+Ultimately, this vignette in the `altdoc` package should make it way easier to test vignette features.
 
 ```{r setup}
 library(altdoc)
@@ -28,4 +28,4 @@ library(altdoc)
 plot(mtcars$mpg)
 ```
 
-![test-logo](hex-conductor.png)
+![test-logo](images/hex-conductor.png)

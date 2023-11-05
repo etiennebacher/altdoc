@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-ultimately, this vignette in the `altdoc` package should make it way easier to test vignette features with no image.
+Ultimately, this vignette in the `altdoc` package should make it way easier to test vignette features with no image.
 
 ```{r setup}
 library(altdoc)
