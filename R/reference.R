@@ -15,10 +15,12 @@
     fs::file_delete(paste0(good_path, "/reference.md"))
   }
 
-
   files <- list.files("man", pattern = ".Rd", full.names = TRUE)
   pkg <- basename(getwd())
-  exported <- getNamespaceExports(pkg)
+
+  exported <- readLines("NAMESPACE")
+  exported <- grep("^export\\(", exported, value = TRUE)
+  exported <- gsub("export\\((.*)\\)", "\\1", exported)
 
   which.files <- lapply(files, function(x) {
     y <- readLines(x)
@@ -40,7 +42,7 @@
     all_rd_as_md <- lapply(x_md, readLines, warn = FALSE)
     } else {
       all_rd_as_md <- lapply(files, .rd2md)
-      }
+    }
 
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
