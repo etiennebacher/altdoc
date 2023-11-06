@@ -94,14 +94,14 @@
 
 # Build docs and vignettes ---------------------
 
-.build_docs <- function(path = ".", custom_reference = NULL) {
+.build_docs <- function(path = ".", custom_reference = NULL, quarto = FALSE) {
   cli::cli_h1("Docs structure")
   cli::cli_alert_success("Folder {.file docs} created.")
   .import_readme(path)
   .import_news(path)
   .import_coc(path)
   .import_license(path)
-  .make_reference(update = FALSE, path, custom_reference)
+  .make_reference(update = FALSE, path, custom_reference, quarto = quarto)
 }
 
 .build_vignettes <- function(path) {
