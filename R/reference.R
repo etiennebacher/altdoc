@@ -15,8 +15,20 @@
     fs::file_delete(paste0(good_path, "/reference.md"))
   }
 
-  files <- list.files("man", full.names = TRUE)
-  files <- files[grepl("\\.Rd", files)]
+
+  files <- list.files("man", pattern = ".Rd", full.names = TRUE)
+  pkg <- basename(getwd())
+  exported <- getNamespaceExports(pkg)
+
+  which.files <- lapply(files, function(x) {
+    y <- readLines(x)
+    y <- grep("\\name{", y, fixed = TRUE, value = TRUE)
+    y <- gsub("\\name{", "", y, fixed = TRUE)
+    y <- gsub("}", "", y, fixed = TRUE)
+    y %in% exported
+  })
+
+  files <- files[unlist(which.files)]
 
   if (quarto) {
     lapply(files, function(x){
