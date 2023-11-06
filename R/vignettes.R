@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes <- function(path = path, update = FALSE) {
+.transform_vignettes <- function(path = path) {
 
   vignettes_path <- fs::path_abs("vignettes", start = path)
 
@@ -46,8 +46,7 @@
   for (i in seq_along(vignettes)) {
     j <- vignettes[i] # do that for cli progress step
     origin <- paste0(figure_path, j)
-
-    # destination <- paste0(articles_path, "/", j)
+    destination <- paste0(articles_path, "/", j)
     output_file <- gsub(".Rmd", ".md", j)
 
     tryCatch(
@@ -66,7 +65,7 @@
       },
 
       error = function(e) {
-        # fs::file_delete(destination)
+        fs::file_delete(destination)
         conversion_worked[i] <- FALSE
       }
     )
