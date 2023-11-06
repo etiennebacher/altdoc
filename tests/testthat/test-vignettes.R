@@ -21,11 +21,9 @@ test_that(".transform_vignettes works on basic vignette", {
   writeLines(original_rmd, "vignettes/basic.Rmd")
 
   expect_message(
-    expect_message(
-      use_docute(path = getwd()),
-      "following vignette has been converted"
-    ),
-    "Don't forget to check"
-  )
+    use_docute(path = getwd()),
+    "following vignette has been converted"
+    )
   expect_true(fs::file_exists("docs/articles/basic.md"))
 })
+

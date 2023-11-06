@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes <- function(path = path) {
+.transform_vignettes <- function(path = path, update = FALSE) {
 
   vignettes_path <- fs::path_abs("vignettes", start = path)
 
@@ -37,6 +37,10 @@
   fs::dir_copy(vignettes_path, articles_path)
   vignettes_path2 <- paste0(articles_path, "/vignettes/")
   figure_path <- paste0(articles_path, "/figures/")
+
+  if (fs::dir_exists(figure_path)) {
+    fs::dir_delete(figure_path)
+  }
   file.rename(vignettes_path2, figure_path)
 
   for (i in seq_along(vignettes)) {

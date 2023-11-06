@@ -28,6 +28,7 @@ Imports:
     usethis,
     utils,
     xml2,
+    jsonlite,
     yaml
 Suggests: 
     covr,

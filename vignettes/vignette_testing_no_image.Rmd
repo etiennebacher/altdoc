@@ -2,7 +2,7 @@
 title: "Vignette Testing - no image"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{vignette_testing}
+  %\VignetteIndexEntry{vignette_testing-no_image}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
