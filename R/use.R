@@ -6,6 +6,8 @@
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param custom_reference Path to the file that will be sourced to generate the
 #' "Reference" section.
+#' @param quarto Logical. Whether to use quarto to render Rd documentation files
+#' (Reference).
 #'
 #' @export
 #'
@@ -36,14 +38,14 @@
 #' }
 
 use_docute <- function(path = ".", overwrite = FALSE,
-                       custom_reference = NULL) {
+                       custom_reference = NULL, quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
   .create_index("docute", path)
-  .build_docs(path, custom_reference)
+  .build_docs(path, custom_reference, quarto = quarto)
   .build_vignettes(path)
 
   .final_steps(x = "docute", path)
@@ -54,7 +56,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(path = ".", overwrite = FALSE,
-                        custom_reference = NULL) {
+                        custom_reference = NULL, quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -62,7 +64,7 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 
   .create_index("docsify", path = path)
 
-  .build_docs(path = path, custom_reference)
+  .build_docs(path = path, custom_reference, quarto = quarto)
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
@@ -90,7 +92,8 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
-                       custom_reference = NULL) {
+                       custom_reference = NULL,
+                       quarto = TRUE) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -158,7 +161,7 @@ nav:
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
   fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
-  .build_docs(path = path)
+  .build_docs(path = path, quarto = quarto)
 
   yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
   if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {

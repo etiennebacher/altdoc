@@ -1,6 +1,6 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .make_reference <- function(update = FALSE, path = ".",
-                            custom_reference = NULL) {
+                            custom_reference = NULL, quarto = FALSE) {
 
   cli::cli_h1("Building reference")
   if (!is.null(custom_reference)) {
@@ -15,12 +15,34 @@
     fs::file_delete(paste0(good_path, "/reference.md"))
   }
 
-  files <- list.files("man", full.names = TRUE)
-  files <- files[grepl("\\.Rd", files)]
+  files <- list.files("man", pattern = ".Rd", full.names = TRUE)
+  pkg <- basename(getwd())
 
-  all_rd_as_md <- lapply(files, function(x){
-    .rd2md(x)
+  exported <- readLines("NAMESPACE")
+  exported <- grep("^export\\(", exported, value = TRUE)
+  exported <- gsub("export\\((.*)\\)", "\\1", exported)
+
+  which.files <- lapply(files, function(x) {
+    y <- readLines(x)
+    y <- grep("\\name{", y, fixed = TRUE, value = TRUE)
+    y <- gsub("\\name{", "", y, fixed = TRUE)
+    y <- gsub("}", "", y, fixed = TRUE)
+    y %in% exported
   })
+
+  files <- files[unlist(which.files)]
+
+  if (quarto) {
+    lapply(files, function(x){
+      .rd_to_qmd(x, target_dir = "man")
+      x_qmd <- gsub("Rd", "qmd", x)
+      .qmd_to_md(x_qmd)
+      })
+    x_md <- gsub("Rd", "md", files)
+    all_rd_as_md <- lapply(x_md, readLines, warn = FALSE)
+    } else {
+      all_rd_as_md <- lapply(files, .rd2md)
+    }
 
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
