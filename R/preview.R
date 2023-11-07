@@ -15,6 +15,12 @@
 
 preview <- function(path = ".") {
 
+  # some environemnts do not handle preview well, which causes issues with
+  # testing interactively, so we introduce a global option to turn it off if
+  # needed
+  flag <- getOption("altdoc_preview", default = TRUE)
+  if (!isTRUE(flag)) return(invisible())
+
   doctype <- .doc_type(path)
 
   if (rstudioapi::isAvailable()) {

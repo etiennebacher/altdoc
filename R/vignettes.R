@@ -18,10 +18,10 @@
     return(invisible())
   }
 
-  articles_path <- paste0(.doc_path(path = path), "/articles")
+  articles_path <- fs::path_join(c(.doc_path(path = path), "/articles"))
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
-  if (!file.exists(articles_path)) {
+  if (!dir.exists(articles_path)) {
     fs::dir_create(articles_path)
   }
 
@@ -35,8 +35,8 @@
   conversion_worked <- vector(length = n)
 
   fs::dir_copy(vignettes_path, articles_path)
-  vignettes_path2 <- paste0(articles_path, "/vignettes/")
-  figure_path <- paste0(articles_path, "/figures/")
+  vignettes_path2 <- fs::path_join(c(articles_path, "/vignettes/"))
+  figure_path <- fs::path_join(c(articles_path, "/figures/"))
 
   if (fs::dir_exists(figure_path)) {
     fs::dir_delete(figure_path)
@@ -45,9 +45,9 @@
 
   for (i in seq_along(vignettes)) {
     j <- vignettes[i] # do that for cli progress step
-    origin <- paste0(figure_path, j)
-    destination <- paste0(articles_path, "/", j)
-    output_file <- gsub(".Rmd", ".md", j)
+    origin <- fs::path_join(c(figure_path, j))
+    destination <- fs::path_join(c(articles_path, j))
+    output_file <- gsub("\\.Rmd$", ".md", j)
 
     tryCatch(
       {
@@ -70,7 +70,7 @@
       }
     )
 
-    md_file <- paste0(figure_path, output_file)
+    md_file <- fs::path_join(c(figure_path, output_file))
     fs::file_move(md_file, articles_path)
 
     cli::cli_progress_update()
@@ -127,16 +127,16 @@
   }
 
   good_path <- .doc_path(path = path)
-  vignettes <- list.files(paste0(good_path, "/articles/figures"), pattern = ".Rmd")
+  vignettes <- list.files(fs::path_join(c(good_path, "/articles/figures")), pattern = ".Rmd")
 
   vignettes_title <- data.frame(title = NULL, link = NULL)
   for (i in seq_along(vignettes)) {
-    x <- .readlines(paste0(good_path, "/articles/figures/", vignettes[i]))
+    x <- .readlines(fs::path_join(c(good_path, "/articles/figures/", vignettes[i])))
     title <- x[startsWith(x, "title: ")]
     title <- gsub("title: ", "", title)
     vignettes_title[i, "title"] <- title
 
-    link <- paste0("/articles/", vignettes[i])
+    link <- fs::path_join(c("/articles/", vignettes[i]))
     link <- gsub("\\.Rmd", "\\.md", link)
     vignettes_title[i, "link"] <- link
   }
