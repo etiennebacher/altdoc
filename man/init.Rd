@@ -10,14 +10,16 @@ use_docute(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE
+  quarto = TRUE,
+  preview = getOption("altdoc_preview", default = TRUE)
 )
 
 use_docsify(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE
+  quarto = TRUE,
+  preview = getOption("altdoc_preview", default = TRUE)
 )
 
 use_mkdocs(
@@ -25,7 +27,8 @@ use_mkdocs(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE
+  quarto = TRUE,
+  preview = getOption("altdoc_preview", default = TRUE)
 )
 }
 \arguments{
@@ -38,7 +41,9 @@ overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 \item{custom_reference}{Path to the file that will be sourced to generate the
 "Reference" section.}
 
-\item{quarto}{Logical. Whether to use quarto to render Rd documentation files
+\item{quarto}{Logical. Whether to use quarto to render Rd documentation files}
+
+\item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.
 (Reference).}
 
 \item{theme}{Name of the theme to use. Default is basic theme. See Details

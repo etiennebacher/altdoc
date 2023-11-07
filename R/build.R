@@ -114,7 +114,7 @@
 
 # Last things to do in initialization -------------------
 
-.final_steps <- function(x, path = ".") {
+.final_steps <- function(x, path = ".", preview = TRUE) {
 
   if (x == "docute") {
     .final_steps_docute(path)
@@ -129,7 +129,7 @@
   cli::cli_alert_success("{tools::toTitleCase(x)} initialized.")
   cli::cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")
 
-  if (interactive()) {
+  if (interactive() && isTRUE(preview)) {
     cli::cli_par()
     cli::cli_end()
     cli::cli_alert("Running preview...")
