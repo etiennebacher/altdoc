@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Use 'Docsify.js', 'Docute', or 'Mkdocs' to Generate a Package Documentation
-Version: 0.2.1.9000
+Version: 0.2.1.9001
 Authors@R: 
     person(given = "Etienne",
            family = "Bacher",
@@ -29,9 +29,11 @@ Imports:
     usethis,
     utils,
     xml2,
+    jsonlite,
     yaml
 Suggests: 
     covr,
+    knitr,
     spelling,
     testthat (>= 3.0.0),
     withr
@@ -41,3 +43,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3.9000
 Language: en-US
+VignetteBuilder: knitr

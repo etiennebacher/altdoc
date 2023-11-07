@@ -1,0 +1,25 @@
+---
+title: "Vignette Testing - no image"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vignette_testing-no_image}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Ultimately, this vignette in the `altdoc` package should make it way easier to test vignette features with no image.
+
+```{r setup}
+library(altdoc)
+```
+
+```{r simple}
+2+2
+```

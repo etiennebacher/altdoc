@@ -18,10 +18,10 @@
     return(invisible())
   }
 
-  articles_path <- paste0(.doc_path(path = path), "/articles")
+  articles_path <- fs::path_join(c(.doc_path(path = path), "/articles"))
   vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
 
-  if (!file.exists(articles_path)) {
+  if (!dir.exists(articles_path)) {
     fs::dir_create(articles_path)
   }
 
@@ -34,11 +34,20 @@
 
   conversion_worked <- vector(length = n)
 
+  fs::dir_copy(vignettes_path, articles_path)
+  vignettes_path2 <- fs::path_join(c(articles_path, "/vignettes/"))
+  figure_path <- fs::path_join(c(articles_path, "/figures/"))
+
+  if (fs::dir_exists(figure_path)) {
+    fs::dir_delete(figure_path)
+  }
+  file.rename(vignettes_path2, figure_path)
+
   for (i in seq_along(vignettes)) {
     j <- vignettes[i] # do that for cli progress step
-    origin <- paste0(vignettes_path, "/", j)
-    destination <- paste0(articles_path, "/", j)
-    output_file <- paste0(substr(j, 1, nchar(j)-4), ".md")
+    origin <- fs::path_join(c(figure_path, j))
+    destination <- fs::path_join(c(articles_path, j))
+    output_file <- gsub("\\.Rmd$", ".md", j)
 
     tryCatch(
       {
@@ -46,8 +55,6 @@
           suppressWarnings(
             rmarkdown::render(
               origin,
-              output_dir = articles_path,
-              output_file = output_file,
               output_format = "github_document",
               quiet = TRUE,
               envir = new.env()
@@ -63,10 +70,12 @@
       }
     )
 
+    md_file <- fs::path_join(c(figure_path, output_file))
+    fs::file_move(md_file, articles_path)
+
     cli::cli_progress_update()
   }
 
-  # needs to be first, otherwise compilation will fail
   .replace_figures_rmd()
 
   successes <- which(conversion_worked == TRUE)
@@ -118,16 +127,16 @@
   }
 
   good_path <- .doc_path(path = path)
-  vignettes <- list.files(paste0(good_path, "/articles"), pattern = ".Rmd")
+  vignettes <- list.files(fs::path_join(c(good_path, "/articles/figures")), pattern = ".Rmd")
 
   vignettes_title <- data.frame(title = NULL, link = NULL)
   for (i in seq_along(vignettes)) {
-    x <- .readlines(paste0(good_path, "/articles/", vignettes[i]))
+    x <- .readlines(fs::path_join(c(good_path, "/articles/figures/", vignettes[i])))
     title <- x[startsWith(x, "title: ")]
     title <- gsub("title: ", "", title)
     vignettes_title[i, "title"] <- title
 
-    link <- paste0("/articles/", vignettes[i])
+    link <- fs::path_join(c("/articles/", vignettes[i]))
     link <- gsub("\\.Rmd", "\\.md", link)
     vignettes_title[i, "link"] <- link
   }
@@ -146,13 +155,121 @@
     return(invisible())
   }
 
-  file_to_update <- switch(
-    doctype,
-    "docute" = fs::path_abs("docs/index.html", start = path),
-    "docsify" = fs::path_abs("docs/_sidebar.md", start = path),
-    "mkdocs" = fs::path_abs("docs/mkdocs.yaml", start = path)
-  )
-  cli::cli_alert_warning(
-    cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
-  )
+  if (!nrow(vignettes_titles) >= 1) {
+    return(invisible())
+  }
+
+  if (doctype == "docute") {
+
+    original_index <- .readlines(fs::path_abs("docs/index.html", start = path))
+
+    if (any(grepl("title: \"Articles\"", original_index))) {
+      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
+      return(invisible())
+    }
+
+    home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
+
+    original_index[home_line] <- paste0(
+      original_index[home_line],
+      "\n{
+					   title: \"Articles\",
+					   children:",
+      jsonlite::toJSON(vignettes_titles, pretty = TRUE),
+      "},\n"
+    )
+
+    writeLines(original_index, fs::path_abs("docs/index.html", start = path))
+
+  } else if (doctype == "docsify") {
+
+    original_sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
+
+    # Remove the articles / vignettes section to avoid duplicates
+    if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
+      vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
+      vignette_end <- grep("^\\* \\[", original_sidebar)
+      vignette_end <- vignette_end[vignette_end > vignette_start][1]-1
+      original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
+    }
+
+    # Insert articles section just below home
+    home_line <- which(grepl("\\[Home\\]", original_sidebar))
+    original_sidebar[home_line] <- paste0(
+      original_sidebar[home_line],
+      "\n* [Articles]()",
+      paste("\n  * [", vignettes_titles$title, "](", vignettes_titles$link, ")",
+            collapse = "", sep = "")
+    )
+
+    writeLines(original_sidebar, fs::path_abs("docs/_sidebar.md", start = path))
+
+  } else if (doctype == "mkdocs") {
+
+    vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
+
+    original_yaml <- suppressWarnings(
+      yaml::read_yaml(fs::path_abs("docs/mkdocs.yml", start = path))
+    )
+
+    # If articles are in the navbar, remove them, so that there is no duplicates
+    nav_sections <- unlist(lapply(original_yaml$nav, names))
+    # I will put reference in a section at the end
+    if ("Articles" %in% nav_sections) {
+      original_yaml$nav[[which(nav_sections == "Articles")]] <- NULL
+    }
+    if ("articles" %in% nav_sections) {
+      original_yaml$nav[[which(nav_sections == "articles")]] <- NULL
+    }
+
+    # yaml::as.yaml doesn't format plugins well when there is only one plugin
+    if (length(original_yaml$plugins) == 1) {
+      original_yaml$plugins <- list(original_yaml$plugins)
+    }
+
+    # Create section "Articles" and add vignettes in it
+    list_articles <- list("Articles" = NULL)
+    for (i in 1:nrow(vignettes_titles)) {
+      x <- list(vignettes_titles[i, 2])
+      names(x) <- paste0(vignettes_titles[i, 1])
+      list_articles[["Articles"]] <- append(
+        list_articles[["Articles"]], x, length(list_articles[["Articles"]])
+      )
+    }
+
+    new_nav <- append(original_yaml$nav, list(list_articles), 1)
+    original_yaml$nav <- new_nav
+    new_yaml <- yaml::as.yaml(original_yaml)
+
+    # yaml::as.yaml is quite inconsistent with indents and dash, especially with
+    # plugins, so I fix indents and dashes only for things after plugin (i.e
+    # plugins and nav)
+    # TODO: find a more robust solution
+    before_plugin <- gsub("plugins:.*", "", new_yaml)
+    after_plugin <- gsub(".*?(plugins:)", "\\1", new_yaml)
+    after_plugin <- gsub("- ", "  - ", after_plugin)
+    after_plugin <- gsub("    ", "    - ", after_plugin)
+    after_plugin <- gsub("- -", "-", after_plugin)
+
+    # Put reference and changelog in a section if it isn't already
+    if (length(gregexpr("Reference:", after_plugin)[[1]]) == 1) {
+      after_plugin <- gsub("Reference:", "Reference:\n    - Reference:", after_plugin)
+    }
+    if (length(gregexpr("Changelog:", after_plugin)[[1]]) == 1) {
+      after_plugin <- gsub("Changelog:", "Changelog:\n    - Changelog:", after_plugin)
+    }
+    new_yaml <- paste(before_plugin, after_plugin, sep = "")
+
+    writeLines(new_yaml, fs::path_abs("docs/mkdocs.yml", start = path))
+  }
+
+  # file_to_update <- switch(
+  #   doctype,
+  #   "docute" = fs::path_abs("docs/index.html", start = path),
+  #   "docsify" = fs::path_abs("docs/_sidebar.md", start = path),
+  #   "mkdocs" = fs::path_abs("docs/mkdocs.yaml", start = path)
+  # )
+  # cli::cli_alert_warning(
+  #   cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
+  # )
 }

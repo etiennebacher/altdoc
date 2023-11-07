@@ -80,43 +80,15 @@
 
 # Find figures path in vignettes, copy the figures to "articles/figures"
 .replace_figures_rmd <- function(path = ".") {
-  vignettes_path <- fs::path_abs("vignettes", start = path)
-
-  # Extract paths of figures and copy figures to "articles/figures"
-  if (!file.exists(vignettes_path) |
-      .folder_is_empty(vignettes_path)) {
-    return(invisible())
-  }
-  good_path <- .doc_path(path)
-  articles_path <- paste0(good_path, "/articles")
-
-  if (!fs::dir_exists(articles_path)) {
-    fs::dir_create(articles_path)
-  }
-  if (!fs::dir_exists(paste0(articles_path, "/figures"))) {
-    fs::dir_create(paste0(articles_path, "/figures"))
-  }
-
-  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
-
-  # Move images generated through code
-  vignettes_folders <- gsub(".Rmd", "_files", vignettes)
-  vignettes_folders <- paste0(articles_path, "/", vignettes_folders, "/figure-gfm")
-  vignettes_imgs <- list.files(vignettes_folders, pattern = ".png$", full.names = TRUE)
-  fig_path <- paste0(articles_path, "/figures")
-
+  articles_path <- "docs/articles/"
   vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
 
-  vignettes_imgs_short <- list.files(vignettes_folders, pattern = ".png$")
-  replacement <- list.files(vignettes_folders, pattern = ".png$")
-  replacement <- paste0("articles/figures/", vignettes_imgs_short)
-  fs::file_move(vignettes_imgs, fig_path)
-
+  # Edit vignettes to update figure URLs
   for (y in vignettes_md) {
     tx  <- readLines(y)
-    for (i in seq_along(vignettes_imgs)) {
-      tx <- gsub(vignettes_imgs[i], replacement[i], tx, fixed = TRUE)
-    }
-  writeLines(tx, con=y)
+    tx <- gsub('![](', '![](articles/figures/', tx, fixed = TRUE)
+    tx <- gsub('<img src="', '<img src="articles/figures/', tx, fixed = TRUE)
+    writeLines(tx, con = y)
   }
+
 }
