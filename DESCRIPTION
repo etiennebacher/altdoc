@@ -12,7 +12,7 @@ Description: Most developers use 'pkgdown' to create a website for their package
     The aim of 'altdoc' is to provide helpers to create, populate, update, and 
     preview websites made with these tools.
 License: MIT + file LICENSE
-URL: https://github.com/etiennebacher/altdoc
+URL: https://altdoc.etiennebacher.com, https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
 Imports: 
     cli,
