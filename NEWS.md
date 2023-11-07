@@ -1,6 +1,6 @@
 # altdoc 0.2.2
 
-* If necessary, two spaces are automatically added in nested lists n the `NEWS` 
+* If necessary, two spaces are automatically added in nested lists in the `NEWS` 
   (or `Changelog`) file. 
 
 # altdoc 0.2.1
