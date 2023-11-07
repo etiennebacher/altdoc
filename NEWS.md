@@ -2,6 +2,8 @@
 
 * If necessary, two spaces are automatically added in nested lists n the `NEWS` 
   (or `Changelog`) file. 
+* `preview` argument in `use_*()` allows users to suppress the web preview by
+  supplying an explicit argument or a global option.
 
 # altdoc 0.2.1
 

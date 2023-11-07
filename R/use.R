@@ -7,6 +7,7 @@
 #' @param custom_reference Path to the file that will be sourced to generate the
 #' "Reference" section.
 #' @param quarto Logical. Whether to use quarto to render Rd documentation files
+#' @param preview Logical. Whether a preview of the documentation should be displayed in a browser window.
 #' (Reference).
 #'
 #' @export
@@ -38,7 +39,8 @@
 #' }
 
 use_docute <- function(path = ".", overwrite = FALSE,
-                       custom_reference = NULL, quarto = TRUE) {
+                       custom_reference = NULL, quarto = TRUE,
+                       preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -48,7 +50,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
   .build_docs(path, custom_reference, quarto = quarto)
   .build_vignettes(path)
 
-  .final_steps(x = "docute", path)
+  .final_steps(x = "docute", path, preview = preview)
 }
 
 #' @export
@@ -56,7 +58,8 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(path = ".", overwrite = FALSE,
-                        custom_reference = NULL, quarto = TRUE) {
+                        custom_reference = NULL, quarto = TRUE,
+                        preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -73,7 +76,7 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 
   .build_vignettes(path)
 
-  .final_steps(x = "docsify", path = path)
+  .final_steps(x = "docsify", path = path, preview = preview)
 
 }
 
@@ -93,7 +96,8 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = TRUE) {
+                       quarto = TRUE,
+                       preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -180,5 +184,5 @@ nav:
 
   .build_vignettes(path)
 
-  .final_steps(x = "mkdocs", path = path)
+  .final_steps(x = "mkdocs", path = path, preview = preview)
 }
