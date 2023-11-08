@@ -39,7 +39,8 @@
 #' }
 
 use_docute <- function(path = ".", overwrite = FALSE,
-                       custom_reference = NULL, quarto = TRUE,
+                       custom_reference = NULL,
+                       quarto = getOption("altdoc_quarto", default = FALSE),
                        preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)
@@ -58,7 +59,8 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(path = ".", overwrite = FALSE,
-                        custom_reference = NULL, quarto = TRUE,
+                        custom_reference = NULL,
+                        quarto = getOption("altdoc_quarto", default = FALSE),
                         preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)
@@ -96,7 +98,7 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = TRUE,
+                       quarto = getOption("altdoc_quarto", default = FALSE),
                        preview = getOption("altdoc_preview", default = TRUE)) {
 
   path <- .convert_path(path)

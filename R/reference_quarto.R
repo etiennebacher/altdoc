@@ -4,18 +4,21 @@
 
   cli::cli_h1("Building reference")
 
-  # soure and target file paths
-  man_source <- list.files(path = here::here("man"), pattern = "\\.Rd$")
-  man_target <- list.files(path = here::here("docs/man"), pattern = "\\.md$")
+  # source and target file paths
+  # using here::here() breaks tests, so we rely on directory check higher up
+  man_source <- list.files(path = "man", pattern = "\\.Rd$")
+  man_target <- list.files(path = "docs/man", pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
   # exported functions only, otherwise this can get expensive
   # parse NAMESPACE manually to avoid having to install the package
-  exported <- readLines(here::here("NAMESPACE"))
-  exported <- exported[grepl("^export\\(.*\\)$", exported)]
-  exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
-  man_source <- intersect(man_source, exported)
+  if (fs::file_exists("NAMESPACE")) {
+    exported <- readLines("NAMESPACE")
+    exported <- exported[grepl("^export\\(.*\\)$", exported)]
+    exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
+    man_source <- intersect(man_source, exported)
+  }
 
   # warning about conflicts
   if (!isTRUE(update)) {
@@ -28,8 +31,8 @@
 
   # process man pages one by one
   for (f in man_source) {
-    origin_Rd <- fs::path_join(c(here::here("man"), fs::path_ext_set(f, ".Rd")))
-    destination_dir <- here::here("docs/man")
+    origin_Rd <- fs::path_join(c("man", fs::path_ext_set(f, ".Rd")))
+    destination_dir <- "docs/man"
     destination_qmd <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
     fs::dir_create(destination_dir)
