@@ -13,6 +13,7 @@ mkdocs
 Mkdocs
 navbar
 pkgdown
+qmd
 README
 readthedocs
 repo
