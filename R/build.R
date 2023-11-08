@@ -101,13 +101,13 @@
   .import_news(path)
   .import_coc(path)
   .import_license(path)
-  .update_vignettes_quarto(path)
   .make_reference(update = FALSE, path, custom_reference, quarto = quarto)
 }
 
 .build_vignettes <- function(path) {
   cli::cli_h1("Vignettes")
-  .transform_vignettes(path = path)
+  .transform_vignettes_rmd(path = path)
+  .transform_vignettes_qmd(path = path)
   .add_vignettes(path = path)
 }
 

@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes <- function(path = path) {
+.transform_vignettes_rmd <- function(path = path) {
 
   vignettes_path <- fs::path_abs("vignettes", start = path)
 
@@ -112,6 +112,42 @@
   cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
 
 }
+
+
+
+.transform_vignettes_qmd <- function(path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
+    stop("This function must be run from the root of a package.", .call = FALSE)
+  }
+
+  if (!fs::dir_exists("vignettes")) {
+    return(invisible())
+  }
+
+  # create destination directory if it does not exist
+  fs::dir_create(.doc_path(path = "vignettes"))
+
+  # copy all directories: images, static files, etc.
+  dir_names <- Filter(fs::is_dir, fs::dir_ls("vignettes"))
+  for (d in dir_names) {
+    fs::dir_copy(
+      d, 
+      fs::path_join(c(.doc_path(path = "vignettes"), basename(d))),
+      overwrite = TRUE)
+  }
+
+  # copy all quarto vignettes
+  file_names <- list.files("vignettes", pattern = "\\.qmd$")
+  for (f in file_names) {
+    src <- fs::path_join(c("vignettes", f))
+    des <- fs::path_join(c(.doc_path(path = "vignettes"), f))
+    fs::file_copy(src, des, overwrite = TRUE)
+    .qmd_to_md(des)
+    fs::file_delete(des)
+  }
+}
+
+
 
 
 # Get titles and filenames of the vignettes and returns them in a dataframe
@@ -275,34 +311,3 @@
 }
 
 
-.update_vignettes_quarto <- function(path = ".") {
-  if (!isTRUE(.dir_is_package(path))) {
-    stop("This function must be run from the root of a package.", .call = FALSE)
-  }
-
-  if (!fs::dir_exists("vignettes")) {
-    return(invisible())
-  }
-
-  # create destination directory if it does not exist
-  fs::dir_create("docs/vignettes")
-
-  # copy all directories: images, static files, etc.
-  dir_names <- Filter(fs::is_dir, fs::dir_ls("vignettes"))
-  for (d in dir_names) {
-    fs::dir_copy(
-      d, 
-      fs::path_join(c("docs/vignettes", basename(d))),
-      overwrite = TRUE)
-  }
-
-  # copy all quarto vignettes
-  file_names <- list.files("vignettes", pattern = "\\.qmd$")
-  for (f in file_names) {
-    src <- fs::path_join(c("vignettes", f))
-    des <- fs::path_join(c("docs/vignettes", f))
-    fs::file_copy(src, des, overwrite = TRUE)
-    .qmd_to_md(des)
-    fs::file_delete(des)
-  }
-}

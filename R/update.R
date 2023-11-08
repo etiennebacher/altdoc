@@ -58,7 +58,8 @@ update_docs <- function(path = ".",
 
   # Update vignettes
   cli::cli_h1("Update vignettes")
-  .transform_vignettes(path)
+  .transform_vignettes_rmd(path)
+  .transform_vignettes_qmd(path)
   .add_vignettes(path)
 
   cli::cli_h1("Complete")
