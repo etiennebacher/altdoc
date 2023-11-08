@@ -132,7 +132,7 @@
   for (d in dir_names) {
     fs::dir_copy(
       d, 
-      fs::path_join(c(.doc_path(path = path), "vignettes", , basename(d))),
+      fs::path_join(c(.doc_path(path = path), "vignettes", basename(d))),
       overwrite = TRUE)
   }
 

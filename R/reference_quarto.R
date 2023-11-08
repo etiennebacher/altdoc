@@ -8,7 +8,7 @@
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
-  man_target <- list.files(path = .doc_path(path = "man"), pattern = "\\.md$")
+  man_target <- list.files(path = fs::path_join(c(.doc_path("."), "man")), pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
@@ -33,7 +33,7 @@
   # process man pages one by one
   for (f in man_source) {
     origin_Rd <- fs::path_join(c("man", fs::path_ext_set(f, ".Rd")))
-    destination_dir <- .doc_path(path = "man")
+    destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
     destination_qmd <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
     fs::dir_create(destination_dir)
