@@ -1,5 +1,6 @@
 #' Convert .Rd files from man/ to .md files in docs/man/
 #' @param update If TRUE, overwrite existing files
+#' @keywords internal
 .make_reference_quarto <- function(update = FALSE) {
 
   cli::cli_h1("Building reference")
