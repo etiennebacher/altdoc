@@ -125,14 +125,14 @@
   }
 
   # create destination directory if it does not exist
-  fs::dir_create(.doc_path(path = "vignettes"))
+  fs::dir_create(c(.doc_path(path = path), "vignettes"))
 
   # copy all directories: images, static files, etc.
   dir_names <- Filter(fs::is_dir, fs::dir_ls("vignettes"))
   for (d in dir_names) {
     fs::dir_copy(
       d, 
-      fs::path_join(c(.doc_path(path = "vignettes"), basename(d))),
+      fs::path_join(c(.doc_path(path = path), "vignettes", , basename(d))),
       overwrite = TRUE)
   }
 
@@ -140,7 +140,7 @@
   file_names <- list.files("vignettes", pattern = "\\.qmd$")
   for (f in file_names) {
     src <- fs::path_join(c("vignettes", f))
-    des <- fs::path_join(c(.doc_path(path = "vignettes"), f))
+    des <- fs::path_join(c(.doc_path(path = path), "vignettes", f))
     fs::file_copy(src, des, overwrite = TRUE)
     .qmd_to_md(des)
     fs::file_delete(des)
