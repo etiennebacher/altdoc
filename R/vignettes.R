@@ -273,3 +273,36 @@
   #   cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
   # )
 }
+
+
+.update_vignettes_quarto <- function(path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
+    stop("This function must be run from the root of a package.", .call = FALSE)
+  }
+
+  if (!fs::dir_exists("vignettes")) {
+    return(invisible())
+  }
+
+  # create destination directory if it does not exist
+  fs::dir_create("docs/vignettes")
+
+  # copy all directories: images, static files, etc.
+  dir_names <- Filter(fs::is_dir, fs::dir_ls("vignettes"))
+  for (d in dir_names) {
+    fs::dir_copy(
+      d, 
+      fs::path_join(c("docs/vignettes", basename(d))),
+      overwrite = TRUE)
+  }
+
+  # copy all quarto vignettes
+  file_names <- list.files("vignettes", pattern = "\\.qmd$")
+  for (f in file_names) {
+    src <- fs::path_join(c("vignettes", f))
+    des <- fs::path_join(c("docs/vignettes", f))
+    fs::file_copy(src, des, overwrite = TRUE)
+    .qmd_to_md(des)
+    fs::file_delete(des)
+  }
+}

@@ -101,6 +101,7 @@
   .import_news(path)
   .import_coc(path)
   .import_license(path)
+  .update_vignettes_quarto(path)
   .make_reference(update = FALSE, path, custom_reference, quarto = quarto)
 }
 

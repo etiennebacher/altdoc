@@ -1,0 +1,10 @@
+
+# Blah blah
+
+Yeah, this works
+
+```{r}
+2 * pi
+```
+
+![](images/hex-conductor.png)
