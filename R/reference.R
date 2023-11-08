@@ -2,6 +2,10 @@
 .make_reference <- function(update = FALSE, path = ".",
                             custom_reference = NULL, quarto = FALSE) {
 
+  if (isTRUE(quarto)) {
+    .make_reference_quarto(update = update)
+  }
+
   cli::cli_h1("Building reference")
   if (!is.null(custom_reference)) {
     cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
@@ -32,17 +36,7 @@
 
   files <- files[unlist(which.files)]
 
-  if (quarto) {
-    lapply(files, function(x){
-      .rd_to_qmd(x, target_dir = "man")
-      x_qmd <- gsub("Rd", "qmd", x)
-      .qmd_to_md(x_qmd)
-      })
-    x_md <- gsub("Rd", "md", files)
-    all_rd_as_md <- lapply(x_md, readLines, warn = FALSE)
-    } else {
-      all_rd_as_md <- lapply(files, .rd2md)
-    }
+  all_rd_as_md <- lapply(files, .rd2md)
 
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
