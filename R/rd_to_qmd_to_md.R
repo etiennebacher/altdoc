@@ -8,7 +8,7 @@
   }
 
   # Rd -> html
-  rd = tools::parse_Rd(here::here(source_file))
+  rd = tools::parse_Rd(source_file)
   tmp_html = paste0(tempfile(), ".html")
   tools::Rd2HTML(rd, out = tmp_html)
 

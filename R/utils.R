@@ -270,10 +270,21 @@
 }
 
 
-.assert_dependency <- function(library_name) {
-  flag <- requireNamespace(library_name, quietly = TRUE)
-  if (isFALSE(flag)) {
-      msg <- sprintf("Please install the `%s` package.", library_name)
-      stop(msg, call. = FALSE)
+.check_dependency <- function(library_name) {
+  requireNamespace(library_name, quietly = TRUE)
+}
+
+.assert_dependency <- function(library_name, install = FALSE) {
+  flag <- .check_dependency(library_name)
+  msg <- sprintf("This functionality requires the `%s` package.", library_name)
+  if (!isTRUE(flag)) {
+    if (isTRUE(install)) {
+      msg <- sprintf("This functionality requires the `%s` package. Do you want to install it?", library_name)
+      if (isTRUE(utils::askYesNo(msg, default = TRUE))) {
+        install.packages(library_name)
+        return(invisible())
+      }
+    }
+    stop(msg, call. = FALSE)
   }
 }
