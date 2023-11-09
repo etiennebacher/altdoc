@@ -251,3 +251,29 @@
 
   cat(new_news, file = news_path)
 }
+
+
+.add_rbuildignore <- function(x = "^docs$") {
+  if (!isTRUE(.dir_is_package("."))) {
+    stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
+  }
+
+  if (!fs::file_exists(".Rbuildignore")) {
+    fs::file_create(".Rbuildignore")
+  }
+
+  tmp <- readLines(".Rbuildignore")
+  if (!x %in% tmp) {
+    tmp <- c(tmp, x)
+    writeLines(tmp, ".Rbuildignore")
+  }
+}
+
+
+.assert_dependency <- function(library_name) {
+  flag <- requireNamespace(library_name, quietly = TRUE)
+  if (isFALSE(flag)) {
+      msg <- sprintf("Please install the `%s` package.", library_name)
+      stop(msg, call. = FALSE)
+  }
+}

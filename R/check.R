@@ -18,10 +18,9 @@
     if (isTRUE(overwrite)) {
       fs::dir_delete(path_to_docs)
     } else {
-      delete_docs <- usethis::ui_yeah(
-        "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
-      )
-      if (delete_docs) {
+      msg <- sprintf("Folder `%s` already exists. Do you want to replace it?", path_to_docs)
+      delete_docs <- utils::askYesNo(msg, default = FALSE)
+      if (isTRUE(delete_docs)) {
         fs::dir_delete(path_to_docs)
       } else {
         cli::cli_alert_info("Nothing was modified.")
