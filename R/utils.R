@@ -281,7 +281,7 @@
     if (isTRUE(install)) {
       msg <- sprintf("This functionality requires the `%s` package. Do you want to install it?", library_name)
       if (isTRUE(utils::askYesNo(msg, default = TRUE))) {
-        install.packages(library_name)
+        utils::install.packages(library_name)
         return(invisible())
       }
     }
