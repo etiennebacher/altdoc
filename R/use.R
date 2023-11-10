@@ -41,7 +41,7 @@
 use_docute <- function(path = ".", overwrite = FALSE,
                        custom_reference = NULL,
                        quarto = getOption("altdoc_quarto", default = FALSE),
-                       preview = getOption("altdoc_preview", default = TRUE)) {
+                       preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -61,7 +61,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
 use_docsify <- function(path = ".", overwrite = FALSE,
                         custom_reference = NULL,
                         quarto = getOption("altdoc_quarto", default = FALSE),
-                        preview = getOption("altdoc_preview", default = TRUE)) {
+                        preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -99,7 +99,7 @@ use_mkdocs <- function(theme = NULL,
                        overwrite = FALSE,
                        custom_reference = NULL,
                        quarto = getOption("altdoc_quarto", default = FALSE),
-                       preview = getOption("altdoc_preview", default = TRUE)) {
+                       preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
