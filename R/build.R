@@ -123,9 +123,8 @@
     .final_steps_docsify(path)
   }
 
-  suppressMessages({
-    usethis::use_build_ignore("docs")
-  })
+  .add_rbuildignore("^docs$")
+
   cli::cli_h1("Complete")
   cli::cli_alert_success("{tools::toTitleCase(x)} initialized.")
   cli::cli_alert_success("Folder {.file docs} put in {.file .Rbuildignore}.")

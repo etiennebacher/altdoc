@@ -206,6 +206,7 @@
 
     home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
 
+    .assert_dependency("jsonlite", install = TRUE)
     original_index[home_line] <- paste0(
       original_index[home_line],
       "\n{

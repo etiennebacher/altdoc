@@ -22,20 +22,20 @@ Imports:
     htmltools,
     quarto,
     rmarkdown,
-    rstudioapi,
-    servr,
     tinkr,
     tools,
-    usethis,
     utils,
     xml2,
-    jsonlite,
     yaml
 Suggests: 
     covr,
+    jsonlite,
     knitr,
+    rstudioapi,
+    servr,
     spelling,
     testthat (>= 3.0.0),
+    usethis,
     withr
 Config/testthat/edition: 3
 Encoding: UTF-8
