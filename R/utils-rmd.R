@@ -81,13 +81,21 @@
 # Find figures path in vignettes, copy the figures to "articles/figures"
 .replace_figures_rmd <- function(path = ".") {
   articles_path <- "docs/articles/"
-  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
+  vignettes_md <- list.files(articles_path, pattern = "\\.md$", full.names = TRUE)
 
   # Edit vignettes to update figure URLs
+  dirs <- list.dirs(fs::path_join(c(path, "vignettes")))
+  dirs <- sapply(dirs, basename)
+  dirs <- c(dirs, "figures")
+  dirs <- setdiff(dirs, "vignettes")
   for (y in vignettes_md) {
     tx  <- readLines(y)
-    tx <- gsub('![](', '![](articles/figures/', tx, fixed = TRUE)
-    tx <- gsub('<img src="', '<img src="articles/figures/', tx, fixed = TRUE)
+    for (d in dirs) {
+      tmp <- sprintf('![](articles/%s/', d)
+      tx <- gsub('![](', tmp, tx, fixed = TRUE)
+      tmp <- sprintf('<img src="articles/%s/', d)
+      tx <- gsub('<img src="', tmp, tx, fixed = TRUE)
+    }
     writeLines(tx, con = y)
   }
 

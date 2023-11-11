@@ -55,7 +55,6 @@ update_docs <- function(path = ".",
   # Update vignettes
   cli::cli_h1("Update vignettes")
   .transform_vignettes_rmd(path)
-  .transform_vignettes_qmd(path)
   .add_vignettes(path)
 
   cli::cli_h1("Complete")
@@ -73,7 +72,7 @@ update_docs <- function(path = ".",
 #         - if it changed: overwrite it
 #         - if it didn't: info message
 
-.update_file <- function(file, path = ".", first) {
+.update_file <- function(file, path = ".", first = FALSE) {
 
   file_message <- if (file == "NEWS.md") {
     "NEWS / Changelog"
@@ -120,7 +119,7 @@ update_docs <- function(path = ".",
   }
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
-  .reformat_md(docs_file, first)
+  .reformat_md(docs_file, first = first)
 }
 
 .update_version_number <- function(path) {

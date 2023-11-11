@@ -11,21 +11,32 @@
 
 .transform_vignettes_rmd <- function(path = path) {
 
-  vignettes_path <- fs::path_abs("vignettes", start = path)
-
-  if (!file.exists(vignettes_path) | .folder_is_empty(vignettes_path)) {
+  # source directory
+  src_dir <- fs::path_abs("vignettes", start = path)
+  if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
     cli::cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
-  articles_path <- fs::path_join(c(.doc_path(path = path), "/articles"))
-  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
-
-  if (!dir.exists(articles_path)) {
-    fs::dir_create(articles_path)
+  # target directory
+  tar_dir <- fs::path_join(c(.doc_path(path = path), "/articles"))
+  if (!dir.exists(tar_dir)) {
+    fs::dir_create(tar_dir)
   }
 
-  n <- length(vignettes)
+  # source files
+  src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$")
+
+  # copy all subdirectories: images, static files, etc.
+  dir_static <- Filter(fs::is_dir, fs::dir_ls(src_dir))
+  for (d in dir_static) {
+    fs::dir_copy(
+      d, 
+      fs::path_join(c(tar_dir, basename(d))),
+      overwrite = TRUE)
+  }
+
+  n <- length(src_files)
 
   # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
@@ -34,47 +45,64 @@
 
   conversion_worked <- vector(length = n)
 
-  fs::dir_copy(vignettes_path, articles_path)
-  vignettes_path2 <- fs::path_join(c(articles_path, "/vignettes/"))
-  figure_path <- fs::path_join(c(articles_path, "/figures/"))
+  fs::dir_copy(src_dir, tar_dir, overwrite = TRUE)
 
-  if (fs::dir_exists(figure_path)) {
-    fs::dir_delete(figure_path)
-  }
-  file.rename(vignettes_path2, figure_path)
+  for (i in seq_along(src_files)) {
 
-  for (i in seq_along(vignettes)) {
-    j <- vignettes[i] # do that for cli progress step
-    origin <- fs::path_join(c(figure_path, j))
-    destination <- fs::path_join(c(articles_path, j))
-    output_file <- gsub("\\.Rmd$", ".md", j)
+    # only process new or modified vignettes
+    origin <- fs::path_join(c(src_dir, src_files[i]))
+    destination <- fs::path_join(c(src_dir, src_files[i]))
 
-    tryCatch(
-      {
-        suppressMessages(
-          suppressWarnings(
-            .rmd2md(origin)
-          )
-        )
-        conversion_worked[i] <- TRUE
-      },
-
-      error = function(e) {
-        fs::file_delete(destination)
-        conversion_worked[i] <- FALSE
+    if (fs::file_exists(destination)) {
+      # freeze
+      if (!identical(readLines(origin, warn = FALSE), readLines(destination, warn = FALSE))) {
+        cli::cli_progress_update()
+        next
       }
-    )
+    } else {
+      fs::file_copy(origin, destination, overwrite = TRUE)
+    }
 
-    md_file <- fs::path_join(c(figure_path, output_file))
-    fs::file_move(md_file, articles_path)
+    if (fs::path_ext(origin) == "Rmd") {
+      tryCatch(
+        {
+          suppressMessages(
+            suppressWarnings(
+              .rmd2md(origin, tar_dir)
+            )
+          )
+          conversion_worked[i] <- TRUE
+        },
 
-    cli::cli_progress_update()
+        error = function(e) {
+          fs::file_delete(destination)
+          conversion_worked[i] <- FALSE
+        }
+      )
+      cli::cli_progress_update()
+    } else {
+      tryCatch(
+        {
+          suppressMessages(
+            suppressWarnings(
+              .qmd2md(origin, tar_dir)
+            )
+          )
+          conversion_worked[i] <- TRUE
+        },
+
+        error = function(e) {
+          conversion_worked[i] <- FALSE
+        }
+      )
+      cli::cli_progress_update()
+    }
   }
-
-  .replace_figures_rmd()
 
   successes <- which(conversion_worked == TRUE)
   fails <- which(conversion_worked == FALSE)
+
+  .replace_figures_rmd()
 
   cli::cli_progress_done()
   # indent bullet points
@@ -83,10 +111,10 @@
   if (length(successes) > 0) {
     cli::cli_par()
     cli::cli_end()
-    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}:")
+    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {tar_dir}}:")
     cli::cli_ul(id = "list-success")
     for (i in seq_along(successes)) {
-      cli::cli_li("{.file {vignettes[successes[i]]}}")
+      cli::cli_li("{.file {src_files[successes[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-success")
@@ -98,48 +126,14 @@
     cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following vignette{?s}:")
     cli::cli_ul(id = "list-fail")
     for (i in seq_along(fails)) {
-      cli::cli_li("{.file {vignettes[fails[i]]}}")
+      cli::cli_li("{.file {src_files[fails[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
 
-  cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
+  cli::cli_alert_info("The folder {.file {'src_tar'}} was not modified.")
 
-}
-
-
-
-.transform_vignettes_qmd <- function(path = ".") {
-  if (!isTRUE(.dir_is_package(path))) {
-    stop("This function must be run from the root of a package.", .call = FALSE)
-  }
-
-  if (!fs::dir_exists("vignettes")) {
-    return(invisible())
-  }
-
-  # create destination directory if it does not exist
-  fs::dir_create(c(.doc_path(path = path), "vignettes"))
-
-  # copy all directories: images, static files, etc.
-  dir_names <- Filter(fs::is_dir, fs::dir_ls("vignettes"))
-  for (d in dir_names) {
-    fs::dir_copy(
-      d, 
-      fs::path_join(c(.doc_path(path = path), "vignettes", basename(d))),
-      overwrite = TRUE)
-  }
-
-  # copy all quarto vignettes
-  file_names <- list.files("vignettes", pattern = "\\.qmd$")
-  for (f in file_names) {
-    src <- fs::path_join(c("vignettes", f))
-    des <- fs::path_join(c(.doc_path(path = path), "vignettes", f))
-    fs::file_copy(src, des, overwrite = TRUE)
-    .qmd2md(des)
-    fs::file_delete(des)
-  }
 }
 
 
