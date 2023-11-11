@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes_rmd <- function(path = path) {
+.transform_vignettes <- function(path = path) {
 
   # source directory
   src_dir <- fs::path_abs("vignettes", start = path)
@@ -108,8 +108,6 @@
 
   successes <- which(conversion_worked == TRUE)
   fails <- which(conversion_worked == FALSE)
-
-  .replace_figures_rmd()
 
   cli::cli_progress_done()
   # indent bullet points

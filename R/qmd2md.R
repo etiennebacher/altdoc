@@ -24,7 +24,7 @@
     stop("source_file must be a valid file path.", call. = FALSE)
   }
 
-  out <- capture.output(
+  out <- utils::capture.output(
     rmarkdown::render(
     input = path.expand(source_file),
     output_format = "md_document",

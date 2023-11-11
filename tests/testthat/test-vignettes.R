@@ -2,10 +2,10 @@ test_that("nothing changes if no vignettes folder or if empty", {
   create_local_package()
   use_docute(path = getwd())
   before <- fs::dir_tree("docs")
-  .transform_vignettes_rmd(path = getwd())
+  .transform_vignettes(path = getwd())
   after1 <- fs::dir_tree("docs")
   fs::dir_create("vignettes")
-  .transform_vignettes_rmd(path = getwd())
+  .transform_vignettes(path = getwd())
   after2 <- fs::dir_tree("docs")
 
   expect_identical(before, after1)
