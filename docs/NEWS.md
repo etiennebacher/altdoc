@@ -1,7 +1,17 @@
-## altdoc (development version)
+# altdoc (development version)
 
-- If necessary, two spaces are automatically added in nested lists n the `NEWS`
+- `preview` argument in `use_*()` allows users to suppress the web preview by
+  supplying an explicit argument or a global option.
+- Internal changes to the .Rd -> .md conversion system. We can now use Quarto to
+  convert man pages and execute examples.
+- Support Quarto vignettes (.qmd) stored in the `vignettes/` folder.
+
+## altdoc 0.2.2
+
+- If necessary, two spaces are automatically added in nested lists in the `NEWS`
   (or `Changelog`) file.
+
+- This is the last release before a large rework of this package.
 
 ## altdoc 0.2.1
 
