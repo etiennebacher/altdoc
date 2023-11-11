@@ -184,6 +184,7 @@
 # This creates a section "Articles" with every vignettes in docs/articles
 
 .add_vignettes <- function(path = path) {
+
   doctype <- .doc_type(path = path)
   vignettes_titles <- .get_vignettes_titles(path = path)
 
