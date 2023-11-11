@@ -28,11 +28,18 @@
   src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$")
 
   # copy all subdirectories: images, static files, etc.
+  # docsify: articles/
+  # docute: /
   dir_static <- Filter(fs::is_dir, fs::dir_ls(src_dir))
+  if (.doc_type(path) == "docute") {
+    tar_dir_static <- gsub("articles$", "", tar_dir)
+  } else {
+    tar_dir_static <- tar_dir
+  }
   for (d in dir_static) {
     fs::dir_copy(
       d, 
-      fs::path_join(c(tar_dir, basename(d))),
+      fs::path_join(c(tar_dir_static, basename(d))),
       overwrite = TRUE)
   }
 
