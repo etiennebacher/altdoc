@@ -58,12 +58,16 @@
 
     # only process new or modified vignettes
     origin <- fs::path_join(c(src_dir, src_files[i]))
-    destination <- fs::path_join(c(src_dir, src_files[i]))
+    destination <- fs::path_join(c(tar_dir, src_files[i]))
 
     if (fs::file_exists(destination)) {
       # freeze
-      if (!identical(readLines(origin, warn = FALSE), readLines(destination, warn = FALSE))) {
+      old <- readLines(destination, warn = FALSE)
+      new <- readLines(origin, warn = FALSE)
+      freeze <- identical(old, new)
+      if (freeze) {
         cli::cli_progress_update()
+        conversion_worked[i] <- TRUE
         next
       }
     } else {
@@ -137,7 +141,7 @@
     cli::cli_end(id = "list-fail")
   }
 
-  cli::cli_alert_info("The folder {.file {'src_tar'}} was not modified.")
+  cli::cli_alert_info("The folder {.file {src_dir}} was not modified.")
 
 }
 
