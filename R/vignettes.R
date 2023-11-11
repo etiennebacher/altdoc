@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes <- function(path = path) {
+.import_vignettes <- function(path = path) {
 
   # source directory
   src_dir <- fs::path_abs("vignettes", start = path)
