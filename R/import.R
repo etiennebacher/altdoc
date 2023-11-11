@@ -1,3 +1,56 @@
+# Import files: README, license, news, CoC ------------------
+
+.import_readme <- function(path = ".") {
+
+  good_path <- .doc_path(path)
+
+  if (fs::file_exists(fs::path_abs("README.md", start = path))) {
+    fs::file_copy(
+      fs::path_abs("README.md", start = path),
+      paste0(good_path, "/README.md"),
+      overwrite = TRUE
+    )
+    cli::cli_alert_success("{.file README} imported.")
+  } else {
+    fs::file_copy(
+      system.file("docsify/README.md", package = "altdoc"),
+      fs::path_join(c(good_path, "/README.md")),
+      overwrite = TRUE
+    )
+    cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
+  }
+  .reformat_md(paste0(good_path, "/README.md"))
+  .move_img_readme(path = path)
+  .replace_img_paths_readme(path = path)
+}
+
+
+.import_coc <- function(path = ".") {
+  good_path <- .doc_path(path)
+  if (fs::file_exists(fs::path_join(c(path, "CODE_OF_CONDUCT.md")))) {
+    .update_file("CODE_OF_CONDUCT.md", path)
+    cli::cli_alert_success("{.file Code of Conduct} imported.")
+  } else {
+    cli::cli_alert_info("No {.file Code of Conduct} to include.")
+  }
+}
+
+
+.import_license <- function(path = ".") {
+  good_path <- .doc_path(path)
+  file <- .which_license()
+  if (is.null(file)) {
+    cli::cli_alert_info("No {.file License / Licence} to include.")
+    return(invisible())
+  }
+  if (fs::file_exists(file)) {
+    .update_file(file, path)
+    fs::file_copy(file, paste0(good_path, "/LICENSE.md"), overwrite = TRUE)
+    cli::cli_alert_success("{.file {file}} imported.")
+  }
+}
+
+
 .import_news <- function(path = ".") {
   good_path <- .doc_path(path)
   file <- .which_news()
