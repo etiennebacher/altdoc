@@ -53,12 +53,7 @@
       {
         suppressMessages(
           suppressWarnings(
-            rmarkdown::render(
-              origin,
-              output_format = "github_document",
-              quiet = TRUE,
-              envir = new.env()
-            )
+            .rmd2md(origin)
           )
         )
         conversion_worked[i] <- TRUE
