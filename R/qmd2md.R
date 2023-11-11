@@ -13,7 +13,8 @@
 
   quarto::quarto_render(
     input = path.expand(tar_file),
-    output_format = "md"
+    output_format = "md",
+    quiet = TRUE
   )
 }
 
