@@ -8,11 +8,11 @@
     stop("tar_dir must be a valid directory.", call. = FALSE)
   }
 
-  tar_file <- fs::path_join(tar_dir, basename(source_file))
+  tar_file <- fs::path_join(c(tar_dir, basename(source_file)))
   fs::file_copy(source_file, tar_file, overwrite = TRUE)
 
   quarto::quarto_render(
-    input = path.expand(source_file),
+    input = path.expand(tar_file),
     output_format = "md"
   )
 }
