@@ -21,7 +21,9 @@
       delete_docs <- usethis::ui_yeah(
         "Folder {usethis::ui_value('docs')} already exists. Do you want to replace it?"
       )
-      if (delete_docs) {
+      # msg <- sprintf("Folder `%s` already exists. Do you want to replace it?", path_to_docs)
+      # delete_docs <- utils::askYesNo(msg, default = FALSE)
+      if (isTRUE(delete_docs)) {
         fs::dir_delete(path_to_docs)
       } else {
         cli::cli_alert_info("Nothing was modified.")
@@ -60,5 +62,26 @@
       cli::cli_alert_info("See here to know how to install it: {.url https://www.sphinx-doc.org/en/master/usage/installation.html}")
       .stop_quietly()
     }
+  }
+}
+
+
+.check_dependency <- function(library_name) {
+  requireNamespace(library_name, quietly = TRUE)
+}
+
+
+.assert_dependency <- function(library_name, install = FALSE) {
+  flag <- .check_dependency(library_name)
+  msg <- sprintf("This functionality requires the `%s` package.", library_name)
+  if (!isTRUE(flag)) {
+    if (isTRUE(install)) {
+      msg <- sprintf("This functionality requires the `%s` package. Do you want to install it?", library_name)
+      if (isTRUE(utils::askYesNo(msg, default = TRUE))) {
+        utils::install.packages(library_name)
+        return(invisible())
+      }
+    }
+    stop(msg, call. = FALSE)
   }
 }

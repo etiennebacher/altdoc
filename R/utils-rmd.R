@@ -77,18 +77,3 @@
 
   img_path
 }
-
-# Find figures path in vignettes, copy the figures to "articles/figures"
-.replace_figures_rmd <- function(path = ".") {
-  articles_path <- "docs/articles/"
-  vignettes_md <- list.files(articles_path, pattern = ".md$", full.names = TRUE)
-
-  # Edit vignettes to update figure URLs
-  for (y in vignettes_md) {
-    tx  <- readLines(y)
-    tx <- gsub('![](', '![](articles/figures/', tx, fixed = TRUE)
-    tx <- gsub('<img src="', '<img src="articles/figures/', tx, fixed = TRUE)
-    writeLines(tx, con = y)
-  }
-
-}

@@ -10,16 +10,16 @@ use_docute(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE,
-  preview = getOption("altdoc_preview", default = TRUE)
+  quarto = getOption("altdoc_quarto", default = FALSE),
+  preview = getOption("altdoc_preview", default = FALSE)
 )
 
 use_docsify(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE,
-  preview = getOption("altdoc_preview", default = TRUE)
+  quarto = getOption("altdoc_quarto", default = FALSE),
+  preview = getOption("altdoc_preview", default = FALSE)
 )
 
 use_mkdocs(
@@ -27,8 +27,8 @@ use_mkdocs(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = TRUE,
-  preview = getOption("altdoc_preview", default = TRUE)
+  quarto = getOption("altdoc_quarto", default = FALSE),
+  preview = getOption("altdoc_preview", default = FALSE)
 )
 }
 \arguments{

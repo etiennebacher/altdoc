@@ -39,16 +39,16 @@
 #' }
 
 use_docute <- function(path = ".", overwrite = FALSE,
-                       custom_reference = NULL, quarto = TRUE,
-                       preview = getOption("altdoc_preview", default = TRUE)) {
+                       custom_reference = NULL,
+                       quarto = getOption("altdoc_quarto", default = FALSE),
+                       preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
   .create_index("docute", path)
-  .build_docs(path, custom_reference, quarto = quarto)
-  .build_vignettes(path)
+  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   .final_steps(x = "docute", path, preview = preview)
 }
@@ -58,8 +58,9 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #' @rdname init
 
 use_docsify <- function(path = ".", overwrite = FALSE,
-                        custom_reference = NULL, quarto = TRUE,
-                        preview = getOption("altdoc_preview", default = TRUE)) {
+                        custom_reference = NULL,
+                        quarto = getOption("altdoc_quarto", default = FALSE),
+                        preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -67,14 +68,12 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 
   .create_index("docsify", path = path)
 
-  .build_docs(path = path, custom_reference, quarto = quarto)
-
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),
     fs::path_abs("docs/_sidebar.md", start = path)
   )
 
-  .build_vignettes(path)
+  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   .final_steps(x = "docsify", path = path, preview = preview)
 
@@ -96,8 +95,8 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = TRUE,
-                       preview = getOption("altdoc_preview", default = TRUE)) {
+                       quarto = getOption("altdoc_quarto", default = FALSE),
+                       preview = getOption("altdoc_preview", default = FALSE)) {
 
   path <- .convert_path(path)
   .check_is_package(path)
@@ -165,7 +164,7 @@ nav:
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
 
   fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
-  .build_docs(path = path, quarto = quarto)
+  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
   if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
@@ -181,8 +180,6 @@ nav:
     yaml <- yaml[-which(grepl("reference.md", yaml))]
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
-
-  .build_vignettes(path)
 
   .final_steps(x = "mkdocs", path = path, preview = preview)
 }

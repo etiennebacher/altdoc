@@ -2,6 +2,9 @@
 
 * `preview` argument in `use_*()` allows users to suppress the web preview by
   supplying an explicit argument or a global option.
+* Internal changes to the .Rd -> .md conversion system. We can now use Quarto to
+  convert man pages and execute examples.
+* Support Quarto vignettes (.qmd) stored in the `vignettes/` folder.
 
 # altdoc 0.2.2
 

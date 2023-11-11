@@ -9,23 +9,41 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.transform_vignettes <- function(path = path) {
+.import_vignettes <- function(path = path) {
 
-  vignettes_path <- fs::path_abs("vignettes", start = path)
-
-  if (!file.exists(vignettes_path) | .folder_is_empty(vignettes_path)) {
+  # source directory
+  src_dir <- fs::path_abs("vignettes", start = path)
+  if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
     cli::cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
-  articles_path <- fs::path_join(c(.doc_path(path = path), "/articles"))
-  vignettes <- list.files(vignettes_path, pattern = ".Rmd$")
-
-  if (!dir.exists(articles_path)) {
-    fs::dir_create(articles_path)
+  # target directory
+  tar_dir <- fs::path_join(c(.doc_path(path = path), "/articles"))
+  if (!dir.exists(tar_dir)) {
+    fs::dir_create(tar_dir)
   }
 
-  n <- length(vignettes)
+  # source files
+  src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$")
+
+  # copy all subdirectories: images, static files, etc.
+  # docsify: articles/
+  # docute: /
+  dir_static <- Filter(fs::is_dir, fs::dir_ls(src_dir))
+  if (.doc_type(path) == "docute") {
+    tar_dir_static <- gsub("articles$", "", tar_dir)
+  } else {
+    tar_dir_static <- tar_dir
+  }
+  for (d in dir_static) {
+    fs::dir_copy(
+      d, 
+      fs::path_join(c(tar_dir_static, basename(d))),
+      overwrite = TRUE)
+  }
+
+  n <- length(src_files)
 
   # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
@@ -34,49 +52,66 @@
 
   conversion_worked <- vector(length = n)
 
-  fs::dir_copy(vignettes_path, articles_path)
-  vignettes_path2 <- fs::path_join(c(articles_path, "/vignettes/"))
-  figure_path <- fs::path_join(c(articles_path, "/figures/"))
+  fs::dir_copy(src_dir, tar_dir, overwrite = TRUE)
 
-  if (fs::dir_exists(figure_path)) {
-    fs::dir_delete(figure_path)
-  }
-  file.rename(vignettes_path2, figure_path)
+  for (i in seq_along(src_files)) {
 
-  for (i in seq_along(vignettes)) {
-    j <- vignettes[i] # do that for cli progress step
-    origin <- fs::path_join(c(figure_path, j))
-    destination <- fs::path_join(c(articles_path, j))
-    output_file <- gsub("\\.Rmd$", ".md", j)
+    # only process new or modified vignettes
+    origin <- fs::path_join(c(src_dir, src_files[i]))
+    destination <- fs::path_join(c(tar_dir, src_files[i]))
 
-    tryCatch(
-      {
-        suppressMessages(
-          suppressWarnings(
-            rmarkdown::render(
-              origin,
-              output_format = "github_document",
-              quiet = TRUE,
-              envir = new.env()
+    ## Freeze is currently commented out because it breaks some tests. This is a planned feature
+    ## TODO: add a `freeze` argument
+
+    # if (fs::file_exists(destination)) {
+    #   # freeze
+    #   old <- readLines(destination, warn = FALSE)
+    #   new <- readLines(origin, warn = FALSE)
+    #   freeze <- identical(old, new)
+    #   if (freeze) {
+    #     cli::cli_progress_update()
+    #     conversion_worked[i] <- TRUE
+    #     next
+    #   }
+    # } else {
+      fs::file_copy(origin, destination, overwrite = TRUE)
+    # }
+
+    if (fs::path_ext(origin) == "Rmd") {
+      tryCatch(
+        {
+          suppressMessages(
+            suppressWarnings(
+              .rmd2md(origin, tar_dir)
             )
           )
-        )
-        conversion_worked[i] <- TRUE
-      },
+          conversion_worked[i] <- TRUE
+        },
 
-      error = function(e) {
-        fs::file_delete(destination)
-        conversion_worked[i] <- FALSE
-      }
-    )
+        error = function(e) {
+          fs::file_delete(destination)
+          conversion_worked[i] <- FALSE
+        }
+      )
+      cli::cli_progress_update()
+    } else {
+      tryCatch(
+        {
+          suppressMessages(
+            suppressWarnings(
+              .qmd2md(origin, tar_dir)
+            )
+          )
+          conversion_worked[i] <- TRUE
+        },
 
-    md_file <- fs::path_join(c(figure_path, output_file))
-    fs::file_move(md_file, articles_path)
-
-    cli::cli_progress_update()
+        error = function(e) {
+          conversion_worked[i] <- FALSE
+        }
+      )
+      cli::cli_progress_update()
+    }
   }
-
-  .replace_figures_rmd()
 
   successes <- which(conversion_worked == TRUE)
   fails <- which(conversion_worked == FALSE)
@@ -88,10 +123,10 @@
   if (length(successes) > 0) {
     cli::cli_par()
     cli::cli_end()
-    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {articles_path}}:")
+    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {tar_dir}}:")
     cli::cli_ul(id = "list-success")
     for (i in seq_along(successes)) {
-      cli::cli_li("{.file {vignettes[successes[i]]}}")
+      cli::cli_li("{.file {src_files[successes[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-success")
@@ -103,15 +138,17 @@
     cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following vignette{?s}:")
     cli::cli_ul(id = "list-fail")
     for (i in seq_along(fails)) {
-      cli::cli_li("{.file {vignettes[fails[i]]}}")
+      cli::cli_li("{.file {src_files[fails[i]]}}")
     }
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
 
-  cli::cli_alert_info("The folder {.file {'vignettes'}} was not modified.")
+  cli::cli_alert_info("The folder {.file {src_dir}} was not modified.")
 
 }
+
+
 
 
 # Get titles and filenames of the vignettes and returns them in a dataframe
@@ -148,6 +185,7 @@
 # This creates a section "Articles" with every vignettes in docs/articles
 
 .add_vignettes <- function(path = path) {
+
   doctype <- .doc_type(path = path)
   vignettes_titles <- .get_vignettes_titles(path = path)
 
@@ -170,6 +208,7 @@
 
     home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
 
+    # .assert_dependency("jsonlite", install = TRUE)
     original_index[home_line] <- paste0(
       original_index[home_line],
       "\n{
@@ -273,3 +312,5 @@
   #   cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
   # )
 }
+
+

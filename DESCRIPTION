@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Use 'Docsify.js', 'Docute', or 'Mkdocs' to Generate a Package Documentation
-Version: 0.2.2.9002
+Version: 0.2.2.9003
 Authors@R: 
     person(given = "Etienne",
            family = "Bacher",
@@ -20,16 +20,16 @@ Imports:
     fs,
     here,
     htmltools,
+    jsonlite,
     quarto,
     rmarkdown,
-    rstudioapi,
-    servr,
     tinkr,
     tools,
-    usethis,
     utils,
+    usethis,
     xml2,
-    jsonlite,
+    rstudioapi,
+    servr,
     yaml
 Suggests: 
     covr,

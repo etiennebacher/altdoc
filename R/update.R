@@ -6,6 +6,7 @@
 #'
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param custom_reference Path to the file that will be sourced to generate the
+#' @param quarto TRUE to use the new Quarto engine to render Rd files.
 #' "Reference" section.
 #'
 #' @export
@@ -19,30 +20,27 @@
 #' }
 
 update_docs <- function(path = ".",
-                        custom_reference = NULL) {
+                        custom_reference = NULL,
+                        quarto = FALSE) {
 
   path <- .convert_path(path)
+  good_path <- .doc_path(path)
 
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
+  if (!fs::dir_exists(good_path)) {
+    fs::dir_create(good_path)
     cli::cli_alert_danger("Folder {.file docs} doesn't exist. You must create it with one of the {.code use_*()} functions first.")
     return(invisible())
   }
 
-  good_path <- .doc_path(path)
-
   cli::cli_h1("Update basic files")
 
-  # Update README
-  .update_file("README.md")
-  .move_img_readme(path)
-  .replace_img_paths_readme(path)
-  .reformat_md(paste0(good_path, "/README.md"))
+  # basic files
+  .import_readme(path)
+  .import_news(path)
+  .import_license(path)
+  .import_coc(path)
 
-  # Update changelog, CoC, License
-  .update_file("NEWS.md", path, first = TRUE)
-  .parse_news(path, paste0(good_path, "/NEWS.md"))
-  .update_file("CODE_OF_CONDUCT.md", path)
-  .update_file("LICENSE.md", path)
+  # version number
   if (.need_to_bump_version(path)) {
     .update_version_number(path)
     cli::cli_alert_success("Bumped version in documentation footer.")
@@ -52,11 +50,11 @@ update_docs <- function(path = ".",
   }
 
   # Update functions reference
-  .make_reference(update = TRUE, path, custom_reference)
+  .import_man(update = TRUE, path, custom_reference, quarto = quarto)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")
-  .transform_vignettes(path)
+  .import_vignettes(path)
   .add_vignettes(path)
 
   cli::cli_h1("Complete")
@@ -74,7 +72,7 @@ update_docs <- function(path = ".",
 #         - if it changed: overwrite it
 #         - if it didn't: info message
 
-.update_file <- function(file, path = ".", first) {
+.update_file <- function(file, path = ".", first = FALSE) {
 
   file_message <- if (file == "NEWS.md") {
     "NEWS / Changelog"
@@ -121,7 +119,7 @@ update_docs <- function(path = ".",
   }
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
-  .reformat_md(docs_file, first)
+  .reformat_md(docs_file, first = first)
 }
 
 .update_version_number <- function(path) {

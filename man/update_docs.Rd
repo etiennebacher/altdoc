@@ -4,12 +4,14 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(path = ".", custom_reference = NULL)
+update_docs(path = ".", custom_reference = NULL, quarto = FALSE)
 }
 \arguments{
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}
 
-\item{custom_reference}{Path to the file that will be sourced to generate the
+\item{custom_reference}{Path to the file that will be sourced to generate the}
+
+\item{quarto}{TRUE to use the new Quarto engine to render Rd files.
 "Reference" section.}
 }
 \value{
