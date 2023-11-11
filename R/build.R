@@ -26,7 +26,9 @@
 # Import files: README, license, news, CoC ------------------
 
 .import_readme <- function(path = ".") {
+
   good_path <- .doc_path(path)
+
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
     fs::file_copy(
       fs::path_abs("README.md", start = path),
@@ -37,7 +39,8 @@
   } else {
     fs::file_copy(
       system.file("docsify/README.md", package = "altdoc"),
-      paste0(good_path, "/README.md")
+      fs::path_join(c(good_path, "/README.md")),
+      overwrite = TRUE
     )
     cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
@@ -47,29 +50,10 @@
 }
 
 
-.import_news <- function(path = ".") {
-  good_path <- .doc_path(path)
-  file <- .which_news()
-  if (is.null(file)) {
-    cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
-    return(invisible())
-  }
-  if (fs::file_exists(file)) {
-    fs::file_copy(file, paste0(good_path, "/NEWS.md"))
-    .reformat_md(paste0(good_path, "/", file), first = TRUE)
-    .parse_news(path, paste0(good_path, "/NEWS.md"))
-    cli::cli_alert_success("{.file {file}} imported.")
-  }
-}
-
-
 .import_coc <- function(path = ".") {
   good_path <- .doc_path(path)
-  if (fs::file_exists("CODE_OF_CONDUCT.md")) {
-    fs::file_copy(
-      "CODE_OF_CONDUCT.md",
-      paste0(good_path, "/CODE_OF_CONDUCT.md")
-    )
+  if (fs::file_exists(fs::path_join(c(path, "CODE_OF_CONDUCT.md")))) {
+    .update_file("CODE_OF_CONDUCT.md", path)
     cli::cli_alert_success("{.file Code of Conduct} imported.")
   } else {
     cli::cli_alert_info("No {.file Code of Conduct} to include.")
@@ -85,30 +69,10 @@
     return(invisible())
   }
   if (fs::file_exists(file)) {
-    fs::file_copy(file, paste0(good_path, "/LICENSE.md"))
+    .update_file(file, path)
+    fs::file_copy(file, paste0(good_path, "/LICENSE.md"), overwrite = TRUE)
     cli::cli_alert_success("{.file {file}} imported.")
   }
-}
-
-
-
-# Build docs and vignettes ---------------------
-
-.build_docs <- function(path = ".", custom_reference = NULL, quarto = FALSE) {
-  cli::cli_h1("Docs structure")
-  cli::cli_alert_success("Folder {.file docs} created.")
-  .import_readme(path)
-  .import_news(path)
-  .import_coc(path)
-  .import_license(path)
-  .make_reference(update = FALSE, path, custom_reference, quarto = quarto)
-}
-
-.build_vignettes <- function(path) {
-  cli::cli_h1("Vignettes")
-  .transform_vignettes_rmd(path = path)
-  .transform_vignettes_qmd(path = path)
-  .add_vignettes(path = path)
 }
 
 

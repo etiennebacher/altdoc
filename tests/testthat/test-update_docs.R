@@ -127,7 +127,7 @@ test_that("docute: update_docs works when NEWS didn't exist", {
     }
   )
   expect_message(update_docs(path = getwd()),
-                 regexp = "'NEWS / Changelog' was imported for the first time.")
+                 regexp = "NEWS.*was imported for the first time.")
   expect_true(fs::file_exists("docs/NEWS.md"))
 })
 
@@ -142,7 +142,7 @@ test_that("mkdocs: update_docs works when NEWS didn't exist", {
     }
   )
   expect_message(update_docs(path = getwd()),
-                 regexp = "'NEWS / Changelog' was imported for the first time.")
+                 regexp = "NEWS.*was imported for the first time.")
   expect_true(fs::file_exists("docs/docs/NEWS.md"))
 })
 
@@ -150,14 +150,14 @@ test_that("docsify: update_docs shows message when NEWS doesn't exist", {
   create_local_package()
   use_docsify(path = getwd())
   expect_message(update_docs(path = getwd()),
-                 regexp = "No 'NEWS / Changelog' to include.")
+                 regexp = "No.*NEWS.*to include.")
 })
 
 test_that("docute: update_docs shows message when NEWS doesn't exist", {
   create_local_package()
   use_docute(path = getwd())
   expect_message(update_docs(path = getwd()),
-                 regexp = "No 'NEWS / Changelog' to include.")
+                 regexp = "No.*NEWS / Changelog.*to include.")
 })
 
 test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
@@ -165,7 +165,7 @@ test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
   create_local_package()
   use_mkdocs(path = getwd())
   expect_message(update_docs(path = getwd()),
-                 regexp = "No 'NEWS / Changelog' to include.")
+                 regexp = "No.*NEWS / Changelog.*to include.")
 })
 
 
@@ -224,7 +224,7 @@ test_that("docsify: update_docs works when CoC didn't exist", {
   use_docsify(path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'Code of Conduct' was imported for the first time.")
+                 regexp = "Code of Conduct.*was imported for the first time.")
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
 })
 
@@ -233,7 +233,7 @@ test_that("docute: update_docs works when CoC didn't exist", {
   use_docute(path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'Code of Conduct' was imported for the first time.")
+                 regexp = "Code of Conduct.*was imported for the first time.")
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
 })
 
@@ -243,7 +243,7 @@ test_that("mkdocs: update_docs works when CoC didn't exist", {
   use_mkdocs(path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'Code of Conduct' was imported for the first time.")
+                 regexp = "Code of Conduct.*was imported for the first time.")
   expect_true(fs::file_exists("docs/docs/CODE_OF_CONDUCT.md"))
 })
 
@@ -326,7 +326,7 @@ test_that("docsify: update_docs works when License didn't exist", {
   use_docsify(path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'License / Licence' was imported for the first time.")
+                 regexp = "License / Licence.*was imported for the first time.")
   expect_true(fs::file_exists("docs/LICENSE.md"))
 })
 
@@ -335,7 +335,7 @@ test_that("docute: update_docs works when License didn't exist", {
   use_docute(path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'License / Licence' was imported for the first time.")
+                 regexp = "License / Licence.*was imported for the first time.")
   expect_true(fs::file_exists("docs/LICENSE.md"))
 })
 
@@ -345,7 +345,7 @@ test_that("mkdocs: update_docs works when License didn't exist", {
   use_mkdocs(path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   expect_message(update_docs(path = getwd()),
-                 regexp = "'License / Licence' was imported for the first time.")
+                 regexp = "License / Licence.*was imported for the first time.")
   expect_true(fs::file_exists("docs/docs/LICENSE.md"))
 })
 

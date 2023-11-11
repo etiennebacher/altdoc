@@ -24,27 +24,23 @@ update_docs <- function(path = ".",
                         quarto = FALSE) {
 
   path <- .convert_path(path)
+  good_path <- .doc_path(path)
 
   if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
+    fs::dir_create(path_docs)
     cli::cli_alert_danger("Folder {.file docs} doesn't exist. You must create it with one of the {.code use_*()} functions first.")
     return(invisible())
   }
 
-  good_path <- .doc_path(path)
-
   cli::cli_h1("Update basic files")
 
-  # Update README
-  .update_file("README.md")
-  .move_img_readme(path)
-  .replace_img_paths_readme(path)
-  .reformat_md(paste0(good_path, "/README.md"))
+  # basic files
+  .import_readme(path)
+  .import_news(path)
+  .import_license(path)
+  .import_coc(path)
 
-  # Update changelog, CoC, License
-  .update_file("NEWS.md", path, first = TRUE)
-  .parse_news(path, paste0(good_path, "/NEWS.md"))
-  .update_file("CODE_OF_CONDUCT.md", path)
-  .update_file("LICENSE.md", path)
+  # version number
   if (.need_to_bump_version(path)) {
     .update_version_number(path)
     cli::cli_alert_success("Bumped version in documentation footer.")
