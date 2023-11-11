@@ -50,7 +50,7 @@ update_docs <- function(path = ".",
   }
 
   # Update functions reference
-  .make_reference(update = TRUE, path, custom_reference, quarto = quarto)
+  .import_man(update = TRUE, path, custom_reference, quarto = quarto)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")

@@ -142,7 +142,7 @@
     src <- fs::path_join(c("vignettes", f))
     des <- fs::path_join(c(.doc_path(path = path), "vignettes", f))
     fs::file_copy(src, des, overwrite = TRUE)
-    .qmd_to_md(des)
+    .qmd2md(des)
     fs::file_delete(des)
   }
 }
