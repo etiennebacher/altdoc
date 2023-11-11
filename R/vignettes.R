@@ -60,19 +60,22 @@
     origin <- fs::path_join(c(src_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
 
-    if (fs::file_exists(destination)) {
-      # freeze
-      old <- readLines(destination, warn = FALSE)
-      new <- readLines(origin, warn = FALSE)
-      freeze <- identical(old, new)
-      if (freeze) {
-        cli::cli_progress_update()
-        conversion_worked[i] <- TRUE
-        next
-      }
-    } else {
+    ## Freeze is currently commented out because it breaks some tests. This is a planned feature
+    ## TODO: add a `freeze` argument
+
+    # if (fs::file_exists(destination)) {
+    #   # freeze
+    #   old <- readLines(destination, warn = FALSE)
+    #   new <- readLines(origin, warn = FALSE)
+    #   freeze <- identical(old, new)
+    #   if (freeze) {
+    #     cli::cli_progress_update()
+    #     conversion_worked[i] <- TRUE
+    #     next
+    #   }
+    # } else {
       fs::file_copy(origin, destination, overwrite = TRUE)
-    }
+    # }
 
     if (fs::path_ext(origin) == "Rmd") {
       tryCatch(
