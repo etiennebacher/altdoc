@@ -90,24 +90,18 @@
 
 # Get the tool that was used
 .doc_type <- function(path = ".") {
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
-    return(NULL)
-  }
-  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) {
-    return("mkdocs")
-  }
-  if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-    file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
-      collapse = ""
-    )
-    if (grepl("docute", file)) {
-      return("docute")
-    }
-    if (grepl("docsify", file)) {
-      return("docsify")
-    }
-  }
+  fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
+  if (fs::file_exists(fn)) return("mkdocs")
+
+  fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
+  if (fs::file_exists(fn)) return(fn)
+
+  fn <- fs::path_join(c(path, "altdoc", "docute.html"))
+  if (fs::file_exists(fn)) return("docute")
+
+  return(NULL)
 }
+
 
 # Get the path for files
 .doc_path <- function(path = ".") {

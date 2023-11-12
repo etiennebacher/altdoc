@@ -45,7 +45,8 @@ use_docute <- function(path = ".", overwrite = FALSE,
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
-  .create_index("docute", path)
+  .create_immutable(path = path, doctype = "docute")
+
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   .final_steps(x = "docute", path, preview = preview)
@@ -63,7 +64,7 @@ use_docsify <- function(path = ".", overwrite = FALSE,
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
-  .create_index("docsify", path = path)
+  .create_immutable(path = path, doctype = "docsify")
 
   fs::file_copy(
     system.file("docsify/_sidebar.md", package = "altdoc"),

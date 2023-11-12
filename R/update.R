@@ -38,22 +38,15 @@ update_docs <- function(path = ".",
   .import_license(path)
   .import_coc(path)
 
-  # version number
-  if (.need_to_bump_version(path)) {
-    .update_version_number(path)
-    cli::cli_alert_success("Bumped version in documentation footer.")
-  }
-  if (.need_to_bump_altdoc_version(path)) {
-    .update_altdoc_version_number(path)
-  }
-
   # Update functions reference
   .import_man(update = TRUE, path, custom_reference, quarto = quarto)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")
   .import_vignettes(path)
-  .add_vignettes(path)
+
+  cli::cli_h1("Update HTML")
+  .import_immutable(path = path, doctype = .doc_type(path))
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
@@ -116,54 +109,4 @@ update_docs <- function(path = ".",
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
   .reformat_md(docs_file, first = first)
-}
-
-.update_version_number <- function(path) {
-  .doc_type <- .doc_type(path)
-  if (.doc_type %in% c("docute", "docsify")) {
-    index <- .readlines("docs/index.html")
-    index2 <- gsub("\\t", "", index)
-    index2 <- trimws(index2)
-    if (.doc_type == "docsify") {
-      footer <- grep("^var footer =", index2)
-    } else if (.doc_type == "docute") {
-      footer <- grep("^footer:", index2)
-    }
-    if (length(footer) != 1) {
-      return(invisible)
-    }
-    old_footer <- .get_footer(path)
-    new_footer <- gsub(.doc_version(path), .pkg_version(path), old_footer)
-    index[footer] <- new_footer
-    writeLines(index, "docs/index.html")
-  } else if (.doc_type == "mkdocs") {
-    # TODO ? Or is it linked to the github page ?
-  }
-}
-
-.update_altdoc_version_number <- function(path) {
-  .doc_type <- .doc_type(path)
-  if (.doc_type %in% c("docute", "docsify")) {
-    index <- .readlines("docs/index.html")
-    index2 <- gsub("\\t", "", index)
-    index2 <- trimws(index2)
-    if (.doc_type == "docsify") {
-      footer <- grep("^var footer =", index2)
-    } else if (.doc_type == "docute") {
-      footer <- grep("^footer:", index2)
-    }
-    if (length(footer) != 1) {
-      return(invisible)
-    }
-    old_footer <- .get_footer(path)
-    new_footer <- gsub(
-      .altdoc_version_in_footer(path),
-      .altdoc_version(),
-      old_footer
-    )
-    index[footer] <- new_footer
-    writeLines(index, "docs/index.html")
-  } else if (.doc_type == "mkdocs") {
-    # TODO ? Or is it linked to the github page ?
-  }
 }

@@ -14,12 +14,12 @@
         file.copy(src, tar, overwrite = FALSE)
 
         src <- system.file("docsify/_sidebar.md", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "_sidebar.md"))
+        tar <- fs::path_join(c(imm_dir, "docsify.md"))
         file.copy(src, tar, overwrite = FALSE)
 
     } else if (isTRUE(doctype == "docute")) {
         src <- system.file("docute/index.html", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "index.html"))
+        tar <- fs::path_join(c(imm_dir, "docute.html"))
         file.copy(src, tar, overwrite = FALSE)
     }
 
@@ -30,10 +30,16 @@
 .substitute_altdoc_variables <- function(x, filename, path = ".") {
     x <- gsub("\\$ALTDOC_VERSION", packageVersion("altdoc"), x)
 
-    # DESCRIPTION INFO
+    # DESCRIPTION file
     fn <- fs::path_join(c(path, "DESCRIPTION"))
     if (fs::file_exists(fn)) {
         x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package"), x)
+        x <- gsub("\\$ALTDOC_PACKAGE_VERSION", desc::desc_get("Version"), x)
+        x <- gsub("\\$ALTDOC_PACKAGE_URL", desc::desc_get_urls()[1], x)
+    } else {
+        x <- gsub("\\$ALTDOC_PACKAGE_NAME", "", x)
+        x <- gsub("\\$ALTDOC_PACKAGE_VERSION", "", x)
+        x <- gsub("\\$ALTDOC_PACKAGE_URL", "", x)
     }
 
     return(x)
@@ -65,7 +71,7 @@
 
 .import_immutable_docsify <- function(path) {
     # Read immutable sidebar
-    fn <- fs::path_join(c(.doc_path(path), "_sidebar.md"))
+    fn <- fs::path_join(c(.doc_path(path), "docsify.md"))
     sidebar <- readLines(fn)
 
     # Single files
@@ -87,7 +93,7 @@
         sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
     }
 
-    # Vignettes
+    ############### Vignettes
     # TODO: get clean titles. .get_vignettes_titles does not work as I expected
     dn1 <- fs::path_join(c(.doc_path(path), "vignettes"))
     dn2 <- fs::path_join(c(.doc_path(path), "articles"))
@@ -101,10 +107,12 @@
         tmp <- sprintf("  - [%s](%s)", titles, fn_vignettes)
         tmp <- c("* Articles", tmp)
         tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_VIGNETTES_LIST", tmp, sidebar)
+        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
+    } else {
+        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
     }
 
-    # Man pages
+    ################### Man pages
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
 
@@ -118,12 +126,12 @@
             tmp <- sprintf("  - [%s](%s)", titles, fn_man)
             tmp <- c("* Reference", tmp)
             tmp <- paste(tmp, collapse = "\n")
-            sidebar <- gsub("\\$ALTDOC_MAN_LIST", tmp, sidebar)
+            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
         }
 
     # one page
     } else if (fs::file_exists(fn_man)) {
-        sidebar <- gsub("\\$ALTDOC_MAN_LIST", "{title: 'Reference', link: ''},", sidebar)
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "{title: 'Reference', link: ''},", sidebar)
 
     }
 
@@ -135,6 +143,7 @@
 
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
+    fn <- gsub("docsify.md$", "_sidebar.md", fn)
     writeLines(sidebar, fn)
 
 }
@@ -142,7 +151,7 @@
 
 .import_immutable_docute <- function(path) {
     # Read immutable sidebar
-    fn <- fs::path_join(c(.doc_path(path), "index.html"))
+    fn <- fs::path_join(c(.doc_path(path), "docute.html"))
     sidebar <- readLines(fn)
 
     # Single files
@@ -164,7 +173,36 @@
         sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
     }
 
-    # Man pages
+
+    ############### Vignettes
+    # TODO: get clean titles. .get_vignettes_titles does not work as I expected
+    dn1 <- fs::path_join(c(.doc_path(path), "vignettes"))
+    dn2 <- fs::path_join(c(.doc_path(path), "articles"))
+    fn_vignettes <- c(
+        list.files(dn1, pattern = "\\.md$", full.names = TRUE),
+        list.files(dn2, pattern = "\\.md$", full.names = TRUE)
+    )
+    fn_vignettes <- gsub(.doc_path(path), "", fn_vignettes, fixed = TRUE)
+    titles <- fs::path_ext_remove(basename(fn_vignettes))
+    if (length(fn_vignettes) > 0) {
+        tmp <- sprintf("              {title: '%s', link: '/articles/%s'},", titles, titles)
+        tmp <- c(
+            "          {",
+            "           title: 'Articles',",
+            "           children:",
+            "             [",
+            tmp,
+            "             ]",
+            "          },"
+        )
+        tmp <- paste(tmp, collapse = "\n")
+        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
+    } else {
+        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
+    }
+
+
+    ############ Man pages
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
 
@@ -185,13 +223,21 @@
                 "          },"
             )
             tmp <- paste(tmp, collapse = "\n")
-            sidebar <- gsub("\\$ALTDOC_MAN_LIST", tmp, sidebar)
+            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
+        } else {
+            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
         }
 
     # one page
     } else if (fs::file_exists(fn_man)) {
-        sidebar <- gsub("\\$ALTDOC_MAN_LIST", "* [Reference](reference.md)", sidebar)
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "* [Reference](reference.md)", sidebar)
+
+    # no man page
+    } else {
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
+
     }
+
 
     # drop missing sidebar entries
     sidebar <- sidebar[!grepl("link: ''", sidebar)]
@@ -199,5 +245,6 @@
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
     # write mutable sidebar
+    fn <- gsub("docute.html$", "index.html", fn)
     writeLines(sidebar, fn)
 }
