@@ -61,7 +61,6 @@
 #' @noRd
 
 .reformat_md <- function(file, first = FALSE) {
-
   stopifnot(!is.null(file), is.character(file))
 
   md_doc <- tinkr::to_xml(file)
@@ -69,19 +68,21 @@
   headers <- md_doc$body
   headers <- xml2::xml_find_all(
     headers,
-    xpath = './/d1:heading',
+    xpath = ".//d1:heading",
     xml2::xml_ns(headers)
   )
 
   levels <- as.numeric(xml2::xml_attr(headers, "level"))
 
-  if (length(levels[levels == 1]) <= 1) return(invisible())
+  if (length(levels[levels == 1]) <= 1) {
+    return(invisible())
+  }
 
   for (i in rev(unique(levels))) { # start by lowest level
     to_change <- which(xml2::xml_attr(headers, "level") == i)
     for (j in seq_along(to_change)) {
       k <- to_change[j]
-      if (k == 1 & isFALSE(first)) next
+      if (k == 1 && isFALSE(first)) next
       xml2::xml_set_attr(headers[k], "level", i + 1)
     }
   }

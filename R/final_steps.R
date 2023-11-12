@@ -1,7 +1,6 @@
 # Last things to do in initialization -------------------
 
 .final_steps <- function(x, path = ".", preview = TRUE) {
-
   if (x == "docute") {
     .final_steps_docute(path)
   } else if (x == "docsify") {
@@ -20,7 +19,6 @@
     cli::cli_alert("Running preview...")
     preview()
   }
-
 }
 
 

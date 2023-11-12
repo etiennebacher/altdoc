@@ -15,4 +15,3 @@ test_that("use_docsify: arg 'overwrite' works", {
   use_docsify(overwrite = TRUE, path = getwd())
   expect_false(fs::file_exists("docs/test"))
 })
-

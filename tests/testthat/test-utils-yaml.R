@@ -1,5 +1,4 @@
 test_that(".modify_yaml works on basic yaml", {
-
   # don't directly modify the example
   tmp <- tempfile()
   fs::file_copy(
@@ -18,7 +17,6 @@ test_that(".modify_yaml works on basic yaml", {
 })
 
 test_that(".modify_yaml works with other options", {
-
   # don't directly modify the example
   tmp <- tempfile()
   fs::file_copy(
@@ -42,7 +40,6 @@ test_that(".modify_yaml works with other options", {
 
 
 test_that(".modify_yaml only removes html output and keep other formats options", {
-
   # don't directly modify the example
   tmp <- tempfile()
   fs::file_copy(

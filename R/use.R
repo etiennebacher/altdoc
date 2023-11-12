@@ -28,21 +28,19 @@
 #'
 #' @examples
 #' if (interactive()) {
-#' # Create docute documentation
-#' use_docute()
+#'   # Create docute documentation
+#'   use_docute()
 #'
-#' # Create docsify documentation
-#' use_docsify()
+#'   # Create docsify documentation
+#'   use_docsify()
 #'
-#' # Create mkdocs documentation
-#' use_mkdocs()
+#'   # Create mkdocs documentation
+#'   use_mkdocs()
 #' }
-
 use_docute <- function(path = ".", overwrite = FALSE,
                        custom_reference = NULL,
                        quarto = getOption("altdoc_quarto", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
-
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
@@ -61,7 +59,6 @@ use_docsify <- function(path = ".", overwrite = FALSE,
                         custom_reference = NULL,
                         quarto = getOption("altdoc_quarto", default = FALSE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
-
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
@@ -76,7 +73,6 @@ use_docsify <- function(path = ".", overwrite = FALSE,
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   .final_steps(x = "docsify", path = path, preview = preview)
-
 }
 
 
@@ -97,7 +93,6 @@ use_mkdocs <- function(theme = NULL,
                        custom_reference = NULL,
                        quarto = getOption("altdoc_quarto", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
-
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
@@ -115,15 +110,14 @@ use_mkdocs <- function(theme = NULL,
     "
 ### Basic information
 site_name: ", .pkg_name(path),
-if (!is.null(theme)) {
-  paste0("
+    if (!is.null(theme)) {
+      paste0("
 theme:
-  name: ", theme
-  )
-},
-if (!is.null(theme) && theme == "material") {
-  paste0(
-    "
+  name: ", theme)
+    },
+    if (!is.null(theme) && theme == "material") {
+      paste0(
+        "
 
   # Dark mode toggle
   palette:
@@ -140,9 +134,9 @@ if (!is.null(theme) && theme == "material") {
     - navigation.tabs
     - toc.integrate
     "
-  )
-},
-"
+      )
+    },
+    "
 
 ### Repo information
 repo_url: ", .gh_url(path), "
@@ -168,16 +162,16 @@ nav:
 
   yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
   if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
-    yaml <- yaml[-which(grepl("NEWS.md", yaml))]
+    yaml <- yaml[-grep("NEWS.md", yaml)]
   }
   if (!fs::file_exists(fs::path_abs("docs/docs/LICENSE.md", start = path))) {
-    yaml <- yaml[-which(grepl("LICENSE.md", yaml))]
+    yaml <- yaml[-grep("LICENSE.md", yaml)]
   }
   if (!fs::file_exists(fs::path_abs("docs/docs/CODE_OF_CONDUCT.md", start = path))) {
-    yaml <- yaml[-which(grepl("CODE_OF_CONDUCT.md", yaml))]
+    yaml <- yaml[-grep("CODE_OF_CONDUCT.md", yaml)]
   }
   if (!fs::file_exists(fs::path_abs("docs/docs/reference.md", start = path))) {
-    yaml <- yaml[-which(grepl("reference.md", yaml))]
+    yaml <- yaml[-grep("reference.md", yaml)]
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
 

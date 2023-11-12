@@ -1,5 +1,4 @@
 .qmd2md <- function(source_file, tar_dir) {
-
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -20,18 +19,18 @@
 
 
 .rmd2md <- function(source_file, output_dir) {
-
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
 
   out <- utils::capture.output(
     rmarkdown::render(
-    input = path.expand(source_file),
-    output_format = "md_document",
-    quiet = TRUE,
-    envir = new.env())
+      input = path.expand(source_file),
+      output_format = "md_document",
+      quiet = TRUE,
+      envir = new.env()
     )
+  )
 
   # output_dir is apparently not reliable, and creates absolute paths, so we
   # render them in place and move the files and static files directories.
@@ -48,5 +47,4 @@
     fs::file_copy(stem_md, output_dir, overwrite = TRUE)
     fs::file_delete(stem_md)
   }
-
 }

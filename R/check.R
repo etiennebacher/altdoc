@@ -11,7 +11,6 @@
 # Check that folder is empty or doesn't exist -------------------------
 
 .check_docs_exists <- function(overwrite = FALSE, path = ".") {
-
   path_to_docs <- fs::path_abs("docs", start = path)
 
   if (fs::dir_exists(path_to_docs) && !.folder_is_empty(path_to_docs)) {

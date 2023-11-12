@@ -1,7 +1,6 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .import_man <- function(update = FALSE, path = ".",
-                            custom_reference = NULL, quarto = FALSE) {
-
+                        custom_reference = NULL, quarto = FALSE) {
   if (isTRUE(quarto)) {
     .import_man_quarto(update = update)
   }
@@ -49,7 +48,6 @@
 #' @param update If TRUE, overwrite existing files
 #' @keywords internal
 .import_man_quarto <- function(update = FALSE) {
-
   cli::cli_h1("Building reference")
 
   # source and target file paths
@@ -61,12 +59,10 @@
 
   # exported functions only, otherwise this can get expensive
   # parse NAMESPACE manually to avoid having to install the package
-  if (fs::file_exists("NAMESPACE")) {
-    exported <- readLines("NAMESPACE")
-    exported <- exported[grepl("^export\\(.*\\)$", exported)]
-    exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
-    man_source <- intersect(man_source, exported)
-  }
+  exported <- .readlines("NAMESPACE")
+  exported <- grep("^export\\(.*\\)$", exported, value = TRUE)
+  exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
+  man_source <- intersect(man_source, exported)
 
   # warning about conflicts
   if (!isTRUE(update)) {
@@ -95,7 +91,6 @@
 
 # Convert Rd file to Markdown
 .rd2md <- function(rdfile) {
-
   tmp_html <- tempfile(fileext = ".html")
   tmp_md <- tempfile(fileext = ".md")
 
@@ -123,14 +118,14 @@
   # Syntax used for examples is four spaces, which prevents code
   # highlighting. So I need to put backticks before and after the examples
   # and remove the four spaces.
-  start_examples <- which(grepl("^### Examples$", md))
+  start_examples <- grep("^### Examples$", md)
   if (length(start_examples) != 0) {
     examples <- md[start_examples:length(md)]
     not_empty_lines <- which(examples != "")[-1]
     examples[not_empty_lines[1]] <-
       paste0("```r\n", examples[not_empty_lines[1]])
-    examples[not_empty_lines[length(not_empty_lines)-1]] <-
-      paste0(examples[not_empty_lines[length(not_empty_lines)-1]], "\n```")
+    examples[not_empty_lines[length(not_empty_lines) - 1]] <-
+      paste0(examples[not_empty_lines[length(not_empty_lines) - 1]], "\n```")
     md[start_examples:length(md)] <- examples
     for (i in start_examples:length(md)) {
       md[i] <- gsub("    ", "", md[i])
@@ -141,7 +136,6 @@
 
 
 .rd2qmd <- function(source_file, target_dir) {
-
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -150,70 +144,72 @@
   }
 
   # Rd -> html
-  rd = tools::parse_Rd(source_file)
-  tmp_html = paste0(tempfile(), ".html")
+  rd <- tools::parse_Rd(source_file)
+  tmp_html <- paste0(tempfile(), ".html")
   tools::Rd2HTML(rd, out = tmp_html)
 
   # superfluous header and footer
-  tmp = readLines(tmp_html)
-  tmp = tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
-  tmp = tmp[seq_len(which("</div>" == tmp) - 3)]
+  tmp <- readLines(tmp_html)
+  tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
+  tmp <- tmp[seq_len(which("</div>" == tmp) - 3)]
 
   # first column (odd entries) of table in Arguments should not be wrapped
-  idx = grep("<td>", tmp)
-  idx = idx[seq_along(idx) %% 2 == 1]
-  tmp[idx] = sub("<td>", '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">', tmp[idx])
+  idx <- grep("<td>", tmp)
+  idx <- idx[seq_along(idx) %% 2 == 1]
+  tmp[idx] <- sub("<td>", '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">', tmp[idx])
 
   # math in Equivalence section
-  idx = grepl("<.code", tmp)
+  idx <- grepl("<.code", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
   pkg <- basename(getwd())
   pkg_load <- paste0("library(", pkg, ")")
-  idx = which(tmp == "<h3>Examples</h3>")
+  idx <- which(tmp == "<h3>Examples</h3>")
   if (length(idx) == 1) {
-    ex = tmp[(idx + 1):length(tmp)]
-    ex = gsub("<.*>", "", ex)
-    ex = gsub("&lt;", "<", ex)
-    ex = gsub("&gt;", ">", ex)
-    ex = gsub("&gt;", ">", ex)
-    ex = ex[!grepl("## Not run:", ex)]
-    ex = ex[!grepl("## End", ex)]
-    tmp = c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", pkg_load, ex, "```")
+    ex <- tmp[(idx + 1):length(tmp)]
+    ex <- gsub("<.*>", "", ex)
+    ex <- gsub("&lt;", "<", ex)
+    ex <- gsub("&gt;", ">", ex)
+    ex <- gsub("&gt;", ">", ex)
+    ex <- ex[!grepl("## Not run:", ex)]
+    ex <- ex[!grepl("## End", ex)]
+    tmp <- c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", pkg_load, ex, "```")
   }
 
   # cleanup equations
   tmp <- gsub(
     '<code class="reqn">(.*?)&gt;(.*?)</code>',
     '<code class="reqn">\\1>\\2</code>',
-    tmp)
+    tmp
+  )
   tmp <- gsub(
     '<code class="reqn">(.*?)&lt;(.*?)</code>',
     '<code class="reqn">\\1<\\2</code>',
-    tmp)
-  tmp <- gsub('<code class="reqn">(.*?)</code>', '\\$\\1\\$', tmp)
+    tmp
+  )
+  tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
 
   # title
   # warning: Undefined global functions or variables: title
   title <- "not NULL"
-  funname = tools::file_path_sans_ext(basename(source_file))
+  funname <- tools::file_path_sans_ext(basename(source_file))
   if (!is.null(title)) {
-    tmp = tmp[!grepl("h1", tmp)]
-    tmp = c(paste("##", funname, "{.unnumbered}\n"), tmp)
+    tmp <- tmp[!grepl("h1", tmp)]
+    tmp <- c(paste("##", funname, "{.unnumbered}\n"), tmp)
   }
 
   # Fix title level (use ## and not <h2> so that the TOC can be generated by
   # mkdocs)
-  tmp = gsub("<h2[^>]*>", "", tmp, perl = TRUE)
-  tmp = gsub("<.h2>", "", tmp)
-  tmp = gsub("<h3>", "### ", tmp)
-  tmp = gsub("</h3>", "", tmp)
+  tmp <- gsub("<h2[^>]*>", "", tmp, perl = TRUE)
+  tmp <- gsub("<.h2>", "", tmp)
+  tmp <- gsub("<h3>", "### ", tmp)
+  tmp <- gsub("</h3>", "", tmp)
 
   # paragraph tags are unnecessary in markdown
   tmp <- gsub("<p>", "", tmp, fixed = TRUE)
   tmp <- gsub("</p>", "", tmp, fixed = TRUE)
 
   # write to file
-  fn = file.path(target_dir, sub("Rd$", "qmd", basename(source_file)))
+  fn <- file.path(target_dir, sub("Rd$", "qmd", basename(source_file)))
   writeLines(tmp, con = fn)
 }
