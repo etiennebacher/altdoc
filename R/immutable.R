@@ -9,11 +9,12 @@
     }
 
     if (isTRUE(doctype == "docsify")) {
-        src <- system.file("docsify/_sidebar.md", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "_sidebar.md"))
-        file.copy(src, tar, overwrite = FALSE)
         src <- system.file("docsify/index.html", package = "altdoc")
         tar <- fs::path_join(c(imm_dir, "index.html"))
+        file.copy(src, tar, overwrite = FALSE)
+
+        src <- system.file("docsify/_sidebar.md", package = "altdoc")
+        tar <- fs::path_join(c(imm_dir, "_sidebar.md"))
         file.copy(src, tar, overwrite = FALSE)
 
     } else if (isTRUE(doctype == "docute")) {
@@ -23,6 +24,19 @@
     }
 
     return(invisible())
+}
+
+
+.substitute_altdoc_variables <- function(x, filename, path = ".") {
+    x <- gsub("\\$ALTDOC_VERSION", packageVersion("altdoc"), x)
+
+    # DESCRIPTION INFO
+    fn <- fs::path_join(c(path, "DESCRIPTION"))
+    if (fs::file_exists(fn)) {
+        x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package"), x)
+    }
+
+    return(x)
 }
 
 
@@ -119,7 +133,10 @@
     # drop empty lines
     sidebar <- sidebar[!grepl("^\\w*$", sidebar)]
 
+    sidebar <- .substitute_altdoc_variables(sidebar, path = path)
+
     writeLines(sidebar, fn)
+
 }
 
 
@@ -178,6 +195,8 @@
 
     # drop missing sidebar entries
     sidebar <- sidebar[!grepl("link: ''", sidebar)]
+
+    sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
     # write mutable sidebar
     writeLines(sidebar, fn)

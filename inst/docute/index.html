@@ -27,7 +27,7 @@
     <script>
       new Docute({
         target: '#docute',
-        title: '{{title}}',
+        title: '$ALTDOC_PACKAGE_NAME',
         highlight: ['r'],
         darkThemeToggler: true,
         nav: [
@@ -50,7 +50,7 @@
 					{title: 'Code of Conduct', link: '$ALTDOC_CODE_OF_CONDUCT'},
 					{title: 'License', link: '$ALTDOC_LICENSE'}
 				],
-        footer: "{{footer}}"
+        footer: "<a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. $ALTDOC_VERSION </a> | Documentation made with <a href='https://github.com/etiennebacher/altdoc'> <code> altdoc </code> v. $ALTDOC_VERSION</a>"
       })
     </script>
   </body>
