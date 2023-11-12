@@ -7,7 +7,7 @@
     .final_steps_docsify(path)
   }
 
-  .add_rbuildignore("^docs$")
+  .add_rbuildignore("^docs$", path = path)
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("{tools::toTitleCase(x)} initialized.")

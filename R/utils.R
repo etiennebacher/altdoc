@@ -190,19 +190,19 @@
 
 
 
-
-.add_rbuildignore <- function(x = "^docs$") {
-  if (!isTRUE(.dir_is_package("."))) {
+.add_rbuildignore <- function(x = "^docs$", path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
     stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
   }
 
-  if (!fs::file_exists(".Rbuildignore")) {
-    fs::file_create(".Rbuildignore")
+  fn <- fs::path_join(c(path, ".Rbuildignore"))
+  if (!fs::file_exists(fn)) {
+    fs::file_create(fn)
   }
 
-  tmp <- readLines(".Rbuildignore")
+  tmp <- readLines(fn)
   if (!x %in% tmp) {
     tmp <- c(tmp, x)
-    writeLines(tmp, ".Rbuildignore")
+    writeLines(tmp, fn)
   }
 }
