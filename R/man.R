@@ -21,20 +21,6 @@
   files <- list.files("man", pattern = ".Rd", full.names = TRUE)
   pkg <- basename(getwd())
 
-  exported <- readLines("NAMESPACE")
-  exported <- grep("^export\\(", exported, value = TRUE)
-  exported <- gsub("export\\((.*)\\)", "\\1", exported)
-
-  which.files <- lapply(files, function(x) {
-    y <- readLines(x)
-    y <- grep("\\name{", y, fixed = TRUE, value = TRUE)
-    y <- gsub("\\name{", "", y, fixed = TRUE)
-    y <- gsub("}", "", y, fixed = TRUE)
-    y %in% exported
-  })
-
-  files <- files[unlist(which.files)]
-
   all_rd_as_md <- lapply(files, .rd2md)
 
   fs::file_create(paste0(good_path, "/reference.md"))
@@ -44,9 +30,6 @@
 }
 
 
-#' Convert .Rd files from man/ to .md files in docs/man/
-#' @param update If TRUE, overwrite existing files
-#' @keywords internal
 .import_man_quarto <- function(update = FALSE) {
   cli::cli_h1("Building reference")
 
@@ -56,13 +39,6 @@
   man_target <- list.files(path = fs::path_join(c(.doc_path("."), "man")), pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
-
-  # exported functions only, otherwise this can get expensive
-  # parse NAMESPACE manually to avoid having to install the package
-  exported <- .readlines("NAMESPACE")
-  exported <- grep("^export\\(.*\\)$", exported, value = TRUE)
-  exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
-  man_source <- intersect(man_source, exported)
 
   # warning about conflicts
   if (!isTRUE(update)) {
