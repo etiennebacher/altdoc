@@ -1,5 +1,6 @@
 * [Home](/)
-* [Changelog](NEWS.md)
-* [Reference](reference.md)
-* [Code of Conduct](CODE_OF_CONDUCT.md)
-* [License](LICENSE.md)
+* [Changelog]($ALTDOC_NEWS)
+* [Reference]($ALTDOC_MAN)
+* [Code of Conduct]($ALTDOC_CODE_OF_CONDUCT)
+* [License]($ALTDOC_LICENSE)
+$ALTDOC_VIGNETTES
