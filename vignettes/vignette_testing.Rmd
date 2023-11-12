@@ -21,7 +21,7 @@ library(altdoc)
 ```
 
 ```{r simple}
-2+2
+2 + 2
 ```
 
 ```{r plot}

@@ -2,7 +2,9 @@
 
 .move_img_readme <- function(path = ".") {
   img_paths <- .img_paths_readme(path)
-  if (is.null(img_paths)) return(invisible())
+  if (is.null(img_paths)) {
+    return(invisible())
+  }
 
   good_path <- .doc_path(path)
   fs::dir_create(paste0(good_path, "/README_assets"))
@@ -10,7 +12,7 @@
     fs::file_copy(
       img_paths[i],
       paste0(good_path, "/README_assets/", trimws(basename(img_paths[i]))),
-      overwrite = T
+      overwrite = TRUE
     )
   }
 }
@@ -39,19 +41,21 @@
 # Get the paths of images/GIF in README
 
 .img_paths_readme <- function(path = ".") {
-
   good_path <- .doc_path(path)
   file_content <- paste(.readlines(paste0(good_path, "/README.md")), collapse = "\n")
 
   # regex adapted from https://stackoverflow.com/a/44227600/11598948
   # (second one)
   img_path <- unlist(
-    regmatches(file_content,
-               gregexpr('!\\[[^\\]]*\\]\\((.*?)\\s*("(?:.*[^"])")?\\s*\\)',
-                        file_content, perl = TRUE)
+    regmatches(
+      file_content,
+      gregexpr('!\\[[^\\]]*\\]\\((.*?)\\s*("(?:.*[^"])")?\\s*\\)',
+        file_content,
+        perl = TRUE
+      )
     )
   )
-  img_path <- img_path[which(!grepl("http", img_path))]
+  img_path <- img_path[grep("http", img_path, invert = TRUE)]
   img_path <- gsub("!\\[\\]", "", img_path)
   img_path <- gsub("\\(", "", img_path)
   img_path <- gsub("\\)", "", img_path)
@@ -59,21 +63,27 @@
 
   # when double quotes, i.e <img src="path">
   img_path_double_quotes <- unlist(
-    regmatches(file_content,
-               gregexpr('(?<=img src=\\").*?(?=\\")',
-                        file_content, perl = TRUE)
+    regmatches(
+      file_content,
+      gregexpr('(?<=img src=\\").*?(?=\\")',
+        file_content,
+        perl = TRUE
+      )
     )
   )
   # when single quotes, i.e <img src='path'>
   img_path_single_quotes <- unlist(
-    regmatches(file_content,
-               gregexpr("(?<=img src=\\').*?(?=\\')",
-                        file_content, perl = TRUE)
+    regmatches(
+      file_content,
+      gregexpr("(?<=img src=\\').*?(?=\\')",
+        file_content,
+        perl = TRUE
+      )
     )
   )
 
   img_path <- c(img_path, img_path_single_quotes, img_path_double_quotes)
-  img_path <- img_path[which(!grepl("http", img_path))]
+  img_path <- img_path[grep("http", img_path, invert = TRUE)]
 
   img_path
 }

@@ -10,7 +10,6 @@
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
 .import_vignettes <- function(path = path) {
-
   # source directory
   src_dir <- fs::path_abs("vignettes", start = path)
   if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
@@ -38,9 +37,10 @@
   }
   for (d in dir_static) {
     fs::dir_copy(
-      d, 
+      d,
       fs::path_join(c(tar_dir_static, basename(d))),
-      overwrite = TRUE)
+      overwrite = TRUE
+    )
   }
 
   n <- length(src_files)
@@ -55,7 +55,6 @@
   fs::dir_copy(src_dir, tar_dir, overwrite = TRUE)
 
   for (i in seq_along(src_files)) {
-
     # only process new or modified vignettes
     origin <- fs::path_join(c(src_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
@@ -74,7 +73,7 @@
     #     next
     #   }
     # } else {
-      fs::file_copy(origin, destination, overwrite = TRUE)
+    fs::file_copy(origin, destination, overwrite = TRUE)
     # }
 
     if (fs::path_ext(origin) == "Rmd") {
@@ -87,7 +86,6 @@
           )
           conversion_worked[i] <- TRUE
         },
-
         error = function(e) {
           fs::file_delete(destination)
           conversion_worked[i] <- FALSE
@@ -104,7 +102,6 @@
           )
           conversion_worked[i] <- TRUE
         },
-
         error = function(e) {
           conversion_worked[i] <- FALSE
         }
@@ -145,7 +142,6 @@
   }
 
   cli::cli_alert_info("The folder {.file {src_dir}} was not modified.")
-
 }
 
 
@@ -156,10 +152,9 @@
 # This is used to update the sidebar/navbar in the docs.
 
 .get_vignettes_titles <- function(path = path) {
-
   vignettes_path <- fs::path_abs("vignettes", start = path)
 
-  if (!file.exists(vignettes_path) | .folder_is_empty(vignettes_path)) {
+  if (!file.exists(vignettes_path) || .folder_is_empty(vignettes_path)) {
     return(invisible())
   }
 
@@ -185,7 +180,6 @@
 # This creates a section "Articles" with every vignettes in docs/articles
 
 .add_vignettes <- function(path = path) {
-
   doctype <- .doc_type(path = path)
   vignettes_titles <- .get_vignettes_titles(path = path)
 
@@ -198,7 +192,6 @@
   }
 
   if (doctype == "docute") {
-
     original_index <- .readlines(fs::path_abs("docs/index.html", start = path))
 
     if (any(grepl("title: \"Articles\"", original_index))) {
@@ -206,7 +199,7 @@
       return(invisible())
     }
 
-    home_line <- which(grepl("\\{title: 'Home', link: '/'\\}", original_index))
+    home_line <- grep("\\{title: 'Home', link: '/'\\}", original_index)
 
     # .assert_dependency("jsonlite", install = TRUE)
     original_index[home_line] <- paste0(
@@ -219,32 +212,29 @@
     )
 
     writeLines(original_index, fs::path_abs("docs/index.html", start = path))
-
   } else if (doctype == "docsify") {
-
     original_sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
 
     # Remove the articles / vignettes section to avoid duplicates
     if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
       vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
       vignette_end <- grep("^\\* \\[", original_sidebar)
-      vignette_end <- vignette_end[vignette_end > vignette_start][1]-1
+      vignette_end <- vignette_end[vignette_end > vignette_start][1] - 1
       original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
     }
 
     # Insert articles section just below home
-    home_line <- which(grepl("\\[Home\\]", original_sidebar))
+    home_line <- grep("\\[Home\\]", original_sidebar)
     original_sidebar[home_line] <- paste0(
       original_sidebar[home_line],
       "\n* [Articles]()",
       paste("\n  * [", vignettes_titles$title, "](", vignettes_titles$link, ")",
-            collapse = "", sep = "")
+        collapse = "", sep = ""
+      )
     )
 
     writeLines(original_sidebar, fs::path_abs("docs/_sidebar.md", start = path))
-
   } else if (doctype == "mkdocs") {
-
     vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
 
     original_yaml <- suppressWarnings(
@@ -268,7 +258,7 @@
 
     # Create section "Articles" and add vignettes in it
     list_articles <- list("Articles" = NULL)
-    for (i in 1:nrow(vignettes_titles)) {
+    for (i in seq_len(nrow(vignettes_titles))) {
       x <- list(vignettes_titles[i, 2])
       names(x) <- paste0(vignettes_titles[i, 1])
       list_articles[["Articles"]] <- append(
@@ -312,5 +302,3 @@
   #   cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
   # )
 }
-
-

@@ -3,10 +3,9 @@
 # in output formats.
 
 .modify_yaml <- function(filename) {
-
   # Extract yaml from Rmd
   x <- .readlines(filename)
-  yaml_limits <- grep("---", x)[c(1,2)]
+  yaml_limits <- grep("---", x)[c(1, 2)]
   yaml <- x[yaml_limits[1]:yaml_limits[2]]
   new_vignette <- x[-c(yaml_limits[1]:yaml_limits[2])]
 
@@ -30,8 +29,9 @@
     } else {
       original_yaml$output
     }
-    if (grepl("html_", target))
+    if (grepl("html_", target)) {
       original_yaml$output <- "github_document: default"
+    }
   } else if (length(original_yaml$output) > 1) { # if other outputs present (e.g pdf), keep them
     html_outputs <- names(original_yaml$output)
     html_outputs <- grep("html_", html_outputs)
@@ -62,9 +62,11 @@
   if (!grepl("github_document", new_yaml)) {
     new_yaml <- paste0(new_yaml, "output:\n  github_document: default\n")
   }
-  new_yaml <- gsub("'github_document: default'\\\n",
-                   "\\\n  github_document: default\\\n",
-                   new_yaml)
+  new_yaml <- gsub(
+    "'github_document: default'\\\n",
+    "\\\n  github_document: default\\\n",
+    new_yaml
+  )
   new_yaml <- gsub("\\\n$", "", new_yaml)
   new_yaml <- c("---", new_yaml, "---\n")
 
@@ -76,13 +78,12 @@
 # Find bib files in vignettes, and copy them to docs/articles (+ potential
 # relative path)
 .extract_import_bib <- function(filename, path = path) {
-
   good_path <- .doc_path(path = path)
   articles_path <- paste0(good_path, "/articles")
 
   # Extract yaml from Rmd
   x <- .readlines(filename)
-  yaml_limits <- grep("---", x)[c(1,2)]
+  yaml_limits <- grep("---", x)[c(1, 2)]
   yaml <- x[yaml_limits[1]:yaml_limits[2]]
 
   # Save a tmp file (required by yaml::read_yaml)
@@ -92,8 +93,9 @@
   # Get yaml as a list, remove vignette options, remove HTML outputs
   # (but keep pdf if there are some)
   original_yaml <- yaml::read_yaml(tmp)
-  if (is.null(original_yaml$bibliography))
+  if (is.null(original_yaml$bibliography)) {
     return(invisible())
+  }
 
   bib <- original_yaml$bibliography
 
@@ -109,13 +111,12 @@
       overwrite = TRUE
     )
   }
-
 }
 
 # Taken from https://github.com/ropensci/tinkr/blob/main/R/utils.R
 # (only returns the body in my case)
-.split_yaml_body = function(x) {
-  i <- grep('^---\\s*$', x)
+.split_yaml_body <- function(x) {
+  i <- grep("^---\\s*$", x)
   n <- length(x)
   res <- if (n < 2 || length(i) < 2 || (i[1] > 1 && !.is_blank(x[seq(i[1] - 1)]))) {
     return(x)
@@ -125,7 +126,7 @@
 }
 
 # Same source as above
-.is_blank <- function (x) {
+.is_blank <- function(x) {
   if (length(x)) {
     all(grepl("^\\s*$", x))
   } else {

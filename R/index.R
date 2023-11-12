@@ -20,4 +20,3 @@
 
   writeLines(index, fs::path_abs("docs/index.html", start = path))
 }
-

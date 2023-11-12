@@ -15,14 +15,12 @@
 #'
 #' @examples
 #' if (interactive()) {
-#' # Update documentation
-#' update_docs()
+#'   # Update documentation
+#'   update_docs()
 #' }
-
 update_docs <- function(path = ".",
                         custom_reference = NULL,
                         quarto = FALSE) {
-
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
@@ -61,7 +59,6 @@ update_docs <- function(path = ".",
   cli::cli_alert_success("Documentation updated.")
   cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
-
 }
 
 # Check that file exists:
@@ -73,7 +70,6 @@ update_docs <- function(path = ".",
 #         - if it didn't: info message
 
 .update_file <- function(file, path = ".", first = FALSE) {
-
   file_message <- if (file == "NEWS.md") {
     "NEWS / Changelog"
   } else if (file == "LICENSE.md") {
@@ -129,11 +125,13 @@ update_docs <- function(path = ".",
     index2 <- gsub("\\t", "", index)
     index2 <- trimws(index2)
     if (.doc_type == "docsify") {
-      footer <- which(grepl("^var footer =", index2))
+      footer <- grep("^var footer =", index2)
     } else if (.doc_type == "docute") {
-      footer <- which(grepl("^footer:", index2))
+      footer <- grep("^footer:", index2)
     }
-    if (length(footer) != 1) return(invisible)
+    if (length(footer) != 1) {
+      return(invisible)
+    }
     old_footer <- .get_footer(path)
     new_footer <- gsub(.doc_version(path), .pkg_version(path), old_footer)
     index[footer] <- new_footer
@@ -150,11 +148,13 @@ update_docs <- function(path = ".",
     index2 <- gsub("\\t", "", index)
     index2 <- trimws(index2)
     if (.doc_type == "docsify") {
-      footer <- which(grepl("^var footer =", index2))
+      footer <- grep("^var footer =", index2)
     } else if (.doc_type == "docute") {
-      footer <- which(grepl("^footer:", index2))
+      footer <- grep("^footer:", index2)
     }
-    if (length(footer) != 1) return(invisible)
+    if (length(footer) != 1) {
+      return(invisible)
+    }
     old_footer <- .get_footer(path)
     new_footer <- gsub(
       .altdoc_version_in_footer(path),

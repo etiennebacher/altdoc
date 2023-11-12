@@ -23,7 +23,6 @@ test_that(".import_vignettes works on basic vignette", {
   expect_message(
     use_docute(path = getwd()),
     "following vignette has been converted"
-    )
+  )
   expect_true(fs::file_exists("docs/articles/basic.md"))
 })
-

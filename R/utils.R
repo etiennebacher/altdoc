@@ -1,5 +1,5 @@
 # https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R
-.convert_path <- function (path = ".") {
+.convert_path <- function(path = ".") {
   if (path == ".") path <- here::here()
   path <- normalizePath(path)
   return(path)
@@ -9,7 +9,7 @@
   fs::file_exists(fs::path_abs("DESCRIPTION", start = path))
 }
 
-.is_windows <- function () {
+.is_windows <- function() {
   .Platform$OS.type == "windows"
 }
 
@@ -68,12 +68,14 @@
     desc::desc_get_field("BugReports", default = NULL, file = path)
   )
 
-  if (length(.gh_urls) == 0) return("")
+  if (length(.gh_urls) == 0) {
+    return("")
+  }
 
-  .gh_url <- .gh_urls[which(grepl("github.com", .gh_urls))]
+  .gh_url <- .gh_urls[grep("github.com", .gh_urls)]
   .gh_url <- gsub("/issues", "", .gh_url)
   if (length(.gh_url) == 0) {
-    .gh_url <- .gh_urls[which(grepl("github.io", .gh_urls))]
+    .gh_url <- .gh_urls[grep("github.io", .gh_urls)]
     .gh_url <- gsub(".github.io", "", .gh_url)
     .gh_url <- gsub("https://", "https://github.com/", .gh_url)
   }
@@ -88,13 +90,22 @@
 
 # Get the tool that was used
 .doc_type <- function(path = ".") {
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) return(NULL)
-  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) return("mkdocs")
+  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
+    return(NULL)
+  }
+  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) {
+    return("mkdocs")
+  }
   if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
     file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
-                  collapse = "")
-    if (grepl("docute", file)) return("docute")
-    if (grepl("docsify", file)) return("docsify")
+      collapse = ""
+    )
+    if (grepl("docute", file)) {
+      return("docute")
+    }
+    if (grepl("docsify", file)) {
+      return("docsify")
+    }
   }
 }
 
@@ -112,8 +123,8 @@
 # If no license, return "license" for cli message in .update_file()
 .which_license <- function(path = ".") {
   x <- list.files(path = path, pattern = "\\.md$")
-  license <- x[which(grepl("license", x, ignore.case = TRUE))]
-  licence <- x[which(grepl("licence", x, ignore.case = TRUE))]
+  license <- x[grep("license", x, ignore.case = TRUE)]
+  licence <- x[grep("licence", x, ignore.case = TRUE)]
   if (length(license) == 1) {
     return(license)
   } else if (length(licence) == 1) {
@@ -131,9 +142,9 @@
     index <- gsub("\\t", "", index)
     index <- trimws(index)
     if (.doc_type == "docsify") {
-      footer <- which(grepl("^var footer =", index))
+      footer <- grep("^var footer =", index)
     } else if (.doc_type == "docute") {
-      footer <- which(grepl("^footer:", index))
+      footer <- grep("^footer:", index)
     }
     if (length(footer) == 1) {
       return(index[footer])
@@ -160,12 +171,16 @@
 }
 
 .need_to_bump_version <- function(path) {
-  if (.doc_type() == "mkdocs") return(FALSE)
+  if (.doc_type() == "mkdocs") {
+    return(FALSE)
+  }
   .doc_version(path) != .pkg_version(path)
 }
 
 .need_to_bump_altdoc_version <- function(path) {
-  if (.doc_type() == "mkdocs") return(FALSE)
+  if (.doc_type() == "mkdocs") {
+    return(FALSE)
+  }
   .altdoc_version_in_footer(path) != .altdoc_version()
 }
 
@@ -191,5 +206,3 @@
     writeLines(tmp, ".Rbuildignore")
   }
 }
-
-

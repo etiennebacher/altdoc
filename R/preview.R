@@ -8,13 +8,10 @@
 #'
 #' @examples
 #' if (interactive()) {
-#' # Preview documentation
-#' preview()
+#'   # Preview documentation
+#'   preview()
 #' }
-
-
 preview <- function(path = ".") {
-
   # conditional dependencies
   # .assert_dependency("servr", install = TRUE)
   # .assert_dependency("rstudioapi", install = TRUE)
