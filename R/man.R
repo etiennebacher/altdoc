@@ -59,6 +59,13 @@
     .rd2qmd(origin_Rd, destination_dir)
     .qmd2md(destination_qmd, destination_dir)
     fs::file_delete(destination_qmd)
+
+    # section headings are too deeply nested by default
+    tmp <- readLines(destination_md)
+    if (!any(grepl("^# ", tmp))) {
+      tmp <- gsub("^##", "#", tmp)
+      writeLines(tmp, destination_md)
+    }
   }
 
   cli::cli_alert_success("Functions reference updated in `docs/man/` directory.")

@@ -1,6 +1,6 @@
 * [Home](/)
 * [Changelog]($ALTDOC_NEWS)
-* [Reference]($ALTDOC_MAN)
+$ALTDOC_MAN_LIST
 * [Code of Conduct]($ALTDOC_CODE_OF_CONDUCT)
 * [License]($ALTDOC_LICENSE)
-$ALTDOC_VIGNETTES
+$ALTDOC_VIGNETTES_LIST
