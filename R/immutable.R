@@ -12,6 +12,9 @@
         src <- system.file("docsify/_sidebar.md", package = "altdoc")
         tar <- fs::path_join(c(imm_dir, "_sidebar.md"))
         file.copy(src, tar, overwrite = FALSE)
+        src <- system.file("docsify/index.html", package = "altdoc")
+        tar <- fs::path_join(c(imm_dir, "index.html"))
+        file.copy(src, tar, overwrite = FALSE)
 
     } else if (isTRUE(doctype == "docute")) {
         src <- system.file("docute/index.html", package = "altdoc")
@@ -41,8 +44,7 @@
         .import_immutable_docsify(path = path)
 
     } else if (isTRUE(doctype == "docute")) {
-        sidebar <- fs::path_join(c(.doc_path(path), "index.html"))
-        sidebar <- readLines(sidebar)
+        .import_immutable_docute(path = path)
     }
 }
 
@@ -91,13 +93,12 @@
     # Man pages
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
-    # one page
-    if (fs::file_exists(fn_man)) {
-        sidebar <- gsub("\\$ALTDOC_MAN_LIST", "* [Reference](reference.md)", sidebar)
-        # multi page
-    } else if (fs::dir_exists(dn_man)) {
+
+    # multi page
+    if (fs::dir_exists(dn_man)) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
+        fn_man <- sapply(fn_man, fs::path_ext_remove)
         titles <- fs::path_ext_remove(basename(fn_man))
         if (length(fn_man) > 0) {
             tmp <- sprintf("  - [%s](%s)", titles, fn_man)
@@ -105,6 +106,11 @@
             tmp <- paste(tmp, collapse = "\n")
             sidebar <- gsub("\\$ALTDOC_MAN_LIST", tmp, sidebar)
         }
+
+    # one page
+    } else if (fs::file_exists(fn_man)) {
+        sidebar <- gsub("\\$ALTDOC_MAN_LIST", "{title: 'Reference', link: ''},", sidebar)
+
     }
 
     # drop missing sidebar entries
@@ -116,3 +122,63 @@
     writeLines(sidebar, fn)
 }
 
+
+.import_immutable_docute <- function(path) {
+    # Read immutable sidebar
+    fn <- fs::path_join(c(.doc_path(path), "index.html"))
+    sidebar <- readLines(fn)
+
+    # Single files
+    if (fs::file_exists(fs::path_join(c(.doc_path(path), "NEWS.md")))) {
+        sidebar <- gsub("\\$ALTDOC_NEWS", "/NEWS", sidebar)
+    } else {
+        sidebar <- gsub("\\$ALTDOC_NEWS", "", sidebar)
+    }
+
+    if (fs::file_exists(fs::path_join(c(.doc_path(path), "LICENSE.md")))) {
+        sidebar <- gsub("\\$ALTDOC_LICENSE", "/LICENSE", sidebar)
+    } else {
+        sidebar <- gsub("\\$ALTDOC_LICENSE", "", sidebar)
+    }
+
+    if (fs::file_exists(fs::path_join(c(.doc_path(path), "CODE_OF_CONDUCT.md")))) {
+        sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "/CODE_OF_CONDUCT", sidebar)
+    } else {
+        sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
+    }
+
+    # Man pages
+    fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
+    dn_man <- fs::path_join(c(.doc_path(path), "man"))
+
+    # multi page
+    if (fs::dir_exists(dn_man)) {
+        fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
+        fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
+        titles <- fs::path_ext_remove(basename(fn_man))
+        if (length(fn_man) > 0) {
+            tmp <- sprintf("              {title: '%s', link: '/man/%s'},", titles, titles)
+            tmp <- c(
+                "          {",
+                "           title: 'Reference',",
+                "           children:",
+                "             [",
+                tmp,
+                "             ]",
+                "          },"
+            )
+            tmp <- paste(tmp, collapse = "\n")
+            sidebar <- gsub("\\$ALTDOC_MAN_LIST", tmp, sidebar)
+        }
+
+    # one page
+    } else if (fs::file_exists(fn_man)) {
+        sidebar <- gsub("\\$ALTDOC_MAN_LIST", "* [Reference](reference.md)", sidebar)
+    }
+
+    # drop missing sidebar entries
+    sidebar <- sidebar[!grepl("link: ''", sidebar)]
+
+    # write mutable sidebar
+    writeLines(sidebar, fn)
+}
