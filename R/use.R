@@ -90,80 +90,33 @@ use_mkdocs <- function(theme = NULL,
   .check_docs_exists(overwrite, path)
   .check_tools("mkdocs", theme)
 
-  if (.is_windows() & interactive()) {
-    shell(paste("mkdocs new", fs::path_abs("docs", start = path), "-q"))
-    shell(paste("cd", fs::path_abs("docs", start = path), "&& mkdocs build -q"))
-  } else {
-    system2("mkdocs", paste("new", fs::path_abs("docs", start = path), "-q"))
-    system2("cd", paste(fs::path_abs("docs", start = path), "&& mkdocs build -q"))
-  }
+  .create_settings(path = path, doctype = "mkdocs")
 
-  yaml <- paste0(
-    "
-### Basic information
-site_name: ", .pkg_name(path),
-    if (!is.null(theme)) {
-      paste0("
-theme:
-  name: ", theme)
-    },
-    if (!is.null(theme) && theme == "material") {
-      paste0(
-        "
-
-  # Dark mode toggle
-  palette:
-    - media: '(prefers-color-scheme: light)' #
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - media: '(prefers-color-scheme: dark)' #
-      scheme: slate
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
-  features:
-    - navigation.tabs
-    - toc.integrate
-    "
-      )
-    },
-    "
-
-### Repo information
-repo_url: ", .gh_url(path), "
-repo_name: ", .pkg_name(path), "
-
-### Plugins
-plugins:
-  - search
-
-### Navigation tree
-nav:
-  - Home: README.md
-  - Changelog: NEWS.md
-  - Reference: reference.md
-  - Code of Conduct: CODE_OF_CONDUCT.md
-  - License: LICENSE.md
-    "
-  )
-  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path))
-
-  fs::file_delete(fs::path_abs("docs/docs/index.md", start = path))
+  # after creating the structure
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
-  yaml <- .readlines(fs::path_abs("docs/mkdocs.yml", start = path))
-  if (!fs::file_exists(fs::path_abs("docs/docs/NEWS.md", start = path))) {
-    yaml <- yaml[-grep("NEWS.md", yaml)]
+  # render mkdocs
+  if (.is_windows() & interactive()) {
+    cmd <- paste(fs::path_abs(.doc_path(path)), "&& mkdocs build -q")
+    shell("cd", cmd)
+  } else {
+    goback <- getwd()
+    cmd <- paste(fs::path_abs(path), "&& mkdocs build -q")
+    system2("cd", cmd)
+    system2("cd", goback)
   }
-  if (!fs::file_exists(fs::path_abs("docs/docs/LICENSE.md", start = path))) {
-    yaml <- yaml[-grep("LICENSE.md", yaml)]
+
+  fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
+
+  # move site/ to docs/
+  tmp <- fs::path_join(c(path, "site/"))
+  src <- fs::dir_ls(tmp, recurse = TRUE)
+  tar <- sub("site\\/", "docs\\/", src)
+  for (i in seq_along(src)) {
+    fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
+    if (fs::is_file(src[i])) {
+      fs::file_copy(src[i], tar[i], overwrite = TRUE)
+    }
   }
-  if (!fs::file_exists(fs::path_abs("docs/docs/CODE_OF_CONDUCT.md", start = path))) {
-    yaml <- yaml[-grep("CODE_OF_CONDUCT.md", yaml)]
-  }
-  if (!fs::file_exists(fs::path_abs("docs/docs/reference.md", start = path))) {
-    yaml <- yaml[-grep("reference.md", yaml)]
-  }
-  cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
+  fs::dir_delete(fs::path_join(c(path, "site")))
 }

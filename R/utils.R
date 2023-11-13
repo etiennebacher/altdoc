@@ -117,7 +117,7 @@
 .doc_path <- function(path = ".") {
   .doc_type <- .doc_type(path = path)
   if (.doc_type == "mkdocs") {
-    return(fs::path_abs("docs/docs", start = path))
+    return(fs::path_abs("docs", start = path))
   } else if (.doc_type %in% c("docsify", "docute")) {
     return(fs::path_abs("docs", start = path))
   }

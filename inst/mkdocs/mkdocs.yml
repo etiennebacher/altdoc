@@ -1,0 +1,18 @@
+### Basic information
+site_name: $ALTDOC_PACKAGE_NAME
+
+### Repo information
+repo_url: $ALTDOC_PACKAGE_URL
+repo_name: $ALTDOC_PACKAGE_NAME
+
+### Plugins
+plugins:
+  - search
+
+### Navigation tree
+nav:
+  - Home: README.md
+$ALTDOC_VIGNETTE_BLOCK
+  - Changelog: $ALTDOC_NEWS
+  - Code of Conduct: $ALTDOC_CODE_OF_CONDUCT
+  - License: $ALTDOC_LICENSE
