@@ -57,10 +57,11 @@
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }
+
   if (fs::file_exists(file)) {
     .update_file(file, path)
-    .reformat_md(paste0(good_path, "/", file), first = TRUE)
     .parse_news(path, paste0(good_path, "/NEWS.md"))
+
     cli::cli_alert_success("{.file {file}} imported.")
   }
 }

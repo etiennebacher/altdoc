@@ -30,9 +30,9 @@ Below, we explain in more detail what these commands do.
 install.packages("altdoc")
 ```
 
-The `docsify` and `docute` documentation generators have no other dependencies beyond `altdoc`.
+To create documentation websites with either `docsify` or `docute`, you only need to install `altdoc` in `R`.
 
-If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it in `Python` using `pip`. From the command line:
+To use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install those packages in `Python` using a tool like `pip`. From the command line:
 
 ```python
 pip install mkdocs mkdocs-material

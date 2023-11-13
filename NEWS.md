@@ -1,4 +1,6 @@
-# altdoc (development version)
+# News
+
+## altdoc (development version)
 
 Breaking changes:
 
@@ -16,21 +18,21 @@ New:
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
 * Improved vignettes
 
-# altdoc 0.2.2
+## altdoc 0.2.2
 
 * If necessary, two spaces are automatically added in nested lists in the `NEWS` 
   (or `Changelog`) file. 
   
 * This is the last release before a large rework of this package.
 
-# altdoc 0.2.1
+## altdoc 0.2.1
 
 * Fix test failures on CRAN due to the new version of `usethis` 
   (see https://github.com/cynkra/fledge/issues/683).
 
-# altdoc 0.2.0 
+## altdoc 0.2.0 
 
-### Breaking changes
+#### Breaking changes
 
 * Vignettes are no longer automatically added to the file that defines the structure
   of the website. Developers must now manually update this structure and the order
@@ -40,7 +42,7 @@ New:
   `use_mkdocs()` = `mkdocs.yml`).
   
 
-### Major changes
+#### Major changes
   
 * `update_docs()` now updates the package version as well as altdoc version in 
   the footer.
@@ -57,12 +59,11 @@ New:
   path to a custom R file then it uses this file to build the "Reference" section
   in the docs (#35).
   
-### Minor changes
+#### Minor changes
 
 * Fix some CRAN failures.
 
 
-
-# altdoc 0.1.0
+## altdoc 0.1.0
 
 * First version.
