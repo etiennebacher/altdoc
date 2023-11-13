@@ -53,6 +53,10 @@
     src <- fs::path_abs(fs::path_join(c(path, "altdoc")))
     if (fs::dir_exists(src)) {
         files <- fs::dir_ls(src)
+
+        # wait for .import_immutable() to copy these over
+        files <- files[!grepl("docute.html$|docsify.md$|mkdocs.yml$", files)]
+
         # docs/* files are mutable and should be overwritten
         for (src in files) {
             tar <- fs::path_join(c(.doc_path(path), basename(src)))
@@ -71,7 +75,7 @@
 
 .import_immutable_docsify <- function(path) {
     # Read immutable sidebar
-    fn <- fs::path_join(c(.doc_path(path), "docsify.md"))
+    fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
     sidebar <- readLines(fn)
 
     # Single files
@@ -151,7 +155,7 @@
 
 .import_immutable_docute <- function(path) {
     # Read immutable sidebar
-    fn <- fs::path_join(c(.doc_path(path), "docute.html"))
+    fn <- fs::path_join(c(path, "altdoc", "docute.html"))
     sidebar <- readLines(fn)
 
     # Single files

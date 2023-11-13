@@ -39,7 +39,7 @@ update_docs <- function(path = ".",
   .import_coc(path)
 
   # Update functions reference
-  .import_man(update = TRUE, path, custom_reference, quarto = quarto)
+  .import_man(update = TRUE, path = path, custom_reference = custom_reference, quarto = quarto)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")

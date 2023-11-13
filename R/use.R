@@ -66,11 +66,6 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 
   .create_immutable(path = path, doctype = "docsify")
 
-  fs::file_copy(
-    system.file("docsify/_sidebar.md", package = "altdoc"),
-    fs::path_abs("docs/_sidebar.md", start = path)
-  )
-
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 
   .final_steps(x = "docsify", path = path, preview = preview)
