@@ -36,8 +36,10 @@
 #'   # Create mkdocs documentation
 #'   use_mkdocs()
 #' }
-use_docute <- function(path = ".", overwrite = FALSE,
+use_docute <- function(path = ".",
+                       overwrite = FALSE,
                        custom_reference = NULL,
+                       update = getOption("altdoc_update", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -53,8 +55,10 @@ use_docute <- function(path = ".", overwrite = FALSE,
 #'
 #' @rdname init
 
-use_docsify <- function(path = ".", overwrite = FALSE,
+use_docsify <- function(path = ".",
+                        overwrite = FALSE,
                         custom_reference = NULL,
+                        update = getOption("altdoc_update", default = FALSE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -77,11 +81,12 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 #' <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 #' @rdname init
 
-use_mkdocs <- function(theme = NULL,
-                       path = ".",
+use_mkdocs <- function(path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       preview = getOption("altdoc_preview", default = FALSE)) {
+                       update = getOption("altdoc_update", default = FALSE),
+                       preview = getOption("altdoc_preview", default = FALSE),
+                       theme = NULL) {
   path <- .convert_path(path)
   .check_is_package(path)
   .check_docs_exists(overwrite, path)

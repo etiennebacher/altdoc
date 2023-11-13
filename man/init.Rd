@@ -10,7 +10,7 @@ use_docute(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = getOption("altdoc_quarto", default = FALSE),
+  update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
@@ -18,17 +18,17 @@ use_docsify(
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = getOption("altdoc_quarto", default = FALSE),
+  update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
 use_mkdocs(
-  theme = NULL,
   path = ".",
   overwrite = FALSE,
   custom_reference = NULL,
-  quarto = getOption("altdoc_quarto", default = FALSE),
-  preview = getOption("altdoc_preview", default = FALSE)
+  update = getOption("altdoc_update", default = FALSE),
+  preview = getOption("altdoc_preview", default = FALSE),
+  theme = NULL
 )
 }
 \arguments{
@@ -40,8 +40,6 @@ overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 
 \item{custom_reference}{Path to the file that will be sourced to generate the
 "Reference" section.}
-
-\item{quarto}{Logical. Whether to use quarto to render Rd documentation files}
 
 \item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.
 (Reference).}
@@ -72,13 +70,13 @@ based on the selected site builder (\code{use_docsify()} = \verb{_sidebar.md};
 
 \examples{
 if (interactive()) {
-# Create docute documentation
-use_docute()
+  # Create docute documentation
+  use_docute()
 
-# Create docsify documentation
-use_docsify()
+  # Create docsify documentation
+  use_docsify()
 
-# Create mkdocs documentation
-use_mkdocs()
+  # Create mkdocs documentation
+  use_mkdocs()
 }
 }

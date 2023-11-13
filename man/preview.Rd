@@ -18,7 +18,7 @@ Preview the documentation in a webpage or in viewer
 }
 \examples{
 if (interactive()) {
-# Preview documentation
-preview()
+  # Preview documentation
+  preview()
 }
 }

@@ -4,15 +4,12 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(path = ".", custom_reference = NULL, quarto = FALSE)
+update_docs(path = ".", custom_reference = NULL)
 }
 \arguments{
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}
 
 \item{custom_reference}{Path to the file that will be sourced to generate the}
-
-\item{quarto}{TRUE to use the new Quarto engine to render Rd files.
-"Reference" section.}
 }
 \value{
 No value returned. Updates files in folder 'docs'.
@@ -24,7 +21,7 @@ This will leave every other files unmodified.
 }
 \examples{
 if (interactive()) {
-# Update documentation
-update_docs()
+  # Update documentation
+  update_docs()
 }
 }
