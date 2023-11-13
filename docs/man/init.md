@@ -12,6 +12,7 @@ Init Docute, Docsify, or Mkdocs
 <pre><code class='language-R'>use_docute(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -19,6 +20,7 @@ Init Docute, Docsify, or Mkdocs
 use_docsify(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -26,6 +28,7 @@ use_docsify(
 use_mkdocs(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE),
   theme = NULL
@@ -57,11 +60,20 @@ overwritten.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="use_docute_:_verbose">verbose</code>
+</td>
+<td>
+Logical. If true, the function will print the verbose output from
+Rmarkdown and Quarto rendering. (Reference).
+</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
 <code id="use_docute_:_preview">preview</code>
 </td>
 <td>
 Logical. Whether a preview of the documentation should be displayed in a
-browser window. (Reference).
+browser window.
 </td>
 </tr>
 <tr>

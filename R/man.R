@@ -42,8 +42,14 @@
     }
   }
 
+  n <- length(man_source)
+  cli::cli_alert_info("Found {n} man page{?s} to convert.")
+  i <- 0
+  cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+
   # process man pages one by one
-  for (f in man_source) {
+  for (i in seq_along(man_source)) {
+    f <- man_source[i]
     origin_Rd <- fs::path_join(c("man", fs::path_ext_set(f, ".Rd")))
     destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
     destination_qmd <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".qmd")))
@@ -60,9 +66,10 @@
     tmp <- readLines(destination_md)
     tmp <- gsub("^##", "#", tmp)
     writeLines(tmp, destination_md)
+    cli::cli_progress_update(inc = 1)
   }
 
-  cli::cli_alert_success("Functions reference updated in `docs/man/` directory.")
+  cli::cli_progress_done()
 
 }
 

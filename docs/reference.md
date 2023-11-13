@@ -11,6 +11,7 @@ Init Docute, Docsify, or Mkdocs
     use_docute(
       path = ".",
       overwrite = FALSE,
+      verbose = FALSE,
       update = getOption("altdoc_update", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
@@ -18,6 +19,7 @@ Init Docute, Docsify, or Mkdocs
     use_docsify(
       path = ".",
       overwrite = FALSE,
+      verbose = FALSE,
       update = getOption("altdoc_update", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
@@ -25,6 +27,7 @@ Init Docute, Docsify, or Mkdocs
     use_mkdocs(
       path = ".",
       overwrite = FALSE,
+      verbose = FALSE,
       update = getOption("altdoc_update", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE),
       theme = NULL
@@ -47,11 +50,16 @@ make in the console to overwrite. If <code>TRUE</code>, the folder
 'docs' is automatically overwritten.</p></td>
 </tr>
 <tr class="odd">
-<td><code id="use_docute_:_preview">preview</code></td>
-<td><p>Logical. Whether a preview of the documentation should be
-displayed in a browser window. (Reference).</p></td>
+<td><code id="use_docute_:_verbose">verbose</code></td>
+<td><p>Logical. If true, the function will print the verbose output from
+Rmarkdown and Quarto rendering. (Reference).</p></td>
 </tr>
 <tr class="even">
+<td><code id="use_docute_:_preview">preview</code></td>
+<td><p>Logical. Whether a preview of the documentation should be
+displayed in a browser window.</p></td>
+</tr>
+<tr class="odd">
 <td><code id="use_docute_:_theme">theme</code></td>
 <td><p>Name of the theme to use. Default is basic theme. See Details
 section.</p></td>
@@ -145,7 +153,7 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(path = ".")
+    update_docs(path = ".", verbose = FALSE)
 
 ### Arguments
 
@@ -155,6 +163,11 @@ the documentation. This will leave every other files unmodified.
 <td><code id="update_docs_:_path">path</code></td>
 <td><p>Path. Default is the package root (detected with
 <code>here::here()</code>).</p></td>
+</tr>
+<tr class="even">
+<td><code id="update_docs_:_verbose">verbose</code></td>
+<td><p>Logical. If true, the function will print the verbose output from
+Rmarkdown and Quarto rendering. (Reference).</p></td>
 </tr>
 </tbody>
 </table>
