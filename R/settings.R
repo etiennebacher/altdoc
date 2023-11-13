@@ -3,6 +3,8 @@
 
     imm_dir <- fs::path_abs(fs::path_join(c(path, "altdoc")))
 
+    # .Rbuildignore directories that would break CRAN submissions
+    .add_rbuildignore("^docs$", path = path)
     if (!fs::dir_exists(imm_dir)) {
         .add_rbuildignore("^altdoc$", path = path)
         fs::dir_create(imm_dir)
