@@ -95,7 +95,7 @@ Initialize documentation website settings
       path = ".",
       overwrite = FALSE,
       verbose = FALSE,
-      update = getOption("altdoc_update", default = FALSE),
+      update_docs = getOption("altdoc_update_docs", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
 
@@ -103,7 +103,7 @@ Initialize documentation website settings
       path = ".",
       overwrite = FALSE,
       verbose = FALSE,
-      update = getOption("altdoc_update", default = FALSE),
+      update_docs = getOption("altdoc_update_docs", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
 
@@ -111,7 +111,7 @@ Initialize documentation website settings
       path = ".",
       overwrite = FALSE,
       verbose = FALSE,
-      update = getOption("altdoc_update", default = FALSE),
+      update_docs = getOption("altdoc_update_docs", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE),
       theme = NULL
     )
@@ -135,7 +135,7 @@ style="white-space: pre;">⁠altdoc/⁠</code>. This is dangerous!</p></td>
 rendering calls.</p></td>
 </tr>
 <tr class="even">
-<td><code id="use_docute_:_update">update</code></td>
+<td><code id="use_docute_:_update_docs">update_docs</code></td>
 <td><p>TRUE/FALSE. Run the <code>update_docs()</code> function
 automatically after <code
 style="white-space: pre;">⁠use_*()⁠</code>.</p></td>

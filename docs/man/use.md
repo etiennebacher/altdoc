@@ -13,7 +13,7 @@ Initialize documentation website settings
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
@@ -21,7 +21,7 @@ use_docsify(
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
@@ -29,7 +29,7 @@ use_mkdocs(
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE),
   theme = NULL
 )
@@ -66,7 +66,7 @@ calls.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="use_docute_:_update">update</code>
+<code id="use_docute_:_update_docs">update_docs</code>
 </td>
 <td>
 TRUE/FALSE. Run the <code>update_docs()</code> function automatically

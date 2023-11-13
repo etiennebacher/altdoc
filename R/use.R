@@ -3,7 +3,7 @@
 #' @param path Path to the package root directory.
 #' @param overwrite TRUE/FALSE. Overwrite the settings files stored in `altdoc/`. This is dangerous!
 #' @param verbose TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering calls.
-#' @param update TRUE/FALSE. Run the `update_docs()` function automatically after `use_*()`.
+#' @param update_docs TRUE/FALSE. Run the `update_docs()` function automatically after `use_*()`.
 #' @param preview TRUE/FALSE. Run the `preview()` function automatically after `use_*()`.
 #'
 #' @export
@@ -31,13 +31,13 @@
 use_docute <- function(path = ".",
                        overwrite = FALSE,
                        verbose = FALSE,
-                       update = getOption("altdoc_update", default = FALSE),
+                       update_docs = getOption("altdoc_update_docs", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
   .create_settings(path = path, doctype = "docute", overwrite = overwrite)
 
-  if (isTRUE(update)) {
+  if (isTRUE(update_docs)) {
     update_docs(path = path)
   }
 }
@@ -50,12 +50,12 @@ use_docute <- function(path = ".",
 use_docsify <- function(path = ".",
                         overwrite = FALSE,
                         verbose = FALSE,
-                        update = getOption("altdoc_update", default = FALSE),
+                        update_docs = getOption("altdoc_update_docs", default = FALSE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
   .create_settings(path = path, doctype = "docsify", overwrite = overwrite)
-  if (isTRUE(update)) {
+  if (isTRUE(update_docs)) {
     update_docs(path = path)
   }
 }
@@ -75,14 +75,14 @@ use_docsify <- function(path = ".",
 use_mkdocs <- function(path = ".",
                        overwrite = FALSE,
                        verbose = FALSE,
-                       update = getOption("altdoc_update", default = FALSE),
+                       update_docs = getOption("altdoc_update_docs", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE),
                        theme = NULL) {
   path <- .convert_path(path)
   .check_is_package(path)
   .check_tools("mkdocs", theme)
   .create_settings(path = path, doctype = "mkdocs", overwrite = overwrite)
-  if (isTRUE(update)) {
+  if (isTRUE(update_docs)) {
     update_docs(path = path)
   }
 }

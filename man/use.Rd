@@ -10,7 +10,7 @@ use_docute(
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
@@ -18,7 +18,7 @@ use_docsify(
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
 
@@ -26,7 +26,7 @@ use_mkdocs(
   path = ".",
   overwrite = FALSE,
   verbose = FALSE,
-  update = getOption("altdoc_update", default = FALSE),
+  update_docs = getOption("altdoc_update_docs", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE),
   theme = NULL
 )
@@ -38,7 +38,7 @@ use_mkdocs(
 
 \item{verbose}{TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering calls.}
 
-\item{update}{TRUE/FALSE. Run the \code{update_docs()} function automatically after \verb{use_*()}.}
+\item{update_docs}{TRUE/FALSE. Run the \code{update_docs()} function automatically after \verb{use_*()}.}
 
 \item{preview}{TRUE/FALSE. Run the \code{preview()} function automatically after \verb{use_*()}.}
 
