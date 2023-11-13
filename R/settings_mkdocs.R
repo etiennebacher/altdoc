@@ -43,41 +43,29 @@
     }
 
 
-    # ########## Man pages
-    # fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
-    # dn_man <- fs::path_join(c(.doc_path(path), "man"))
+    ########## Man pages
+    fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
+    dn_man <- fs::path_join(c(.doc_path(path), "man"))
 
-    # # multi page
-    # if (fs::dir_exists(dn_man)) {
-    #     fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
-    #     fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
-    #     titles <- fs::path_ext_remove(basename(fn_man))
-    #     if (length(fn_man) > 0) {
-    #         tmp <- sprintf("              {title: '%s', link: '/man/%s'},", titles, titles)
-    #         tmp <- c(
-    #             "          {",
-    #             "           title: 'Reference',",
-    #             "           children:",
-    #             "             [",
-    #             tmp,
-    #             "             ]",
-    #             "          },"
-    #         )
-    #         tmp <- paste(tmp, collapse = "\n")
-    #         sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
-    #     } else {
-    #         sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
-    #     }
+    # multi page
+    if (fs::dir_exists(dn_man)) {
+        fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
+        fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
+        titles <- fs::path_ext_remove(basename(fn_man))
+        tmp <- sprintf("      - %s: man/%s", titles, titles)
+        tmp <- c("  - Reference:", tmp)
+        tmp <- paste(tmp, collapse = "\n")
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
 
-    # # one page
-    # } else if (fs::file_exists(fn_man)) {
-        # sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "* [Reference](reference.md)", sidebar)
+    # one page
+    } else if (fs::file_exists(fn_man)) {
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "  - Reference: reference.md", sidebar)
 
     # no man page
-    # } else {
+    } else {
         sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
 
-    # }
+    }
 
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
