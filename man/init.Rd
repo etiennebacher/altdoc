@@ -9,7 +9,6 @@
 use_docute(
   path = ".",
   overwrite = FALSE,
-  custom_reference = NULL,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -17,7 +16,6 @@ use_docute(
 use_docsify(
   path = ".",
   overwrite = FALSE,
-  custom_reference = NULL,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -25,7 +23,6 @@ use_docsify(
 use_mkdocs(
   path = ".",
   overwrite = FALSE,
-  custom_reference = NULL,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE),
   theme = NULL
@@ -37,9 +34,6 @@ use_mkdocs(
 \item{overwrite}{Overwrite the folder 'docs' if it already exists. If \code{FALSE}
 (default), there will be an interactive choice to make in the console to
 overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
-
-\item{custom_reference}{Path to the file that will be sourced to generate the
-"Reference" section.}
 
 \item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.
 (Reference).}

@@ -5,7 +5,6 @@
 #' This will leave every other files unmodified.
 #'
 #' @param path Path. Default is the package root (detected with `here::here()`).
-#' @param custom_reference Path to the file that will be sourced to generate the
 #'
 #' @export
 #'
@@ -16,7 +15,7 @@
 #'   # Update documentation
 #'   update_docs()
 #' }
-update_docs <- function(path = ".", custom_reference = NULL) {
+update_docs <- function(path = ".") {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
@@ -35,7 +34,7 @@ update_docs <- function(path = ".", custom_reference = NULL) {
   .import_coc(path)
 
   # Update functions reference
-  .import_man(update = TRUE, path = path, custom_reference = custom_reference)
+  .import_man(update = TRUE, path = path)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")

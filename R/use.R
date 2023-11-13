@@ -4,8 +4,6 @@
 #' (default), there will be an interactive choice to make in the console to
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
 #' @param path Path. Default is the package root (detected with `here::here()`).
-#' @param custom_reference Path to the file that will be sourced to generate the
-#' "Reference" section.
 #' @param preview Logical. Whether a preview of the documentation should be displayed in a browser window.
 #' (Reference).
 #'
@@ -38,7 +36,6 @@
 #' }
 use_docute <- function(path = ".",
                        overwrite = FALSE,
-                       custom_reference = NULL,
                        update = getOption("altdoc_update", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
@@ -47,7 +44,7 @@ use_docute <- function(path = ".",
 
   .create_settings(path = path, doctype = "docute")
 
-  update_docs(path = path, custom_reference = custom_reference)
+  update_docs(path = path)
 }
 
 
@@ -57,7 +54,6 @@ use_docute <- function(path = ".",
 
 use_docsify <- function(path = ".",
                         overwrite = FALSE,
-                        custom_reference = NULL,
                         update = getOption("altdoc_update", default = FALSE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
@@ -66,7 +62,7 @@ use_docsify <- function(path = ".",
 
   .create_settings(path = path, doctype = "docsify")
 
-  update_docs(path = path, custom_reference = custom_reference)
+  update_docs(path = path)
 }
 
 
@@ -83,7 +79,6 @@ use_docsify <- function(path = ".",
 
 use_mkdocs <- function(path = ".",
                        overwrite = FALSE,
-                       custom_reference = NULL,
                        update = getOption("altdoc_update", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE),
                        theme = NULL) {
@@ -95,7 +90,7 @@ use_mkdocs <- function(path = ".",
   .create_settings(path = path, doctype = "mkdocs")
 
   # after creating the structure
-  update_docs(path = path, custom_reference = custom_reference)
+  update_docs(path = path)
 
   # render mkdocs
   if (.is_windows() & interactive()) {
