@@ -7,7 +7,7 @@
 preview(path = ".")
 }
 \arguments{
-\item{path}{Path. Default is the package root (detected with \code{here::here()}).}
+\item{path}{Path to the package root directory.}
 }
 \value{
 No value returned. If RStudio is used, it shows a site preview in

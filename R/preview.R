@@ -1,6 +1,6 @@
 #' Preview the documentation in a webpage or in viewer
 #'
-#' @param path Path. Default is the package root (detected with `here::here()`).
+#' @inheritParams use_docute
 #' @export
 #'
 #' @return No value returned. If RStudio is used, it shows a site preview in 

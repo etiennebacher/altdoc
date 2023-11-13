@@ -20,8 +20,7 @@ Preview the documentation in a webpage or in viewer
 <code id="preview_:_path">path</code>
 </td>
 <td>
-Path. Default is the package root (detected with
-<code>here::here()</code>).
+Path to the package root directory.
 </td>
 </tr>
 </table>

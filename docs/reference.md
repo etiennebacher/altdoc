@@ -16,8 +16,7 @@ Preview the documentation in a webpage or in viewer
 <tbody>
 <tr class="odd">
 <td><code id="preview_:_path">path</code></td>
-<td><p>Path. Default is the package root (detected with
-<code>here::here()</code>).</p></td>
+<td><p>Path to the package root directory.</p></td>
 </tr>
 </tbody>
 </table>
