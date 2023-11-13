@@ -4,10 +4,13 @@
 \alias{update_docs}
 \title{Update documentation}
 \usage{
-update_docs(path = ".")
+update_docs(path = ".", verbose = FALSE)
 }
 \arguments{
 \item{path}{Path. Default is the package root (detected with \code{here::here()}).}
+
+\item{verbose}{Logical. If true, the function will print the verbose output from Rmarkdown and Quarto rendering.
+(Reference).}
 }
 \value{
 No value returned. Updates files in folder 'docs'.

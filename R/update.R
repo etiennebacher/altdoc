@@ -6,6 +6,7 @@
 #'
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #'
+#' @inheritParams use_docute
 #' @export
 #'
 #' @return No value returned. Updates files in folder 'docs'.
@@ -15,7 +16,7 @@
 #'   # Update documentation
 #'   update_docs()
 #' }
-update_docs <- function(path = ".") {
+update_docs <- function(path = ".", verbose = FALSE) {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
@@ -34,11 +35,11 @@ update_docs <- function(path = ".") {
   .import_coc(path)
 
   # Update functions reference
-  .import_man(update = TRUE, path = path)
+  .import_man(update = TRUE, path = path, verbose = verbose)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")
-  .import_vignettes(path)
+  .import_vignettes(path, verbose = verbose)
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, doctype = .doc_type(path))

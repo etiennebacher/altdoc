@@ -1,4 +1,7 @@
-.qmd2md <- function(source_file, tar_dir) {
+.qmd2md <- function(source_file, tar_dir, verbose = TRUE) {
+
+  quiet <- !verbose
+
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -13,7 +16,7 @@
   quarto::quarto_render(
     input = path.expand(tar_file),
     output_format = "md",
-    quiet = TRUE
+    quiet = quiet
   )
 }
 

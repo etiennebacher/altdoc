@@ -54,7 +54,7 @@
         if (length(urls) > 0) {
             x <- gsub("\\$ALTDOC_PACKAGE_URL_GITHUB", urls[1], x)
         } else {
-            x <- x[grepl("\\$ALTDOC_PACKAGE_URL_GITHUB", x)]
+            x <- x[!grepl("\\$ALTDOC_PACKAGE_URL_GITHUB", x)]
         }
 
         x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package"), x)

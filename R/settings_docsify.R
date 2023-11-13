@@ -43,7 +43,7 @@
         tmp <- paste(tmp, collapse = "\n")
         sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
     } else {
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
+        sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
     }
 
     ################### Man pages
@@ -61,12 +61,13 @@
             tmp <- c("* Reference", tmp)
             tmp <- paste(tmp, collapse = "\n")
             sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
+        } else {
+            sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
         }
 
     # one page
     } else if (fs::file_exists(fn_man)) {
         sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "{title: 'Reference', link: ''},", sidebar)
-
     }
 
     # drop missing sidebar entries

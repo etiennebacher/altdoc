@@ -5,6 +5,7 @@
 #' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param preview Logical. Whether a preview of the documentation should be displayed in a browser window.
+#' @param verbose Logical. If true, the function will print the verbose output from Rmarkdown and Quarto rendering.
 #' (Reference).
 #'
 #' @export
@@ -36,6 +37,7 @@
 #' }
 use_docute <- function(path = ".",
                        overwrite = FALSE,
+                       verbose = FALSE,
                        update = getOption("altdoc_update", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
@@ -56,6 +58,7 @@ use_docute <- function(path = ".",
 
 use_docsify <- function(path = ".",
                         overwrite = FALSE,
+                        verbose = FALSE,
                         update = getOption("altdoc_update", default = FALSE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
@@ -83,6 +86,7 @@ use_docsify <- function(path = ".",
 
 use_mkdocs <- function(path = ".",
                        overwrite = FALSE,
+                       verbose = FALSE,
                        update = getOption("altdoc_update", default = FALSE),
                        preview = getOption("altdoc_preview", default = FALSE),
                        theme = NULL) {

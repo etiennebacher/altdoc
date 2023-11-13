@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
 
-.import_vignettes <- function(path = path) {
+.import_vignettes <- function(path = path, verbose = FALSE) {
   # source directory
   src_dir <- fs::path_abs("vignettes", start = path)
   if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
@@ -80,17 +80,17 @@
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
     } else if (fs::path_ext(origin) == "Rmd") {
+      if (isTRUE(verbose)) {
+        hush <- identity
+      } else {
+        hush <- function(x) suppressMessages(suppressWarnings(x))
+      }
       tryCatch(
         {
-          suppressMessages(
-            suppressWarnings(
-              .rmd2md(origin, tar_dir)
-            )
-          )
+          hush(.rmd2md(origin, tar_dir))
           conversion_worked[i] <- TRUE
         },
         error = function(e) {
-          fs::file_delete(destination)
           conversion_worked[i] <- FALSE
         }
       )
@@ -98,11 +98,7 @@
     } else {
       tryCatch(
         {
-          suppressMessages(
-            suppressWarnings(
-              .qmd2md(origin, tar_dir)
-            )
-          )
+          hush(.qmd2md(origin, tar_dir, verbose = verbose))
           conversion_worked[i] <- TRUE
         },
         error = function(e) {

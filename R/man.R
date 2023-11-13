@@ -1,7 +1,7 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(update = FALSE, path = ".", quarto = TRUE) {
+.import_man <- function(update = FALSE, path = ".", quarto = TRUE, verbose = FALSE) {
   if (isTRUE(quarto)) {
-    .import_man_quarto(update = update)
+    .import_man_quarto(update = update, verbose = verbose)
   }
 
   cli::cli_h1("Building reference")
@@ -23,7 +23,7 @@
 }
 
 
-.import_man_quarto <- function(update = FALSE, path = ".") {
+.import_man_quarto <- function(update = FALSE, path = ".", verbose = FALSE) {
   cli::cli_h1("Building reference")
 
   # source and target file paths
@@ -50,7 +50,7 @@
     destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    .qmd2md(destination_qmd, destination_dir)
+    .qmd2md(destination_qmd, destination_dir, verbose = verbose)
     fs::file_delete(destination_qmd)
 
     # section headings are too deeply nested by default

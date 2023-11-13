@@ -9,6 +9,7 @@
 use_docute(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -16,6 +17,7 @@ use_docute(
 use_docsify(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE)
 )
@@ -23,6 +25,7 @@ use_docsify(
 use_mkdocs(
   path = ".",
   overwrite = FALSE,
+  verbose = FALSE,
   update = getOption("altdoc_update", default = FALSE),
   preview = getOption("altdoc_preview", default = FALSE),
   theme = NULL
@@ -35,8 +38,10 @@ use_mkdocs(
 (default), there will be an interactive choice to make in the console to
 overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
 
-\item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.
+\item{verbose}{Logical. If true, the function will print the verbose output from Rmarkdown and Quarto rendering.
 (Reference).}
+
+\item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.}
 
 \item{theme}{Name of the theme to use. Default is basic theme. See Details
 section.}
