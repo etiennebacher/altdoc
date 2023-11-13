@@ -32,12 +32,13 @@ install.packages("altdoc")
 
 The `docsify` and `docute` documentation generators have no other dependencies beyond `altdoc`.
 
-If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it. To do that, you will need `python` and `pip`. See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip) installation guides for details.
+If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install in `Python` using `pip`. From the command line:
 
 ```python
 pip install mkdocs mkdocs-material
 ```
 
+See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip) installation guides for details.
 
 ## Package structure
 
@@ -45,16 +46,16 @@ pip install mkdocs mkdocs-material
 
 * `vignettes/` stores the vignettes in `.Rmd` or `.qmd` format.
 * `docs/` stores the rendered website. This folder is overwritten every time a user calls `update_docs()`, so you should not edit it manually.
-* `altdoc/` stores the settings files created by `altdoc::use_*()` functions. You can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
+* `altdoc/` stores the settings files created by `use_*()` functions. You can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
 * `README.md` is the homepage of the website.
 * The content of the (optional) "news" section is stored in `NEWS.md` or `CHANGELOG.md`
 * The content of the (optional) "code of conduct" section is stored in `CODE_OF_CONDUCT.md`.
-* The license is stored in `LICENSE.md`, `LICENSE.md`.
+* The license is stored in `LICENSE.md` or `LICENSE.md`.
 
 
 ## Initialize
 
-These functions initialize a documentation website structure: `use_docsify()`, `use_docute()` and `use_mkdocs()`. Calling one of these functions will:
+These functions initialize a documentation website structure: `use_docsify()`, `use_docute()` and `use_mkdocs()`. Calling one of them will:
 
 1. Create a `docs/` folder
 2. Create a `altdoc/` folder
@@ -80,7 +81,9 @@ $ALTDOC_VIGNETTE_BLOCK
   - License: $ALTDOC_LICENSE
 ```
 
-By editing this file, you can change the name of the website, the order of the sections, add new sections, etc. 
+By editing this file, you can change the name of the website, the order of the sections, add new sections or drop irrelevant ones, etc. 
+
+The settings files can include `$ALTDOC` variables which are replaced automatically by `altdoc` when calling `update_docs()`:
 
 * `$ALTDOC_PACKAGE_NAME`: Name of the package from `DESCRIPTION`.
 * `$ALTDOC_PACKAGE_VERSION`: Version number of the package from `DESCRIPTION`
@@ -133,4 +136,4 @@ In Visual Studio Code, you can use one of the many "live preview" or "local serv
 
 1. Install the [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension from Microsoft.
 2. From the command palette, select "Live Preview: Start Server".
-. When the preview pane opens, navigate to the `docs/` folder.
+3. When the preview pane opens, navigate to the `docs/` folder.
