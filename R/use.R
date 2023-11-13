@@ -44,7 +44,9 @@ use_docute <- function(path = ".",
 
   .create_settings(path = path, doctype = "docute")
 
-  update_docs(path = path)
+  if (isTRUE(update)) {
+    update_docs(path = path)
+  }
 }
 
 
@@ -62,7 +64,9 @@ use_docsify <- function(path = ".",
 
   .create_settings(path = path, doctype = "docsify")
 
-  update_docs(path = path)
+  if (isTRUE(update)) {
+    update_docs(path = path)
+  }
 }
 
 
@@ -89,8 +93,9 @@ use_mkdocs <- function(path = ".",
 
   .create_settings(path = path, doctype = "mkdocs")
 
-  # after creating the structure
-  update_docs(path = path)
+  if (isTRUE(update)) {
+    update_docs(path = path)
+  }
 
   # render mkdocs
   if (.is_windows() & interactive()) {
