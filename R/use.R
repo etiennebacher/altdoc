@@ -101,28 +101,4 @@ use_mkdocs <- function(path = ".",
     update_docs(path = path)
   }
 
-  # render mkdocs
-  if (.is_windows() & interactive()) {
-    cmd <- paste(fs::path_abs(.doc_path(path)), "&& mkdocs build -q")
-    shell("cd", cmd)
-  } else {
-    goback <- getwd()
-    cmd <- paste(fs::path_abs(path), "&& mkdocs build -q")
-    system2("cd", cmd)
-    system2("cd", goback)
-  }
-
-  fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-
-  # move site/ to docs/
-  tmp <- fs::path_join(c(path, "site/"))
-  src <- fs::dir_ls(tmp, recurse = TRUE)
-  tar <- sub("site\\/", "docs\\/", src)
-  for (i in seq_along(src)) {
-    fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
-    if (fs::is_file(src[i])) {
-      fs::file_copy(src[i], tar[i], overwrite = TRUE)
-    }
-  }
-  fs::dir_delete(fs::path_join(c(path, "site")))
 }
