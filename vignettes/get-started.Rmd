@@ -62,3 +62,7 @@ More specifically, `update_docs()` will:
 
 
 
+
+## Images can be embedded as in regular Rmarkdown or Quarto vignettes
+
+![](images/hex-conductor.png)
