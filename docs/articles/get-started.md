@@ -33,8 +33,8 @@ The `docsify` and `docute` documentation generators have no other
 dependencies beyond `altdoc`.
 
 If you want to use `mkdocs` or its variants (such as `mkdocs-material`),
-you will first need to install in `Python` using `pip`. From the command
-line:
+you will first need to install it in `Python` using `pip`. From the
+command line:
 
 ``` python
 pip install mkdocs mkdocs-material
@@ -48,7 +48,7 @@ installation guides for details.
 
 `altdoc` makes assumptions about your package structure:
 
-  - `vignettes/` stores the vignettes in `.Rmd` or `.qmd` format.
+  - `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
   - `docs/` stores the rendered website. This folder is overwritten
     every time a user calls `update_docs()`, so you should not edit it
     manually.
