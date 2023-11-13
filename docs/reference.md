@@ -12,26 +12,23 @@ Init Docute, Docsify, or Mkdocs
     use_docute(
       path = ".",
       overwrite = FALSE,
-      custom_reference = NULL,
-      quarto = getOption("altdoc_quarto", default = FALSE),
+      update = getOption("altdoc_update", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
 
     use_docsify(
       path = ".",
       overwrite = FALSE,
-      custom_reference = NULL,
-      quarto = getOption("altdoc_quarto", default = FALSE),
+      update = getOption("altdoc_update", default = FALSE),
       preview = getOption("altdoc_preview", default = FALSE)
     )
 
     use_mkdocs(
-      theme = NULL,
       path = ".",
       overwrite = FALSE,
-      custom_reference = NULL,
-      quarto = getOption("altdoc_quarto", default = FALSE),
-      preview = getOption("altdoc_preview", default = FALSE)
+      update = getOption("altdoc_update", default = FALSE),
+      preview = getOption("altdoc_preview", default = FALSE),
+      theme = NULL
     )
 
 ### Arguments
@@ -45,14 +42,6 @@ Init Docute, Docsify, or Mkdocs
 <tr class="even">
 <td><code id="use_docute_:_overwrite">overwrite</code></td>
 <td><p>Overwrite the folder 'docs' if it already exists. If <code>FALSE</code> (default), there will be an interactive choice to make in the console to overwrite. If <code>TRUE</code>, the folder 'docs' is automatically overwritten.</p></td>
-</tr>
-<tr class="odd">
-<td><code id="use_docute_:_custom_reference">custom_reference</code></td>
-<td><p>Path to the file that will be sourced to generate the "Reference" section.</p></td>
-</tr>
-<tr class="even">
-<td><code id="use_docute_:_quarto">quarto</code></td>
-<td><p>Logical. Whether to use quarto to render Rd documentation files</p></td>
 </tr>
 <tr class="odd">
 <td><code id="use_docute_:_preview">preview</code></td>
@@ -90,14 +79,14 @@ and the desired order of their articles. This file lives at the root of
 
 ```r
 if (interactive()) {
-# Create docute documentation
-use_docute()
+  # Create docute documentation
+  use_docute()
 
-# Create docsify documentation
-use_docsify()
+  # Create docsify documentation
+  use_docsify()
 
-# Create mkdocs documentation
-use_mkdocs()
+  # Create mkdocs documentation
+  use_mkdocs()
 }
 ```
 
@@ -134,8 +123,8 @@ Viewer.
 
 ```r
 if (interactive()) {
-# Preview documentation
-preview()
+  # Preview documentation
+  preview()
 }
 ```
 
@@ -152,7 +141,7 @@ the documentation. This will leave every other files unmodified.
 
 ### Usage
 
-    update_docs(path = ".", custom_reference = NULL, quarto = FALSE)
+    update_docs(path = ".")
 
 ### Arguments
 
@@ -161,14 +150,6 @@ the documentation. This will leave every other files unmodified.
 <tr class="odd">
 <td><code id="update_docs_:_path">path</code></td>
 <td><p>Path. Default is the package root (detected with <code>here::here()</code>).</p></td>
-</tr>
-<tr class="even">
-<td><code id="update_docs_:_custom_reference">custom_reference</code></td>
-<td><p>Path to the file that will be sourced to generate the</p></td>
-</tr>
-<tr class="odd">
-<td><code id="update_docs_:_quarto">quarto</code></td>
-<td><p>TRUE to use the new Quarto engine to render Rd files. "Reference" section.</p></td>
 </tr>
 </tbody>
 </table>
@@ -181,8 +162,8 @@ No value returned. Updates files in folder 'docs'.
 
 ```r
 if (interactive()) {
-# Update documentation
-update_docs()
+  # Update documentation
+  update_docs()
 }
 ```
 

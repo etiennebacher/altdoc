@@ -1,10 +1,20 @@
 # altdoc (development version)
 
-- `preview` argument in `use_*()` allows users to suppress the web preview by
-  supplying an explicit argument or a global option.
-- Internal changes to the .Rd -> .md conversion system. We can now use Quarto to
-  convert man pages and execute examples.
-- Support Quarto vignettes (.qmd) stored in the `vignettes/` folder.
+Breaking changes:
+
+- `use_*()` functions no longer update and preview the website by default. These functions now have `update` and `preview` arguments whose default values can be modified with global options. Ex: `options(altdoc_update=TRUE)`
+- `custom_reference` argument is removed. See the `Post-processing` vignette for a description of the new proposed workflow.
+- `mkdocs` documentation is no longer stored in `docs/docs/`
+
+New:
+
+- Support for Quarto vignettes (.qmd) stored in the `vignettes/` folder.
+- Settings files are now permanently stored in the `altdoc/` directory. These files can be edited manually to customize the website.
+- `update` argument in `use_*()` allows users to create a documentation structure without rendering the vignettes and documentation.
+- `preview` argument in `use_*()` allows users to suppress the web preview by supplying an explicit argument or a global option.
+- Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
+- `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
+- Improved vignettes
 
 ## altdoc 0.2.2
 

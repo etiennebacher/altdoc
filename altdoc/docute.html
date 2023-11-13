@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>altdoc</title>
+    <title>$ALTDOC_PACKAGE_NAME</title>
     <link rel="stylesheet" href="https://unpkg.com/docute@4/dist/docute.css">
     <!-- Reduce space between sections and subsections -->
      <style>
@@ -27,36 +27,22 @@
     <script>
       new Docute({
         target: '#docute',
-        title: 'altdoc',
+        title: '$ALTDOC_PACKAGE_NAME',
         highlight: ['r'],
         darkThemeToggler: true,
         nav: [
 					{title: 'Home', link: '/' },
-					{title: 'GitHub', link: 'https://github.com/etiennebacher/altdoc' },
+					{title: 'GitHub', link: '$ALTDOC_PACKAGE_URL_GITHUB' },
 				],
 				sidebar: [
 					{title: 'Home', link: '/'},
-					{title: 'Changelog', link: '/NEWS'},
-                    {
-           title: 'Articles',
-           children:
-             [
-              {title: 'Deployment', link: '/articles/deploy.md'},
-              {title: 'Get Started', link: '/articles/get-started.md'},
-             ]
-          },
-                    {
-           title: 'Reference',
-           children:
-             [
-              {title: 'init', link: '/man/init.md'},
-              {title: 'preview', link: '/man/preview.md'},
-              {title: 'update_docs', link: '/man/update_docs.md'},
-             ]
-          },
-					{title: 'License', link: '/LICENSE'}
+					{title: 'Changelog', link: '$ALTDOC_NEWS'},
+          $ALTDOC_VIGNETTE_BLOCK
+          $ALTDOC_MAN_BLOCK
+					{title: 'Code of Conduct', link: '$ALTDOC_CODE_OF_CONDUCT'},
+					{title: 'License', link: '$ALTDOC_LICENSE'}
 				],
-        footer: "<a href='https://altdoc.etiennebacher.com'> <code> altdoc </code> v. 0.2.2.9004 </a> | Documentation made with <a href='https://altdoc.etiennebacher.com/'> <code> altdoc </code> v. 0.2.2.9004</a>"
+        footer: "<a href='$ALTDOC_PACKAGE_URL'> <code> $ALTDOC_PACKAGE_NAME </code> v. $ALTDOC_PACKAGE_VERSION </a> | Documentation made with <a href='https://altdoc.etiennebacher.com/'> <code> altdoc </code> v. $ALTDOC_VERSION</a>"
       })
     </script>
   </body>

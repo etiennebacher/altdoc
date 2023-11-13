@@ -10,3 +10,4 @@
 \.gif$
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
+^altdoc$
