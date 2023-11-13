@@ -46,7 +46,7 @@ See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs
 
 * `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
 * `docs/` stores the rendered website. This folder is overwritten every time a user calls `update_docs()`, so you should not edit it manually.
-* `altdoc/` stores the settings files created by `use_*()` functions. You can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
+* `altdoc/` stores the settings files created by `use_*()` functions. These files are never modified automatically after initialization, so you can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
 * `README.md` is the homepage of the website.
 * The content of the (optional) "news" section is stored in `NEWS.md` or `CHANGELOG.md`
 * The content of the (optional) "code of conduct" section is stored in `CODE_OF_CONDUCT.md`.

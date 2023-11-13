@@ -52,7 +52,8 @@ installation guides for details.
 - `docs/` stores the rendered website. This folder is overwritten every
   time a user calls `update_docs()`, so you should not edit it manually.
 - `altdoc/` stores the settings files created by `use_*()` functions.
-  You can edit these files manually to change the settings of your
+  These files are never modified automatically after initialization, so
+  you can edit these files manually to change the settings of your
   documentation and website. All the files stored in `altdoc/` are
   copied to `docs/` and made available as static files in the root of
   the website.
