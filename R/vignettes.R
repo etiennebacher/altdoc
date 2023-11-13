@@ -24,7 +24,7 @@
   }
 
   # source files
-  src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$")
+  src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$")
 
   # copy all subdirectories: images, static files, etc.
   # docsify: articles/
@@ -76,7 +76,10 @@
     fs::file_copy(origin, destination, overwrite = TRUE)
     # }
 
-    if (fs::path_ext(origin) == "Rmd") {
+    if (fs::path_ext(origin) == "md") {
+      fs::file_copy(origin, tar_dir, overwrite = TRUE)
+
+    } else if (fs::path_ext(origin) == "Rmd") {
       tryCatch(
         {
           suppressMessages(
@@ -158,6 +161,7 @@
   # title in vignette of the same name
   vig <- fs::path_ext_remove(basename(fn))
   p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
+  p <- p[grepl("\\.Rmd$|\\.qmd$", p)]
   if (length(p) == 1) {
     z <- readLines(fs::path_join(c(path, "vignettes", p)))
     title <- z[grepl("^title:\\w*", z)]

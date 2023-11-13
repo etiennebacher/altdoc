@@ -9,23 +9,23 @@
   
 </div>
 
-The goal of `altdoc` is to facilitate the use of documentation generators as alternatives to `pkgdown` websites (hence the *alt* in `altdoc`). For now, it provides helper functions to use [docute](https://docute.egoist.dev//), [docsify](https://docsify.js.org/#/), and [mkdocs](https://www.mkdocs.org/). 
+`altdoc` is a simple and powerful package to create documentation websites for `R` packages. It is a lightweight alternative to `pkgdown`, with support for many documentation generator frameworks:
+
+* [docsify](https://docsify.js.org/#/)
+* [docute](https://docute.egoist.dev//)
+* [mkdocs](https://www.mkdocs.org/). 
 
 ## Demos
 
-Some of my packages use `altdoc` to generate documentation:
+Websites created with `altdoc`:
 
-* [altdoc](https://altdoc.etiennebacher.com/) itself (uses Docute)
+* [altdoc](https://altdoc.etiennebacher.com/) itself (Docute)
+* [conductor](https://conductor.etiennebacher.com/) (Docsify)
 
-* [conductor](https://conductor.etiennebacher.com/) (uses Docsify)
-
-
-Other packages don't use `altdoc` but you can get the same results:
+Websites created with the documentation generators supported by `altdoc`:
 
 * [firebase](https://firebase.john-coene.com/) by John Coene (uses Mkdocs, theme Material)
-
 * [sever](https://sever.john-coene.com/) by John Coene (uses Mkdocs, theme readthedocs)
-
 
 
 ## Installation
@@ -35,41 +35,40 @@ You can install the CRAN version:
 install.packages("altdoc")
 ```
 
-You can also install the development version to have the latest bug fixes:
+You can also install the development version to benefit from the latest bug fixes:
 ```r
-# install.packages("remotes")
 remotes::install_github("etiennebacher/altdoc")
 ```
 
 ## Features
 
-**What this package can do:**
-
-* automatically import core files to use `docute`, `docsify`, or `mkdocs`
-
-* automatically generate Changelog and Code of Conduct sections
-
-* automatically create function reference
-
-* link towards your package's repo
-
-* preview the site in RStudio Viewer pane
+* Import core files to use `docute`, `docsify`, or `mkdocs` documentation formats.
+* Render Rmarkdown and Quarto vignettes stored in the package's `vignettes/` directory.
+* Convert man pages for all exported functions to HTML with rendered examples.
+* Generate pages and links to common sections:
+  - README, NEWS, Changelog, Code of Conduct, etc.
+* Preview the site in a browser or in the RStudio Viewer pane.
+* Facilitate website deployment to Github and other platforms.
 
 
-**Experimental feature (feedback needed):**
+## Workflow
 
-* automatically import vignettes, render them to Markdown, and add them to the 
-sidebar or navbar. *This feature requires `rmarkdown` version 2.15 or higher*.
-More details in the section "Get started" on the website.
+A typical worfklow with `altdoc` is to execute these commands from the root directory of the package:
 
+```r
+### Create the website structure for one of the documentation generators
+use_docsify()
+# use_docute()
+# use_mkdocs()
 
-## Functions
+### Render the vignettes and man pages
+update_docs()
 
-Main functions:
+### Preview the website
+preview()
+```
 
-* `use_*()` to create the documentation with `docute`, `docsify` or `mkdocs`
-* `preview()` to show the site
-* `update_docs()` 
+See [the Get Started vignette](articles/get-started.md) for more details.
 
 
 ## More
@@ -79,8 +78,6 @@ More details on the package and the deployment are available on the [website](ht
 Options for each site generator can be found on their own website:
 
 * [Docute](https://docute.egoist.dev//)
-
 * [Docsify](https://docsify.js.org/)
-
 * [Mkdocs](https://www.mkdocs.org/) ([Material for Mkdocs](https://squidfunk.github.io/mkdocs-material/))
 

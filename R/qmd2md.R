@@ -26,7 +26,7 @@
   out <- utils::capture.output(
     rmarkdown::render(
       input = path.expand(source_file),
-      output_format = "md_document",
+      output_format = "github_document",
       quiet = TRUE,
       envir = new.env()
     )

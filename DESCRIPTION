@@ -22,7 +22,7 @@ Imports:
     htmltools,
     jsonlite,
     quarto,
-    rmarkdown,
+    rmarkdown (>= 2.15),
     tinkr,
     tools,
     utils,

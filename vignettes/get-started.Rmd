@@ -2,69 +2,135 @@
 title: Get Started
 ---
 
-# Prerequisites
+## Quick start
 
-If you want to use `docsify` or `docute`, you can skip this and go directly to the next section.
+To create, render, and preview a new documentation website, execute these commands from the root directory of your package:
 
-If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it. To do that, you will need `python` and `pip`. If you have them, you can run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). Some themes, such as `readthedocs`, are automatically installed with `mkdocs` but most are not. If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
+```r
+library(altdoc)
 
-# Initialize
+### Initialize
+use_docsify()
+## use_docute()
+## use_mkdocs()
 
-You can use `altdoc` at any stage in the development of your package. When you're ready to build a documentation, just call `use_docsify()`, `use_docute()` or `use_mkdocs()`, according to which documentation generator you prefer.
+### Render
+update_docs()
 
-This will create the folder 'docs'. If it already exists, a message will ask whether it should be overwritten. 
+### Preview
+preview()
+```
 
-The `use_*()` functions will pre-populate your documentation with several files:
-
-* the `README` will be the homepage;
-* `NEWS`, `LICENSE` and `CODE_OF_CONDUCT` (if they exist) will be sections;
-* all `.Rd` files will be aggregated in a single file, called `reference.md`. If you don't want some functions to be referenced, you should replace `#'` by `#` in the source code and re-run `devtools::document()`.
-
-# About vignettes
-
-When initializing the documentation, `altdoc` will copy your vignettes in the folder `docs/articles`, modify their YAML to produce Markdown files, and render them. However, they will **not** be included in the structure of your website. Depending on the tool you used, you will have to update manually `docs/_sidebar.md`, `docs/index.html` or `docs/mkdocs.yaml`. **Note that rendering vignettes requires `rmarkdown` version 2.15 or higher.**
-
-The reason for changing the YAML is that most vignettes are HTML files (even though sometimes they are also available as PDF files). However, a website made with `docsify`, `docute` or `mkdocs` requires Markdown files, and not HTML files. 
+Below, we explain in more detail what these commands do.
 
 
-<Note type="warning">
+## Installation
 
-There are several reasons why automatically converting and rendering the vignettes might not work. When using `use_*()`, `altdoc` will let you know which vignettes could be converted and which couldn't. 
+```r
+install.packages("altdoc")
+```
 
-</Note>
+The `docsify` and `docute` documentation generators have no other dependencies beyond `altdoc`.
 
+If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it. To do that, you will need `python` and `pip`. See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip) installation guides for details.
 
-# Extend 
-
-There are two ways to add some documentation.
-
-The first one is to add new vignettes in the 'vignettes' folder. This will require to run `update_docs()` to add them in the website documentation (cf next section). 
-
-The second one is to create (R) Markdown files in the 'docs' folder. One drawback of this approach is that these files will not be accessible on the CRAN page of your package. Also, if you want to switch to another documentation generator later (such as `{pkgdown}`), you will need to convert these files to vignettes.
-
-Finally, if you manually create (R) Markdown files, or if you want to modify the organization of your website, you will need to modify the sidebar. This is done in different files, depending on the documentation generator you use:
-
-* with `docute`, everything is done in `index.html`. This is where you add sections, options, and other extensions documented [here](https://docute.egoist.dev/).
-
-* with `docsify.js`, the organization of the sidebar is made in `_sidebar.md`, and options and extensions are dealt with in `index.html` (and detailed [here](https://docsify.js.org/#/)).
-
-* with `mkdocs`, the structure is slightly different. In the folder `docs`, the file `mkdocs.yml` takes care of all the layout and options of your documentation. The subfolder `docs` contains the `.md` files. The subfolder `site` is created automatically, there is no need to modify it.
-
-# Update 
-
-Once you have initialized and extended your documentation, you can continue developing your package and call `update_docs()` when you need to update the documentation.
-
-More specifically, `update_docs()` will:
-
-* update the README, the NEWS and the "Reference" section if there were some changes;
-
-* import the License and the Code of Conduct if they were created after having initialized the docs;
-
-* convert new vignettes and update the modified ones.
+```python
+pip install mkdocs mkdocs-material
+```
 
 
+## Package structure
+
+`altdoc` makes assumptions about your package structure:
+
+* `vignettes/` stores the vignettes in `.Rmd` or `.qmd` format.
+* `docs/` stores the rendered website. This folder is overwritten every time a user calls `update_docs()`, so you should not edit it manually.
+* `altdoc/` stores the settings files created by `altdoc::use_*()` functions. You can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
+* `README.md` is the homepage of the website.
+* The content of the (optional) "news" section is stored in `NEWS.md` or `CHANGELOG.md`
+* The content of the (optional) "code of conduct" section is stored in `CODE_OF_CONDUCT.md`.
+* The license is stored in `LICENSE.md`, `LICENSE.md`.
 
 
-# Images can be embedded as in regular Rmarkdown or Quarto vignettes
+## Initialize
 
-![](images/hex-conductor.png)
+These functions initialize a documentation website structure: `use_docsify()`, `use_docute()` and `use_mkdocs()`. Calling one of these functions will:
+
+1. Create a `docs/` folder
+2. Create a `altdoc/` folder
+3. Add `altdoc/` to `.Rbuildignore`
+4. Copy default settings files to `altdoc/` for the chosen documentation generator
+
+
+## Customize
+
+To customize the documentation, you can edit the settings files in the `altdoc/` folder. The settings files differ between the different documentation generators. For example, this is the default `mkdocs.yml` settings created when one calls `use_mkdocs()`:
+
+```yaml
+site_name: $ALTDOC_PACKAGE_NAME
+repo_url: $ALTDOC_PACKAGE_URL
+repo_name: $ALTDOC_PACKAGE_NAME
+plugins:
+  - search
+nav:
+  - Home: README.md
+$ALTDOC_VIGNETTE_BLOCK
+  - Changelog: $ALTDOC_NEWS
+  - Code of Conduct: $ALTDOC_CODE_OF_CONDUCT
+  - License: $ALTDOC_LICENSE
+```
+
+By editing this file, you can change the name of the website, the order of the sections, add new sections, etc. 
+
+* `$ALTDOC_PACKAGE_NAME`: Name of the package from `DESCRIPTION`.
+* `$ALTDOC_PACKAGE_VERSION`: Version number of the package from `DESCRIPTION`
+* `$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of the package.
+* `$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains "github.com" from the URLs listed in the DESCRIPTION file of the package. If no such URL is found, lines containing this variable are removed from the settings file.
+* `$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help pages for each exported function of the package. The format of this block depends on the documentation generator.
+* `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The format of this block depends on the documentation generator.
+* `$ALTDOC_VERSION`: Version number of the altdoc package.
+
+Also note that you can store images and static files in the `altdoc/` directory. All the files in this folder are copied to `docs/` and made available in the root of the website, so you can link to them easily.
+
+Interested readers should refer to their chosen documentation generator documentation for more details:
+
+* https://docsify.js.org/
+* https://docute.egoist.dev/
+* https://www.mkdocs.org/
+
+
+## Render and update
+
+Once the documentation is initialized, you can render it with:
+
+```r
+update_docs()
+```
+
+This function will:
+
+1. Render and copy standard `R` package files to `docs/`.
+   - Ex: `NEWS.md`, `README.md`, `LICENSE.md`, `CODE_OF_CONDUCT.md`, etc.
+2. Render Rmarkdown and Quarto files (`.Rmd` and `.qmd` extensions) from the `vignettes/` directory and store them in `docs/articles/`.
+3. Copy Markdown files with extension `.md` from `vignettes/` to `docs/articles/`.
+4. Convert the manual pages stored `man/` from `.Rd` to `.md` format, and copy them to `docs/man/`.
+5. Copy all static files from `altdoc/` to `docs/`.
+
+Whenever you make changes to the man pages or to the vignettes, you can call `update_docs()` again to render the new files and update the website.
+
+
+## Preview
+
+To preview the website, you need to run a local web server.
+
+In RStudio you can launch one automatically in the Preview Pane by calling:
+
+```r
+preview()
+```
+
+In Visual Studio Code, you can use one of the many "live preview" or "local server" extensions available. For example,
+
+1. Install the [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension from Microsoft.
+2. From the command palette, select "Live Preview: Start Server".
+. When the preview pane opens, navigate to the `docs/` folder.
