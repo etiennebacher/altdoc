@@ -38,7 +38,15 @@
 					{title: 'Home', link: '/'},
 					{title: 'Changelog', link: '$ALTDOC_NEWS'},
           $ALTDOC_VIGNETTE_BLOCK
-          $ALTDOC_MAN_BLOCK
+          {
+           title: 'Reference',
+           children:
+             [
+              {title: 'use', link: '/man/use.md'},
+              {title: 'update_docs', link: '/man/update_docs.md'},
+              {title: 'preview', link: '/man/preview.md'},
+             ]
+          },
 					{title: 'Code of Conduct', link: '$ALTDOC_CODE_OF_CONDUCT'},
 					{title: 'License', link: '$ALTDOC_LICENSE'}
 				],
