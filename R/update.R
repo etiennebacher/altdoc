@@ -46,7 +46,7 @@ update_docs <- function(path = ".",
   .import_vignettes(path)
 
   cli::cli_h1("Update HTML")
-  .import_immutable(path = path, doctype = .doc_type(path))
+  .import_settings(path = path, doctype = .doc_type(path))
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")

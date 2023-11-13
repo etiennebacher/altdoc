@@ -1,4 +1,4 @@
-.create_immutable <- function(path = ".", doctype = "docsify") {
+.create_settings <- function(path = ".", doctype = "docsify") {
     .check_is_package(path)
 
     imm_dir <- fs::path_abs(fs::path_join(c(path, "altdoc")))
@@ -9,16 +9,16 @@
     }
 
     if (isTRUE(doctype == "docsify")) {
-        src <- system.file("docsify/index.html", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "index.html"))
+        src <- system.file("docsify/docsify.html", package = "altdoc")
+        tar <- fs::path_join(c(imm_dir, "docsify.html"))
         file.copy(src, tar, overwrite = FALSE)
 
-        src <- system.file("docsify/_sidebar.md", package = "altdoc")
+        src <- system.file("docsify/docsify.md", package = "altdoc")
         tar <- fs::path_join(c(imm_dir, "docsify.md"))
         file.copy(src, tar, overwrite = FALSE)
 
     } else if (isTRUE(doctype == "docute")) {
-        src <- system.file("docute/index.html", package = "altdoc")
+        src <- system.file("docute/docute.html", package = "altdoc")
         tar <- fs::path_join(c(imm_dir, "docute.html"))
         file.copy(src, tar, overwrite = FALSE)
     }
@@ -46,15 +46,15 @@
 }
 
 
-.import_immutable <- function(path = ".", doctype = "docsify") {
+.import_settings <- function(path = ".", doctype = "docsify") {
 
     # copy all files from altdoc/ into docs/
-    # this allows users to store arbitrary and immutable static files in altdoc/
+    # this allows users to store arbitrary and settings static files in altdoc/
     src <- fs::path_abs(fs::path_join(c(path, "altdoc")))
     if (fs::dir_exists(src)) {
         files <- fs::dir_ls(src)
 
-        # wait for .import_immutable() to copy these over
+        # wait for .import_settings() to copy these over
         files <- files[!grepl("docute.html$|docsify.md$|mkdocs.yml$", files)]
 
         # docs/* files are mutable and should be overwritten
@@ -65,16 +65,16 @@
     }
 
     if (isTRUE(doctype == "docsify")) {
-        .import_immutable_docsify(path = path)
+        .import_settings_docsify(path = path)
 
     } else if (isTRUE(doctype == "docute")) {
-        .import_immutable_docute(path = path)
+        .import_settings_docute(path = path)
     }
 }
 
 
-.import_immutable_docsify <- function(path) {
-    # Read immutable sidebar
+.import_settings_docsify <- function(path) {
+    # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
     sidebar <- readLines(fn)
 
@@ -151,7 +151,7 @@
     writeLines(sidebar, fn)
 
     # body also includes altdoc variables
-    fn <- fs::path_join(c(path, "altdoc", "index.html"))
+    fn <- fs::path_join(c(path, "altdoc", "docsify.html"))
     body <- readLines(fn)
     body <- .substitute_altdoc_variables(body, path = path)
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
@@ -159,8 +159,8 @@
 }
 
 
-.import_immutable_docute <- function(path) {
-    # Read immutable sidebar
+.import_settings_docute <- function(path) {
+    # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "docute.html"))
     sidebar <- readLines(fn)
 

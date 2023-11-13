@@ -45,7 +45,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
-  .create_immutable(path = path, doctype = "docute")
+  .create_settings(path = path, doctype = "docute")
 
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 }
@@ -62,7 +62,7 @@ use_docsify <- function(path = ".", overwrite = FALSE,
   .check_is_package(path)
   .check_docs_exists(overwrite, path)
 
-  .create_immutable(path = path, doctype = "docsify")
+  .create_settings(path = path, doctype = "docsify")
 
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
 }

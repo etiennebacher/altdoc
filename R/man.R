@@ -61,11 +61,12 @@
     fs::file_delete(destination_qmd)
 
     # section headings are too deeply nested by default
+    # this is a hack because it may remove one # from comments. But that's
+    # probably not the end of the world, because the line stick stays commented
+    # out.
     tmp <- readLines(destination_md)
-    if (!any(grepl("^# ", tmp))) {
-      tmp <- gsub("^##", "#", tmp)
-      writeLines(tmp, destination_md)
-    }
+    tmp <- gsub("^##", "#", tmp)
+    writeLines(tmp, destination_md)
   }
 
   cli::cli_alert_success("Functions reference updated in `docs/man/` directory.")
