@@ -147,9 +147,16 @@
 
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
-    fn <- gsub("docsify.md$", "_sidebar.md", fn)
+    fn <- fs::path_join(c(.doc_path(path), "_sidebar.md"))
     writeLines(sidebar, fn)
 
+    # body also includes altdoc variables
+    fn <- fs::path_join(c(path, "altdoc", "index.html"))
+    body <- readLines(fn)
+    browser()
+    body <- .substitute_altdoc_variables(body, path = path)
+    fn <- fs::path_join(c(.doc_path(path), "index.html"))
+    writeLines(body, fn)
 }
 
 

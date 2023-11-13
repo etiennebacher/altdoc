@@ -20,7 +20,7 @@
 #' }
 update_docs <- function(path = ".",
                         custom_reference = NULL,
-                        quarto = FALSE) {
+                        quarto = TRUE) {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 

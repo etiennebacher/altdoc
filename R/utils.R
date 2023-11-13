@@ -94,7 +94,7 @@
   if (fs::file_exists(fn)) return("mkdocs")
 
   fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
-  if (fs::file_exists(fn)) return(fn)
+  if (fs::file_exists(fn)) return("docsify")
 
   fn <- fs::path_join(c(path, "altdoc", "docute.html"))
   if (fs::file_exists(fn)) return("docute")

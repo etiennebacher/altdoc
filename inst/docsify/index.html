@@ -12,7 +12,7 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: '{{title}}',
+      name: '$ALTDOC_PACKAGE_NAME',
       repo: '{{github_link}}',
       loadSidebar: true,
       subMaxLevel: 2,
@@ -28,7 +28,7 @@
       },
       plugins: [
         function(hook) {
-          var footer = ["{{footer}}"].join('');
+          var footer = ["<a href='$ALTDOC_PACKAGE_URL'> <code> $ALTDOC_PACKAGE_NAME </code> v. $ALTDOC_PACKAGE_VERSION </a> | Documentation made with <a href='https://altdoc.etiennebacher.com/'> <code> altdoc </code> v. $ALTDOC_VERSION</a>"].join('');
 
           hook.afterEach(function(html) {
             return html + footer;

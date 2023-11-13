@@ -39,7 +39,7 @@
 #' }
 use_docute <- function(path = ".", overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = getOption("altdoc_quarto", default = FALSE),
+                       quarto = getOption("altdoc_quarto", default = TRUE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -48,8 +48,6 @@ use_docute <- function(path = ".", overwrite = FALSE,
   .create_immutable(path = path, doctype = "docute")
 
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
-
-  .final_steps(x = "docute", path, preview = preview)
 }
 
 #' @export
@@ -58,7 +56,7 @@ use_docute <- function(path = ".", overwrite = FALSE,
 
 use_docsify <- function(path = ".", overwrite = FALSE,
                         custom_reference = NULL,
-                        quarto = getOption("altdoc_quarto", default = FALSE),
+                        quarto = getOption("altdoc_quarto", default = TRUE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -67,8 +65,6 @@ use_docsify <- function(path = ".", overwrite = FALSE,
   .create_immutable(path = path, doctype = "docsify")
 
   update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
-
-  .final_steps(x = "docsify", path = path, preview = preview)
 }
 
 
@@ -87,7 +83,7 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = getOption("altdoc_quarto", default = FALSE),
+                       quarto = getOption("altdoc_quarto", default = TRUE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -170,6 +166,4 @@ nav:
     yaml <- yaml[-grep("reference.md", yaml)]
   }
   cat(yaml, file = fs::path_abs("docs/mkdocs.yml", start = path), sep = "\n")
-
-  .final_steps(x = "mkdocs", path = path, preview = preview)
 }
