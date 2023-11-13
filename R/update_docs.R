@@ -15,14 +15,14 @@
 #'   update_docs()
 #' 
 #' }
-update_docs <- function(path = ".", verbose = FALSE) {
+update_docs <- function(path = ".",
+                        verbose = FALSE,
+                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
   if (!fs::dir_exists(good_path)) {
     fs::dir_create(good_path)
-    cli::cli_alert_danger("Folder {.file docs} doesn't exist. You must create it with one of the {.code use_*()} functions first.")
-    return(invisible())
   }
 
   cli::cli_h1("Update basic files")
@@ -47,6 +47,11 @@ update_docs <- function(path = ".", verbose = FALSE) {
   cli::cli_alert_success("Documentation updated.")
   cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
+
+  if (isTRUE(preview)) {
+    preview(path = path)
+  }
+
 }
 
 # Check that file exists:

@@ -49,7 +49,11 @@ modifies and overwrites the files in the 'docs/' folder.
 
 ### Usage
 
-    update_docs(path = ".", verbose = FALSE)
+    update_docs(
+      path = ".",
+      verbose = FALSE,
+      preview = getOption("altdoc_preview", default = FALSE)
+    )
 
 ### Arguments
 
@@ -63,6 +67,11 @@ modifies and overwrites the files in the 'docs/' folder.
 <td><code id="update_docs_:_verbose">verbose</code></td>
 <td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
 rendering calls.</p></td>
+</tr>
+<tr class="odd">
+<td><code id="update_docs_:_preview">preview</code></td>
+<td><p>TRUE/FALSE. Run the <code>preview()</code> function automatically
+after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 </tbody>
 </table>
