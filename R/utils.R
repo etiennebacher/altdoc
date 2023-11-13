@@ -91,13 +91,23 @@
 # Get the tool that was used
 .doc_type <- function(path = ".") {
   fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
-  if (fs::file_exists(fn)) return("mkdocs")
+  mkdocs <- fs::file_exists(fn)
 
   fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
-  if (fs::file_exists(fn)) return("docsify")
+  docsify <- fs::file_exists(fn)
 
   fn <- fs::path_join(c(path, "altdoc", "docute.html"))
-  if (fs::file_exists(fn)) return("docute")
+  docute <- fs::file_exists(fn)
+
+  if (sum(c(mkdocs, docsify, docute)) == 0) {
+    cli::cli_abort("No documentation tool detected. Please run {.code use_mkdocs()}, {.code use_docsify()}, or {.code use_docute()}.")
+  } else if (sum(c(mkdocs, docsify, docute)) > 1) {
+    cli::cli_abort("Multiple documentation tools detected. Please remove all but one.")
+  }
+
+  if (mkdocs) return("mkdocs")
+  if (docsify) return("docsify")
+  if (docute) return("docute")
 
   return(NULL)
 }
