@@ -57,7 +57,7 @@
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
-        tmp <- sprintf("      - %s: man/%s", titles, titles)
+        tmp <- sprintf("      - %s: man/%s", titles, basename(fn_man))
         tmp <- c("  - Reference:", tmp)
         tmp <- paste(tmp, collapse = "\n")
         sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)

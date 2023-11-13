@@ -36,7 +36,7 @@
     fn_vignettes <- gsub(.doc_path(path), "", fn_vignettes, fixed = TRUE)
 
     if (length(fn_vignettes) > 0) {
-        tmp <- sprintf("              {title: '%s', link: '/articles/%s'},", titles, titles)
+        tmp <- sprintf("              {title: '%s', link: '/articles/%s'},", titles, basename(fn_vignettes))
         tmp <- c(
             "          {",
             "           title: 'Articles',",
@@ -63,7 +63,7 @@
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
         if (length(fn_man) > 0) {
-            tmp <- sprintf("              {title: '%s', link: '/man/%s'},", titles, titles)
+            tmp <- sprintf("              {title: '%s', link: '/man/%s'},", titles, basename(fn_man))
             tmp <- c(
                 "          {",
                 "           title: 'Reference',",

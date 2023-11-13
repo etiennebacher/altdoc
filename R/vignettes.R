@@ -149,15 +149,21 @@
 
 # Get a filename with a vignette and try to extract its title
 
-.get_vignettes_titles <- function(fn) {
+.get_vignettes_titles <- function(fn, path = ".") {
 
   if (!fs::file_exists(fn)) return(invisible())
 
   x <- readLines(fn, warn = FALSE)
 
-  title <- NULL
-
-  browser()
+  # title in vignette of the same name
+  vig <- fs::path_ext_remove(basename(fn))
+  p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
+  if (length(p) == 1) {
+    z <- readLines(fs::path_join(c(path, "vignettes", p)))
+    title <- z[grepl("^title:\\w*", z)]
+    title <- trimws(gsub("^title:\\w*", "", title))
+    if (length(title) > 0) return(title)
+  }
 
   # First h1 header
   if (length(title) == 0) {
