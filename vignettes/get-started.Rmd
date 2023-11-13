@@ -1,12 +1,14 @@
-# Get started
+---
+title: Get Started
+---
 
-## Prerequisites
+# Prerequisites
 
 If you want to use `docsify` or `docute`, you can skip this and go directly to the next section.
 
 If you want to use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install it. To do that, you will need `python` and `pip`. If you have them, you can run: `pip install mkdocs`. Otherwise, a (short) procedure is described [here](https://www.mkdocs.org/user-guide/installation/). Some themes, such as `readthedocs`, are automatically installed with `mkdocs` but most are not. If you want to use `mkdocs-material`, you will also need to run `pip install mkdocs-material`, as described [here](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip).
 
-## Initialize
+# Initialize
 
 You can use `altdoc` at any stage in the development of your package. When you're ready to build a documentation, just call `use_docsify()`, `use_docute()` or `use_mkdocs()`, according to which documentation generator you prefer.
 
@@ -18,7 +20,7 @@ The `use_*()` functions will pre-populate your documentation with several files:
 * `NEWS`, `LICENSE` and `CODE_OF_CONDUCT` (if they exist) will be sections;
 * all `.Rd` files will be aggregated in a single file, called `reference.md`. If you don't want some functions to be referenced, you should replace `#'` by `#` in the source code and re-run `devtools::document()`.
 
-## About vignettes
+# About vignettes
 
 When initializing the documentation, `altdoc` will copy your vignettes in the folder `docs/articles`, modify their YAML to produce Markdown files, and render them. However, they will **not** be included in the structure of your website. Depending on the tool you used, you will have to update manually `docs/_sidebar.md`, `docs/index.html` or `docs/mkdocs.yaml`. **Note that rendering vignettes requires `rmarkdown` version 2.15 or higher.**
 
@@ -32,7 +34,7 @@ There are several reasons why automatically converting and rendering the vignett
 </Note>
 
 
-## Extend 
+# Extend 
 
 There are two ways to add some documentation.
 
@@ -48,7 +50,7 @@ Finally, if you manually create (R) Markdown files, or if you want to modify the
 
 * with `mkdocs`, the structure is slightly different. In the folder `docs`, the file `mkdocs.yml` takes care of all the layout and options of your documentation. The subfolder `docs` contains the `.md` files. The subfolder `site` is created automatically, there is no need to modify it.
 
-## Update 
+# Update 
 
 Once you have initialized and extended your documentation, you can continue developing your package and call `update_docs()` when you need to update the documentation.
 
@@ -63,6 +65,6 @@ More specifically, `update_docs()` will:
 
 
 
-## Images can be embedded as in regular Rmarkdown or Quarto vignettes
+# Images can be embedded as in regular Rmarkdown or Quarto vignettes
 
 ![](images/hex-conductor.png)

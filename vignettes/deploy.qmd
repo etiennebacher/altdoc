@@ -1,4 +1,6 @@
-# Deploy
+---
+title: Deployment
+---
 
 ## How to deploy
 

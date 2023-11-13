@@ -153,9 +153,11 @@
 
   if (!fs::file_exists(fn)) return(invisible())
 
-  x <- .readlines(fn)
-  title <- x[startsWith(x, "title: ")]
-  title <- gsub("title: ", "", title)
+  x <- readLines(fn, warn = FALSE)
+
+  title <- NULL
+
+  browser()
 
   # First h1 header
   if (length(title) == 0) {
