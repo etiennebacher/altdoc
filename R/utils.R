@@ -102,7 +102,7 @@
   if (sum(c(mkdocs, docsify, docute)) == 0) {
     cli::cli_abort("No documentation tool detected. Please run {.code use_mkdocs()}, {.code use_docsify()}, or {.code use_docute()}.")
   } else if (sum(c(mkdocs, docsify, docute)) > 1) {
-    cli::cli_abort("Multiple documentation tools detected. Please remove all but one.")
+    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
   }
 
   if (mkdocs) return("mkdocs")

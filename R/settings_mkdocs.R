@@ -31,10 +31,15 @@
         list.files(dn1, pattern = "\\.md$", full.names = TRUE),
         list.files(dn2, pattern = "\\.md$", full.names = TRUE)
     )
-    fn_vignettes <- gsub(.doc_path(path), "", fn_vignettes, fixed = TRUE)
-    titles <- fs::path_ext_remove(basename(fn_vignettes))
+    # before gsub on paths
+    titles <- sapply(fn_vignettes, .get_vignettes_titles)
+    fn_vignettes <- sapply(fn_vignettes, function(x) 
+        {
+            fs::path_join(c("articles", basename(x)))
+        }
+    )
     if (length(fn_vignettes) > 0) {
-        tmp <- sprintf("      - %s: articles/%s", titles, titles)
+        tmp <- sprintf("      - %s: %s", titles, fn_vignettes)
         tmp <- c("  - Articles:", tmp)
         tmp <- paste(tmp, collapse = "\n")
         sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)

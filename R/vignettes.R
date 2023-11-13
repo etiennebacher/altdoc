@@ -147,158 +147,34 @@
 
 
 
-# Get titles and filenames of the vignettes and returns them in a dataframe
-# with two columns: title and link.
-# This is used to update the sidebar/navbar in the docs.
+# Get a filename with a vignette and try to extract its title
 
-.get_vignettes_titles <- function(path = path) {
-  vignettes_path <- fs::path_abs("vignettes", start = path)
+.get_vignettes_titles <- function(fn) {
 
-  if (!file.exists(vignettes_path) || .folder_is_empty(vignettes_path)) {
-    return(invisible())
+  if (!fs::file_exists(fn)) return(invisible())
+
+  x <- .readlines(fn)
+  title <- x[startsWith(x, "title: ")]
+  title <- gsub("title: ", "", title)
+
+  # First h1 header
+  if (length(title) == 0) {
+    idx <- grep("^# \\w+", x)
+    if (length(idx) > 0) {
+      title <- x[idx[1]]
+      title <- gsub("^# ", "", title)
+      return(title)
+    }
   }
 
-  good_path <- .doc_path(path = path)
-  vignettes <- list.files(fs::path_join(c(good_path, "/articles/figures")), pattern = ".Rmd")
-
-  vignettes_title <- data.frame(title = NULL, link = NULL)
-  for (i in seq_along(vignettes)) {
-    x <- .readlines(fs::path_join(c(good_path, "/articles/figures/", vignettes[i])))
-    title <- x[startsWith(x, "title: ")]
-    title <- gsub("title: ", "", title)
-    vignettes_title[i, "title"] <- title
-
-    link <- fs::path_join(c("/articles/", vignettes[i]))
-    link <- gsub("\\.Rmd", "\\.md", link)
-    vignettes_title[i, "link"] <- link
+  # file name
+  if (length(title) == 0) {
+    title <- fs::path_ext_remove(basename(fn))
+    title <- gsub("_", " ", title)
+    title <- tools::toTitleCase(title)
+    return(title)
   }
 
-  return(vignettes_title)
+  return(invisible())
 }
 
-# Add vignettes in the index/sidebar/yaml depending on the tool used.
-# This creates a section "Articles" with every vignettes in docs/articles
-
-.add_vignettes <- function(path = path) {
-  doctype <- .doc_type(path = path)
-  vignettes_titles <- .get_vignettes_titles(path = path)
-
-  if (is.null(vignettes_titles)) {
-    return(invisible())
-  }
-
-  if (!nrow(vignettes_titles) >= 1) {
-    return(invisible())
-  }
-
-  if (doctype == "docute") {
-    original_index <- .readlines(fs::path_abs("docs/index.html", start = path))
-
-    if (any(grepl("title: \"Articles\"", original_index))) {
-      cli::cli_alert_info("New vignettes were not added automatically in {.file {'docs/index.html'}}. You need to do it manually.")
-      return(invisible())
-    }
-
-    home_line <- grep("\\{title: 'Home', link: '/'\\}", original_index)
-
-    # .assert_dependency("jsonlite", install = TRUE)
-    original_index[home_line] <- paste0(
-      original_index[home_line],
-      "\n{
-					   title: \"Articles\",
-					   children:",
-      jsonlite::toJSON(vignettes_titles, pretty = TRUE),
-      "},\n"
-    )
-
-    writeLines(original_index, fs::path_abs("docs/index.html", start = path))
-  } else if (doctype == "docsify") {
-    original_sidebar <- .readlines(fs::path_abs("docs/_sidebar.md", start = path))
-
-    # Remove the articles / vignettes section to avoid duplicates
-    if (any(grepl("^\\* \\[Articles\\]\\(\\)", original_sidebar))) {
-      vignette_start <- grep("^\\* \\[Articles\\]\\(\\)", original_sidebar)
-      vignette_end <- grep("^\\* \\[", original_sidebar)
-      vignette_end <- vignette_end[vignette_end > vignette_start][1] - 1
-      original_sidebar <- original_sidebar[-c(vignette_start:vignette_end)]
-    }
-
-    # Insert articles section just below home
-    home_line <- grep("\\[Home\\]", original_sidebar)
-    original_sidebar[home_line] <- paste0(
-      original_sidebar[home_line],
-      "\n* [Articles]()",
-      paste("\n  * [", vignettes_titles$title, "](", vignettes_titles$link, ")",
-        collapse = "", sep = ""
-      )
-    )
-
-    writeLines(original_sidebar, fs::path_abs("docs/_sidebar.md", start = path))
-  } else if (doctype == "mkdocs") {
-    vignettes_titles$link <- gsub("/articles", "articles", vignettes_titles$link)
-
-    original_yaml <- suppressWarnings(
-      yaml::read_yaml(fs::path_abs("docs/mkdocs.yml", start = path))
-    )
-
-    # If articles are in the navbar, remove them, so that there is no duplicates
-    nav_sections <- unlist(lapply(original_yaml$nav, names))
-    # I will put reference in a section at the end
-    if ("Articles" %in% nav_sections) {
-      original_yaml$nav[[which(nav_sections == "Articles")]] <- NULL
-    }
-    if ("articles" %in% nav_sections) {
-      original_yaml$nav[[which(nav_sections == "articles")]] <- NULL
-    }
-
-    # yaml::as.yaml doesn't format plugins well when there is only one plugin
-    if (length(original_yaml$plugins) == 1) {
-      original_yaml$plugins <- list(original_yaml$plugins)
-    }
-
-    # Create section "Articles" and add vignettes in it
-    list_articles <- list("Articles" = NULL)
-    for (i in seq_len(nrow(vignettes_titles))) {
-      x <- list(vignettes_titles[i, 2])
-      names(x) <- paste0(vignettes_titles[i, 1])
-      list_articles[["Articles"]] <- append(
-        list_articles[["Articles"]], x, length(list_articles[["Articles"]])
-      )
-    }
-
-    new_nav <- append(original_yaml$nav, list(list_articles), 1)
-    original_yaml$nav <- new_nav
-    new_yaml <- yaml::as.yaml(original_yaml)
-
-    # yaml::as.yaml is quite inconsistent with indents and dash, especially with
-    # plugins, so I fix indents and dashes only for things after plugin (i.e
-    # plugins and nav)
-    # TODO: find a more robust solution
-    before_plugin <- gsub("plugins:.*", "", new_yaml)
-    after_plugin <- gsub(".*?(plugins:)", "\\1", new_yaml)
-    after_plugin <- gsub("- ", "  - ", after_plugin)
-    after_plugin <- gsub("    ", "    - ", after_plugin)
-    after_plugin <- gsub("- -", "-", after_plugin)
-
-    # Put reference and changelog in a section if it isn't already
-    if (length(gregexpr("Reference:", after_plugin)[[1]]) == 1) {
-      after_plugin <- gsub("Reference:", "Reference:\n    - Reference:", after_plugin)
-    }
-    if (length(gregexpr("Changelog:", after_plugin)[[1]]) == 1) {
-      after_plugin <- gsub("Changelog:", "Changelog:\n    - Changelog:", after_plugin)
-    }
-    new_yaml <- paste(before_plugin, after_plugin, sep = "")
-
-    writeLines(new_yaml, fs::path_abs("docs/mkdocs.yml", start = path))
-  }
-
-  # file_to_update <- switch(
-  #   doctype,
-  #   "docute" = fs::path_abs("docs/index.html", start = path),
-  #   "docsify" = fs::path_abs("docs/_sidebar.md", start = path),
-  #   "mkdocs" = fs::path_abs("docs/mkdocs.yaml", start = path)
-  # )
-  # cli::cli_alert_warning(
-  #   cli::style_bold("Don't forget to check that vignettes are correctly included in {.file {file_to_update}}.")
-  # )
-}
