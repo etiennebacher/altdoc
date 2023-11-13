@@ -13,7 +13,7 @@
 #' 
 #' This function creates a subdirectory called `altdoc/` in the package root directory. `altdoc/` stores the settings files used to by each of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by `altdoc` unless the user explicitly calls `overwrite=TRUE`. They can thus be edited manually to customize the sidebar and website.
 #'
-#' @rdname init
+#' @rdname use
 #'
 #' @examples
 #' if (interactive()) {
@@ -45,7 +45,7 @@ use_docute <- function(path = ".",
 
 #' @export
 #'
-#' @rdname init
+#' @rdname use
 
 use_docsify <- function(path = ".",
                         overwrite = FALSE,
@@ -70,7 +70,7 @@ use_docsify <- function(path = ".",
 #' If you are new to Mkdocs, the themes "readthedocs" and "material" are among
 #' the most popular and developed. You can also see a list of themes here:
 #' <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
-#' @rdname init
+#' @rdname use
 
 use_mkdocs <- function(path = ".",
                        overwrite = FALSE,

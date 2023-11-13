@@ -1,5 +1,5 @@
 
-# init
+# use
 
 Initialize documentation website settings
 

@@ -1,6 +1,90 @@
 # Reference 
 
-## Init
+## Preview
+
+### Description
+
+Preview the documentation in a webpage or in viewer
+
+### Usage
+
+    preview(path = ".")
+
+### Arguments
+
+<table>
+<tbody>
+<tr class="odd">
+<td><code id="preview_:_path">path</code></td>
+<td><p>Path. Default is the package root (detected with
+<code>here::here()</code>).</p></td>
+</tr>
+</tbody>
+</table>
+
+### Value
+
+No value returned. If RStudio is used, it shows a site preview in
+Viewer. To preview the site in a browser or in another text editor (ex:
+VS Code), see the vignette on the `altdoc` website. '
+
+### Examples
+
+```r
+if (interactive()) {
+
+  preview()
+
+}
+```
+
+
+---
+## Update docs
+
+### Description
+
+Render and update the man pages, vignettes, README, Changelog, License,
+Code of Conduct, and Reference sections (if ' they exist). This section
+modifies and overwrites the files in the 'docs/' folder.
+
+### Usage
+
+    update_docs(path = ".", verbose = FALSE)
+
+### Arguments
+
+<table>
+<tbody>
+<tr class="odd">
+<td><code id="update_docs_:_path">path</code></td>
+<td><p>Path to the package root directory.</p></td>
+</tr>
+<tr class="even">
+<td><code id="update_docs_:_verbose">verbose</code></td>
+<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
+rendering calls.</p></td>
+</tr>
+</tbody>
+</table>
+
+### Value
+
+No value returned. Updates and overwrites the files in folder 'docs'.
+
+### Examples
+
+```r
+if (interactive()) {
+
+  update_docs()
+
+}
+```
+
+
+---
+## Use
 
 ### Description
 
@@ -100,90 +184,6 @@ if (interactive()) {
 
   # Create mkdocs documentation
   use_mkdocs()
-
-}
-```
-
-
----
-## Preview
-
-### Description
-
-Preview the documentation in a webpage or in viewer
-
-### Usage
-
-    preview(path = ".")
-
-### Arguments
-
-<table>
-<tbody>
-<tr class="odd">
-<td><code id="preview_:_path">path</code></td>
-<td><p>Path. Default is the package root (detected with
-<code>here::here()</code>).</p></td>
-</tr>
-</tbody>
-</table>
-
-### Value
-
-No value returned. If RStudio is used, it shows a site preview in
-Viewer. To preview the site in a browser or in another text editor (ex:
-VS Code), see the vignette on the `altdoc` website. '
-
-### Examples
-
-```r
-if (interactive()) {
-
-  preview()
-
-}
-```
-
-
----
-## Update docs
-
-### Description
-
-Render and update the man pages, vignettes, README, Changelog, License,
-Code of Conduct, and Reference sections (if ' they exist). This section
-modifies and overwrites the files in the 'docs/' folder.
-
-### Usage
-
-    update_docs(path = ".", verbose = FALSE)
-
-### Arguments
-
-<table>
-<tbody>
-<tr class="odd">
-<td><code id="update_docs_:_path">path</code></td>
-<td><p>Path to the package root directory.</p></td>
-</tr>
-<tr class="even">
-<td><code id="update_docs_:_verbose">verbose</code></td>
-<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
-rendering calls.</p></td>
-</tr>
-</tbody>
-</table>
-
-### Value
-
-No value returned. Updates and overwrites the files in folder 'docs'.
-
-### Examples
-
-```r
-if (interactive()) {
-
-  update_docs()
 
 }
 ```
