@@ -76,15 +76,16 @@
     fs::file_copy(origin, destination, overwrite = TRUE)
     # }
 
+    if (isTRUE(verbose)) {
+      hush <- identity
+    } else {
+      hush <- function(x) suppressMessages(suppressWarnings(x))
+    }
+
     if (fs::path_ext(origin) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
     } else if (fs::path_ext(origin) == "Rmd") {
-      if (isTRUE(verbose)) {
-        hush <- identity
-      } else {
-        hush <- function(x) suppressMessages(suppressWarnings(x))
-      }
       tryCatch(
         {
           hush(.rmd2md(origin, tar_dir))
@@ -159,7 +160,7 @@
   p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
   p <- p[grepl("\\.Rmd$|\\.qmd$", p)]
   if (length(p) == 1) {
-    z <- readLines(fs::path_join(c(path, "vignettes", p)))
+    z <- readLines(fs::path_join(c(path, "vignettes", p)), warn = FALSE)
     title <- z[grepl("^title:\\w*", z)]
     title <- trimws(gsub("^title:\\w*", "", title))
     if (length(title) > 0) return(title)
