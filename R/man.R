@@ -1,17 +1,11 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .import_man <- function(update = FALSE, path = ".",
-                        custom_reference = NULL, quarto = FALSE) {
+                        custom_reference = NULL, quarto = TRUE) {
   if (isTRUE(quarto)) {
     .import_man_quarto(update = update)
   }
 
   cli::cli_h1("Building reference")
-  if (!is.null(custom_reference)) {
-    cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
-    source(custom_reference, echo = FALSE)
-    cli::cli_alert_success("Custom file for {.pkg Reference} finished running.")
-    return(invisible)
-  }
 
   good_path <- .doc_path(path = path)
   if (fs::file_exists(paste0(good_path, "/reference.md"))) {
@@ -26,11 +20,18 @@
   fs::file_create(paste0(good_path, "/reference.md"))
   writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
 
+  if (!is.null(custom_reference)) {
+    cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
+    source(custom_reference, echo = FALSE)
+    cli::cli_alert_success("Custom file for {.pkg Reference} finished running.")
+    return(invisible)
+  }
+
   cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
 }
 
 
-.import_man_quarto <- function(update = FALSE) {
+.import_man_quarto <- function(update = FALSE, path = ".", custom_reference = NULL) {
   cli::cli_h1("Building reference")
 
   # source and target file paths
@@ -69,7 +70,15 @@
     writeLines(tmp, destination_md)
   }
 
+  if (!is.null(custom_reference)) {
+    cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
+    source(custom_reference, echo = FALSE)
+    cli::cli_alert_success("Custom file for {.pkg Reference} finished running.")
+    return(invisible)
+  }
+
   cli::cli_alert_success("Functions reference updated in `docs/man/` directory.")
+
 }
 
 

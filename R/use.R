@@ -6,7 +6,6 @@
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param custom_reference Path to the file that will be sourced to generate the
 #' "Reference" section.
-#' @param quarto Logical. Whether to use quarto to render Rd documentation files
 #' @param preview Logical. Whether a preview of the documentation should be displayed in a browser window.
 #' (Reference).
 #'
@@ -39,7 +38,6 @@
 #' }
 use_docute <- function(path = ".", overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = getOption("altdoc_quarto", default = TRUE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -47,8 +45,9 @@ use_docute <- function(path = ".", overwrite = FALSE,
 
   .create_settings(path = path, doctype = "docute")
 
-  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
+  update_docs(path = path, custom_reference = custom_reference)
 }
+
 
 #' @export
 #'
@@ -56,7 +55,6 @@ use_docute <- function(path = ".", overwrite = FALSE,
 
 use_docsify <- function(path = ".", overwrite = FALSE,
                         custom_reference = NULL,
-                        quarto = getOption("altdoc_quarto", default = TRUE),
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -64,7 +62,7 @@ use_docsify <- function(path = ".", overwrite = FALSE,
 
   .create_settings(path = path, doctype = "docsify")
 
-  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
+  update_docs(path = path, custom_reference = custom_reference)
 }
 
 
@@ -83,7 +81,6 @@ use_mkdocs <- function(theme = NULL,
                        path = ".",
                        overwrite = FALSE,
                        custom_reference = NULL,
-                       quarto = getOption("altdoc_quarto", default = TRUE),
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
@@ -93,7 +90,7 @@ use_mkdocs <- function(theme = NULL,
   .create_settings(path = path, doctype = "mkdocs")
 
   # after creating the structure
-  update_docs(path = path, custom_reference = custom_reference, quarto = quarto)
+  update_docs(path = path, custom_reference = custom_reference)
 
   # render mkdocs
   if (.is_windows() & interactive()) {

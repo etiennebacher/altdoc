@@ -6,8 +6,6 @@
 #'
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @param custom_reference Path to the file that will be sourced to generate the
-#' @param quarto TRUE to use the new Quarto engine to render Rd files.
-#' "Reference" section.
 #'
 #' @export
 #'
@@ -18,9 +16,7 @@
 #'   # Update documentation
 #'   update_docs()
 #' }
-update_docs <- function(path = ".",
-                        custom_reference = NULL,
-                        quarto = TRUE) {
+update_docs <- function(path = ".", custom_reference = NULL) {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
@@ -39,7 +35,7 @@ update_docs <- function(path = ".",
   .import_coc(path)
 
   # Update functions reference
-  .import_man(update = TRUE, path = path, custom_reference = custom_reference, quarto = quarto)
+  .import_man(update = TRUE, path = path, custom_reference = custom_reference)
 
   # Update vignettes
   cli::cli_h1("Update vignettes")

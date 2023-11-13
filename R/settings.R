@@ -28,6 +28,12 @@
         file.copy(src, tar, overwrite = FALSE)
     }
 
+    # README.md is mandatory, so we create it automatically
+    fn <- fs::path_join(c(path, "README.md"))
+    if (!fs::file_exists(fn)) {
+        writeLines("Hello World!", fn)
+    }
+
 
     return(invisible())
 }
