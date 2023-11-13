@@ -1,11 +1,11 @@
 
 # init
 
-Init Docute, Docsify, or Mkdocs
+Initialize documentation website settings
 
 ## Description
 
-Init Docute, Docsify, or Mkdocs
+Initialize documentation website settings
 
 ## Usage
 
@@ -43,8 +43,7 @@ use_mkdocs(
 <code id="use_docute_:_path">path</code>
 </td>
 <td>
-Path. Default is the package root (detected with
-<code>here::here()</code>).
+Path to the package root directory.
 </td>
 </tr>
 <tr>
@@ -52,10 +51,8 @@ Path. Default is the package root (detected with
 <code id="use_docute_:_overwrite">overwrite</code>
 </td>
 <td>
-Overwrite the folder ‘docs’ if it already exists. If <code>FALSE</code>
-(default), there will be an interactive choice to make in the console to
-overwrite. If <code>TRUE</code>, the folder ‘docs’ is automatically
-overwritten.
+TRUE/FALSE. Overwrite the settings files stored in
+<code style="white-space: pre;">⁠altdoc/⁠</code>. This is dangerous!
 </td>
 </tr>
 <tr>
@@ -63,8 +60,17 @@ overwritten.
 <code id="use_docute_:_verbose">verbose</code>
 </td>
 <td>
-Logical. If true, the function will print the verbose output from
-Rmarkdown and Quarto rendering. (Reference).
+TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering
+calls.
+</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="use_docute_:_update">update</code>
+</td>
+<td>
+TRUE/FALSE. Run the <code>update_docs()</code> function automatically
+after <code style="white-space: pre;">⁠use\_\*()⁠</code>.
 </td>
 </tr>
 <tr>
@@ -72,8 +78,8 @@ Rmarkdown and Quarto rendering. (Reference).
 <code id="use_docute_:_preview">preview</code>
 </td>
 <td>
-Logical. Whether a preview of the documentation should be displayed in a
-browser window.
+TRUE/FALSE. Run the <code>preview()</code> function automatically after
+<code style="white-space: pre;">⁠use\_\*()⁠</code>.
 </td>
 </tr>
 <tr>
@@ -81,7 +87,8 @@ browser window.
 <code id="use_docute_:_theme">theme</code>
 </td>
 <td>
-Name of the theme to use. Default is basic theme. See Details section.
+Name of the theme to use. Default is basic theme. This is only available
+in <code>mkdocs</code>. See Details section.
 </td>
 </tr>
 </table>
@@ -95,21 +102,16 @@ here:
 
 ## Value
 
-No value returned. Creates files in folder ‘docs’. Other files and
-folders are not modified.
+No value returned.
 
-## Vignettes
-
-Note that although vignettes are automatically moved to the
-<code style="white-space: pre;">⁠/docs⁠</code> folder, they are no longer
-automatically specified in the website structure-defining file.
-Developers must now manually update this file and the desired order of
-their articles. This file lives at the root of
-<code style="white-space: pre;">⁠/docs⁠</code> and its name differs based
-on the selected site builder (<code>use_docsify()</code> =
-<code style="white-space: pre;">⁠\_sidebar.md⁠</code>;
-<code>use_docute()</code> = <code>index.html</code>;
-<code>use_mkdocs()</code> = <code>mkdocs.yml</code>).
+This function creates a subdirectory called
+<code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
+directory. <code style="white-space: pre;">⁠altdoc/⁠</code> stores the
+settings files used to by each of the documentation generator utilities
+(docsify, docute, or mkdocs). The files in this folder are never altered
+automatically by <code>altdoc</code> unless the user explicitly calls
+<code>overwrite=TRUE</code>. They can thus be edited manually to
+customize the sidebar and website.
 
 ## Examples
 
@@ -117,6 +119,7 @@ on the selected site builder (<code>use_docsify()</code> =
 library(altdoc)
 
 if (interactive()) {
+
   # Create docute documentation
   use_docute()
 
@@ -125,5 +128,6 @@ if (interactive()) {
 
   # Create mkdocs documentation
   use_mkdocs()
+
 }
 ```

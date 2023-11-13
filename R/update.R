@@ -1,20 +1,19 @@
 #' Update documentation
 #'
-#' Update README, Changelog, License, Code of Conduct, and Reference sections (if
-#' they exist). Convert and add new of modified vignettes to the documentation.
-#' This will leave every other files unmodified.
-#'
-#' @param path Path. Default is the package root (detected with `here::here()`).
+#' Render and update the man pages, vignettes, README, Changelog, License, Code
+#' of Conduct, and Reference sections (if ' they exist). This section modifies and
+#' overwrites the files in the 'docs/' folder.
 #'
 #' @inheritParams use_docute
 #' @export
 #'
-#' @return No value returned. Updates files in folder 'docs'.
+#' @return No value returned. Updates and overwrites the files in folder 'docs'.
 #'
 #' @examples
 #' if (interactive()) {
-#'   # Update documentation
+#' 
 #'   update_docs()
+#' 
 #' }
 update_docs <- function(path = ".", verbose = FALSE) {
   path <- .convert_path(path)

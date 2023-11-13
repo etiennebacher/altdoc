@@ -5,9 +5,9 @@ Update documentation
 
 ## Description
 
-Update README, Changelog, License, Code of Conduct, and Reference
-sections (if they exist). Convert and add new of modified vignettes to
-the documentation. This will leave every other files unmodified.
+Render and update the man pages, vignettes, README, Changelog, License,
+Code of Conduct, and Reference sections (if ’ they exist). This section
+modifies and overwrites the files in the ‘docs/’ folder.
 
 ## Usage
 
@@ -22,8 +22,7 @@ the documentation. This will leave every other files unmodified.
 <code id="update_docs_:_path">path</code>
 </td>
 <td>
-Path. Default is the package root (detected with
-<code>here::here()</code>).
+Path to the package root directory.
 </td>
 </tr>
 <tr>
@@ -31,15 +30,15 @@ Path. Default is the package root (detected with
 <code id="update_docs_:_verbose">verbose</code>
 </td>
 <td>
-Logical. If true, the function will print the verbose output from
-Rmarkdown and Quarto rendering. (Reference).
+TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering
+calls.
 </td>
 </tr>
 </table>
 
 ## Value
 
-No value returned. Updates files in folder ‘docs’.
+No value returned. Updates and overwrites the files in folder ‘docs’.
 
 ## Examples
 
@@ -47,7 +46,8 @@ No value returned. Updates files in folder ‘docs’.
 library(altdoc)
 
 if (interactive()) {
-  # Update documentation
+
   update_docs()
+
 }
 ```

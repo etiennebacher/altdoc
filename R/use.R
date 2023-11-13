@@ -1,31 +1,23 @@
-#' Init Docute, Docsify, or Mkdocs
+#' Initialize documentation website settings
 #'
-#' @param overwrite Overwrite the folder 'docs' if it already exists. If `FALSE`
-#' (default), there will be an interactive choice to make in the console to
-#' overwrite. If `TRUE`, the folder 'docs' is automatically overwritten.
-#' @param path Path. Default is the package root (detected with `here::here()`).
-#' @param preview Logical. Whether a preview of the documentation should be displayed in a browser window.
-#' @param verbose Logical. If true, the function will print the verbose output from Rmarkdown and Quarto rendering.
-#' (Reference).
+#' @param path Path to the package root directory.
+#' @param overwrite TRUE/FALSE. Overwrite the settings files stored in `altdoc/`. This is dangerous!
+#' @param verbose TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering calls.
+#' @param update TRUE/FALSE. Run the `update_docs()` function automatically after `use_*()`.
+#' @param preview TRUE/FALSE. Run the `preview()` function automatically after `use_*()`.
 #'
 #' @export
 #'
-#' @return No value returned. Creates files in folder 'docs'. Other files and
-#' folders are not modified.
-#'
-#' @details
-#' # Vignettes
-#' Note that although vignettes are automatically moved to the `/docs` folder,
-#' they are no longer automatically specified in the website structure-defining
-#' file. Developers must now manually update this file and the desired order of
-#' their articles. This file lives at the root of `/docs` and its name differs
-#' based on the selected site builder (`use_docsify()` = `_sidebar.md`;
-#' `use_docute()` = `index.html`; `use_mkdocs()` = `mkdocs.yml`).
+#' @return 
+#' No value returned.
+#' 
+#' This function creates a subdirectory called `altdoc/` in the package root directory. `altdoc/` stores the settings files used to by each of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by `altdoc` unless the user explicitly calls `overwrite=TRUE`. They can thus be edited manually to customize the sidebar and website.
 #'
 #' @rdname init
 #'
 #' @examples
 #' if (interactive()) {
+#' 
 #'   # Create docute documentation
 #'   use_docute()
 #'
@@ -34,6 +26,7 @@
 #'
 #'   # Create mkdocs documentation
 #'   use_mkdocs()
+#' 
 #' }
 use_docute <- function(path = ".",
                        overwrite = FALSE,
@@ -42,9 +35,7 @@ use_docute <- function(path = ".",
                        preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
-  .check_docs_exists(overwrite, path)
-
-  .create_settings(path = path, doctype = "docute")
+  .create_settings(path = path, doctype = "docute", overwrite = overwrite)
 
   if (isTRUE(update)) {
     update_docs(path = path)
@@ -63,10 +54,7 @@ use_docsify <- function(path = ".",
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
   .check_is_package(path)
-  .check_docs_exists(overwrite, path)
-
-  .create_settings(path = path, doctype = "docsify")
-
+  .create_settings(path = path, doctype = "docsify", overwrite = overwrite)
   if (isTRUE(update)) {
     update_docs(path = path)
   }
@@ -75,7 +63,7 @@ use_docsify <- function(path = ".",
 
 #' @export
 #'
-#' @param theme Name of the theme to use. Default is basic theme. See Details
+#' @param theme Name of the theme to use. Default is basic theme. This is only available in `mkdocs`. See Details
 #' section.
 #'
 #' @details
@@ -92,13 +80,9 @@ use_mkdocs <- function(path = ".",
                        theme = NULL) {
   path <- .convert_path(path)
   .check_is_package(path)
-  .check_docs_exists(overwrite, path)
   .check_tools("mkdocs", theme)
-
-  .create_settings(path = path, doctype = "mkdocs")
-
+  .create_settings(path = path, doctype = "mkdocs", overwrite = overwrite)
   if (isTRUE(update)) {
     update_docs(path = path)
   }
-
 }

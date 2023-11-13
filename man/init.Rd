@@ -4,7 +4,7 @@
 \alias{use_docute}
 \alias{use_docsify}
 \alias{use_mkdocs}
-\title{Init Docute, Docsify, or Mkdocs}
+\title{Initialize documentation website settings}
 \usage{
 use_docute(
   path = ".",
@@ -32,43 +32,35 @@ use_mkdocs(
 )
 }
 \arguments{
-\item{path}{Path. Default is the package root (detected with \code{here::here()}).}
+\item{path}{Path to the package root directory.}
 
-\item{overwrite}{Overwrite the folder 'docs' if it already exists. If \code{FALSE}
-(default), there will be an interactive choice to make in the console to
-overwrite. If \code{TRUE}, the folder 'docs' is automatically overwritten.}
+\item{overwrite}{TRUE/FALSE. Overwrite the settings files stored in \verb{altdoc/}. This is dangerous!}
 
-\item{verbose}{Logical. If true, the function will print the verbose output from Rmarkdown and Quarto rendering.
-(Reference).}
+\item{verbose}{TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering calls.}
 
-\item{preview}{Logical. Whether a preview of the documentation should be displayed in a browser window.}
+\item{update}{TRUE/FALSE. Run the \code{update_docs()} function automatically after \verb{use_*()}.}
 
-\item{theme}{Name of the theme to use. Default is basic theme. See Details
+\item{preview}{TRUE/FALSE. Run the \code{preview()} function automatically after \verb{use_*()}.}
+
+\item{theme}{Name of the theme to use. Default is basic theme. This is only available in \code{mkdocs}. See Details
 section.}
 }
 \value{
-No value returned. Creates files in folder 'docs'. Other files and
-folders are not modified.
+No value returned.
+
+This function creates a subdirectory called \verb{altdoc/} in the package root directory. \verb{altdoc/} stores the settings files used to by each of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by \code{altdoc} unless the user explicitly calls \code{overwrite=TRUE}. They can thus be edited manually to customize the sidebar and website.
 }
 \description{
-Init Docute, Docsify, or Mkdocs
+Initialize documentation website settings
 }
 \details{
 If you are new to Mkdocs, the themes "readthedocs" and "material" are among
 the most popular and developed. You can also see a list of themes here:
 \url{https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes}.
 }
-\section{Vignettes}{
-Note that although vignettes are automatically moved to the \verb{/docs} folder,
-they are no longer automatically specified in the website structure-defining
-file. Developers must now manually update this file and the desired order of
-their articles. This file lives at the root of \verb{/docs} and its name differs
-based on the selected site builder (\code{use_docsify()} = \verb{_sidebar.md};
-\code{use_docute()} = \code{index.html}; \code{use_mkdocs()} = \code{mkdocs.yml}).
-}
-
 \examples{
 if (interactive()) {
+
   # Create docute documentation
   use_docute()
 
@@ -77,5 +69,6 @@ if (interactive()) {
 
   # Create mkdocs documentation
   use_mkdocs()
+
 }
 }

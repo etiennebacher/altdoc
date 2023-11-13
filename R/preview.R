@@ -3,13 +3,14 @@
 #' @param path Path. Default is the package root (detected with `here::here()`).
 #' @export
 #'
-#' @return No value returned. If RStudio is used, it shows a site preview in
-#' Viewer.
-#'
+#' @return No value returned. If RStudio is used, it shows a site preview in 
+#' Viewer. To preview the site in a browser or in another text editor (ex: VS Code),
+#' see the vignette on the `altdoc` website.  '
 #' @examples
 #' if (interactive()) {
-#'   # Preview documentation
+#' 
 #'   preview()
+#' 
 #' }
 preview <- function(path = ".") {
   # conditional dependencies

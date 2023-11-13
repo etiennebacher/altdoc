@@ -4,7 +4,7 @@
 
 ### Description
 
-Init Docute, Docsify, or Mkdocs
+Initialize documentation website settings
 
 ### Usage
 
@@ -39,30 +39,33 @@ Init Docute, Docsify, or Mkdocs
 <tbody>
 <tr class="odd">
 <td><code id="use_docute_:_path">path</code></td>
-<td><p>Path. Default is the package root (detected with
-<code>here::here()</code>).</p></td>
+<td><p>Path to the package root directory.</p></td>
 </tr>
 <tr class="even">
 <td><code id="use_docute_:_overwrite">overwrite</code></td>
-<td><p>Overwrite the folder 'docs' if it already exists. If
-<code>FALSE</code> (default), there will be an interactive choice to
-make in the console to overwrite. If <code>TRUE</code>, the folder
-'docs' is automatically overwritten.</p></td>
+<td><p>TRUE/FALSE. Overwrite the settings files stored in <code
+style="white-space: pre;">⁠altdoc/⁠</code>. This is dangerous!</p></td>
 </tr>
 <tr class="odd">
 <td><code id="use_docute_:_verbose">verbose</code></td>
-<td><p>Logical. If true, the function will print the verbose output from
-Rmarkdown and Quarto rendering. (Reference).</p></td>
+<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
+rendering calls.</p></td>
 </tr>
 <tr class="even">
-<td><code id="use_docute_:_preview">preview</code></td>
-<td><p>Logical. Whether a preview of the documentation should be
-displayed in a browser window.</p></td>
+<td><code id="use_docute_:_update">update</code></td>
+<td><p>TRUE/FALSE. Run the <code>update_docs()</code> function
+automatically after <code
+style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 <tr class="odd">
+<td><code id="use_docute_:_preview">preview</code></td>
+<td><p>TRUE/FALSE. Run the <code>preview()</code> function automatically
+after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
+</tr>
+<tr class="even">
 <td><code id="use_docute_:_theme">theme</code></td>
-<td><p>Name of the theme to use. Default is basic theme. See Details
-section.</p></td>
+<td><p>Name of the theme to use. Default is basic theme. This is only
+available in <code>mkdocs</code>. See Details section.</p></td>
 </tr>
 </tbody>
 </table>
@@ -75,23 +78,20 @@ here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 
 ### Value
 
-No value returned. Creates files in folder 'docs'. Other files and
-folders are not modified.
+No value returned.
 
-### Vignettes
-
-Note that although vignettes are automatically moved to the `⁠/docs⁠`
-folder, they are no longer automatically specified in the website
-structure-defining file. Developers must now manually update this file
-and the desired order of their articles. This file lives at the root of
-`⁠/docs⁠` and its name differs based on the selected site builder
-(`use_docsify()` = `⁠_sidebar.md⁠`; `use_docute()` = `index.html`;
-`use_mkdocs()` = `mkdocs.yml`).
+This function creates a subdirectory called `⁠altdoc/⁠` in the package
+root directory. `⁠altdoc/⁠` stores the settings files used to by each of
+the documentation generator utilities (docsify, docute, or mkdocs). The
+files in this folder are never altered automatically by `altdoc` unless
+the user explicitly calls `overwrite=TRUE`. They can thus be edited
+manually to customize the sidebar and website.
 
 ### Examples
 
 ```r
 if (interactive()) {
+
   # Create docute documentation
   use_docute()
 
@@ -100,6 +100,7 @@ if (interactive()) {
 
   # Create mkdocs documentation
   use_mkdocs()
+
 }
 ```
 
@@ -130,14 +131,16 @@ Preview the documentation in a webpage or in viewer
 ### Value
 
 No value returned. If RStudio is used, it shows a site preview in
-Viewer.
+Viewer. To preview the site in a browser or in another text editor (ex:
+VS Code), see the vignette on the `altdoc` website. '
 
 ### Examples
 
 ```r
 if (interactive()) {
-  # Preview documentation
+
   preview()
+
 }
 ```
 
@@ -147,9 +150,9 @@ if (interactive()) {
 
 ### Description
 
-Update README, Changelog, License, Code of Conduct, and Reference
-sections (if they exist). Convert and add new of modified vignettes to
-the documentation. This will leave every other files unmodified.
+Render and update the man pages, vignettes, README, Changelog, License,
+Code of Conduct, and Reference sections (if ' they exist). This section
+modifies and overwrites the files in the 'docs/' folder.
 
 ### Usage
 
@@ -161,27 +164,27 @@ the documentation. This will leave every other files unmodified.
 <tbody>
 <tr class="odd">
 <td><code id="update_docs_:_path">path</code></td>
-<td><p>Path. Default is the package root (detected with
-<code>here::here()</code>).</p></td>
+<td><p>Path to the package root directory.</p></td>
 </tr>
 <tr class="even">
 <td><code id="update_docs_:_verbose">verbose</code></td>
-<td><p>Logical. If true, the function will print the verbose output from
-Rmarkdown and Quarto rendering. (Reference).</p></td>
+<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
+rendering calls.</p></td>
 </tr>
 </tbody>
 </table>
 
 ### Value
 
-No value returned. Updates files in folder 'docs'.
+No value returned. Updates and overwrites the files in folder 'docs'.
 
 ### Examples
 
 ```r
 if (interactive()) {
-  # Update documentation
+
   update_docs()
+
 }
 ```
 
