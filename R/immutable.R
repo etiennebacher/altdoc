@@ -153,7 +153,6 @@
     # body also includes altdoc variables
     fn <- fs::path_join(c(path, "altdoc", "index.html"))
     body <- readLines(fn)
-    browser()
     body <- .substitute_altdoc_variables(body, path = path)
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(body, fn)
@@ -256,6 +255,6 @@
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
 
     # write mutable sidebar
-    fn <- gsub("docute.html$", "index.html", fn)
+    fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(sidebar, fn)
 }
