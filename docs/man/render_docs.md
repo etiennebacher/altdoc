@@ -11,11 +11,7 @@ modifies and overwrites the files in the ‘docs/’ folder.
 
 ## Usage
 
-<pre><code class='language-R'>render_docs(
-  path = ".",
-  verbose = FALSE,
-  preview = getOption("altdoc_preview", default = FALSE)
-)
+<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE)
 </code></pre>
 
 ## Arguments
@@ -27,6 +23,14 @@ modifies and overwrites the files in the ‘docs/’ folder.
 </td>
 <td>
 Path to the package root directory.
+</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="render_docs_:_verbose">verbose</code>
+</td>
+<td>
+Logical. Print Rmarkdown or Quarto rendering output.
 </td>
 </tr>
 </table>
