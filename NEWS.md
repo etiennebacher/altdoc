@@ -4,8 +4,13 @@
 
 Breaking changes:
 
-* `use_*()` functions no longer update and preview the website by default. These functions now have `update` and `preview` arguments whose default values can be modified with global options. Ex: `options(altdoc_update=TRUE)`
+* Functions renamed:
+  - `use_docute()`, `use_docsify()` and `use_mkdocs()` are combined into `setup_docs()` 
+  - `update_docs()` -> `render_docs()`
+  - `preview()` -> `preview_docs()`
+* `setup_docs()` functions no longer update and preview the website by default.
 * `custom_reference` argument is removed. See the `Post-processing` vignette for a description of the new proposed workflow.
+* `theme` argument is removed. Users can change themes by editing settings files in `altdoc/`
 * `mkdocs` documentation is no longer stored in `docs/docs/`
 
 New:
