@@ -35,6 +35,9 @@
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
     fn_vignettes <- gsub(.doc_path(path), "", fn_vignettes, fixed = TRUE)
 
+    # escape because we enclose in single quotes in the json file
+    titles <- gsub("'", "\\\\'", titles)
+
     if (length(fn_vignettes) > 0) {
         tmp <- sprintf("              {title: '%s', link: '/articles/%s'},", titles, basename(fn_vignettes))
         tmp <- c(
@@ -47,7 +50,7 @@
             "          },"
         )
         tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
+        sidebar <- gsub("$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar, fixed = TRUE)
     } else {
         sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
     }

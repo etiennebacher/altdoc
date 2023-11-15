@@ -124,7 +124,6 @@
     z <- readLines(fs::path_join(c(path, "vignettes", p)), warn = FALSE)
     title <- z[grepl("^title:\\w*", z)]
     title <- trimws(gsub("^title:\\w*", "", title))
-    if (length(title) > 0) return(title)
   }
 
   # First h1 header
@@ -133,7 +132,6 @@
     if (length(idx) > 0) {
       title <- x[idx[1]]
       title <- gsub("^# ", "", title)
-      return(title)
     }
   }
 
@@ -142,13 +140,11 @@
     title <- fs::path_ext_remove(basename(fn))
     title <- gsub("_", " ", title)
     title <- tools::toTitleCase(title)
-    return(title)
   }
 
   # Clean up and escape
   title <- gsub('^"|"$"', '', title)
-  title <- gsub("'", "\\'", title)
 
-  return(invisible())
+  return(title)
 }
 
