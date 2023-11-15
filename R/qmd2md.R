@@ -60,7 +60,7 @@
   # tar_dir is apparently not reliable, and creates absolute paths, so we
   # render them in place and move the files and static files directories.
   stem <- fs::path_ext_remove(source_file)
-  stem_md <- fs::path_ext_set(stem, "md")
+  stem_md <- paste0(stem, ".md") # fs::path_set_ext() breaks when filename includes dots
   stem_files <- paste0(stem, "_files")
 
   if (fs::dir_exists(stem_files)) {

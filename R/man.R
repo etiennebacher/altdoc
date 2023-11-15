@@ -28,10 +28,11 @@
   # process man pages one by one
   for (i in seq_along(man_source)) {
     f <- man_source[i]
-    origin_Rd <- fs::path_join(c("man", fs::path_ext_set(f, ".Rd")))
+    # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
+    origin_Rd <- fs::path_join(c("man", paste0(f, ".Rd")))
     destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
-    destination_qmd <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".qmd")))
-    destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
+    destination_qmd <- fs::path_join(c(destination_dir, paste0(f, ".qmd")))
+    destination_md <- fs::path_join(c(destination_dir, paste0(f, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
     conversion_worked[i] <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
