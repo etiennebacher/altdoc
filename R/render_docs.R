@@ -17,6 +17,12 @@
 #' 
 #' }
 render_docs <- function(path = ".", verbose = FALSE) {
+
+  dir_altdoc <- fs::path_join(c(path, "altdoc"))
+  if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
+    cli::cli_abort("No settings file found in {dir_altdoc}. Consider running `setup_docs()`?")
+  }
+
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 
