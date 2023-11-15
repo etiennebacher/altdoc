@@ -49,17 +49,20 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (!fs::dir_exists(altdoc_dir)) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
-  } 
+  } else if (isTRUE(overwrite)) {
+    fs::dir_delete(altdoc_dir)
+    fs::dir_create(altdoc_dir)
+  }
+
   if (!fs::dir_exists(docs_dir)) {
     cli::cli_alert_info("Creating `docs/` directory.")
     fs::dir_create(docs_dir)
   } 
 
-
   .add_rbuildignore("^docs$", path = path)
   .add_rbuildignore("^altdoc$", path = path)
 
-  cli::cli_alert_info("Copying default settings file(s) to `altdoc/`")
+  cli::cli_alert_info("Importing default settings file(s) to `altdoc/`")
 
   if (isTRUE(tool == "docsify")) {
     src <- system.file("docsify/docsify.html", package = "altdoc")
