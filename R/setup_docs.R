@@ -46,12 +46,18 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   altdoc_dir <- fs::path_abs(fs::path_join(c(path, "altdoc")))
   docs_dir <- fs::path_abs(fs::path_join(c(path, "docs")))
 
+  if (!fs::dir_exists(altdoc_dir)) {
+    cli::cli_alert_info("Creating `altdoc/` directory.")
+    fs::dir_create(altdoc_dir)
+  } 
+  if (!fs::dir_exists(docs_dir)) {
+    cli::cli_alert_info("Creating `docs/` directory.")
+    fs::dir_create(docs_dir)
+  } 
 
-  cli::cli_alert_info("Adding `docs/` and `altdoc/` to .Rbuildignore")
 
   .add_rbuildignore("^docs$", path = path)
   .add_rbuildignore("^altdoc$", path = path)
-
 
   cli::cli_alert_info("Copying default settings file(s) to `altdoc/`")
 

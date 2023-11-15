@@ -206,6 +206,7 @@
 
   tmp <- readLines(fn)
   if (!x %in% tmp) {
+    cli::cli_alert_info("Adding {x} to .Rbuildignore")
     tmp <- c(tmp, x)
     writeLines(tmp, fn)
   }
