@@ -81,52 +81,6 @@
 }
 
 
-# Convert Rd file to Markdown
-.rd2md <- function(rdfile) {
-  tmp_html <- tempfile(fileext = ".html")
-  tmp_md <- tempfile(fileext = ".md")
-
-  tools::Rd2HTML(rdfile, out = tmp_html, permissive = TRUE)
-  rmarkdown::pandoc_convert(tmp_html, "markdown_strict", output = tmp_md)
-
-  cat("\n\n---", file = tmp_md, append = TRUE)
-
-  # Get function title and remove HTML tags left
-  md <- .readlines(tmp_md)
-  md <- md[-c(1:10)]
-
-  # Title to put in sidebar
-  title <- gsub(".Rd", "", rdfile)
-  title <- gsub("man/", "", title)
-  title <- gsub("_", " ", title)
-  initial <- substr(title, 1, 1)
-  title <- paste0(toupper(initial), substr(title, 2, nchar(title)))
-
-  md <- c(
-    paste0("## ", title),
-    md
-  )
-
-  # Syntax used for examples is four spaces, which prevents code
-  # highlighting. So I need to put backticks before and after the examples
-  # and remove the four spaces.
-  start_examples <- grep("^### Examples$", md)
-  if (length(start_examples) != 0) {
-    examples <- md[start_examples:length(md)]
-    not_empty_lines <- which(examples != "")[-1]
-    examples[not_empty_lines[1]] <-
-      paste0("```r\n", examples[not_empty_lines[1]])
-    examples[not_empty_lines[length(not_empty_lines) - 1]] <-
-      paste0(examples[not_empty_lines[length(not_empty_lines) - 1]], "\n```")
-    md[start_examples:length(md)] <- examples
-    for (i in start_examples:length(md)) {
-      md[i] <- gsub("    ", "", md[i])
-    }
-  }
-  md
-}
-
-
 .rd2qmd <- function(source_file, target_dir) {
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
