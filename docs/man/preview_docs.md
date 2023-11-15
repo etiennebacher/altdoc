@@ -1,5 +1,5 @@
 
-# preview
+# preview_docs
 
 Preview the documentation in a webpage or in viewer
 
@@ -9,7 +9,7 @@ Preview the documentation in a webpage or in viewer
 
 ## Usage
 
-<pre><code class='language-R'>preview(path = ".")
+<pre><code class='language-R'>preview_docs(path = ".")
 </code></pre>
 
 ## Arguments
@@ -17,7 +17,7 @@ Preview the documentation in a webpage or in viewer
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="preview_:_path">path</code>
+<code id="preview_docs_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.

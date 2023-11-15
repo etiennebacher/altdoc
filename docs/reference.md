@@ -1,6 +1,6 @@
 # Reference 
 
-## Preview
+## Preview docs
 ---------------------------------------------------
 
 ### Description
@@ -9,14 +9,14 @@ Preview the documentation in a webpage or in viewer
 
 ### Usage
 
-    preview(path = ".")
+    preview_docs(path = ".")
 
 ### Arguments
 
 <table>
 <tbody>
 <tr class="odd">
-<td><code id="preview_:_path">path</code></td>
+<td><code id="preview_docs_:_path">path</code></td>
 <td><p>Path to the package root directory.</p></td>
 </tr>
 </tbody>

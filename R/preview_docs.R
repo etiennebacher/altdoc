@@ -12,7 +12,7 @@
 #'   preview_docs()
 #' 
 #' }
-preview <- function(path = ".") {
+preview_docs <- function(path = ".") {
   # conditional dependencies
   # .assert_dependency("servr", install = TRUE)
   # .assert_dependency("rstudioapi", install = TRUE)
