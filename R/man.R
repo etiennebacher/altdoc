@@ -1,7 +1,5 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .import_man <- function(update = FALSE, path = ".", verbose = FALSE) {
-  cli::cli_h1("Building reference")
-
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
@@ -19,9 +17,13 @@
   }
 
   n <- length(man_source)
+
+  # can't use message_info with {}
   cli::cli_alert_info("Found {n} man page{?s} to convert.")
   i <- 0
-  cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+  cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
+
+  conversion_worked <- vector(length = n)
 
   # process man pages one by one
   for (i in seq_along(man_source)) {
@@ -32,7 +34,7 @@
     destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+    conversion_worked[i] <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
     fs::file_delete(destination_qmd)
 
     # section headings are too deeply nested by default
@@ -45,8 +47,37 @@
     cli::cli_progress_update(inc = 1)
   }
 
+  successes <- which(conversion_worked == TRUE)
+  fails <- which(conversion_worked == FALSE)
   cli::cli_progress_done()
 
+  # indent bullet points
+  cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+
+  if (length(successes) > 0) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert_success("{cli::qty(length(successes))}The following man page{?s} ha{?s/ve} been rendered and put in {.file {tar_dir}}:")
+    cli::cli_ul(id = "list-success")
+    for (i in seq_along(successes)) {
+      cli::cli_li("{.file {man_source[successes[i]]}}")
+    }
+    cli::cli_par()
+    cli::cli_end(id = "list-success")
+  }
+
+  if (length(fails) > 0) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following man page{?s}:")
+    cli::cli_ul(id = "list-fail")
+    for (i in seq_along(fails)) {
+      cli::cli_li("{.file {man_source[fails[i]]}}")
+    }
+    cli::cli_par()
+    cli::cli_end(id = "list-fail")
+  }
 }
 
 

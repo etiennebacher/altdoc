@@ -83,7 +83,7 @@
   if (length(successes) > 0) {
     cli::cli_par()
     cli::cli_end()
-    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been converted and put in {.file {tar_dir}}:")
+    cli::cli_alert_success("{cli::qty(length(successes))}The following vignette{?s} ha{?s/ve} been rendered and put in {.file {tar_dir}}:")
     cli::cli_ul(id = "list-success")
     for (i in seq_along(successes)) {
       cli::cli_li("{.file {src_files[successes[i]]}}")

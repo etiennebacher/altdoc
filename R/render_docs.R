@@ -34,6 +34,7 @@ render_docs <- function(path = ".",
   .import_coc(path)
 
   # Update functions reference
+  cli::cli_h1("Update man pages")
   .import_man(update = TRUE, path = path, verbose = verbose)
 
   # Update vignettes
