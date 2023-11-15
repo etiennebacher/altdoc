@@ -4,7 +4,7 @@
 #' of Conduct, and Reference sections (if ' they exist). This section modifies and
 #' overwrites the files in the 'docs/' folder.
 #'
-#' @inheritParams use_docute
+#' @inheritParams setup_docs
 #' @export
 #'
 #' @return No value returned. Updates and overwrites the files in folder 'docs'.
@@ -49,7 +49,7 @@ update_docs <- function(path = ".",
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
 
   if (isTRUE(preview)) {
-    preview(path = path)
+    preview_docs(path = path)
   }
 
 }

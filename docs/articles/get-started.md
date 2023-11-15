@@ -10,15 +10,15 @@ these commands from the root directory of your package:
 library(altdoc)
 
 ### Initialize
-use_docsify()
-## use_docute()
-## use_mkdocs()
+setup_docs(tool = "docsify")
+## setup_docs(tool = "docute")
+## setup_docs(tool = "mkdocs")
 
 ### Render
 update_docs()
 
 ### Preview
-preview()
+preview_docs()
 ```
 
 Below, we explain in more detail what these commands do.
@@ -67,7 +67,7 @@ installation guides for details.
 ## Initialize
 
 These functions initialize a documentation website structure:
-`use_docsify()`, `use_docute()` and `use_mkdocs()`. Calling one of them
+`setup_docs(tool = "docsify")`, `setup_docs(tool = "docute")` and `setup_docs(tool = "mkdocs")`. Calling one of them
 will:
 
 1.  Create a `docs/` folder
@@ -81,7 +81,7 @@ will:
 To customize the documentation, you can edit the settings files in the
 `altdoc/` folder. The settings files differ between the different
 documentation generators. For example, this is the default `mkdocs.yml`
-settings created when one calls `use_mkdocs()`:
+settings created when one calls `setup_docs(tool = "mkdocs")`:
 
 ``` yaml
 site_name: $ALTDOC_PACKAGE_NAME
@@ -163,7 +163,7 @@ In RStudio you can launch one automatically in the Preview Pane by
 calling:
 
 ``` r
-preview()
+preview_docs()
 ```
 
 In Visual Studio Code, you can use one of the many “live preview” or

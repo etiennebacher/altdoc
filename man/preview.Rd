@@ -4,7 +4,7 @@
 \alias{preview}
 \title{Preview the documentation in a webpage or in viewer}
 \usage{
-preview(path = ".")
+preview_docs(path = ".")
 }
 \arguments{
 \item{path}{Path to the package root directory.}
@@ -20,7 +20,7 @@ Preview the documentation in a webpage or in viewer
 \examples{
 if (interactive()) {
 
-  preview()
+  preview_docs()
 
 }
 }

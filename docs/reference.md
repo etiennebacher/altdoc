@@ -8,7 +8,7 @@ Preview the documentation in a webpage or in viewer
 
 ### Usage
 
-    preview(path = ".")
+    preview_docs(path = ".")
 
 ### Arguments
 
@@ -32,7 +32,7 @@ VS Code), see the vignette on the `altdoc` website. '
 ```r
 if (interactive()) {
 
-  preview()
+  preview_docs()
 
 }
 ```
@@ -70,7 +70,7 @@ rendering calls.</p></td>
 </tr>
 <tr class="odd">
 <td><code id="update_docs_:_preview">preview</code></td>
-<td><p>TRUE/FALSE. Run the <code>preview()</code> function automatically
+<td><p>TRUE/FALSE. Run the <code>preview_docs()</code> function automatically
 after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 </tbody>
@@ -151,7 +151,7 @@ style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 <tr class="odd">
 <td><code id="use_docute_:_preview">preview</code></td>
-<td><p>TRUE/FALSE. Run the <code>preview()</code> function automatically
+<td><p>TRUE/FALSE. Run the <code>preview_docs()</code> function automatically
 after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 <tr class="even">
@@ -185,13 +185,13 @@ manually to customize the sidebar and website.
 if (interactive()) {
 
   # Create docute documentation
-  use_docute()
+  setup_docs(tool = "docute")
 
   # Create docsify documentation
-  use_docsify()
+  setup_docs(tool = "docsify")
 
   # Create mkdocs documentation
-  use_mkdocs()
+  setup_docs(tool = "mkdocs")
 
 }
 ```

@@ -1,6 +1,6 @@
 #' Preview the documentation in a webpage or in viewer
 #'
-#' @inheritParams use_docute
+#' @inheritParams setup_docs
 #' @export
 #'
 #' @return No value returned. If RStudio is used, it shows a site preview in 
@@ -9,7 +9,7 @@
 #' @examples
 #' if (interactive()) {
 #' 
-#'   preview()
+#'   preview_docs()
 #' 
 #' }
 preview <- function(path = ".") {

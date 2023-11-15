@@ -59,7 +59,7 @@ test_that("import_* functions work", {
 
 test_that(".need_to_bump_version() works", {
   create_local_package()
-  use_docute(path = getwd())
+  setup_docs(tool = "docute", path = getwd())
 
   expect_equal(.doc_version(getwd()), "0.0.0.9000")
   expect_false(.need_to_bump_version(getwd()))
@@ -74,7 +74,7 @@ test_that(".need_to_bump_version() works", {
 
 test_that(".need_to_bump_version() works", {
   create_local_package()
-  use_docsify(path = getwd())
+  setup_docs(tool = "docsify", path = getwd())
 
   expect_equal(.doc_version(getwd()), "0.0.0.9000")
   expect_false(.need_to_bump_version(getwd()))

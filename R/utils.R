@@ -100,7 +100,7 @@
   docute <- fs::file_exists(fn)
 
   if (sum(c(mkdocs, docsify, docute)) == 0) {
-    cli::cli_abort("No documentation tool detected. Please run {.code use_mkdocs()}, {.code use_docsify()}, or {.code use_docute()}.")
+    cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
   } else if (sum(c(mkdocs, docsify, docute)) > 1) {
     cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
   }

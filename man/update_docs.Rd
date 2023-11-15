@@ -12,10 +12,6 @@ update_docs(
 }
 \arguments{
 \item{path}{Path to the package root directory.}
-
-\item{verbose}{TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering calls.}
-
-\item{preview}{TRUE/FALSE. Run the \code{preview()} function automatically after \verb{use_*()}.}
 }
 \value{
 No value returned. Updates and overwrites the files in folder 'docs'.

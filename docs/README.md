@@ -57,15 +57,15 @@ A typical worfklow with `altdoc` is to execute these commands from the root dire
 
 ```r
 ### Create the website structure for one of the documentation generators
-use_docsify()
-# use_docute()
-# use_mkdocs()
+setup_docs(tool = "docsify")
+# setup_docs(tool = "docute")
+# setup_docs(tool = "mkdocs")
 
 ### Render the vignettes and man pages
 update_docs()
 
 ### Preview the website
-preview()
+preview_docs()
 ```
 
 See [the Get Started vignette](articles/get-started.md) for more details.

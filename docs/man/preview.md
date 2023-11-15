@@ -9,7 +9,7 @@ Preview the documentation in a webpage or in viewer
 
 ## Usage
 
-<pre><code class='language-R'>preview(path = ".")
+<pre><code class='language-R'>preview_docs(path = ".")
 </code></pre>
 
 ## Arguments
@@ -38,7 +38,7 @@ library(altdoc)
 
 if (interactive()) {
 
-  preview()
+  preview_docs()
 
 }
 ```

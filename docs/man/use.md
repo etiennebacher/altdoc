@@ -78,7 +78,7 @@ after <code style="white-space: pre;">⁠use\_\*()⁠</code>.
 <code id="use_docute_:_preview">preview</code>
 </td>
 <td>
-TRUE/FALSE. Run the <code>preview()</code> function automatically after
+TRUE/FALSE. Run the <code>preview_docs()</code> function automatically after
 <code style="white-space: pre;">⁠use\_\*()⁠</code>.
 </td>
 </tr>
@@ -121,13 +121,13 @@ library(altdoc)
 if (interactive()) {
 
   # Create docute documentation
-  use_docute()
+  setup_docs(tool = "docute")
 
   # Create docsify documentation
-  use_docsify()
+  setup_docs(tool = "docsify")
 
   # Create mkdocs documentation
-  use_mkdocs()
+  setup_docs(tool = "mkdocs")
 
 }
 ```

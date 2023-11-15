@@ -2,7 +2,7 @@ skip_mkdocs()
 
 test_that("use_mkdocs creates the right files", {
   create_local_package()
-  use_mkdocs(path = getwd())
+  setup_docs(tool = "mkdocs", path = getwd())
   expect_true(fs::file_exists("docs/mkdocs.yml"))
   expect_true(fs::file_exists("docs/docs/README.md"))
   expect_true(fs::file_exists("docs/docs/reference.md"))
@@ -10,7 +10,7 @@ test_that("use_mkdocs creates the right files", {
 
 test_that("use_mkdocs: arg 'overwrite' works", {
   create_local_package()
-  use_mkdocs(path = getwd())
+  setup_docs(tool = "mkdocs", path = getwd())
   fs::file_create("docs/test")
   use_mkdocs(overwrite = TRUE, path = getwd())
   expect_false(fs::file_exists("docs/test"))

@@ -1,53 +1,3 @@
-.create_settings <- function(path = ".", doctype = "docsify", overwrite = FALSE) {
-    safe.copy <- function(src, tar, overwrite) {
-        if (fs::file_exists(tar) && !isTRUE(overwrite)) {
-            cli::cli_abort("{tar} already exists. Delete it or set `overwrite=TRUE`.", call = NULL)
-        } else {
-            file.copy(src, tar, overwrite = TRUE)
-        }
-    }
-
-    .check_is_package(path)
-
-    imm_dir <- fs::path_abs(fs::path_join(c(path, "altdoc")))
-
-    # .Rbuildignore directories that would break CRAN submissions
-    .add_rbuildignore("^docs$", path = path)
-    if (!fs::dir_exists(imm_dir)) {
-        .add_rbuildignore("^altdoc$", path = path)
-        fs::dir_create(imm_dir)
-    }
-
-    if (isTRUE(doctype == "docsify")) {
-        src <- system.file("docsify/docsify.html", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "docsify.html"))
-        safe.copy(src, tar, overwrite = overwrite)
-
-        src <- system.file("docsify/docsify.md", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "docsify.md"))
-        safe.copy(src, tar, overwrite = overwrite)
-
-    } else if (isTRUE(doctype == "docute")) {
-        src <- system.file("docute/docute.html", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "docute.html"))
-        safe.copy(src, tar, overwrite = overwrite)
-
-    } else if (isTRUE(doctype == "mkdocs")) {
-        src <- system.file("mkdocs/mkdocs.yml", package = "altdoc")
-        tar <- fs::path_join(c(imm_dir, "mkdocs.yml"))
-        safe.copy(src, tar, overwrite = overwrite)
-    }
-
-    # README.md is mandatory, so we create it automatically
-    fn <- fs::path_join(c(path, "README.md"))
-    if (!fs::file_exists(fn)) {
-        writeLines("Hello World!", fn)
-    }
-
-    return(invisible())
-}
-
-
 .substitute_altdoc_variables <- function(x, filename, path = ".") {
     x <- gsub("\\$ALTDOC_VERSION", packageVersion("altdoc"), x)
 
@@ -109,5 +59,3 @@
     }
 
 }
-
-

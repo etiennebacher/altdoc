@@ -43,7 +43,7 @@ calls.
 <code id="update_docs_:_preview">preview</code>
 </td>
 <td>
-TRUE/FALSE. Run the <code>preview()</code> function automatically after
+TRUE/FALSE. Run the <code>preview_docs()</code> function automatically after
 <code style="white-space: pre;">⁠use\_\*()⁠</code>.
 </td>
 </tr>
