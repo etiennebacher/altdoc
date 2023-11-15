@@ -15,11 +15,9 @@ setup_docs(tool, path = ".", overwrite = FALSE)
 }
 \value{
 No value returned.
-
-This function creates a subdirectory called \verb{altdoc/} in the package root directory. \verb{altdoc/} stores the settings files used to by each of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by \code{altdoc} unless the user explicitly calls \code{overwrite=TRUE}. They can thus be edited manually to customize the sidebar and website.
 }
 \description{
-Initialize documentation website settings
+Creates a subdirectory called \verb{altdoc/} in the package root directory to store the settings files used to by one of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by \code{altdoc} unless the user explicitly calls \code{overwrite=TRUE}. They can thus be edited manually to customize the sidebar and website.
 }
 \examples{
 if (interactive()) {

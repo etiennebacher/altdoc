@@ -53,11 +53,6 @@ render_docs <- function(path = ".", verbose = FALSE) {
   cli::cli_alert_success("Documentation updated.")
   cli::cli_alert_info("See {.code ?altdoc::render_docs} to know what files are concerned.")
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
-
-  if (isTRUE(preview)) {
-    preview_docs(path = path)
-  }
-
 }
 
 # Check that file exists:
