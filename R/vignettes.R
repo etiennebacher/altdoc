@@ -103,8 +103,6 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
-
-  cli::cli_alert_info("The folder {.file {src_dir}} was not modified.")
 }
 
 
