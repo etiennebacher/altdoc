@@ -58,19 +58,6 @@
   # indent bullet points
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
-
-  if (length(successes) > 0) {
-    cli::cli_par()
-    cli::cli_end()
-    cli::cli_alert_success("{cli::qty(length(successes))}The following man page{?s} ha{?s/ve} been rendered:")
-    cli::cli_ul(id = "list-success")
-    for (i in seq_along(successes)) {
-      cli::cli_li("{.file {man_source[successes[i]]}}")
-    }
-    cli::cli_par()
-    cli::cli_end(id = "list-success")
-  }
-
   if (length(fails) > 0) {
     cli::cli_par()
     cli::cli_end()

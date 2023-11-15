@@ -30,7 +30,7 @@ render_docs <- function(path = ".", verbose = FALSE) {
     fs::dir_create(good_path)
   }
 
-  cli::cli_h1("Update basic files")
+  cli::cli_h1("Basic files")
 
   # basic files
   .import_readme(path)
@@ -39,11 +39,11 @@ render_docs <- function(path = ".", verbose = FALSE) {
   .import_coc(path)
 
   # Update functions reference
-  cli::cli_h1("Update man pages")
+  cli::cli_h1("Man pages")
   .import_man(update = TRUE, path = path, verbose = verbose)
 
   # Update vignettes
-  cli::cli_h1("Update vignettes")
+  cli::cli_h1("Vignettes")
   .import_vignettes(path, verbose = verbose)
 
   cli::cli_h1("Update HTML")
@@ -51,7 +51,6 @@ render_docs <- function(path = ".", verbose = FALSE) {
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
-  cli::cli_alert_info("See {.code ?altdoc::render_docs} to know what files are concerned.")
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
 }
 
@@ -98,14 +97,9 @@ render_docs <- function(path = ".", verbose = FALSE) {
   if (fs::file_exists(docs_file)) {
     x <- .readlines(orig_file)
     y <- .readlines(docs_file)
-    if (identical(x, y)) {
-      cli::cli_alert_info("No changes in {.file {file_message}}.")
-      return(invisible())
-    } else {
-      cli::cli_alert_success("{.file {file_message}} updated.")
-    }
+    cli::cli_alert_success("{.file {file_message}} updated.")
   } else {
-    cli::cli_alert_info("{.file {file_message}} was imported for the first time. You should also update {.file {file_to_edit}}.")
+    cli::cli_alert_info("{.file {file_message}} was imported for the first time.")
   }
 
   fs::file_copy(orig_file, docs_file, overwrite = TRUE)
