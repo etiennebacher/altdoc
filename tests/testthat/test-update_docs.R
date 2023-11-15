@@ -1,30 +1,30 @@
 # README --------------------------------------------------------
 
-test_that("docute: update_docs updates correctly the README", {
+test_that("docute: render_docs updates correctly the README", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
   usethis::use_readme_md()
   readme1 <- .readlines("README.md")
   readme2 <- .readlines("docs/README.md")
   expect_false(identical(readme1, readme2))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   readme2 <- .readlines("docs/README.md")
   expect_true(identical(readme1, readme2))
 })
 
-test_that("docsify: update_docs updates correctly the README", {
+test_that("docsify: render_docs updates correctly the README", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
   usethis::use_readme_md()
   readme1 <- .readlines("README.md")
   readme2 <- .readlines("docs/README.md")
   expect_false(identical(readme1, readme2))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   readme2 <- .readlines("docs/README.md")
   expect_true(identical(readme1, readme2))
 })
 
-test_that("mkdocs: update_docs updates correctly the README", {
+test_that("mkdocs: render_docs updates correctly the README", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
@@ -32,7 +32,7 @@ test_that("mkdocs: update_docs updates correctly the README", {
   readme1 <- .readlines("README.md")
   readme2 <- .readlines("docs/docs/README.md")
   expect_false(identical(readme1, readme2))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   readme2 <- .readlines("docs/docs/README.md")
   expect_true(identical(readme1, readme2))
 })
@@ -41,7 +41,7 @@ test_that("mkdocs: update_docs updates correctly the README", {
 
 # NEWS --------------------------------------------------------
 
-test_that("docute: update_docs updates correctly the NEWS", {
+test_that("docute: render_docs updates correctly the NEWS", {
   create_local_package()
   # https://github.com/cynkra/fledge/issues/683
   withr::with_options(
@@ -57,12 +57,12 @@ test_that("docute: update_docs updates correctly the NEWS", {
   news2 <- .readlines("docs/NEWS.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs updates correctly the NEWS", {
+test_that("docsify: render_docs updates correctly the NEWS", {
   create_local_package()
   withr::with_options(
     list(repos = c("CRAN" = "https://cloud.r-project.org")),
@@ -77,12 +77,12 @@ test_that("docsify: update_docs updates correctly the NEWS", {
   news2 <- .readlines("docs/NEWS.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("mkdocs: update_docs updates correctly the NEWS", {
+test_that("mkdocs: render_docs updates correctly the NEWS", {
   skip_mkdocs()
   create_local_package()
   withr::with_options(
@@ -98,12 +98,12 @@ test_that("mkdocs: update_docs updates correctly the NEWS", {
   news2 <- .readlines("docs/docs/NEWS.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/docs/NEWS.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs works when NEWS didn't exist", {
+test_that("docsify: render_docs works when NEWS didn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
   withr::with_options(
@@ -112,13 +112,13 @@ test_that("docsify: update_docs works when NEWS didn't exist", {
       usethis::use_news_md()
     }
   )
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "'NEWS / Changelog' was imported for the first time."
   )
   expect_true(fs::file_exists("docs/NEWS.md"))
 })
 
-test_that("docute: update_docs works when NEWS didn't exist", {
+test_that("docute: render_docs works when NEWS didn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
   withr::with_options(
@@ -127,13 +127,13 @@ test_that("docute: update_docs works when NEWS didn't exist", {
       usethis::use_news_md()
     }
   )
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "NEWS.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/NEWS.md"))
 })
 
-test_that("mkdocs: update_docs works when NEWS didn't exist", {
+test_that("mkdocs: render_docs works when NEWS didn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
@@ -143,33 +143,33 @@ test_that("mkdocs: update_docs works when NEWS didn't exist", {
       usethis::use_news_md()
     }
   )
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "NEWS.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/docs/NEWS.md"))
 })
 
-test_that("docsify: update_docs shows message when NEWS doesn't exist", {
+test_that("docsify: render_docs shows message when NEWS doesn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No.*NEWS.*to include."
   )
 })
 
-test_that("docute: update_docs shows message when NEWS doesn't exist", {
+test_that("docute: render_docs shows message when NEWS doesn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No.*NEWS / Changelog.*to include."
   )
 })
 
-test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
+test_that("mkdocs: render_docs shows message when NEWS doesn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No.*NEWS / Changelog.*to include."
   )
 })
@@ -179,7 +179,7 @@ test_that("mkdocs: update_docs shows message when NEWS doesn't exist", {
 
 # CODE OF CONDUCT --------------------------------------------------------
 
-test_that("docute: update_docs updates correctly the CoC", {
+test_that("docute: render_docs updates correctly the CoC", {
   create_local_package()
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   writeLines("Hello", con = "CODE_OF_CONDUCT.md")
@@ -189,12 +189,12 @@ test_that("docute: update_docs updates correctly the CoC", {
   news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs updates correctly the CoC", {
+test_that("docsify: render_docs updates correctly the CoC", {
   create_local_package()
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
   writeLines("Hello", con = "CODE_OF_CONDUCT.md")
@@ -204,12 +204,12 @@ test_that("docsify: update_docs updates correctly the CoC", {
   news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("mkdocs: update_docs updates correctly the CoC", {
+test_that("mkdocs: render_docs updates correctly the CoC", {
   skip_mkdocs()
   create_local_package()
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
@@ -220,63 +220,63 @@ test_that("mkdocs: update_docs updates correctly the CoC", {
   news2 <- .readlines("docs/docs/CODE_OF_CONDUCT.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/docs/CODE_OF_CONDUCT.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs works when CoC didn't exist", {
+test_that("docsify: render_docs works when CoC didn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "Code of Conduct.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
 })
 
-test_that("docute: update_docs works when CoC didn't exist", {
+test_that("docute: render_docs works when CoC didn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "Code of Conduct.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
 })
 
-test_that("mkdocs: update_docs works when CoC didn't exist", {
+test_that("mkdocs: render_docs works when CoC didn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
   usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "Code of Conduct.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/docs/CODE_OF_CONDUCT.md"))
 })
 
-test_that("docsify: update_docs shows message when CoC doesn't exist", {
+test_that("docsify: render_docs shows message when CoC doesn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'Code of Conduct' to include."
   )
 })
 
-test_that("docute: update_docs shows message when CoC doesn't exist", {
+test_that("docute: render_docs shows message when CoC doesn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'Code of Conduct' to include."
   )
 })
 
-test_that("mkdocs: update_docs shows message when CoC doesn't exist", {
+test_that("mkdocs: render_docs shows message when CoC doesn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'Code of Conduct' to include."
   )
 })
@@ -287,7 +287,7 @@ test_that("mkdocs: update_docs shows message when CoC doesn't exist", {
 
 # LICENSE --------------------------------------------------------
 
-test_that("docute: update_docs updates correctly the License", {
+test_that("docute: render_docs updates correctly the License", {
   create_local_package()
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   writeLines("Hello", con = "LICENSE.md")
@@ -297,12 +297,12 @@ test_that("docute: update_docs updates correctly the License", {
   news2 <- .readlines("docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs updates correctly the License", {
+test_that("docsify: render_docs updates correctly the License", {
   create_local_package()
   usethis::use_mit_license("etienne.bacher@protonmail.com")
   writeLines("Hello", con = "LICENSE.md")
@@ -312,12 +312,12 @@ test_that("docsify: update_docs updates correctly the License", {
   news2 <- .readlines("docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("mkdocs: update_docs updates correctly the License", {
+test_that("mkdocs: render_docs updates correctly the License", {
   skip_mkdocs()
   create_local_package()
   usethis::use_mit_license("etienne.bacher@protonmail.com")
@@ -328,63 +328,63 @@ test_that("mkdocs: update_docs updates correctly the License", {
   news2 <- .readlines("docs/docs/LICENSE.md")
   expect_false(identical(news1, news2))
 
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   news2 <- .readlines("docs/docs/LICENSE.md")
   expect_true(identical(news1, news2))
 })
 
-test_that("docsify: update_docs works when License didn't exist", {
+test_that("docsify: render_docs works when License didn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "License / Licence.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/LICENSE.md"))
 })
 
-test_that("docute: update_docs works when License didn't exist", {
+test_that("docute: render_docs works when License didn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "License / Licence.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/LICENSE.md"))
 })
 
-test_that("mkdocs: update_docs works when License didn't exist", {
+test_that("mkdocs: render_docs works when License didn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
   usethis::use_mit_license("etienne.bacher@protonmail.com")
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "License / Licence.*was imported for the first time."
   )
   expect_true(fs::file_exists("docs/docs/LICENSE.md"))
 })
 
-test_that("docsify: update_docs shows message when License doesn't exist", {
+test_that("docsify: render_docs shows message when License doesn't exist", {
   create_local_package()
   setup_docs(tool = "docsify", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'License / Licence' to include."
   )
 })
 
-test_that("docute: update_docs shows message when License doesn't exist", {
+test_that("docute: render_docs shows message when License doesn't exist", {
   create_local_package()
   setup_docs(tool = "docute", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'License / Licence' to include."
   )
 })
 
-test_that("mkdocs: update_docs shows message when License doesn't exist", {
+test_that("mkdocs: render_docs shows message when License doesn't exist", {
   skip_mkdocs()
   create_local_package()
   setup_docs(tool = "mkdocs", path = getwd())
-  expect_message(update_docs(path = getwd()),
+  expect_message(render_docs(path = getwd()),
     regexp = "No 'License / Licence' to include."
   )
 })
@@ -393,7 +393,7 @@ test_that("mkdocs: update_docs shows message when License doesn't exist", {
 
 # VIGNETTES --------------------------------------------------------
 
-test_that("docute: update_docs also transform new/modified vignettes if specified", {
+test_that("docute: render_docs also transform new/modified vignettes if specified", {
   # setup
   first_rmd <- .readlines(
     testthat::test_path("examples/examples-vignettes", "basic.Rmd")
@@ -408,11 +408,11 @@ test_that("docute: update_docs also transform new/modified vignettes if specifie
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/articles/several-outputs.md"))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   expect_true(fs::file_exists("docs/articles/several-outputs.md"))
 })
 
-test_that("docsify: update_docs also transform new/modified vignettes if specified", {
+test_that("docsify: render_docs also transform new/modified vignettes if specified", {
   # setup
   first_rmd <- .readlines(
     testthat::test_path("examples/examples-vignettes", "basic.Rmd")
@@ -427,11 +427,11 @@ test_that("docsify: update_docs also transform new/modified vignettes if specifi
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/articles/several-outputs.md"))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   expect_true(fs::file_exists("docs/articles/several-outputs.md"))
 })
 
-test_that("mkdocs: update_docs also transform new/modified vignettes if specified", {
+test_that("mkdocs: render_docs also transform new/modified vignettes if specified", {
   skip_mkdocs()
   # setup
   first_rmd <- .readlines(
@@ -447,6 +447,6 @@ test_that("mkdocs: update_docs also transform new/modified vignettes if specifie
   writeLines(second_rmd, "vignettes/several-outputs.Rmd")
 
   expect_false(fs::file_exists("docs/docs/articles/several-outputs.md"))
-  update_docs(path = getwd())
+  render_docs(path = getwd())
   expect_true(fs::file_exists("docs/docs/articles/several-outputs.md"))
 })

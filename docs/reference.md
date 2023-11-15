@@ -1,6 +1,7 @@
 # Reference 
 
 ## Preview
+---------------------------------------------------
 
 ### Description
 
@@ -8,7 +9,7 @@ Preview the documentation in a webpage or in viewer
 
 ### Usage
 
-    preview_docs(path = ".")
+    preview(path = ".")
 
 ### Arguments
 
@@ -39,7 +40,8 @@ if (interactive()) {
 
 
 ---
-## Update docs
+## Render docs
+--------------------
 
 ### Description
 
@@ -49,7 +51,7 @@ modifies and overwrites the files in the 'docs/' folder.
 
 ### Usage
 
-    update_docs(
+    render_docs(
       path = ".",
       verbose = FALSE,
       preview = getOption("altdoc_preview", default = FALSE)
@@ -60,18 +62,8 @@ modifies and overwrites the files in the 'docs/' folder.
 <table>
 <tbody>
 <tr class="odd">
-<td><code id="update_docs_:_path">path</code></td>
+<td><code id="render_docs_:_path">path</code></td>
 <td><p>Path to the package root directory.</p></td>
-</tr>
-<tr class="even">
-<td><code id="update_docs_:_verbose">verbose</code></td>
-<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
-rendering calls.</p></td>
-</tr>
-<tr class="odd">
-<td><code id="update_docs_:_preview">preview</code></td>
-<td><p>TRUE/FALSE. Run the <code>preview_docs()</code> function automatically
-after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -85,14 +77,15 @@ No value returned. Updates and overwrites the files in folder 'docs'.
 ```r
 if (interactive()) {
 
-  update_docs()
+  render_docs()
 
 }
 ```
 
 
 ---
-## Use
+## Setup docs
+-----------------------------------------
 
 ### Description
 
@@ -100,73 +93,26 @@ Initialize documentation website settings
 
 ### Usage
 
-    use_docute(
-      path = ".",
-      overwrite = FALSE,
-      verbose = FALSE,
-      update_docs = getOption("altdoc_update_docs", default = FALSE),
-      preview = getOption("altdoc_preview", default = FALSE)
-    )
-
-    use_docsify(
-      path = ".",
-      overwrite = FALSE,
-      verbose = FALSE,
-      update_docs = getOption("altdoc_update_docs", default = FALSE),
-      preview = getOption("altdoc_preview", default = FALSE)
-    )
-
-    use_mkdocs(
-      path = ".",
-      overwrite = FALSE,
-      verbose = FALSE,
-      update_docs = getOption("altdoc_update_docs", default = FALSE),
-      preview = getOption("altdoc_preview", default = FALSE),
-      theme = NULL
-    )
+    setup_docs(tool, path = ".", overwrite = FALSE)
 
 ### Arguments
 
 <table>
 <tbody>
 <tr class="odd">
-<td><code id="use_docute_:_path">path</code></td>
+<td><code id="setup_docs_:_tool">tool</code></td>
+<td><p>String. "docsify", "docute", or "mkdocs".</p></td>
+</tr>
+<tr class="even">
+<td><code id="setup_docs_:_path">path</code></td>
 <td><p>Path to the package root directory.</p></td>
 </tr>
-<tr class="even">
-<td><code id="use_docute_:_overwrite">overwrite</code></td>
-<td><p>TRUE/FALSE. Overwrite the settings files stored in <code
-style="white-space: pre;">⁠altdoc/⁠</code>. This is dangerous!</p></td>
-</tr>
 <tr class="odd">
-<td><code id="use_docute_:_verbose">verbose</code></td>
-<td><p>TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto
-rendering calls.</p></td>
-</tr>
-<tr class="even">
-<td><code id="use_docute_:_update_docs">update_docs</code></td>
-<td><p>TRUE/FALSE. Run the <code>update_docs()</code> function
-automatically after <code
-style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
-</tr>
-<tr class="odd">
-<td><code id="use_docute_:_preview">preview</code></td>
-<td><p>TRUE/FALSE. Run the <code>preview_docs()</code> function automatically
-after <code style="white-space: pre;">⁠use_*()⁠</code>.</p></td>
-</tr>
-<tr class="even">
-<td><code id="use_docute_:_theme">theme</code></td>
-<td><p>Name of the theme to use. Default is basic theme. This is only
-available in <code>mkdocs</code>. See Details section.</p></td>
+<td><code id="setup_docs_:_overwrite">overwrite</code></td>
+<td><p>Logical. If TRUE, overwrite existing files.</p></td>
 </tr>
 </tbody>
 </table>
-
-### Details
-
-If you are new to Mkdocs, the themes "readthedocs" and "material" are
-among the most popular and developed. You can also see a list of themes
-here: <https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes>.
 
 ### Value
 

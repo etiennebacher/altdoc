@@ -15,7 +15,7 @@ setup_docs(tool = "docsify")
 ## setup_docs(tool = "mkdocs")
 
 ### Render
-update_docs()
+render_docs()
 
 ### Preview
 preview_docs()
@@ -45,7 +45,7 @@ See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs
 `altdoc` makes assumptions about your package structure:
 
 * `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
-* `docs/` stores the rendered website. This folder is overwritten every time a user calls `update_docs()`, so you should not edit it manually.
+* `docs/` stores the rendered website. This folder is overwritten every time a user calls `render_docs()`, so you should not edit it manually.
 * `altdoc/` stores the settings files created by `use_*()` functions. These files are never modified automatically after initialization, so you can edit these files manually to change the settings of your documentation and website. All the files stored in `altdoc/` are copied to `docs/` and made available as static files in the root of the website.
 * `README.md` is the homepage of the website.
 * The content of the (optional) "news" section is stored in `NEWS.md` or `CHANGELOG.md`
@@ -83,7 +83,7 @@ $ALTDOC_VIGNETTE_BLOCK
 
 By editing this file, you can change the name of the website, the order of the sections, add new sections or drop irrelevant ones, etc. 
 
-The settings files can include `$ALTDOC` variables which are replaced automatically by `altdoc` when calling `update_docs()`:
+The settings files can include `$ALTDOC` variables which are replaced automatically by `altdoc` when calling `render_docs()`:
 
 * `$ALTDOC_PACKAGE_NAME`: Name of the package from `DESCRIPTION`.
 * `$ALTDOC_PACKAGE_VERSION`: Version number of the package from `DESCRIPTION`
@@ -107,7 +107,7 @@ Interested readers should refer to their chosen documentation generator document
 Once the documentation is initialized, you can render it with:
 
 ```r
-update_docs()
+render_docs()
 ```
 
 This function will:
@@ -119,7 +119,7 @@ This function will:
 4. Convert the manual pages stored `man/` from `.Rd` to `.md` format, and copy them to `docs/man/`.
 5. Copy all static files from `altdoc/` to `docs/`.
 
-Whenever you make changes to the man pages or to the vignettes, you can call `update_docs()` again to render the new files and update the website.
+Whenever you make changes to the man pages or to the vignettes, you can call `render_docs()` again to render the new files and update the website.
 
 
 ## Preview

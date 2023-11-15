@@ -1,5 +1,5 @@
 
-# update_docs
+# render_docs
 
 Update documentation
 
@@ -11,7 +11,7 @@ modifies and overwrites the files in the ‘docs/’ folder.
 
 ## Usage
 
-<pre><code class='language-R'>update_docs(
+<pre><code class='language-R'>render_docs(
   path = ".",
   verbose = FALSE,
   preview = getOption("altdoc_preview", default = FALSE)
@@ -23,7 +23,7 @@ modifies and overwrites the files in the ‘docs/’ folder.
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="update_docs_:_path">path</code>
+<code id="render_docs_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.
@@ -31,7 +31,7 @@ Path to the package root directory.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="update_docs_:_verbose">verbose</code>
+<code id="render_docs_:_verbose">verbose</code>
 </td>
 <td>
 TRUE/FALSE. Print the verbose output from Rmarkdown and Quarto rendering
@@ -40,7 +40,7 @@ calls.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="update_docs_:_preview">preview</code>
+<code id="render_docs_:_preview">preview</code>
 </td>
 <td>
 TRUE/FALSE. Run the <code>preview_docs()</code> function automatically after
@@ -60,7 +60,7 @@ library(altdoc)
 
 if (interactive()) {
 
-  update_docs()
+  render_docs()
 
 }
 ```

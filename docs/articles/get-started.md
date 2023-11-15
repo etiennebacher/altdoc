@@ -15,7 +15,7 @@ setup_docs(tool = "docsify")
 ## setup_docs(tool = "mkdocs")
 
 ### Render
-update_docs()
+render_docs()
 
 ### Preview
 preview_docs()
@@ -48,27 +48,28 @@ installation guides for details.
 
 `altdoc` makes assumptions about your package structure:
 
-- `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
-- `docs/` stores the rendered website. This folder is overwritten every
-  time a user calls `update_docs()`, so you should not edit it manually.
-- `altdoc/` stores the settings files created by `use_*()` functions.
-  These files are never modified automatically after initialization, so
-  you can edit these files manually to change the settings of your
-  documentation and website. All the files stored in `altdoc/` are
-  copied to `docs/` and made available as static files in the root of
-  the website.
-- `README.md` is the homepage of the website.
-- The content of the (optional) “news” section is stored in `NEWS.md` or
-  `CHANGELOG.md`
-- The content of the (optional) “code of conduct” section is stored in
-  `CODE_OF_CONDUCT.md`.
-- The license is stored in `LICENSE.md` or `LICENSE.md`.
+  - `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
+  - `docs/` stores the rendered website. This folder is overwritten
+    every time a user calls `render_docs()`, so you should not edit it
+    manually.
+  - `altdoc/` stores the settings files created by `use_*()` functions.
+    These files are never modified automatically after initialization,
+    so you can edit these files manually to change the settings of your
+    documentation and website. All the files stored in `altdoc/` are
+    copied to `docs/` and made available as static files in the root of
+    the website.
+  - `README.md` is the homepage of the website.
+  - The content of the (optional) “news” section is stored in `NEWS.md`
+    or `CHANGELOG.md`
+  - The content of the (optional) “code of conduct” section is stored in
+    `CODE_OF_CONDUCT.md`.
+  - The license is stored in `LICENSE.md` or `LICENSE.md`.
 
 ## Initialize
 
 These functions initialize a documentation website structure:
-`setup_docs(tool = "docsify")`, `setup_docs(tool = "docute")` and `setup_docs(tool = "mkdocs")`. Calling one of them
-will:
+`setup_docs(tool = "docsify")`, `setup_docs(tool = "docute")` and
+`setup_docs(tool = "mkdocs")`. Calling one of them will:
 
 1.  Create a `docs/` folder
 2.  Create a `altdoc/` folder
@@ -101,23 +102,23 @@ By editing this file, you can change the name of the website, the order
 of the sections, add new sections or drop irrelevant ones, etc.
 
 The settings files can include `$ALTDOC` variables which are replaced
-automatically by `altdoc` when calling `update_docs()`:
+automatically by `altdoc` when calling `render_docs()`:
 
-- `$ALTDOC_PACKAGE_NAME`: Name of the package from `DESCRIPTION`.
-- `$ALTDOC_PACKAGE_VERSION`: Version number of the package from
-  `DESCRIPTION`
-- `$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of the
-  package.
-- `$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains “github.com”
-  from the URLs listed in the DESCRIPTION file of the package. If no
-  such URL is found, lines containing this variable are removed from the
-  settings file.
-- `$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help pages
-  for each exported function of the package. The format of this block
-  depends on the documentation generator.
-- `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The
-  format of this block depends on the documentation generator.
-- `$ALTDOC_VERSION`: Version number of the altdoc package.
+  - `$ALTDOC_PACKAGE_NAME`: Name of the package from `DESCRIPTION`.
+  - `$ALTDOC_PACKAGE_VERSION`: Version number of the package from
+    `DESCRIPTION`
+  - `$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of
+    the package.
+  - `$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains “github.com”
+    from the URLs listed in the DESCRIPTION file of the package. If no
+    such URL is found, lines containing this variable are removed from
+    the settings file.
+  - `$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help
+    pages for each exported function of the package. The format of this
+    block depends on the documentation generator.
+  - `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The
+    format of this block depends on the documentation generator.
+  - `$ALTDOC_VERSION`: Version number of the altdoc package.
 
 Also note that you can store images and static files in the `altdoc/`
 directory. All the files in this folder are copied to `docs/` and made
@@ -126,23 +127,23 @@ available in the root of the website, so you can link to them easily.
 Interested readers should refer to their chosen documentation generator
 documentation for more details:
 
-- <https://docsify.js.org/>
-- <https://docute.egoist.dev/>
-- <https://www.mkdocs.org/>
+  - <https://docsify.js.org/>
+  - <https://docute.egoist.dev/>
+  - <https://www.mkdocs.org/>
 
 ## Render and update
 
 Once the documentation is initialized, you can render it with:
 
 ``` r
-update_docs()
+render_docs()
 ```
 
 This function will:
 
 1.  Render and copy standard `R` package files to `docs/`.
-    - Ex: `NEWS.md`, `README.md`, `LICENSE.md`, `CODE_OF_CONDUCT.md`,
-      etc.
+      - Ex: `NEWS.md`, `README.md`, `LICENSE.md`, `CODE_OF_CONDUCT.md`,
+        etc.
 2.  Render Rmarkdown and Quarto files (`.Rmd` and `.qmd` extensions)
     from the `vignettes/` directory and store them in `docs/articles/`.
 3.  Copy Markdown files with extension `.md` from `vignettes/` to
@@ -152,7 +153,7 @@ This function will:
 5.  Copy all static files from `altdoc/` to `docs/`.
 
 Whenever you make changes to the man pages or to the vignettes, you can
-call `update_docs()` again to render the new files and update the
+call `render_docs()` again to render the new files and update the
 website.
 
 ## Preview

@@ -12,10 +12,10 @@
 #' @examples
 #' if (interactive()) {
 #' 
-#'   update_docs()
+#'   render_docs()
 #' 
 #' }
-update_docs <- function(path = ".",
+render_docs <- function(path = ".",
                         verbose = FALSE,
                         preview = getOption("altdoc_preview", default = FALSE)) {
   path <- .convert_path(path)
@@ -45,7 +45,7 @@ update_docs <- function(path = ".",
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
-  cli::cli_alert_info("See {.code ?altdoc::update_docs} to know what files are concerned.")
+  cli::cli_alert_info("See {.code ?altdoc::render_docs} to know what files are concerned.")
   cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
 
   if (isTRUE(preview)) {

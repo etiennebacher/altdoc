@@ -62,7 +62,7 @@ setup_docs(tool = "docsify")
 # setup_docs(tool = "mkdocs")
 
 ### Render the vignettes and man pages
-update_docs()
+render_docs()
 
 ### Preview the website
 preview_docs()

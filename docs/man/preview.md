@@ -9,7 +9,7 @@ Preview the documentation in a webpage or in viewer
 
 ## Usage
 
-<pre><code class='language-R'>preview_docs(path = ".")
+<pre><code class='language-R'>preview(path = ".")
 </code></pre>
 
 ## Arguments
