@@ -1,4 +1,9 @@
 .import_settings_mkdocs <- function(path) {
+
+    # TODO: opportunity for DRY in the vignette and man blocks
+
+    .assert_dependency("yaml")
+
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
     sidebar <- readLines(fn, warn = FALSE)
@@ -38,13 +43,23 @@
             fs::path_join(c("articles", basename(x)))
         }
     )
+
     if (length(fn_vignettes) > 0) {
-        tmp <- sprintf("      - %s: %s", titles, fn_vignettes)
-        tmp <- c("  - Articles:", tmp)
-        tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
+        yml <- paste(sidebar, collapse = "\n")
+        yml <- yaml::yaml.load(yml)
+        for (i in seq_along(yml$nav)) {
+            if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
+                section_name <- names(yml$nav[[i]])
+                title_link <- as.list(setNames(fn_vignettes, titles))
+                yml$nav[[i]] <- setNames(list(title_link), section_name)
+            }
+        }
+        tmp <- tempfile()
+        yaml::write_yaml(yml, file = tmp)
+        sidebar <- readLines(tmp)
+
     } else {
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
+        sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
     }
 
 
@@ -52,24 +67,26 @@
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
 
-    # multi page
     if (fs::dir_exists(dn_man)) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
-        tmp <- sprintf("      - %s: man/%s", titles, basename(fn_man))
-        tmp <- c("  - Reference:", tmp)
-        tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
 
-    # one page
-    } else if (fs::file_exists(fn_man)) {
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "  - Reference: reference.md", sidebar)
+        yml <- paste(sidebar, collapse = "\n")
+        yml <- yaml::yaml.load(yml)
+        for (i in seq_along(yml$nav)) {
+            if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_MAN_BLOCK")) {
+                section_name <- names(yml$nav[[i]])
+                title_link <- as.list(setNames(fn_man, titles))
+                yml$nav[[i]] <- setNames(list(title_link), section_name)
+            }
+        }
+        tmp <- tempfile()
+        yaml::write_yaml(yml, file = tmp)
+        sidebar <- readLines(tmp)
 
-    # no man page
     } else {
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
-
+        sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
     }
 
     sidebar <- .substitute_altdoc_variables(sidebar, path = path)
@@ -77,6 +94,15 @@
     # write mutable sidebar
     fn <- fs::path_join(c(path, "mkdocs.yml"))
     writeLines(sidebar, fn)
+
+
+    # plugins must be a list otherwise this command breaks: mkdocs build -q
+    yml <- yaml::read_yaml(fn)
+    if ("plugins" %in% names(yml)) {
+        yml[["plugins"]] <- as.list(yml[["plugins"]])
+    }
+    yaml::write_yaml(yml, fn)
+
 
     # render mkdocs
     if (.is_windows() & interactive()) {
