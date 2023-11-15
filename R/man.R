@@ -42,9 +42,12 @@
     # this is a hack because it may remove one # from comments. But that's
     # probably not the end of the world, because the line stick stays commented
     # out.
-    tmp <- readLines(destination_md)
-    tmp <- gsub("^##", "#", tmp)
-    writeLines(tmp, destination_md)
+    if (fs::file_exists(destination_md)) {
+      tmp <- readLines(destination_md)
+      tmp <- gsub("^##", "#", tmp)
+      writeLines(tmp, destination_md)
+    }
+
     cli::cli_progress_update(inc = 1)
   }
 

@@ -25,7 +25,9 @@
     )
   }
 
+
   out <- ifelse(inherits(out, "try-error"), FALSE, TRUE)
+
   return(out)
 }
 
