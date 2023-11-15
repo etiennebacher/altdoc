@@ -1,29 +1,5 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(update = FALSE, path = ".", quarto = TRUE, verbose = FALSE) {
-  if (isTRUE(quarto)) {
-    .import_man_quarto(update = update, verbose = verbose)
-  }
-
-  cli::cli_h1("Building reference")
-
-  good_path <- .doc_path(path = path)
-  if (fs::file_exists(paste0(good_path, "/reference.md"))) {
-    fs::file_delete(paste0(good_path, "/reference.md"))
-  }
-
-  files <- list.files("man", pattern = ".Rd", full.names = TRUE)
-  pkg <- basename(getwd())
-
-  all_rd_as_md <- lapply(files, .rd2md)
-
-  fs::file_create(paste0(good_path, "/reference.md"))
-  writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
-
-  cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
-}
-
-
-.import_man_quarto <- function(update = FALSE, path = ".", verbose = FALSE) {
+.import_man <- function(update = FALSE, path = ".", verbose = FALSE) {
   cli::cli_h1("Building reference")
 
   # source and target file paths
