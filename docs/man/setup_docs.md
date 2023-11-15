@@ -5,7 +5,14 @@ Initialize documentation website settings
 
 ## Description
 
-Initialize documentation website settings
+Creates a subdirectory called
+<code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
+directory to store the settings files used to by one of the
+documentation generator utilities (docsify, docute, or mkdocs). The
+files in this folder are never altered automatically by
+<code>altdoc</code> unless the user explicitly calls
+<code>overwrite=TRUE</code>. They can thus be edited manually to
+customize the sidebar and website.
 
 ## Usage
 
@@ -44,15 +51,6 @@ Logical. If TRUE, overwrite existing files.
 ## Value
 
 No value returned.
-
-This function creates a subdirectory called
-<code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
-directory. <code style="white-space: pre;">⁠altdoc/⁠</code> stores the
-settings files used to by each of the documentation generator utilities
-(docsify, docute, or mkdocs). The files in this folder are never altered
-automatically by <code>altdoc</code> unless the user explicitly calls
-<code>overwrite=TRUE</code>. They can thus be edited manually to
-customize the sidebar and website.
 
 ## Examples
 

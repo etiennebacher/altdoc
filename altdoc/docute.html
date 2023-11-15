@@ -37,8 +37,8 @@
 				sidebar: [
 					{title: 'Home', link: '/'},
 					{title: 'Changelog', link: '$ALTDOC_NEWS'},
-          $ALTDOC_VIGNETTE_BLOCK
-          $ALTDOC_MAN_BLOCK
+          {title: 'Articles', children: [$ALTDOC_VIGNETTE_BLOCK]},
+          {title: 'Reference', children: [$ALTDOC_MAN_BLOCK]},
 					{title: 'Code of Conduct', link: '$ALTDOC_CODE_OF_CONDUCT'},
 					{title: 'License', link: '$ALTDOC_LICENSE'}
 				],
