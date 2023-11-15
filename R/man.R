@@ -125,7 +125,7 @@
     # ignores all tests whenever one of the two tags appear anywhere, but it
     # would be very hard to parse different examples wrapped or not wrapped in a
     # \donttest{}.
-    block <- !any(grepl("dontrun|donttest", ex))
+    block <- !any(grepl("dontrun|donttest|## Not run:", tmp))
     block <- sprintf("```{r, warning=FALSE, message=FALSE, eval=%s}", block)
     tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
   }
