@@ -39,20 +39,15 @@
     titles <- gsub("'", "\\\\'", titles)
 
     if (length(fn_vignettes) > 0) {
-        tmp <- sprintf("              {title: '%s', link: '/articles/%s'},", titles, basename(fn_vignettes))
-        tmp <- c(
-            "          {",
-            "           title: 'Articles',",
-            "           children:",
-            "             [",
-            tmp,
-            "             ]",
-            "          },"
-        )
-        tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar, fixed = TRUE)
+        tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_vignettes)
+        tmp <- paste(tmp, collapse = ", ")
+        sidebar <- paste(sidebar, collapse = "\n")
+        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "%s", sidebar)
+        sidebar <- sprintf(sidebar, tmp)
+        sidebar <- strsplit(sidebar, "\n")[[1]]
+
     } else {
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
+        sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
     }
 
 
@@ -65,33 +60,16 @@
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
-        if (length(fn_man) > 0) {
-            tmp <- sprintf("              {title: '%s', link: '/man/%s'},", titles, basename(fn_man))
-            tmp <- c(
-                "          {",
-                "           title: 'Reference',",
-                "           children:",
-                "             [",
-                tmp,
-                "             ]",
-                "          },"
-            )
-            tmp <- paste(tmp, collapse = "\n")
-            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
-        } else {
-            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
-        }
+        tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_man)
+        tmp <- paste(tmp, collapse = ", ")
+        sidebar <- paste(sidebar, collapse = "\n")
+        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "%s", sidebar)
+        sidebar <- sprintf(sidebar, tmp)
+        sidebar <- strsplit(sidebar, "\n")[[1]]
 
-    # one page
-    } else if (fs::file_exists(fn_man)) {
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "* [Reference](reference.md)", sidebar)
-
-    # no man page
     } else {
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
-
+        sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
     }
-
 
     # drop missing sidebar entries
     sidebar <- sidebar[!grepl("link: ''", sidebar)]
