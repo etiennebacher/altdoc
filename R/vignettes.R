@@ -59,53 +59,16 @@
     origin <- fs::path_join(c(src_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
 
-    ## Freeze is currently commented out because it breaks some tests. This is a planned feature
-    ## TODO: add a `freeze` argument
-
-    # if (fs::file_exists(destination)) {
-    #   # freeze
-    #   old <- readLines(destination, warn = FALSE)
-    #   new <- readLines(origin, warn = FALSE)
-    #   freeze <- identical(old, new)
-    #   if (freeze) {
-    #     cli::cli_progress_update()
-    #     conversion_worked[i] <- TRUE
-    #     next
-    #   }
-    # } else {
     fs::file_copy(origin, destination, overwrite = TRUE)
-    # }
-
-    if (isTRUE(verbose)) {
-      hush <- identity
-    } else {
-      hush <- function(x) suppressMessages(suppressWarnings(x))
-    }
 
     if (fs::path_ext(origin) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
     } else if (fs::path_ext(origin) == "Rmd") {
-      tryCatch(
-        {
-          hush(.rmd2md(origin, tar_dir))
-          conversion_worked[i] <- TRUE
-        },
-        error = function(e) {
-          conversion_worked[i] <- FALSE
-        }
-      )
+      conversion_worked[i] <- .rmd2md(origin, tar_dir, verbose = verbose)
       cli::cli_progress_update()
     } else {
-      tryCatch(
-        {
-          hush(.qmd2md(origin, tar_dir, verbose = verbose))
-          conversion_worked[i] <- TRUE
-        },
-        error = function(e) {
-          conversion_worked[i] <- FALSE
-        }
-      )
+      conversion_worked[i] <- .qmd2md(origin, tar_dir, verbose = verbose)
       cli::cli_progress_update()
     }
   }
