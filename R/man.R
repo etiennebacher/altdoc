@@ -119,7 +119,14 @@
     ex <- gsub("&gt;", ">", ex)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
-    tmp <- c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", pkg_load, ex, "```")
+
+    # respect \dontrun{} and \donttest{}. This is too aggressive because it
+    # ignores all tests whenever one of the two tags appear anywhere, but it
+    # would be very hard to parse different examples wrapped or not wrapped in a
+    # \donttest{}.
+    block <- !any(grepl("dontrun|donttest", ex))
+    block <- sprintf("```{r, warning=FALSE, message=FALSE, eval=%s}", block)
+    tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
   }
 
   # cleanup equations
