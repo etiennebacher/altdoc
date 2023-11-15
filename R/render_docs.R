@@ -4,6 +4,7 @@
 #' of Conduct, and Reference sections (if ' they exist). This section modifies and
 #' overwrites the files in the 'docs/' folder.
 #'
+#' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -15,9 +16,7 @@
 #'   render_docs()
 #' 
 #' }
-render_docs <- function(path = ".",
-                        verbose = FALSE,
-                        preview = getOption("altdoc_preview", default = FALSE)) {
+render_docs <- function(path = ".", verbose = FALSE) {
   path <- .convert_path(path)
   good_path <- .doc_path(path)
 

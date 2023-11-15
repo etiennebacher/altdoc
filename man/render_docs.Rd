@@ -4,14 +4,12 @@
 \alias{render_docs}
 \title{Update documentation}
 \usage{
-render_docs(
-  path = ".",
-  verbose = FALSE,
-  preview = getOption("altdoc_preview", default = FALSE)
-)
+render_docs(path = ".", verbose = FALSE)
 }
 \arguments{
 \item{path}{Path to the package root directory.}
+
+\item{verbose}{Logical. Print Rmarkdown or Quarto rendering output.}
 }
 \value{
 No value returned. Updates and overwrites the files in folder 'docs'.
