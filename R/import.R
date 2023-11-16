@@ -51,7 +51,7 @@
   src <- .which_news()
   tar <- fs::path_join(c(.doc_path(path), "NEWS.md"))
 
-  if (!fs::file_exists(src)) {
+  if (is.null(src) || !fs::file_exists(fs::path_abs(src))) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }

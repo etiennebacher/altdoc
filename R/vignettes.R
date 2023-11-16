@@ -143,7 +143,9 @@
   }
 
   # Clean up and escape
-  title <- gsub('^"|"$', '', title)
+  if (is.character(title)) {
+    title <- gsub('^"|"$', '', title)
+  }
 
   return(title)
 }
