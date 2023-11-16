@@ -142,12 +142,6 @@
   as.character(utils::packageVersion("altdoc"))
 }
 
-.need_to_bump_version <- function(path) {
-  if (.doc_type() == "mkdocs") {
-    return(FALSE)
-  }
-  .doc_version(path) != .pkg_version(path)
-}
 
 .readlines <- function(x) {
   readLines(x, warn = FALSE)
