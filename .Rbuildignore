@@ -11,3 +11,5 @@
 ^CRAN-SUBMISSION$
 ^docs$
 ^altdoc$
+^vignettes$
+^.lintr$

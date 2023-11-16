@@ -53,7 +53,7 @@ remotes::install_github("etiennebacher/altdoc")
 
 ## Workflow
 
-A typical worfklow with `altdoc` is to execute these commands from the root directory of the package:
+A typical workflow with `altdoc` is to execute these commands from the root directory of the package:
 
 ```r
 ### Create the website structure for one of the documentation generators

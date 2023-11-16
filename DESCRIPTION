@@ -22,8 +22,6 @@ Imports:
     desc,
     fs,
     here,
-    htmltools,
-    jsonlite,
     quarto,
     rmarkdown (>= 2.15),
     tinkr,

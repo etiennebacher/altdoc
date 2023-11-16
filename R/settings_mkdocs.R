@@ -50,8 +50,8 @@
         for (i in seq_along(yml$nav)) {
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
-                title_link <- as.list(setNames(fn_vignettes, titles))
-                yml$nav[[i]] <- setNames(list(title_link), section_name)
+                title_link <- as.list(stats::setNames(fn_vignettes, titles))
+                yml$nav[[i]] <-stats::setNames(list(title_link), section_name)
             }
         }
         tmp <- tempfile()
@@ -77,8 +77,8 @@
         for (i in seq_along(yml$nav)) {
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_MAN_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
-                title_link <- as.list(setNames(fn_man, titles))
-                yml$nav[[i]] <- setNames(list(title_link), section_name)
+                title_link <- as.list(stats::setNames(fn_man, titles))
+                yml$nav[[i]] <-stats::setNames(list(title_link), section_name)
             }
         }
         tmp <- tempfile()

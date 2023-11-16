@@ -11,7 +11,7 @@ setup_docs(tool, path = ".", overwrite = FALSE)
 
 \item{path}{Path to the package root directory.}
 
-\item{overwrite}{Logical. If TRUE, overwrite existing files.}
+\item{overwrite}{Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the \code{altdocs} directory, including any customizations you may have made.}
 }
 \value{
 No value returned.

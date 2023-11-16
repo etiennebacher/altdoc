@@ -1,5 +1,5 @@
 .substitute_altdoc_variables <- function(x, filename, path = ".") {
-    x <- gsub("\\$ALTDOC_VERSION", packageVersion("altdoc"), x)
+    x <- gsub("\\$ALTDOC_VERSION",utils::packageVersion("altdoc"), x)
 
     # DESCRIPTION file
     fn <- fs::path_join(c(path, "DESCRIPTION"))

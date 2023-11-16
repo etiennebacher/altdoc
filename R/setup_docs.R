@@ -5,7 +5,7 @@
 #'
 #' @param tool String. "docsify", "docute", or "mkdocs".
 #' @param path Path to the package root directory.
-#' @param overwrite Logical. If TRUE, overwrite existing files.
+#' @param overwrite Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the `altdocs` directory, including any customizations you may have made.
 #'
 #' @export
 #'
@@ -35,7 +35,10 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   }
 
   # input sanity checks
-  if (!is.character(tool) || length(tool) != 1 || !tool %in% c("docute", "docsify", "mkdocs")) {
+  if (missing(tool) ||
+      !is.character(tool) ||
+      length(tool) != 1 ||
+      !tool %in% c("docute", "docsify", "mkdocs")) {
     cli::cli_abort(
       'The `tool` argument must be "docsify", "docute", or "mkdocs".')
   }
@@ -50,8 +53,10 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
   } else if (isTRUE(overwrite)) {
-    fs::dir_delete(altdoc_dir)
-    fs::dir_create(altdoc_dir)
+    try(fs::file_delete(fs::path_join(altdoc_dir, "mkdocs.yml")), silent = TRUE)
+    try(fs::file_delete(fs::path_join(altdoc_dir, "docute.html")), silent = TRUE)
+    try(fs::file_delete(fs::path_join(altdoc_dir, "docsify.html")), silent = TRUE)
+    try(fs::file_delete(fs::path_join(altdoc_dir, "docsify.md")), silent = TRUE)
   }
 
   if (!fs::dir_exists(docs_dir)) {

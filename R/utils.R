@@ -159,7 +159,7 @@
     fs::file_create(fn)
   }
 
-  tmp <- readLines(fn)
+  tmp <- .readlines(fn)
   if (!x %in% tmp) {
     cli::cli_alert_info("Adding {x} to .Rbuildignore")
     tmp <- c(tmp, x)
