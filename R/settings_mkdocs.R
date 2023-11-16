@@ -104,7 +104,7 @@
     yaml::write_yaml(yml, fn)
 
     # render mkdocs
-    if (.is_windows() & interactive()) {
+    if (.is_windows()) {
         cmd <- paste("cd", fs::path_abs(.doc_path(path)), "&& mkdocs build -q")
         shell(cmd)
     } else {
