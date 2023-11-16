@@ -138,38 +138,6 @@
   }
 }
 
-
-.get_footer <- function(path) {
-  .doc_type <- .doc_type(path)
-  if (.doc_type %in% c("docute", "docsify")) {
-    index <- .readlines("docs/index.html")
-    index <- gsub("\\t", "", index)
-    index <- trimws(index)
-    if (.doc_type == "docsify") {
-      footer <- grep("^var footer =", index)
-    } else if (.doc_type == "docute") {
-      footer <- grep("^footer:", index)
-    }
-    if (length(footer) == 1) {
-      return(index[footer])
-    }
-  }
-}
-
-.doc_version <- function(path) {
-  footer <- .get_footer(path)
-  unlist(regmatches(
-    footer, gregexpr("(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)", footer)
-  ))[1]
-}
-
-.altdoc_version_in_footer <- function(path) {
-  footer <- .get_footer(path)
-  unlist(regmatches(
-    footer, gregexpr("(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)", footer)
-  ))[2]
-}
-
 .altdoc_version <- function() {
   as.character(utils::packageVersion("altdoc"))
 }
@@ -179,13 +147,6 @@
     return(FALSE)
   }
   .doc_version(path) != .pkg_version(path)
-}
-
-.need_to_bump_altdoc_version <- function(path) {
-  if (.doc_type() == "mkdocs") {
-    return(FALSE)
-  }
-  .altdoc_version_in_footer(path) != .altdoc_version()
 }
 
 .readlines <- function(x) {
