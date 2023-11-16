@@ -58,7 +58,7 @@
     # multi page
     if (fs::dir_exists(dn_man)) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
-        fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
+        fn_man <- sapply(fn_man, function(x) fs::path_join(c("/man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_man)
         tmp <- paste(tmp, collapse = ", ")

@@ -46,6 +46,7 @@
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
     }
 
+
     ################### Man pages
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
