@@ -6,7 +6,9 @@
     if (fs::file_exists(fn)) {
 
         # before $ALTDOC_PACKAGE_URL
-        urls <- desc::desc_get_urls()
+        urls <- c(
+            tryCatch(desc::desc_get_urls(), error = function(e) NULL),
+            tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL))
         urls <- Filter(function(x) grepl("github.com", x), urls)
         if (length(urls) > 0) {
             x <- gsub("\\$ALTDOC_PACKAGE_URL_GITHUB", urls[1], x)
