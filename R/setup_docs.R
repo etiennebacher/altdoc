@@ -53,10 +53,11 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
   } else if (isTRUE(overwrite)) {
-    try(fs::file_delete(fs::path_join(altdoc_dir, "mkdocs.yml")), silent = TRUE)
-    try(fs::file_delete(fs::path_join(altdoc_dir, "docute.html")), silent = TRUE)
-    try(fs::file_delete(fs::path_join(altdoc_dir, "docsify.html")), silent = TRUE)
-    try(fs::file_delete(fs::path_join(altdoc_dir, "docsify.md")), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, "mkdocs.yml"))), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docute.html"))), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.html"))), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.md"))), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, ".nojekyll"))), silent = TRUE)
   }
 
   if (!fs::dir_exists(docs_dir)) {
@@ -77,6 +78,9 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     src <- system.file("docsify/docsify.md", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "docsify.md"))
     safe.copy(src, tar, overwrite = overwrite)
+
+    tar <- fs::path_join(c(altdoc_dir, ".nojekyll"))
+    fs::file_create(tar)
 
   } else if (isTRUE(tool == "docute")) {
     src <- system.file("docute/docute.html", package = "altdoc")
