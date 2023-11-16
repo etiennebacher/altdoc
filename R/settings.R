@@ -6,7 +6,12 @@
     if (fs::dir_exists(src)) {
         files <- fs::dir_ls(src)
 
-        # wait for .import_settings() to copy these over
+        # hidden files not detected
+        fn <- fs::path_join(c(path, "altdoc/.nojekyll"))
+        if (fs::file_exists(fn)) {
+            files <- c(files, fn)
+        }
+
         files <- files[!grepl("docute.html$|docsify.md$|mkdocs.yml$", files)]
 
         # docs/* files are mutable and should be overwritten
