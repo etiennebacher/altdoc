@@ -175,7 +175,12 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     render_docs(path = getwd())
     writeLines(second_rmd, "vignettes/several-outputs.Rmd")
     expect_false(fs::file_exists("docs/articles/several-outputs.md"))
-    render_docs(path = getwd())
-    expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+    # mkdocs does not accept duplicate vignette names
+    if (tool == "mkdocs") {
+      expect_error(render_docs(path = getwd()))
+    } else {
+      render_docs(path = getwd())
+      expect_true(fs::file_exists("docs/articles/several-outputs.md"))
+    }
   })
 }

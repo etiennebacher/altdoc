@@ -19,10 +19,10 @@ test_that(".import_vignettes works on basic vignette", {
   create_local_package()
   fs::dir_create("vignettes")
   writeLines(original_rmd, "vignettes/basic.Rmd")
-
+  setup_docs(tool = "docute", path = getwd())
   expect_message(
-    setup_docs(tool = "docute", path = getwd()),
-    "following vignette has been converted"
+    render_docs(path = getwd()),
+    "following vignette has been rendered"
   )
   expect_true(fs::file_exists("docs/articles/basic.md"))
 })
