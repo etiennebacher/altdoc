@@ -144,7 +144,7 @@
 
 
 .readlines <- function(x) {
-  .readlines(x, warn = FALSE)
+  readLines(x, warn = FALSE)
 }
 
 
