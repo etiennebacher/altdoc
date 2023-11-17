@@ -106,7 +106,7 @@
     # render mkdocs
     if (.is_windows()) {
         goback <- fs::path_abs(getwd())
-        cmd <- paste("cd", fs::path_abs(.doc_path(path)), "&& mkdocs build -q")
+        cmd <- paste("cd", fs::path_abs(path), "&& mkdocs build -q")
         shell(cmd)
         shell(paste("cd", goback))
     } else {
