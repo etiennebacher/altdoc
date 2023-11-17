@@ -3,10 +3,13 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
 ^LICENSE\.md$
-^docs$
 ^\.yarnrc$
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 \.gif$
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
+^docs$
+^altdoc$
+^vignettes$
+^.lintr$

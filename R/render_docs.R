@@ -1,0 +1,109 @@
+#' Update documentation
+#'
+#' Render and update the man pages, vignettes, README, Changelog, License, Code
+#' of Conduct, and Reference sections (if ' they exist). This section modifies and
+#' overwrites the files in the 'docs/' folder.
+#'
+#' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
+#' @inheritParams setup_docs
+#' @export
+#'
+#' @return No value returned. Updates and overwrites the files in folder 'docs'.
+#'
+#' @examples
+#' if (interactive()) {
+#' 
+#'   render_docs()
+#' 
+#' }
+render_docs <- function(path = ".", verbose = FALSE) {
+
+  dir_altdoc <- fs::path_join(c(path, "altdoc"))
+  if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
+    cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
+
+  }
+
+  path <- .convert_path(path)
+  good_path <- .doc_path(path)
+
+  if (!fs::dir_exists(good_path)) {
+    fs::dir_create(good_path)
+  }
+
+  cli::cli_h1("Basic files")
+
+  # basic files
+  .import_readme(path)
+  .import_news(path)
+  .import_license(path)
+  .import_coc(path)
+
+  # Update functions reference
+  cli::cli_h1("Man pages")
+  .import_man(update = TRUE, path = path, verbose = verbose)
+
+  # Update vignettes
+  cli::cli_h1("Vignettes")
+  .import_vignettes(path, verbose = verbose)
+
+  cli::cli_h1("Update HTML")
+  .import_settings(path = path, doctype = .doc_type(path))
+
+  cli::cli_h1("Complete")
+  cli::cli_alert_success("Documentation updated.")
+  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
+}
+
+# Check that file exists:
+# - if it doesn't, info message
+# - if it does, check whether file is in docs:
+#     - if it isn't, copy it there.
+#     - if it is, check whether it changed:
+#         - if it changed: overwrite it
+#         - if it didn't: info message
+
+.update_file <- function(file, path = ".", first = FALSE) {
+  # TODO: Refactor with switch()
+  file_message <- if (file == "NEWS.md") {
+    "NEWS / Changelog"
+  } else if (file == "LICENSE.md") {
+    "License / Licence"
+  } else if (file == "CODE_OF_CONDUCT.md") {
+    "Code of Conduct"
+  } else if (file == "README.md") {
+    "README"
+  }
+
+  orig_file <- if (file == "NEWS.md") {
+    .which_news()
+  } else if (file == "LICENSE.md") {
+    .which_license()
+  } else {
+    fs::path_abs(file, start = path)
+  }
+  docs_file <- paste0(.doc_path(path), "/", file)
+  file_to_edit <- if (.doc_type(path) == "docute") {
+    fs::path_abs("docs/index.html", start = path)
+  } else if (.doc_type(path) == "docsify") {
+    fs::path_abs("docs/_sidebar.md", start = path)
+  } else if (.doc_type(path) == "mkdocs") {
+    fs::path_abs("docs/mkdocs.yml", start = path)
+  }
+
+  if (is.null(orig_file) || !fs::file_exists(orig_file)) {
+    cli::cli_alert_info("No {.file {file_message}} to include.")
+    return(invisible())
+  }
+
+  if (fs::file_exists(docs_file)) {
+    x <- .readlines(orig_file)
+    y <- .readlines(docs_file)
+    cli::cli_alert_success("{.file {file_message}} updated.")
+  } else {
+    cli::cli_alert_info("{.file {file_message}} was imported for the first time.")
+  }
+
+  fs::file_copy(orig_file, docs_file, overwrite = TRUE)
+  .reformat_md(docs_file, first = first)
+}

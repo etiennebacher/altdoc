@@ -90,30 +90,34 @@
 
 # Get the tool that was used
 .doc_type <- function(path = ".") {
-  if (!fs::dir_exists(fs::path_abs("docs", start = path))) {
-    return(NULL)
+  fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
+  mkdocs <- fs::file_exists(fn)
+
+  fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
+  docsify <- fs::file_exists(fn)
+
+  fn <- fs::path_join(c(path, "altdoc", "docute.html"))
+  docute <- fs::file_exists(fn)
+
+  if (sum(c(mkdocs, docsify, docute)) == 0) {
+    cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
+  } else if (sum(c(mkdocs, docsify, docute)) > 1) {
+    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
   }
-  if (fs::file_exists(fs::path_abs("docs/mkdocs.yml", start = path))) {
-    return("mkdocs")
-  }
-  if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-    file <- paste(.readlines(fs::path_abs("docs/index.html", start = path)),
-      collapse = ""
-    )
-    if (grepl("docute", file)) {
-      return("docute")
-    }
-    if (grepl("docsify", file)) {
-      return("docsify")
-    }
-  }
+
+  if (mkdocs) return("mkdocs")
+  if (docsify) return("docsify")
+  if (docute) return("docute")
+
+  return(NULL)
 }
+
 
 # Get the path for files
 .doc_path <- function(path = ".") {
   .doc_type <- .doc_type(path = path)
   if (.doc_type == "mkdocs") {
-    return(fs::path_abs("docs/docs", start = path))
+    return(fs::path_abs("docs", start = path))
   } else if (.doc_type %in% c("docsify", "docute")) {
     return(fs::path_abs("docs", start = path))
   }
@@ -134,55 +138,10 @@
   }
 }
 
-
-.get_footer <- function(path) {
-  .doc_type <- .doc_type(path)
-  if (.doc_type %in% c("docute", "docsify")) {
-    index <- .readlines("docs/index.html")
-    index <- gsub("\\t", "", index)
-    index <- trimws(index)
-    if (.doc_type == "docsify") {
-      footer <- grep("^var footer =", index)
-    } else if (.doc_type == "docute") {
-      footer <- grep("^footer:", index)
-    }
-    if (length(footer) == 1) {
-      return(index[footer])
-    }
-  }
-}
-
-.doc_version <- function(path) {
-  footer <- .get_footer(path)
-  unlist(regmatches(
-    footer, gregexpr("(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)", footer)
-  ))[1]
-}
-
-.altdoc_version_in_footer <- function(path) {
-  footer <- .get_footer(path)
-  unlist(regmatches(
-    footer, gregexpr("(\\d+\\.\\d+\\.\\d+(?:\\.\\d+)?)", footer)
-  ))[2]
-}
-
 .altdoc_version <- function() {
   as.character(utils::packageVersion("altdoc"))
 }
 
-.need_to_bump_version <- function(path) {
-  if (.doc_type() == "mkdocs") {
-    return(FALSE)
-  }
-  .doc_version(path) != .pkg_version(path)
-}
-
-.need_to_bump_altdoc_version <- function(path) {
-  if (.doc_type() == "mkdocs") {
-    return(FALSE)
-  }
-  .altdoc_version_in_footer(path) != .altdoc_version()
-}
 
 .readlines <- function(x) {
   readLines(x, warn = FALSE)
@@ -190,19 +149,20 @@
 
 
 
-
-.add_rbuildignore <- function(x = "^docs$") {
-  if (!isTRUE(.dir_is_package("."))) {
+.add_rbuildignore <- function(x = "^docs$", path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
     stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
   }
 
-  if (!fs::file_exists(".Rbuildignore")) {
-    fs::file_create(".Rbuildignore")
+  fn <- fs::path_join(c(path, ".Rbuildignore"))
+  if (!fs::file_exists(fn)) {
+    fs::file_create(fn)
   }
 
-  tmp <- readLines(".Rbuildignore")
+  tmp <- .readlines(fn)
   if (!x %in% tmp) {
+    cli::cli_alert_info("Adding {x} to .Rbuildignore")
     tmp <- c(tmp, x)
-    writeLines(tmp, ".Rbuildignore")
+    writeLines(tmp, fn)
   }
 }

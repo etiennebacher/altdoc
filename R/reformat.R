@@ -89,7 +89,7 @@
   tinkr::to_md(md_doc, path = file)
 
   # 4 spaces for nested lists (can't find a way to fix this in XML)
-  doc <- readLines(file, warn = FALSE)
+  doc <- .readlines(file)
   new_doc <- gsub("^  (\\*|-)", "    \\1", doc)
   cat(paste(new_doc, collapse = "\n"), file = file)
 }

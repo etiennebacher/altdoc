@@ -9,14 +9,12 @@
       paste0(good_path, "/README.md"),
       overwrite = TRUE
     )
-    cli::cli_alert_success("{.file README} imported.")
   } else {
     fs::file_copy(
       system.file("docsify/README.md", package = "altdoc"),
       fs::path_join(c(good_path, "/README.md")),
       overwrite = TRUE
     )
-    cli::cli_alert_info("No {.file README} found. Created a default {.file docs/README}.")
   }
   .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
   .move_img_readme(path = path)
@@ -45,24 +43,21 @@
   if (fs::file_exists(file)) {
     .update_file(file, path)
     fs::file_copy(file, paste0(good_path, "/LICENSE.md"), overwrite = TRUE)
-    cli::cli_alert_success("{.file {file}} imported.")
   }
 }
 
 
 .import_news <- function(path = ".") {
-  good_path <- .doc_path(path)
-  file <- .which_news()
-  if (is.null(file)) {
+  src <- .which_news()
+  tar <- fs::path_join(c(.doc_path(path), "NEWS.md"))
+
+  if (is.null(src) || !fs::file_exists(fs::path_abs(src))) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }
-  if (fs::file_exists(file)) {
-    .update_file(file, path)
-    .reformat_md(paste0(good_path, "/", file), first = TRUE)
-    .parse_news(path, paste0(good_path, "/NEWS.md"))
-    cli::cli_alert_success("{.file {file}} imported.")
-  }
+
+  .update_file(src, path = path)
+  .parse_news(path = path, news_path = tar)
 }
 
 

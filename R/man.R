@@ -1,68 +1,11 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(update = FALSE, path = ".",
-                        custom_reference = NULL, quarto = FALSE) {
-  if (isTRUE(quarto)) {
-    .import_man_quarto(update = update)
-  }
-
-  cli::cli_h1("Building reference")
-  if (!is.null(custom_reference)) {
-    cli::cli_progress_bar("{cli::pb_spin} Running file {.file {custom_reference}}")
-    source(custom_reference, echo = FALSE)
-    cli::cli_alert_success("Custom file for {.pkg Reference} finished running.")
-    return(invisible)
-  }
-
-  good_path <- .doc_path(path = path)
-  if (fs::file_exists(paste0(good_path, "/reference.md"))) {
-    fs::file_delete(paste0(good_path, "/reference.md"))
-  }
-
-  files <- list.files("man", pattern = ".Rd", full.names = TRUE)
-  pkg <- basename(getwd())
-
-  exported <- readLines("NAMESPACE")
-  exported <- grep("^export\\(", exported, value = TRUE)
-  exported <- gsub("export\\((.*)\\)", "\\1", exported)
-
-  which.files <- lapply(files, function(x) {
-    y <- readLines(x)
-    y <- grep("\\name{", y, fixed = TRUE, value = TRUE)
-    y <- gsub("\\name{", "", y, fixed = TRUE)
-    y <- gsub("}", "", y, fixed = TRUE)
-    y %in% exported
-  })
-
-  files <- files[unlist(which.files)]
-
-  all_rd_as_md <- lapply(files, .rd2md)
-
-  fs::file_create(paste0(good_path, "/reference.md"))
-  writeLines(c("# Reference \n", unlist(all_rd_as_md)), paste0(good_path, "/reference.md"))
-
-  cli::cli_alert_success("Functions reference {if (update) 'updated' else 'created'}.")
-}
-
-
-#' Convert .Rd files from man/ to .md files in docs/man/
-#' @param update If TRUE, overwrite existing files
-#' @keywords internal
-.import_man_quarto <- function(update = FALSE) {
-  cli::cli_h1("Building reference")
-
+.import_man <- function(update = FALSE, path = ".", verbose = FALSE) {
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
   man_target <- list.files(path = fs::path_join(c(.doc_path("."), "man")), pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
-
-  # exported functions only, otherwise this can get expensive
-  # parse NAMESPACE manually to avoid having to install the package
-  exported <- .readlines("NAMESPACE")
-  exported <- grep("^export\\(.*\\)$", exported, value = TRUE)
-  exported <- gsub("^export\\((.*)\\)$", "\\1", exported)
-  man_source <- intersect(man_source, exported)
 
   # warning about conflicts
   if (!isTRUE(update)) {
@@ -73,65 +16,59 @@
     }
   }
 
+  n <- length(man_source)
+
+  # can't use message_info with {}
+  cli::cli_alert_info("Found {n} man page{?s} to convert.")
+  i <- 0
+  cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
+
+  conversion_worked <- vector(length = n)
+
   # process man pages one by one
-  for (f in man_source) {
-    origin_Rd <- fs::path_join(c("man", fs::path_ext_set(f, ".Rd")))
+  for (i in seq_along(man_source)) {
+    f <- man_source[i]
+    # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
+    origin_Rd <- fs::path_join(c("man", paste0(f, ".Rd")))
     destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
-    destination_qmd <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".qmd")))
-    destination_md <- fs::path_join(c(destination_dir, fs::path_ext_set(f, ".md")))
+    destination_qmd <- fs::path_join(c(destination_dir, paste0(f, ".qmd")))
+    destination_md <- fs::path_join(c(destination_dir, paste0(f, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    .qmd2md(destination_qmd, destination_dir)
+    conversion_worked[i] <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
     fs::file_delete(destination_qmd)
-  }
 
-  cli::cli_alert_success("Functions reference updated in `docs/man/` directory.")
-}
-
-
-# Convert Rd file to Markdown
-.rd2md <- function(rdfile) {
-  tmp_html <- tempfile(fileext = ".html")
-  tmp_md <- tempfile(fileext = ".md")
-
-  tools::Rd2HTML(rdfile, out = tmp_html, permissive = TRUE)
-  rmarkdown::pandoc_convert(tmp_html, "markdown_strict", output = tmp_md)
-
-  cat("\n\n---", file = tmp_md, append = TRUE)
-
-  # Get function title and remove HTML tags left
-  md <- .readlines(tmp_md)
-  md <- md[-c(1:10)]
-
-  # Title to put in sidebar
-  title <- gsub(".Rd", "", rdfile)
-  title <- gsub("man/", "", title)
-  title <- gsub("_", " ", title)
-  initial <- substr(title, 1, 1)
-  title <- paste0(toupper(initial), substr(title, 2, nchar(title)))
-
-  md <- c(
-    paste0("## ", title),
-    md
-  )
-
-  # Syntax used for examples is four spaces, which prevents code
-  # highlighting. So I need to put backticks before and after the examples
-  # and remove the four spaces.
-  start_examples <- grep("^### Examples$", md)
-  if (length(start_examples) != 0) {
-    examples <- md[start_examples:length(md)]
-    not_empty_lines <- which(examples != "")[-1]
-    examples[not_empty_lines[1]] <-
-      paste0("```r\n", examples[not_empty_lines[1]])
-    examples[not_empty_lines[length(not_empty_lines) - 1]] <-
-      paste0(examples[not_empty_lines[length(not_empty_lines) - 1]], "\n```")
-    md[start_examples:length(md)] <- examples
-    for (i in start_examples:length(md)) {
-      md[i] <- gsub("    ", "", md[i])
+    # section headings are too deeply nested by default
+    # this is a hack because it may remove one # from comments. But that's
+    # probably not the end of the world, because the line stick stays commented
+    # out.
+    if (fs::file_exists(destination_md)) {
+      tmp <- .readlines(destination_md)
+      tmp <- gsub("^##", "#", tmp)
+      writeLines(tmp, destination_md)
     }
+
+    cli::cli_progress_update(inc = 1)
   }
-  md
+
+  successes <- which(conversion_worked == TRUE)
+  fails <- which(conversion_worked == FALSE)
+  cli::cli_progress_done()
+
+  # indent bullet points
+  cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+  if (length(fails) > 0) {
+    cli::cli_par()
+    cli::cli_end()
+    cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following man page{?s}:")
+    cli::cli_ul(id = "list-fail")
+    for (i in seq_along(fails)) {
+      cli::cli_li("{.file {man_source[fails[i]]}}")
+    }
+    cli::cli_par()
+    cli::cli_end(id = "list-fail")
+  }
 }
 
 
@@ -149,7 +86,7 @@
   tools::Rd2HTML(rd, out = tmp_html)
 
   # superfluous header and footer
-  tmp <- readLines(tmp_html)
+  tmp <- .readlines(tmp_html)
   tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
   tmp <- tmp[seq_len(which("</div>" == tmp) - 3)]
 
@@ -173,7 +110,14 @@
     ex <- gsub("&gt;", ">", ex)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
-    tmp <- c(tmp[2:idx], "```{r, warning=FALSE, message=FALSE}", pkg_load, ex, "```")
+
+    # respect \dontrun{} and \donttest{}. This is too aggressive because it
+    # ignores all tests whenever one of the two tags appear anywhere, but it
+    # would be very hard to parse different examples wrapped or not wrapped in a
+    # \donttest{}.
+    block <- !any(grepl("dontrun|donttest|## Not run:", tmp))
+    block <- sprintf("```{r, warning=FALSE, message=FALSE, eval=%s}", block)
+    tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
   }
 
   # cleanup equations

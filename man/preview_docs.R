@@ -1,17 +1,18 @@
 #' Preview the documentation in a webpage or in viewer
 #'
-#' @param path Path. Default is the package root (detected with `here::here()`).
+#' @inheritParams setup_docs
 #' @export
 #'
-#' @return No value returned. If RStudio is used, it shows a site preview in
-#' Viewer.
-#'
+#' @return No value returned. If RStudio is used, it shows a site preview in 
+#' Viewer. To preview the site in a browser or in another text editor (ex: VS Code),
+#' see the vignette on the `altdoc` website.  '
 #' @examples
 #' if (interactive()) {
-#'   # Preview documentation
-#'   preview()
+#' 
+#'   preview_docs()
+#' 
 #' }
-preview <- function(path = ".") {
+preview_docs <- function(path = ".") {
   # conditional dependencies
   # .assert_dependency("servr", install = TRUE)
   # .assert_dependency("rstudioapi", install = TRUE)
