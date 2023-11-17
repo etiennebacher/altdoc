@@ -1,7 +1,7 @@
 .import_settings_docute <- function(path) {
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "docute.html"))
-    sidebar <- readLines(fn)
+    sidebar <- .readlines(fn)
 
     # Single files
     if (fs::file_exists(fs::path_join(c(.doc_path(path), "NEWS.md")))) {

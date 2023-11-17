@@ -43,7 +43,7 @@
     # probably not the end of the world, because the line stick stays commented
     # out.
     if (fs::file_exists(destination_md)) {
-      tmp <- readLines(destination_md)
+      tmp <- .readlines(destination_md)
       tmp <- gsub("^##", "#", tmp)
       writeLines(tmp, destination_md)
     }
@@ -86,7 +86,7 @@
   tools::Rd2HTML(rd, out = tmp_html)
 
   # superfluous header and footer
-  tmp <- readLines(tmp_html)
+  tmp <- .readlines(tmp_html)
   tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
   tmp <- tmp[seq_len(which("</div>" == tmp) - 3)]
 

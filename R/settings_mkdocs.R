@@ -6,7 +6,7 @@
 
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
-    sidebar <- readLines(fn, warn = FALSE)
+    sidebar <- .readlines(fn)
 
     # Single files
     if (fs::file_exists(fs::path_join(c(.doc_path(path), "NEWS.md")))) {
@@ -56,7 +56,7 @@
         }
         tmp <- tempfile()
         yaml::write_yaml(yml, file = tmp)
-        sidebar <- readLines(tmp)
+        sidebar <- .readlines(tmp)
 
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
@@ -83,7 +83,7 @@
         }
         tmp <- tempfile()
         yaml::write_yaml(yml, file = tmp)
-        sidebar <- readLines(tmp)
+        sidebar <- .readlines(tmp)
 
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]

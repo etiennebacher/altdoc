@@ -1,7 +1,7 @@
 .import_settings_docsify <- function(path) {
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
-    sidebar <- readLines(fn)
+    sidebar <- .readlines(fn)
 
     # Single files
     if (fs::file_exists(fs::path_join(c(.doc_path(path), "NEWS.md")))) {
@@ -84,7 +84,7 @@
 
     # body also includes altdoc variables
     fn <- fs::path_join(c(path, "altdoc", "docsify.html"))
-    body <- readLines(fn)
+    body <- .readlines(fn)
     body <- .substitute_altdoc_variables(body, path = path)
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(body, fn)

@@ -114,14 +114,14 @@
 
   if (!fs::file_exists(fn)) return(invisible())
 
-  x <- readLines(fn, warn = FALSE)
+  x <- .readlines(fn)
 
   # title in vignette of the same name
   vig <- fs::path_ext_remove(basename(fn))
   p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
   p <- p[grepl("\\.Rmd$|\\.qmd$", p)]
   if (length(p) == 1) {
-    z <- readLines(fs::path_join(c(path, "vignettes", p)), warn = FALSE)
+    z <- .readlines(fs::path_join(c(path, "vignettes", p)), warn = FALSE)
     title <- z[grepl("^title:\\w*", z)]
     title <- trimws(gsub("^title:\\w*", "", title))
   }

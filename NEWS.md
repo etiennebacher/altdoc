@@ -8,7 +8,7 @@ Breaking changes:
   - `use_docute()`, `use_docsify()` and `use_mkdocs()` are combined into `setup_docs()` 
   - `update_docs()` -> `render_docs()`
   - `preview()` -> `preview_docs()`
-* `setup_docs()` functions no longer update and preview the website by default.
+* `setup_docs()` (previously `use_*()`) no longer updates and previews the website by default.
 * `custom_reference` argument is removed. See the `Post-processing` vignette for a description of the new proposed workflow.
 * `theme` argument is removed. Users can change themes by editing settings files in `altdoc/`
 * `mkdocs` documentation is no longer stored in `docs/docs/`
@@ -17,8 +17,6 @@ New:
 
 * Support for Quarto vignettes (.qmd) stored in the `vignettes/` folder.
 * Settings files are now permanently stored in the `altdoc/` directory. These files can be edited manually to customize the website.
-* `update` argument in `use_*()` allows users to create a documentation structure without rendering the vignettes and documentation.
-* `preview` argument in `use_*()` allows users to suppress the web preview by supplying an explicit argument or a global option.
 * Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
 * Improved vignettes
