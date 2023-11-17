@@ -121,7 +121,7 @@
   p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
   p <- p[grepl("\\.Rmd$|\\.qmd$", p)]
   if (length(p) == 1) {
-    z <- .readlines(fs::path_join(c(path, "vignettes", p)), warn = FALSE)
+    z <- .readlines(fs::path_join(c(path, "vignettes", p)))
     title <- z[grepl("^title:\\w*", z)]
     title <- trimws(gsub("^title:\\w*", "", title))
   }
