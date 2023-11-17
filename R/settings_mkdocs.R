@@ -105,6 +105,8 @@
 
     # render mkdocs
     if (.is_windows()) {
+        ### TODO: (cd <path> && mkdocs build -q) should automatically go back to the previous directory
+        ### https://stackoverflow.com/questions/10382141/temporarily-change-current-working-directory-in-bash-to-run-a-command
         goback <- fs::path_abs(getwd())
         cmd <- paste("cd", fs::path_abs(path), "&& mkdocs build -q")
         shell(cmd)
@@ -124,7 +126,7 @@
     for (i in seq_along(src)) {
         fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
         if (fs::is_file(src[i])) {
-        fs::file_copy(src[i], tar[i], overwrite = TRUE)
+            fs::file_copy(src[i], tar[i], overwrite = TRUE)
         }
     }
     fs::dir_delete(fs::path_join(c(path, "site")))

@@ -21,6 +21,8 @@
     } else {
         sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
     }
+    ### TODO move code below to separate internal functions, e.g `generate_articles()`, `generate_man()`  
+
 
     ############### Vignettes
     # TODO: get clean titles. .get_vignettes_titles does not work as I expected

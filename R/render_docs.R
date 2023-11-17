@@ -20,7 +20,8 @@ render_docs <- function(path = ".", verbose = FALSE) {
 
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
-    cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}?")
+    cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
+
   }
 
   path <- .convert_path(path)
@@ -63,6 +64,7 @@ render_docs <- function(path = ".", verbose = FALSE) {
 #         - if it didn't: info message
 
 .update_file <- function(file, path = ".", first = FALSE) {
+  # TODO: Refactor with switch()
   file_message <- if (file == "NEWS.md") {
     "NEWS / Changelog"
   } else if (file == "LICENSE.md") {

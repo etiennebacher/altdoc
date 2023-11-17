@@ -1,3 +1,4 @@
+### TODO: refactor this function, lots of duplicated code with the other `.import_settings_*()`
 .import_settings_docute <- function(path) {
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "docute.html"))

@@ -1,7 +1,12 @@
 #' Initialize documentation website settings
 #'
 #' @description
-#' Creates a subdirectory called `altdoc/` in the package root directory to store the settings files used to by one of the documentation generator utilities (docsify, docute, or mkdocs). The files in this folder are never altered automatically by `altdoc` unless the user explicitly calls `overwrite=TRUE`. They can thus be edited manually to customize the sidebar and website.
+#' Creates a subdirectory called `altdoc/` in the package root directory to
+#' store the settings files used to by one of the documentation generator
+#' utilities (docsify, docute, or mkdocs). The files in this folder are never
+#' altered automatically by `altdoc` unless the user explicitly calls
+#' `overwrite=TRUE`. They can thus be edited manually to customize the sidebar and
+#' website.
 #'
 #' @param tool String. "docsify", "docute", or "mkdocs".
 #' @param path Path to the package root directory.
