@@ -12,7 +12,7 @@ preview_docs(path = ".")
 \value{
 No value returned. If RStudio is used, it shows a site preview in
 Viewer. To preview the site in a browser or in another text editor (ex: VS Code),
-see the vignette on the \code{altdoc} website.  '
+see the vignette on the \code{altdoc} website.
 }
 \description{
 Preview the documentation in a webpage or in viewer

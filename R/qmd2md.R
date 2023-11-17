@@ -26,7 +26,7 @@
   }
 
 
-  out <- ifelse(inherits(out, "try-error"), FALSE, TRUE)
+  out <- !inherits(out, "try-error")
 
   return(out)
 }
@@ -44,7 +44,7 @@
     out <- try(rmarkdown::render(
       input = path.expand(source_file),
       output_format = "github_document",
-      quiet = !verbose,
+      quiet = FALSE,
       envir = new.env()
     ), silent = FALSE)
   } else {
@@ -53,7 +53,7 @@
         rmarkdown::render(
           input = path.expand(source_file),
           output_format = "github_document",
-          quiet = !verbose,
+          quiet = TRUE,
           envir = new.env()),
         silent = TRUE)
     })
@@ -75,6 +75,7 @@
     fs::file_delete(stem_md)
   }
 
-  out <- ifelse(inherits(out, "try-error"), FALSE, TRUE)
+  out <- !inherits(out, "try-error")
+
   return(out)
 }

@@ -5,7 +5,7 @@
 #'
 #' @param tool String. "docsify", "docute", or "mkdocs".
 #' @param path Path to the package root directory.
-#' @param overwrite Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the `altdocs` directory, including any customizations you may have made.
+#' @param overwrite Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the `altdoc` directory, including any customizations you may have made.
 #'
 #' @export
 #'
@@ -26,11 +26,11 @@
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
-  safe.copy <- function(src, tar, overwrite) {
+  .safe_copy <- function(src, tar, overwrite) {
     if (fs::file_exists(tar) && !isTRUE(overwrite)) {
       cli::cli_abort("{tar} already exists. Delete it or set `overwrite=TRUE`.", call = NULL)
     } else {
-      file.copy(src, tar, overwrite = TRUE)
+      fs::file_copy(src, tar, overwrite = TRUE)
     }
   }
 
@@ -73,11 +73,11 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (isTRUE(tool == "docsify")) {
     src <- system.file("docsify/docsify.html", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "docsify.html"))
-    safe.copy(src, tar, overwrite = overwrite)
+    .safe_copy(src, tar, overwrite = overwrite)
 
     src <- system.file("docsify/docsify.md", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "docsify.md"))
-    safe.copy(src, tar, overwrite = overwrite)
+    .safe_copy(src, tar, overwrite = overwrite)
 
     tar <- fs::path_join(c(altdoc_dir, ".nojekyll"))
     fs::file_create(tar)
@@ -85,12 +85,12 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   } else if (isTRUE(tool == "docute")) {
     src <- system.file("docute/docute.html", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "docute.html"))
-    safe.copy(src, tar, overwrite = overwrite)
+    .safe_copy(src, tar, overwrite = overwrite)
 
   } else if (isTRUE(tool == "mkdocs")) {
     src <- system.file("mkdocs/mkdocs.yml", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "mkdocs.yml"))
-    safe.copy(src, tar, overwrite = overwrite)
+    .safe_copy(src, tar, overwrite = overwrite)
   }
 
   # README.md is mandatory
