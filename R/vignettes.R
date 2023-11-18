@@ -4,10 +4,10 @@
 #
 # Vignettes files (originally placed in the folder "Vignettes") have the output
 # "html_vignette", instead of Markdown. This function makes several things:
-# * moves the .Rmd files from the "vignettes" folder in "docs/articles"
-# * replaces the "output" argument of each .Rmd file (in "docs/articles") so
+# * moves the .Rmd files from the "vignettes" folder in "docs/vignettes"
+# * replaces the "output" argument of each .Rmd file (in "docs/vignettes") so
 #  that it is "md_document" instead of "html_vignette"
-# * render all of the modified .Rmd files (in "docs/articles"), which produce .md files.
+# * render all of the modified .Rmd files (in "docs/vignettes"), which produce .md files.
 
 .import_vignettes <- function(path = path, verbose = FALSE) {
   # source directory
@@ -18,7 +18,7 @@
   }
 
   # target directory
-  tar_dir <- fs::path_join(c(.doc_path(path = path), "/articles"))
+  tar_dir <- fs::path_join(c(.doc_path(path = path), "/vignettes"))
   if (!dir.exists(tar_dir)) {
     fs::dir_create(tar_dir)
   }
@@ -27,11 +27,11 @@
   src_files <- list.files(src_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$")
 
   # copy all subdirectories: images, static files, etc.
-  # docsify: articles/
+  # docsify: vignettes/
   # docute: /
   dir_static <- Filter(fs::is_dir, fs::dir_ls(src_dir))
   if (.doc_type(path) == "docute") {
-    tar_dir_static <- gsub("articles$", "", tar_dir)
+    tar_dir_static <- gsub("vignettes$", "", tar_dir)
   } else {
     tar_dir_static <- tar_dir
   }

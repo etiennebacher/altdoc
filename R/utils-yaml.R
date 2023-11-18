@@ -75,11 +75,11 @@
 }
 
 
-# Find bib files in vignettes, and copy them to docs/articles (+ potential
+# Find bib files in vignettes, and copy them to docs/vignettes (+ potential
 # relative path)
 .extract_import_bib <- function(filename, path = path) {
   good_path <- .doc_path(path = path)
-  articles_path <- paste0(good_path, "/articles")
+  vignettes_path <- paste0(good_path, "/vignettes")
 
   # Extract yaml from Rmd
   x <- .readlines(filename)
@@ -102,12 +102,12 @@
   for (i in seq_along(bib)) {
     fs::dir_create(
       dirname(
-        paste0(articles_path, "/", bib[i])
+        paste0(vignettes_path, "/", bib[i])
       )
     )
     fs::file_copy(
       paste0("vignettes/", bib[i]),
-      paste0(articles_path, "/", bib[i]),
+      paste0(vignettes_path, "/", bib[i]),
       overwrite = TRUE
     )
   }

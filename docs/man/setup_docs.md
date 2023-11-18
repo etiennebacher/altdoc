@@ -43,7 +43,9 @@ Path to the package root directory.
 <code id="setup_docs_:_overwrite">overwrite</code>
 </td>
 <td>
-Logical. If TRUE, overwrite existing files.
+Logical. If TRUE, overwrite existing files. Warning: This will
+completely delete the settings files in the <code>altdoc</code>
+directory, including any customizations you may have made.
 </td>
 </tr>
 </table>

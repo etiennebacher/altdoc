@@ -69,10 +69,10 @@ test_that(".extract_import_bib works", {
   writeLines(original_rmd, "vignettes/options.Rmd")
   fs::file_create("vignettes/bibliography.bib")
   writeLines("hello this is the biblio", "vignettes/bibliography.bib")
-  fs::dir_create("docs/articles")
+  fs::dir_create("docs/vignettes")
   .extract_import_bib("vignettes/options.Rmd", path = getwd())
 
-  expect_true(fs::file_exists("docs/articles/bibliography.bib"))
-  bib <- readLines("docs/articles/bibliography.bib", warn = FALSE)
+  expect_true(fs::file_exists("docs/vignettes/bibliography.bib"))
+  bib <- readLines("docs/vignettes/bibliography.bib", warn = FALSE)
   expect_true(bib == "hello this is the biblio")
 })

@@ -10,9 +10,9 @@ these commands from the root directory of your package:
 library(altdoc)
 
 ### Initialize
-setup_docs(tool = "docsify")
-## setup_docs(tool = "docute")
-## setup_docs(tool = "mkdocs")
+setup_docs("docsify")
+## setup_docs("docute")
+## setup_docs("mkdocs")
 
 ### Render
 render_docs()
@@ -52,12 +52,12 @@ installation guides for details.
   - `docs/` stores the rendered website. This folder is overwritten
     every time a user calls `render_docs()`, so you should not edit it
     manually.
-  - `altdoc/` stores the settings files created by `use_*()` functions.
-    These files are never modified automatically after initialization,
-    so you can edit these files manually to change the settings of your
+  - `altdoc/` stores the settings files created by `setup_docs()`. These
+    files are never modified automatically after initialization, so you
+    can edit them manually to customize the settings of your
     documentation and website. All the files stored in `altdoc/` are
     copied to `docs/` and made available as static files in the root of
-    the website.
+    the website.  
   - `README.md` is the homepage of the website.
   - The content of the (optional) “news” section is stored in `NEWS.md`
     or `CHANGELOG.md`
@@ -145,11 +145,11 @@ This function will:
       - Ex: `NEWS.md`, `README.md`, `LICENSE.md`, `CODE_OF_CONDUCT.md`,
         etc.
 2.  Render Rmarkdown and Quarto files (`.Rmd` and `.qmd` extensions)
-    from the `vignettes/` directory and store them in `docs/articles/`.
+    from the `vignettes/` directory and store them in `docs/vignettes/`.
 3.  Copy Markdown files with extension `.md` from `vignettes/` to
-    `docs/articles/`.
-4.  Convert the manual pages stored `man/` from `.Rd` to `.md` format,
-    and copy them to `docs/man/`.
+    `docs/vignettes/`.
+4.  Convert the manual pages stored in `man/` from `.Rd` to `.md`
+    format, and copy them to `docs/man/`.  
 5.  Copy all static files from `altdoc/` to `docs/`.
 
 Whenever you make changes to the man pages or to the vignettes, you can
