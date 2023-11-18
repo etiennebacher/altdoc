@@ -115,8 +115,8 @@ This function will:
 
 1. Render and copy standard `R` package files to `docs/`.
    - Ex: `NEWS.md`, `README.md`, `LICENSE.md`, `CODE_OF_CONDUCT.md`, etc.
-2. Render Rmarkdown and Quarto files (`.Rmd` and `.qmd` extensions) from the `vignettes/` directory and store them in `docs/articles/`.
-3. Copy Markdown files with extension `.md` from `vignettes/` to `docs/articles/`.
+2. Render Rmarkdown and Quarto files (`.Rmd` and `.qmd` extensions) from the `vignettes/` directory and store them in `docs/vignettes/`.
+3. Copy Markdown files with extension `.md` from `vignettes/` to `docs/vignettes/`.
 4. Convert the manual pages stored in `man/` from `.Rd` to `.md` format, and copy them to `docs/man/`.  
 5. Copy all static files from `altdoc/` to `docs/`.
 

@@ -26,7 +26,9 @@ The process is usually very simple:
     -   Branch: `main` or `master` (depending on your git repository
         settings)
     -   Select folder: `docs/`
-4.  Update your `altdoc` site, commit, and push to Github.
+4.  Update your `altdoc` site, commit, and push to Github. Make sure all
+    files in `docs/` are committed to the repository, including hidden
+    files like `.nojekyll`.
 
 Detailed instructions are available on Github’s website:
 

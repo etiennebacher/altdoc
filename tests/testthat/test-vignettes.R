@@ -24,5 +24,5 @@ test_that(".import_vignettes works on basic vignette", {
     render_docs(path = getwd()),
     "following vignette has been rendered"
   )
-  expect_true(fs::file_exists("docs/articles/basic.md"))
+  expect_true(fs::file_exists("docs/vignettes/basic.md"))
 })

@@ -21,22 +21,19 @@
     } else {
         sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
     }
-    ### TODO move code below to separate internal functions, e.g `generate_articles()`, `generate_man()`  
+    ### TODO move code below to separate internal functions, e.g `generate_vignettes()`, `generate_man()`  
 
 
     ############### Vignettes
     # TODO: get clean titles. .get_vignettes_titles does not work as I expected
-    dn1 <- fs::path_join(c(.doc_path(path), "vignettes"))
-    dn2 <- fs::path_join(c(.doc_path(path), "articles"))
-    fn_vignettes <- c(
-        list.files(dn1, pattern = "\\.md$", full.names = TRUE),
-        list.files(dn2, pattern = "\\.md$", full.names = TRUE)
-    )
+    dn <- fs::path_join(c(.doc_path(path), "vignettes"))
+    fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
+
     # before gsub on files
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
     fn_vignettes <- sapply(fn_vignettes, function(x) 
         {
-            fs::path_join(c("articles", basename(x)))
+            fs::path_join(c("vignettes", basename(x)))
         }
     )
     if (length(fn_vignettes) > 0) {

@@ -68,7 +68,7 @@ render_docs()
 preview_docs()
 ```
 
-See [the Get Started vignette](articles/get-started.md) for more details.
+See [the Get Started vignette](vignettes/get-started.md) for more details.
 
 
 ## More
