@@ -65,7 +65,7 @@
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
     } else if (fs::path_ext(origin) == "Rmd") {
-      conversion_worked[i] <- .rmd2md(origin, tar_dir, verbose = verbose)
+      conversion_worked[i] <- .rmd2md(origin, tar_dir, path = path, verbose = verbose)
       cli::cli_progress_update()
     } else {
       conversion_worked[i] <- .qmd2md(origin, tar_dir, verbose = verbose)
