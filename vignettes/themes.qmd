@@ -1,0 +1,65 @@
+# Themes
+
+Each of the documentation engines that `altdoc` supports offers extensive theming and customization options. This vignette illustrates the customization process using minimal examples for each engine, and provides links to the relevant documentation of each engine for users who want to dive deeper.
+
+## Docsify
+
+## Docute
+
+## MkDocs
+
+MkDocs supports many themes and offers extensive configuration possibilities. Here, we show a minimal example using the Material theme. For more information, see:
+
+* [MkDocs User Guide](https://www.mkdocs.org/user-guide/)
+* [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/customization/)
+
+First, install both the `mkdocs` and `mkdocs-material` package for Python: 
+
+```{bash}
+pip install mkdocs mkdocs-material
+```
+
+Initialize the documentation website settings:
+
+```r
+library(altdoc)
+setup_docs("mkdocs")
+```
+
+Edit the `altdoc/mkdocs.yml` file. What follows is a minimal example in which took the default MkDocs settings that `altdoc` creates, and we modified only top lines to add the Material theme:
+
+```yaml
+### Theme
+theme:
+  name: material
+
+### Basic information
+site_name: $ALTDOC_PACKAGE_NAME
+
+### Repo information
+repo_url: $ALTDOC_PACKAGE_URL
+repo_name: $ALTDOC_PACKAGE_NAME
+
+### Plugins
+plugins:
+  - search
+
+### Navigation tree
+nav:
+  - Home: README.md
+  - Changelog: $ALTDOC_NEWS
+  - Articles: $ALTDOC_VIGNETTE_BLOCK
+  - Reference: $ALTDOC_MAN_BLOCK
+  - Code of Conduct: $ALTDOC_CODE_OF_CONDUCT
+  - License: $ALTDOC_LICENSE
+```
+
+Render the documentation:
+
+```r
+render_docs()
+```
+
+Here is a preview of the result:
+
+![](images/themes_mkdocs_preview.png)
