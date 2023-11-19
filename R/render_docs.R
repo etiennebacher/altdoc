@@ -41,7 +41,7 @@ render_docs <- function(path = ".", verbose = FALSE) {
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(update = TRUE, path = path, verbose = verbose)
+  .import_man(path = path, verbose = verbose)
 
   # Update vignettes
   cli::cli_h1("Vignettes")

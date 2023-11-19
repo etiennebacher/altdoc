@@ -1,20 +1,11 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(update = FALSE, path = ".", verbose = FALSE) {
+.import_man <- function(path = ".", verbose = FALSE) {
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
   man_target <- list.files(path = fs::path_join(c(.doc_path("."), "man")), pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
-
-  # warning about conflicts
-  if (!isTRUE(update)) {
-    man_conflict <- intersect(man_source, man_target)
-    if (length(man_conflict) > 0) {
-      man_conflict <- paste(man_conflict, collapse = ", ")
-      usethis::ui_yeah("These files already exist and will be overwritten: {man_conflict}")
-    }
-  }
 
   n <- length(man_source)
 
