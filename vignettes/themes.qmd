@@ -1,6 +1,10 @@
-# Themes
+# Themes and Customization
 
-Each of the documentation engines that `altdoc` supports offers extensive theming and customization options. This vignette illustrates the customization process using minimal examples for each engine, and provides links to the relevant documentation of each engine for users who want to dive deeper.
+The `altdoc/` directory is created when you call `setup_docs()`. It stores the basic settings that `altdoc` uses to render the documentation website. To customize your documentation website, you can edit the settings files stored in the `altdoc/` directory before calling `render_docs()`. 
+
+Note that the contents of `altdoc/` are never modified when you update the website with `render_docs()`. Therefore, you can safely edit the settings files by hand to customize your website. (Warning: `altdoc/` can be overwritten if you call `setup_docs()` again with the `overwrite=TRUE` argument.)
+
+Each of the documentation engines that `altdoc` supports offers extensive theming and customization options. This vignette illustrates the process using minimal examples for each engine, and provides links to the relevant documentation of each engine for users who want to dive deeper.
 
 ## Docsify
 
@@ -9,12 +13,6 @@ Docsify supports many themes and offers extensive configuration possibilities. H
 * [Docsify User Guide](https://docsify.js.org/#/)
 * [Themeable for Docsify](https://jhildenbiddle.github.io/docsify-themeable/#/)
 
-First, install both the `docsify` and `docsify-material` package for Python: 
-
-```{bash}
-pip install docsify docsify-material
-```
-
 Initialize the documentation website settings:
 
 ```r
@@ -22,15 +20,15 @@ library(altdoc)
 setup_docs("docsify")
 ```
 
-Edit the `altdoc/docsify.html` file. What follows is a minimal example in which took the default Docsify settings that `altdoc` creates, and we add only two lines of code.
+Edit the `altdoc/docsify.html` file. For example, to use the Themeable framework for Docsify, we only have to insert two lines in the settings file.
 
-Instead of the default Docsify theme, we insert:
+First, we replace the default Docsify theme with:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
 ```
 
-After the Docsify script, we insert:
+Then, after the Docsify script, we insert:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
@@ -99,12 +97,6 @@ Here is a preview of the result:
 </html>
 ```
 
-## Docute
-
-The Docute website hosts a detailed guide on customization. As with the other documentation engines, the strategy is to customize the settings files stored in the `altdoc/` directory, before calling `render_docs()`.
-
-* [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
-
 ## MkDocs
 
 MkDocs supports many themes and offers extensive configuration possibilities. Here, we show a minimal example using the Material theme. For more information, see:
@@ -162,3 +154,10 @@ render_docs()
 Here is a preview of the result:
 
 ![](images/themes_mkdocs_preview.png)
+
+
+## Docute
+
+The Docute website hosts a detailed guide on customization. As with the other documentation engines, the strategy is to customize the settings files stored in the `altdoc/` directory, before calling `render_docs()`.
+
+* [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
