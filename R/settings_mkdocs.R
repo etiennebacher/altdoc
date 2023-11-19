@@ -2,7 +2,7 @@
 
     # TODO: opportunity for DRY in the vignette and man blocks
 
-    .assert_dependency("yaml")
+    .assert_dependency("yaml", install = TRUE)
 
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))

@@ -21,23 +21,22 @@ Imports:
     cli,
     desc,
     fs,
-    here,
     quarto,
     rmarkdown (>= 2.15),
     tinkr,
     tools,
     utils,
-    usethis,
-    xml2,
-    rstudioapi,
-    servr,
-    yaml
+    xml2
 Suggests: 
     covr,
     knitr,
+    rstudioapi,
+    servr,
     spelling,
     testthat (>= 3.0.0),
-    withr
+    usethis,
+    withr,
+    yaml
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
