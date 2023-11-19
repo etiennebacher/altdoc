@@ -29,6 +29,7 @@ Imports:
     xml2
 Suggests: 
     covr,
+    future,
     future.apply,
     knitr,
     rstudioapi,
