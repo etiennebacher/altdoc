@@ -1,6 +1,7 @@
 # https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R
 .convert_path <- function(path = ".") {
-  if (path == ".") path <- here::here()
+  path <- fs::path_abs(path)
+  .check_is_package(path = path)
   path <- normalizePath(path)
   return(path)
 }
