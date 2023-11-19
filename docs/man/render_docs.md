@@ -11,7 +11,7 @@ modifies and overwrites the files in the ‘docs/’ folder.
 
 ## Usage
 
-<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE)
+<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE)
 </code></pre>
 
 ## Arguments
@@ -33,6 +33,17 @@ Path to the package root directory.
 Logical. Print Rmarkdown or Quarto rendering output.
 </td>
 </tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="render_docs_:_parallel">parallel</code>
+</td>
+<td>
+Logical. Render man pages and vignettes in parallel using the
+<code>future</code> framework. In addition to setting this argument to
+TRUE, users must define the parallelism plan in <code>future</code>. See
+the examples section below.
+</td>
+</tr>
 </table>
 
 ## Value
@@ -47,6 +58,11 @@ library(altdoc)
 if (interactive()) {
 
   render_docs()
+
+  # parallel rendering
+  library(future)
+  plan(multicore)
+  render_docs(parallel = TRUE)
 
 }
 ```
