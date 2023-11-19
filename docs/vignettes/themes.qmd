@@ -46,9 +46,12 @@ Here is a preview of the result:
 
 ![](images/themes_docsify_preview.png)
 
+
+Click on Details to display the full HTML template:
+
+<details>
 ```{html}
 <!-- index.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,6 +99,7 @@ Here is a preview of the result:
 </body>
 </html>
 ```
+</details>
 
 ## MkDocs
 

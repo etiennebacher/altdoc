@@ -9,8 +9,8 @@ settings files stored in the `altdoc/` directory before calling
 Note that the contents of `altdoc/` are never modified when you update
 the website with `render_docs()`. Therefore, you can safely edit the
 settings files by hand to customize your website. (Warning: `altdoc/`
-can be overwritten if you call `setup_docs()` again with 
-`overwrite=TRUE`.)
+can be overwritten if you call `setup_docs()` again with the
+`overwrite=TRUE` argument.)
 
 Each of the documentation engines that `altdoc` supports offers
 extensive theming and customization options. This vignette illustrates
@@ -63,9 +63,12 @@ Here is a preview of the result:
 
 ![](images/themes_docsify_preview.png)
 
+Click on Details to display the full HTML template:
+
+<details>
+
 ``` {html}
 <!-- index.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,6 +116,8 @@ Here is a preview of the result:
 </body>
 </html>
 ```
+
+</details>
 
 ## MkDocs
 
