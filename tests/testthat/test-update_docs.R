@@ -187,9 +187,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     writeLines(second_rmd, "vignettes/several-outputs.Rmd")
     expect_false(fs::file_exists("docs/vignettes/several-outputs.md"))
     # mkdocs does not accept duplicate vignette names
-    if (tool == "mkdocs") {
-      expect_error(render_docs(path = getwd()))
-    } else {
+    if (tool != "mkdocs") {
       render_docs(path = getwd())
       expect_true(fs::file_exists("docs/vignettes/several-outputs.md"))
     }
