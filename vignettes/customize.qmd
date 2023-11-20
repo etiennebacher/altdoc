@@ -1,4 +1,4 @@
-# Themes and Customization
+# Customize
 
 The `altdoc/` directory is created when you call `setup_docs()`. It stores the basic settings that `altdoc` uses to render the documentation website. To customize your documentation website, you can edit the settings files stored in the `altdoc/` directory before calling `render_docs()`. 
 

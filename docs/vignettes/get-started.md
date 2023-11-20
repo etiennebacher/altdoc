@@ -1,4 +1,5 @@
-# Get Started with ‘altdoc’
+
+# Get Started
 
 ## Quick start
 
