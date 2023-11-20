@@ -64,9 +64,14 @@
     if (fs::path_ext(origin) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
-    } else if (fs::path_ext(origin) == "Rmd") {
-      conversion_worked[i] <- .rmd2md(origin, tar_dir, verbose = verbose)
-      cli::cli_progress_update()
+    # We now use Quarto to render all vignettes, even .Rmd ones, because this
+    # makes the file structure more uniform, and fixes a lot of the file path
+    # issues we'd been having when generating images from code blocks and
+    # inserting ones with ![]().
+
+    # } else if (fs::path_ext(origin) == "Rmd") {
+    #   conversion_worked[i] <- .rmd2md(origin, tar_dir, path = path, verbose = verbose)
+    #   cli::cli_progress_update()
     } else {
       conversion_worked[i] <- .qmd2md(origin, tar_dir, verbose = verbose)
       cli::cli_progress_update()

@@ -138,3 +138,15 @@ In Visual Studio Code, you can use one of the many "live preview" or "local serv
 1. Install the [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) extension from Microsoft.
 2. From the command palette, select "Live Preview: Start Server".
 3. When the preview pane opens, navigate to the `docs/` folder.
+
+
+
+## Test
+
+The code and images in this section are inserted as a demonstration of images in Rmarkdown vignettes.
+
+```{r}
+with(mtcars, plot(mpg, wt))
+```
+
+![](images/hex-conductor.png)
