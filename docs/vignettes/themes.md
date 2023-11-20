@@ -62,8 +62,7 @@ render_docs()
 
 Here is a preview of the result:
 
-<img src="images/themes_docsify_preview.png"
-id="fig-539a35d47e664c97a50115a146a7f1bd-1" />
+![](images/themes_docsify_preview.png)
 
 Click on Details to display the full HTML template:
 
@@ -183,8 +182,7 @@ render_docs()
 
 Here is a preview of the result:
 
-<img src="images/themes_mkdocs_preview.png"
-id="fig-539a35d47e664c97a50115a146a7f1bd-2" />
+![](images/themes_mkdocs_preview.png)
 
 ## Docute
 
@@ -204,9 +202,6 @@ images in Quarto vignettes.
 with(mtcars, plot(mpg, wt))
 ```
 
-<img
-src="themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png"
-id="fig-539a35d47e664c97a50115a146a7f1bd-3" />
+![](vignettes/themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
-<img src="images/hex-conductor.png"
-id="fig-539a35d47e664c97a50115a146a7f1bd-4" />
+![](images/hex-conductor.png)

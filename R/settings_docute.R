@@ -88,8 +88,8 @@
         fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
         txt <- .readlines(fn)
         txt <- gsub(
-            paste0("![](", .doc_path(path), "/vignettes/"),
-            "![](",
+            paste0("![](", v),
+            paste0("![](vignettes/", v),
             txt,
             fixed = TRUE)
         writeLines(txt, fn)
