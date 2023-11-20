@@ -65,12 +65,6 @@
     })
   }
 
-  # absolute -> relative paths
-  if (!is.null(path) && fs::file_exists(target_file)) {
-    txt <- .readlines(target_file)
-    txt <- gsub(paste0(.doc_path("."), "/"), "", txt)
-    writeLines(txt, target_file)
-  }
 
   out <- !inherits(out, "try-error")
 
