@@ -81,3 +81,5 @@ Options for each site generator can be found on their own website:
 * [Docsify](https://docsify.js.org/)
 * [Mkdocs](https://www.mkdocs.org/) ([Material for Mkdocs](https://squidfunk.github.io/mkdocs-material/))
 
+
+The initial version of the logo was created with Chat-GPT and edited in Gimp by Vincent Arel-Bundock.
