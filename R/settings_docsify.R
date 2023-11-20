@@ -87,24 +87,6 @@
     body <- .substitute_altdoc_variables(body, path = path)
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(body, fn)
-
-    # Fix vignette relative links
-    vignettes <- list.files(
-        fs::path_join(c(.doc_path(path), "vignettes")),
-        pattern = "\\.md")
-    vignettes <- gsub("\\.md$", "", vignettes)
-    for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
-        txt <- .readlines(fn)
-        # Rmarkdown problems
-        txt <- gsub(
-            paste0("![](", .doc_path(path), "/vignettes/"),
-            "![](",
-            txt,
-            fixed = TRUE)
-        writeLines(txt, fn)
-    }
-
 }
 
 

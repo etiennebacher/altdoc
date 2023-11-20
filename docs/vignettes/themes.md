@@ -1,3 +1,4 @@
+
 # Themes and Customization
 
 The `altdoc/` directory is created when you call `setup_docs()`. It
@@ -67,7 +68,7 @@ Click on Details to display the full HTML template:
 
 <details>
 
-``` {html}
+``` html
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
@@ -132,7 +133,7 @@ For more information, see:
 First, install both the `mkdocs` and `mkdocs-material` package for
 Python:
 
-``` {bash}
+``` bash
 pip install mkdocs mkdocs-material
 ```
 
@@ -191,3 +192,16 @@ files stored in the `altdoc/` directory, before calling `render_docs()`.
 
 -   [Docute Customization
     Guide](https://docute.egoist.dev/guide/customization)
+
+## Test
+
+The code and images in this section are inserted as a demonstration of
+images in Quarto vignettes.
+
+``` r
+with(mtcars, plot(mpg, wt))
+```
+
+![](vignettes/themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
+
+![](images/hex-conductor.png)

@@ -127,4 +127,21 @@
         }
     }
     fs::dir_delete(fs::path_join(c(path, "site")))
+
+    # Fix vignette relative links
+    vignettes <- list.files(
+        fs::path_join(c(.doc_path(path), "vignettes")),
+        pattern = "\\.md")
+    vignettes <- gsub("\\.md$", "", vignettes)
+    for (v in vignettes) {
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        txt <- gsub(
+            paste0("![](", .doc_path(path), "/vignettes/"),
+            "![](",
+            txt,
+            fixed = TRUE)
+        writeLines(txt, fn)
+    }
+
 }

@@ -87,12 +87,6 @@
     for (v in vignettes) {
         fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
         txt <- .readlines(fn)
-        # Rmarkdown problems
-        txt <- gsub(
-            paste0("![](", .doc_path(path), "/"),
-            "![](",
-            txt,
-            fixed = TRUE)
         # Quarto problems
         txt <- gsub(
             paste0("![](", v),
@@ -101,7 +95,5 @@
             fixed = TRUE)
         writeLines(txt, fn)
     }
-
-
 
 }
