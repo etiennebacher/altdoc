@@ -1,4 +1,4 @@
-# Deployment
+# Deploy
 
 `docsify.js`, `docute` and `mkdocs` documentations can be deployed with
 several tools. The authors of these documentation generators have all

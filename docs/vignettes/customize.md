@@ -1,5 +1,5 @@
 
-# Themes and Customization
+# Customize
 
 The `altdoc/` directory is created when you call `setup_docs()`. It
 stores the basic settings that `altdoc` uses to render the documentation
@@ -202,6 +202,6 @@ images in Quarto vignettes.
 with(mtcars, plot(mpg, wt))
 ```
 
-![](vignettes/themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
+![](vignettes/customize.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
 ![](images/hex-conductor.png)

@@ -9,24 +9,17 @@
   
 </div>
 
-`altdoc` is a simple and powerful package to create documentation websites for `R` packages. It is a lightweight alternative to `pkgdown`, with support for many documentation generator frameworks:
+`altdoc` is a simple and powerful package to create documentation websites for `R` packages. It is a more flexible alternative to [`pkgdown`.](https://pkgdown.r-lib.org/) Its features include:
 
-* [docsify](https://docsify.js.org/#/)
-* [docute](https://docute.egoist.dev//)
-* [mkdocs](https://www.mkdocs.org/). 
-
-## Demos
-
-Websites created with `altdoc`:
-
-* [altdoc](https://altdoc.etiennebacher.com/) itself (Docute)
-* [conductor](https://conductor.etiennebacher.com/) (Docsify)
-
-Websites created with the documentation generators supported by `altdoc`:
-
-* [firebase](https://firebase.john-coene.com/) by John Coene (uses Mkdocs, theme Material)
-* [sever](https://sever.john-coene.com/) by John Coene (uses Mkdocs, theme readthedocs)
-
+* Support for several documentation frameworks:
+  - [docsify](https://docsify.js.org/#/)
+  - [docute](https://docute.egoist.dev//)
+  - [mkdocs](https://www.mkdocs.org/). 
+* Render Quarto and Rmarkdown vignettes stored in the package's `vignettes/` directory.
+* Render man pages for all exported functions (including executed examples).
+* Generate pages and links to common sections: `README.md`, `NEWS.md`, `Changelog.md`, `CODE_OF_CONDUCT.md`, etc.
+* Preview the site in a browser or in the RStudio Viewer pane.
+* Facilitate website deployment to Github and other platforms.
 
 ## Installation
 
@@ -40,18 +33,7 @@ You can also install the development version to benefit from the latest bug fixe
 remotes::install_github("etiennebacher/altdoc")
 ```
 
-## Features
-
-* Import core files to use `docute`, `docsify`, or `mkdocs` documentation formats.
-* Render Rmarkdown and Quarto vignettes stored in the package's `vignettes/` directory.
-* Convert man pages for all exported functions to HTML with rendered examples.
-* Generate pages and links to common sections:
-  - README, NEWS, Changelog, Code of Conduct, etc.
-* Preview the site in a browser or in the RStudio Viewer pane.
-* Facilitate website deployment to Github and other platforms.
-
-
-## Workflow
+## Quick start
 
 A typical workflow with `altdoc` is to execute these commands from the root directory of the package:
 
@@ -70,16 +52,20 @@ preview_docs()
 
 See [the Get Started vignette](vignettes/get-started.md) for more details.
 
+## Demos
+
+Websites created with `altdoc`:
+
+* [altdoc](https://altdoc.etiennebacher.com/) itself (Docute)
+* [conductor](https://conductor.etiennebacher.com/) (Docsify)
+
+Websites created with the documentation generators supported by `altdoc`:
+
+* [firebase](https://firebase.john-coene.com/) by John Coene (uses Mkdocs, theme Material)
+* [sever](https://sever.john-coene.com/) by John Coene (uses Mkdocs, theme readthedocs)
 
 ## More
 
 More details on the package and the deployment are available on the [website](https://altdoc.etiennebacher.com/#/). 
-
-Options for each site generator can be found on their own website:
-
-* [Docute](https://docute.egoist.dev//)
-* [Docsify](https://docsify.js.org/)
-* [Mkdocs](https://www.mkdocs.org/) ([Material for Mkdocs](https://squidfunk.github.io/mkdocs-material/))
-
 
 The initial version of the logo was created with Chat-GPT and edited in Gimp by Vincent Arel-Bundock.
