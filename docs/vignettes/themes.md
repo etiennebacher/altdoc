@@ -202,6 +202,6 @@ images in Quarto vignettes.
 with(mtcars, plot(mpg, wt))
 ```
 
-![](themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
+![](vignettes/themes.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
 ![](images/hex-conductor.png)
