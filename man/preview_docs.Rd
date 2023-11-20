@@ -23,4 +23,9 @@ if (interactive()) {
   preview_docs()
 
 }
+
+# This is an example to illustrate that code-generated images are properly
+# displayed. See the `altdoc` website for a rendered version.
+with(mtcars, plot(mpg, wt))
+
 }

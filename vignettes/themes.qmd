@@ -110,7 +110,7 @@ MkDocs supports many themes and offers extensive configuration possibilities. He
 
 First, install both the `mkdocs` and `mkdocs-material` package for Python: 
 
-```{bash}
+```bash
 pip install mkdocs mkdocs-material
 ```
 
@@ -165,3 +165,14 @@ Here is a preview of the result:
 The Docute website hosts a detailed guide on customization. As with the other documentation engines, the strategy is to customize the settings files stored in the `altdoc/` directory, before calling `render_docs()`.
 
 * [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
+
+
+## Test
+
+The code and images in this section are inserted as a demonstration of images in Quarto vignettes.
+
+```{r}
+with(mtcars, plot(mpg, wt))
+```
+
+![](images/hex-conductor.png)

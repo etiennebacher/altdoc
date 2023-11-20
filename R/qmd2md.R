@@ -32,7 +32,11 @@
 }
 
 
-.rmd2md <- function(source_file, tar_dir, verbose = FALSE) {
+.rmd2md <- function(source_file, tar_dir, path = NULL, verbose = FALSE) {
+
+  source_dir <- fs::path_dir(source_file)
+  target_file <- gsub("\\.Rmd$", "\\.md", fs::path_join(c(tar_dir, basename(source_file))))
+
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -44,6 +48,7 @@
     out <- try(rmarkdown::render(
       input = path.expand(source_file),
       output_format = "github_document",
+      output_dir = tar_dir,
       quiet = FALSE,
       envir = new.env()
     ), silent = FALSE)
@@ -52,6 +57,7 @@
       out <- try(
         rmarkdown::render(
           input = path.expand(source_file),
+          output_dir = tar_dir,
           output_format = "github_document",
           quiet = TRUE,
           envir = new.env()),
@@ -59,21 +65,6 @@
     })
   }
 
-  # tar_dir is apparently not reliable, and creates absolute paths, so we
-  # render them in place and move the files and static files directories.
-  stem <- fs::path_ext_remove(source_file)
-  stem_md <- paste0(stem, ".md") # fs::path_set_ext() breaks when filename includes dots
-  stem_files <- paste0(stem, "_files")
-
-  if (fs::dir_exists(stem_files)) {
-    fs::dir_copy(stem_files, tar_dir, overwrite = TRUE)
-    fs::dir_delete(stem_files)
-  }
-
-  if (fs::file_exists(stem_md)) {
-    fs::file_copy(stem_md, tar_dir, overwrite = TRUE)
-    fs::file_delete(stem_md)
-  }
 
   out <- !inherits(out, "try-error")
 

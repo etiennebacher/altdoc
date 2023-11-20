@@ -77,4 +77,39 @@
     # write mutable sidebar
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(sidebar, fn)
+
+
+    # Fix vignette relative links
+    vignettes <- list.files(
+        fs::path_join(c(.doc_path(path), "vignettes")),
+        pattern = "\\.md")
+    vignettes <- gsub("\\.md$", "", vignettes)
+    for (v in vignettes) {
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        txt <- gsub(
+            paste0("![](", .doc_path(path), "/vignettes/"),
+            "![](",
+            txt,
+            fixed = TRUE)
+        writeLines(txt, fn)
+    }
+
+    # Fix man relative links
+    man <- list.files(
+        fs::path_join(c(.doc_path(path), "man")),
+        pattern = "\\.md")
+    man <- gsub("\\.md$", "", man)
+    for (v in man) {
+        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        # Quarto problems
+        txt <- gsub(
+            paste0("![](", v),
+            paste0("![](man/", v),
+            txt,
+            fixed = TRUE)
+        writeLines(txt, fn)
+    }
+
 }
