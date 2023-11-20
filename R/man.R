@@ -1,5 +1,5 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(path = ".", verbose = FALSE) {
+.import_man <- function(path = ".", verbose = FALSE, parallel = FALSE) {
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
@@ -9,26 +9,20 @@
 
   n <- length(man_source)
 
-  # can't use message_info with {}
-  cli::cli_alert_info("Found {n} man page{?s} to convert.")
-  i <- 0
-  cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
 
-  conversion_worked <- vector(length = n)
+  cli::cli_alert_info("Found {n} man page{?s} to convert.")
 
   # process man pages one by one
-  for (i in seq_along(man_source)) {
-    f <- man_source[i]
+  render_one_man <- function(fn) {
     # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
-    origin_Rd <- fs::path_join(c("man", paste0(f, ".Rd")))
+    origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
     destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
-    destination_qmd <- fs::path_join(c(destination_dir, paste0(f, ".qmd")))
-    destination_md <- fs::path_join(c(destination_dir, paste0(f, ".md")))
+    destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
+    destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    conversion_worked[i] <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+    worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
     fs::file_delete(destination_qmd)
-
     # section headings are too deeply nested by default
     # this is a hack because it may remove one # from comments. But that's
     # probably not the end of the world, because the line stick stays commented
@@ -38,8 +32,21 @@
       tmp <- gsub("^##", "#", tmp)
       writeLines(tmp, destination_md)
     }
+    return(worked)
+  }
 
-    cli::cli_progress_update(inc = 1)
+  if (isTRUE(parallel)) {
+    .assert_dependency("future.apply", install = TRUE)
+    conversion_worked <- future.apply::future_sapply(man_source, render_one_man, future.seed = NULL)
+  } else {
+    # can't use message_info with {}
+    i <- 0
+    cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
+    conversion_worked <- vector(length = n)
+    for (i in seq_along(man_source)) {
+      conversion_worked[i] <- render_one_man(man_source[i])
+      cli::cli_progress_update(inc = 1)
+    }
   }
 
   successes <- which(conversion_worked == TRUE)

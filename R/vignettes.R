@@ -9,7 +9,7 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/vignettes"), which produce .md files.
 
-.import_vignettes <- function(path = path, verbose = FALSE) {
+.import_vignettes <- function(path = path, verbose = FALSE, parallel = FALSE) {
   # source directory
   src_dir <- fs::path_abs("vignettes", start = path)
   if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
@@ -45,22 +45,15 @@
 
   n <- length(src_files)
 
-  # can't use message_info with {}
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
-  i <- 0
-  cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
-
-  conversion_worked <- vector(length = n)
 
   fs::dir_copy(src_dir, tar_dir, overwrite = TRUE)
 
-  for (i in seq_along(src_files)) {
+  render_one_vignette <- function(i) {
     # only process new or modified vignettes
     origin <- fs::path_join(c(src_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
-
     fs::file_copy(origin, destination, overwrite = TRUE)
-
     if (fs::path_ext(origin) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
@@ -73,7 +66,20 @@
     #   conversion_worked[i] <- .rmd2md(origin, tar_dir, path = path, verbose = verbose)
     #   cli::cli_progress_update()
     } else {
-      conversion_worked[i] <- .qmd2md(origin, tar_dir, verbose = verbose)
+      worked <- .qmd2md(origin, tar_dir, verbose = verbose)
+    }
+    return(worked)
+  }
+
+  if (isTRUE(parallel)) {
+    .assert_dependency("future.apply", install = TRUE)
+    conversion_worked <- future.apply::future_sapply(seq_along(src_files), render_one_vignette, future.seed = NULL)
+  } else {
+    i <- 0
+    cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+    conversion_worked <- vector(length = n)
+    for (i in seq_along(src_files)) {
+      conversion_worked[i] <- render_one_vignette(i)
       cli::cli_progress_update()
     }
   }

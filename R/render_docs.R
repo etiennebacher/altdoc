@@ -5,6 +5,7 @@
 #' overwrites the files in the 'docs/' folder.
 #'
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
+#' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -15,8 +16,13 @@
 #' 
 #'   render_docs()
 #' 
+#'   # parallel rendering
+#'   library(future)
+#'   plan(multicore)
+#'   render_docs(parallel = TRUE)
+#' 
 #' }
-render_docs <- function(path = ".", verbose = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
 
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
@@ -41,11 +47,11 @@ render_docs <- function(path = ".", verbose = FALSE) {
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(path = path, verbose = verbose)
+  .import_man(path = path, verbose = verbose, parallel = parallel)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(path, verbose = verbose)
+  .import_vignettes(path, verbose = verbose, parallel = parallel)
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, doctype = .doc_type(path))
