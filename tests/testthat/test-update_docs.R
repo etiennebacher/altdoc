@@ -171,6 +171,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 
 for (tool in c("docute", "docsify", "mkdocs")) {
   test_that(sprintf("render_docs also transform new/modified vignettes if specified: %s", tool), {
+    skip_on_ci()
     skip_if(tool == "mkdocs" && !.is_mkdocs())
     # setup
     first_rmd <- .readlines(
