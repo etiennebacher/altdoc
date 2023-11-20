@@ -37,14 +37,16 @@
         }
     )
     if (length(fn_vignettes) > 0) {
-        tmp <- sprintf("  - [%s](%s)", titles, fn_vignettes)
-        tmp <- c("* Articles", tmp)
-        tmp <- paste(tmp, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", tmp, sidebar)
+        idx <- grep("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)
+        if (length(idx) == 1) {
+            sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "", sidebar)
+            indent <- gsub("^(\\w*).*", "\\1", sidebar[idx])
+            tmp <- sprintf("%s  - [%s](%s)", indent, titles, fn_vignettes)
+            sidebar <- c(sidebar[1:idx], tmp, sidebar[(idx + 1):length(tmp)])
+        }
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
     }
-
 
     ################### Man pages
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
@@ -56,11 +58,13 @@
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
         fn_man <- sapply(fn_man, fs::path_ext_remove)
         titles <- fs::path_ext_remove(basename(fn_man))
-        if (length(fn_man) > 0) {
-            tmp <- sprintf("  - [%s](%s)", titles, fn_man)
-            tmp <- c("* Reference", tmp)
-            tmp <- paste(tmp, collapse = "\n")
-            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", tmp, sidebar)
+
+        idx <- grep("\\$ALTDOC_MAN_BLOCK", sidebar)
+        if (length(idx) == 1) {
+            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
+            indent <- gsub("^(\\w*).*", "\\1", sidebar[idx])
+            tmp <- sprintf("%s  - [%s](%s)", indent, titles, fn_man)
+            sidebar <- c(sidebar[1:idx], tmp, sidebar[(idx + 1):length(tmp)])
         } else {
             sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
         }
