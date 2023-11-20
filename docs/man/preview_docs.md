@@ -41,4 +41,12 @@ if (interactive()) {
   preview_docs()
 
 }
+
+# This is an example to illustrate that code-generated images are properly
+# displayed. See the `altdoc` website for a rendered version.
+with(mtcars, plot(mpg, wt))
 ```
+
+<img
+src="preview_docs.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png"
+id="fig-539a35d47e664c97a50115a146a7f1bd-1" />

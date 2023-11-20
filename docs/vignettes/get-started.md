@@ -184,6 +184,9 @@ images in Rmarkdown vignettes.
 with(mtcars, plot(mpg, wt))
 ```
 
-![](vignettes/get-started.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)
+<img
+src="get-started.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png"
+id="fig-539a35d47e664c97a50115a146a7f1bd-1" />
 
-![](images/hex-conductor.png)
+<img src="images/hex-conductor.png"
+id="fig-539a35d47e664c97a50115a146a7f1bd-2" />

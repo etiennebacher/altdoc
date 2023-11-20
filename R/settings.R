@@ -31,4 +31,6 @@
         .import_settings_mkdocs(path = path)
     }
 
+    cli::cli_alert_success("HTML updated.")
+
 }
