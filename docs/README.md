@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1> altdoc </h1>
+<img src="README_assets/altdoc_logo_web.png" height = "125"><br>
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
 <img src="https://codecov.io/gh/etiennebacher/altdoc/branch/master/graph/badge.svg">
@@ -81,3 +81,5 @@ Options for each site generator can be found on their own website:
 * [Docsify](https://docsify.js.org/)
 * [Mkdocs](https://www.mkdocs.org/) ([Material for Mkdocs](https://squidfunk.github.io/mkdocs-material/))
 
+
+The initial version of the logo was created with Chat-GPT and edited in Gimp by Vincent Arel-Bundock.
