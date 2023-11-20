@@ -16,6 +16,7 @@ Breaking changes:
 New:
 
 * Support for Quarto vignettes (.qmd) stored in the `vignettes/` folder.
+* `render_docs(parallel=TRUE)` uses `future` to parallelize the rendering of vignettes and man pages.
 * Settings files are now permanently stored in the `altdoc/` directory. These files can be edited manually to customize the website.
 * Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
