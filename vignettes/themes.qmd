@@ -6,6 +6,8 @@ Note that the contents of `altdoc/` are never modified when you update the websi
 
 Each of the documentation engines that `altdoc` supports offers extensive theming and customization options. This vignette illustrates the process using minimal examples for each engine, and provides links to the relevant documentation of each engine for users who want to dive deeper.
 
+In the last section of the vignette, we illustrate how to use a post-processing script to do deep customization of the website structure.
+
 ## Docsify
 
 Docsify supports many themes and offers extensive configuration possibilities. Here, we show a minimal example using the Themeable framework. For more information, see:
@@ -167,6 +169,45 @@ The Docute website hosts a detailed guide on customization. As with the other do
 * [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
 
 
+## Post-processing
+
+In some cases, it is necessary to do programmatic customization beyond what is made possible directly in `altdoc`. This is easily achieve by running simple post-processing scripts to modify the content of the `docs/` directory after `render_docs()` has been called.
+
+Here is a minimal example of a `mkdocs` website in which we display the man pages in reverse alphabetical order instead of the alphabetical order which is default in `altdoc`.
+
+First, we edit the `altdoc/mkdocs.yml` file and add a custom "variable" name to mark the change should be made. In this example, we use `$ALTDOC_CUSTOM_ENTRY`:
+
+```yaml
+site_name: $ALTDOC_PACKAGE_NAME
+nav:
+  - Home: README.md
+  - Functions: $ALTDOC_CUSTOM_ENTRY
+```
+
+When running `render_docs()`, `altdoc` will copy this settings file to `docs/mkdcs.yml`, but will not modify the `$ALTDOC_CUSTOM_ENTRY` variable, because it is not one of the known and supported variables by `altdoc`. We can then modify the sidebar directly, or use our new variable as a reference location to modify settings:
+
+```r
+library(yaml)
+
+# man file locations and names
+fun_files <- list.files("docs/man/", pattern = "\\.md", full.names = TRUE)
+fun_names <- list.files("docs/man/", pattern = "\\.md", full.names = FALSE)
+fun_names <- gsub("\\.md", "", fun_names)
+
+# man pages in reverse alphabetical order
+man <- as.list(rev(setNames(fun_files, fun_names)))
+
+# read the settings file
+yml <- read_yaml("docs/mkdocs.yml")
+
+# modify the navigation bar settings with reverse
+yml$nav[[2]]$Functions <- man
+
+# write the settings to file
+write_yaml(yml, "docs/mkdocs.yml")
+```
+
+
 ## Test
 
 The code and images in this section are inserted as a demonstration of images in Quarto vignettes.
@@ -176,3 +217,4 @@ with(mtcars, plot(mpg, wt))
 ```
 
 ![](images/hex-conductor.png)
+
