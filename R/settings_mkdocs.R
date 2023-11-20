@@ -144,4 +144,19 @@
         writeLines(txt, fn)
     }
 
+    # Fix vignette relative links
+    man <- list.files(
+        fs::path_join(c(.doc_path(path), "man")),
+        pattern = "\\.md")
+    man <- gsub("\\.md$", "", man)
+    for (v in man) {
+        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        txt <- gsub(
+            paste0("![](", .doc_path(path), "/man/"),
+            "![](",
+            txt,
+            fixed = TRUE)
+        writeLines(txt, fn)
+    }
 }
