@@ -20,8 +20,8 @@
 
   # TODO: fix this for Quarto
   if (doctype != "quarto_website") {
-    .move_img_readme(path = path)
-    .replace_img_paths_readme(path = path)
+    .move_img_readme(path = src_dir)
+    .replace_img_paths_readme(path = src_dir)
   }
 
 }
@@ -60,7 +60,7 @@
   }
 
   .update_file(src, path = tar_dir, doctype = doctype)
-  .parse_news(path = path, news_path = tar)
+  .parse_news(path = src_dir, news_path = tar)
 }
 
 
