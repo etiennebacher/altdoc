@@ -26,17 +26,6 @@
   return(!inherits(x, "try-error"))
 }
 
-# Is mkdocs material installed?
-.is_mkdocs_material <- function() {
-  if (!.is_pip3()) {
-    cli::cli_alert_danger("Apparently, {.code pip3} is not installed on your system.")
-    cli::cli_alert_danger("Could not check whether {.code mkdocs-material} is installed.")
-    return(invisible())
-  }
-  x <- grepl("mkdocs-material", system2("pip3", "list --local", stdout = TRUE))
-  return(any(x))
-}
-
 # Is sphinx installed?
 .is_sphinx <- function() {
   x <- try(system2("sphinx-build", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
