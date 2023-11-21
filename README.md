@@ -12,9 +12,10 @@
 `altdoc` is a simple and powerful package to create documentation websites for `R` packages. It is a more flexible alternative to [`pkgdown`.](https://pkgdown.r-lib.org/) Its features include:
 
 * Support for several documentation frameworks:
-  - [docsify](https://docsify.js.org/#/)
-  - [docute](https://docute.egoist.dev//)
-  - [mkdocs](https://www.mkdocs.org/). 
+  - [Quarto website](https://quarto.org/docs/websites/)
+  - [Docsify](https://docsify.js.org/#/)
+  - [MkDocs](https://www.mkdocs.org/). 
+  - [Docute](https://docute.egoist.dev//)
 * Render Quarto and Rmarkdown vignettes stored in the package's `vignettes/` directory.
 * Render man pages for all exported functions (including executed examples).
 * Generate pages and links to common sections: `README.md`, `NEWS.md`, `Changelog.md`, `CODE_OF_CONDUCT.md`, etc.

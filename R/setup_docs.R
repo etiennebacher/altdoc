@@ -3,12 +3,12 @@
 #' @description
 #' Creates a subdirectory called `altdoc/` in the package root directory to
 #' store the settings files used to by one of the documentation generator
-#' utilities (docsify, docute, or mkdocs). The files in this folder are never
+#' utilities (`docsify`, `docute`, `mkdocs`, or `quarto_website`). The files in this folder are never
 #' altered automatically by `altdoc` unless the user explicitly calls
 #' `overwrite=TRUE`. They can thus be edited manually to customize the sidebar and
 #' website.
 #'
-#' @param tool String. "docsify", "docute", or "mkdocs".
+#' @param tool String. "docsify", "docute", "mkdocs", or "quarto_website".
 #' @param path Path to the package root directory.
 #' @param overwrite Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the `altdoc` directory, including any customizations you may have made.
 #'
@@ -28,6 +28,8 @@
 #'   # Create mkdocs documentation
 #'   setup_docs(tool = "mkdocs")
 #' 
+#'   # Create quarto website documentation
+#'   setup_docs(tool = "quarto_website")
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
@@ -45,7 +47,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       length(tool) != 1 ||
       !tool %in% c("docute", "docsify", "mkdocs", "quarto_website")) {
     cli::cli_abort(
-      'The `tool` argument must be "docsify", "docute", or "mkdocs".')
+      'The `tool` argument must be "docsify", "docute", "mkdocs", or "quarto_website".')
   }
 
   # paths
