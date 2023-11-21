@@ -15,10 +15,10 @@
 #' @export
 #'
 #' @return No value returned.
-#' 
+#'
 #' @examples
 #' if (interactive()) {
-#' 
+#'
 #'   # Create docute documentation
 #'   setup_docs(tool = "docute")
 #'
@@ -27,7 +27,7 @@
 #'
 #'   # Create mkdocs documentation
 #'   setup_docs(tool = "mkdocs")
-#' 
+#'
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
@@ -46,6 +46,13 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       !tool %in% c("docute", "docsify", "mkdocs")) {
     cli::cli_abort(
       'The `tool` argument must be "docsify", "docute", or "mkdocs".')
+  }
+
+  if (tool == "mkdocs" && !.is_mkdocs()) {
+    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
+    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
+    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
+    return(invisible())
   }
 
   # paths
@@ -68,7 +75,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (!fs::dir_exists(docs_dir)) {
     cli::cli_alert_info("Creating `docs/` directory.")
     fs::dir_create(docs_dir)
-  } 
+  }
 
   .add_rbuildignore("^docs$", path = path)
   .add_rbuildignore("^altdoc$", path = path)
