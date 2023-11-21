@@ -4,21 +4,42 @@
   good_path <- .doc_path(path)
 
   if (fs::file_exists(fs::path_abs("README.md", start = path))) {
-    fs::file_copy(
-      fs::path_abs("README.md", start = path),
-      paste0(good_path, "/README.md"),
-      overwrite = TRUE
-    )
+
+    if (.doc_type(path) == "quarto_website") {
+      fs::file_copy(
+        fs::path_abs("README.md", start = path),
+        paste0(good_path, "/index.md"),
+        overwrite = TRUE)
+    } else {
+      fs::file_copy(
+        fs::path_abs("README.md", start = path),
+        paste0(good_path, "/README.md"),
+        overwrite = TRUE)
+      .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
+    }
+
   } else {
-    fs::file_copy(
-      system.file("docsify/README.md", package = "altdoc"),
-      fs::path_join(c(good_path, "/README.md")),
-      overwrite = TRUE
-    )
+    if (.doc_type(path) == "quarto_website") {
+      fs::file_copy(
+        system.file("docsify/README.md", package = "altdoc"),
+        fs::path_join(c(good_path, "/index.md")),
+        overwrite = TRUE)
+    } else {
+      fs::file_copy(
+        system.file("docsify/README.md", package = "altdoc"),
+        fs::path_join(c(good_path, "/README.md")),
+        overwrite = TRUE)
+      .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
+    }
   }
-  .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
-  .move_img_readme(path = path)
-  .replace_img_paths_readme(path = path)
+
+
+  # TODO: fix this for Quarto
+  if (.doc_type(path) != "quarto_website") {
+    .move_img_readme(path = path)
+    .replace_img_paths_readme(path = path)
+  }
+
 }
 
 

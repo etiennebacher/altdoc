@@ -43,7 +43,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (missing(tool) ||
       !is.character(tool) ||
       length(tool) != 1 ||
-      !tool %in% c("docute", "docsify", "mkdocs")) {
+      !tool %in% c("docute", "docsify", "mkdocs", "quarto_website")) {
     cli::cli_abort(
       'The `tool` argument must be "docsify", "docute", or "mkdocs".')
   }
@@ -59,6 +59,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     fs::dir_create(altdoc_dir)
   } else if (isTRUE(overwrite)) {
     try(fs::file_delete(fs::path_join(c(altdoc_dir, "mkdocs.yml"))), silent = TRUE)
+    try(fs::file_delete(fs::path_join(c(altdoc_dir, "quarto_website.yml"))), silent = TRUE)
     try(fs::file_delete(fs::path_join(c(altdoc_dir, "docute.html"))), silent = TRUE)
     try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.html"))), silent = TRUE)
     try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.md"))), silent = TRUE)
@@ -95,6 +96,11 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   } else if (isTRUE(tool == "mkdocs")) {
     src <- system.file("mkdocs/mkdocs.yml", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "mkdocs.yml"))
+    .safe_copy(src, tar, overwrite = overwrite)
+
+  } else if (isTRUE(tool == "quarto_website")) {
+    src <- system.file("quarto_website/quarto_website.yml", package = "altdoc")
+    tar <- fs::path_join(c(altdoc_dir, "quarto_website.yml"))
     .safe_copy(src, tar, overwrite = overwrite)
   }
 

@@ -100,15 +100,19 @@
   fn <- fs::path_join(c(path, "altdoc", "docute.html"))
   docute <- fs::file_exists(fn)
 
-  if (sum(c(mkdocs, docsify, docute)) == 0) {
+  fn <- fs::path_join(c(path, "altdoc", "quarto_website.yml"))
+  quarto_website <- fs::file_exists(fn)
+
+  if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
     cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
-  } else if (sum(c(mkdocs, docsify, docute)) > 1) {
+  } else if (sum(c(mkdocs, docsify, docute, quarto_website)) > 1) {
     cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
   }
 
   if (mkdocs) return("mkdocs")
   if (docsify) return("docsify")
   if (docute) return("docute")
+  if (quarto_website) return("quarto_website")
 
   return(NULL)
 }
@@ -119,7 +123,7 @@
   .doc_type <- .doc_type(path = path)
   if (.doc_type == "mkdocs") {
     return(fs::path_abs("docs", start = path))
-  } else if (.doc_type %in% c("docsify", "docute")) {
+  } else if (.doc_type %in% c("docsify", "docute", "quarto_website")) {
     return(fs::path_abs("docs", start = path))
   }
 }

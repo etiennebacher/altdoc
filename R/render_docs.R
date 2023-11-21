@@ -54,7 +54,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
   .import_vignettes(path, verbose = verbose, parallel = parallel)
 
   cli::cli_h1("Update HTML")
-  .import_settings(path = path, doctype = .doc_type(path))
+  .import_settings(path = path, doctype = .doc_type(path), verbose = verbose)
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
@@ -95,7 +95,10 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
     fs::path_abs("docs/_sidebar.md", start = path)
   } else if (.doc_type(path) == "mkdocs") {
     fs::path_abs("docs/mkdocs.yml", start = path)
+  } else if (.doc_type(path) == "quarto_website") {
+    fs::path_abs("docs/_quarto.yml", start = path)
   }
+
 
   if (is.null(orig_file) || !fs::file_exists(orig_file)) {
     cli::cli_alert_info("No {.file {file_message}} to include.")

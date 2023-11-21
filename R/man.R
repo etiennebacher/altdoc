@@ -21,8 +21,14 @@
     destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
-    fs::file_delete(destination_qmd)
+
+    if (.doc_type(path) != "quarto_website") {
+      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+      fs::file_delete(destination_qmd)
+    } else {
+      worked <- TRUE
+    }
+
     # section headings are too deeply nested by default
     # this is a hack because it may remove one # from comments. But that's
     # probably not the end of the world, because the line stick stays commented
@@ -32,6 +38,7 @@
       tmp <- gsub("^##", "#", tmp)
       writeLines(tmp, destination_md)
     }
+
     return(worked)
   }
 
