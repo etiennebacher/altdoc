@@ -22,7 +22,7 @@
 
 # Is mkdocs installed?
 .is_mkdocs <- function() {
-  x <- try(system2("mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  x <- try(system2("python -m mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
   return(!inherits(x, "try-error"))
 }
 
