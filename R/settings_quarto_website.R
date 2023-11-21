@@ -1,4 +1,11 @@
 .import_settings_quarto_website <- function(path, verbose = FALSE) {
+
+    # clean _site/ otherwise re-render breaks
+    fn <- fs::path_join(c(.doc_path(path), "_site"))
+    if (fs::dir_exists(fn)) {
+        fs::dir_delete()
+    }
+
     # Read settings sidebar
     fn <- fs::path_join(c(path, "altdoc", "quarto_website.yml"))
     sidebar <- .readlines(fn)
@@ -27,7 +34,7 @@
     # TODO: get clean titles. .get_vignettes_titles does not work as I expected
     fn_vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
-        pattern = "\\.qmd$", full.names = TRUE)
+        pattern = "\\.qmd$|\\.Rmd", full.names = TRUE)
     fn_man <- list.files(
         fs::path_join(c(.doc_path(path), "man")),
         pattern = "\\.qmd$", full.names = TRUE)
@@ -81,6 +88,15 @@
     writeLines(sidebar, fn)
 
     quarto::quarto_render(input = .doc_path(path), quiet = !verbose)
+
+    # docs/_site/* -> docs/*
+    fn <- fs::path_join(c(.doc_path(path), "_site"))
+    tmp <- tempdir()
+    fs::file_move(fn, tmp)
+    fs::dir_delete(.doc_path(path))
+    fs::file_move(
+        fs::path_join(c(tmp, "_site")),
+        .doc_path(path))
 
 }
 
