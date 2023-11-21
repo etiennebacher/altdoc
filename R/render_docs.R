@@ -24,6 +24,11 @@
 #' }
 render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
 
+  # delete the full `docs/` directory to avoid collisions
+  if (fs::dir_exists(.doc_path(path))) {
+    fs::dir_delete(.doc_path(path))
+  }
+
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
     cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
