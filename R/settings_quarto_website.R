@@ -1,13 +1,9 @@
 .import_settings_quarto_website <- function(path, verbose = FALSE) {
 
-    # clean _site/ otherwise re-render breaks
-    fn <- fs::path_join(c(.doc_path(path), "_site"))
-    if (fs::dir_exists(fn)) {
-        fs::dir_delete()
-    }
 
     # Read settings sidebar
-    fn <- fs::path_join(c(path, "altdoc", "quarto_website.yml"))
+    path_parent <- fs::path_abs(gsub("._quarto$", "", path))
+    fn <- fs::path_join(c(path_parent, "altdoc", "quarto_website.yml"))
     sidebar <- .readlines(fn)
 
     # Single files
@@ -28,10 +24,13 @@
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_CODE_OF_CONDUCT", sidebar)]
     }
-    ## TODO move code below to separate internal functions, e.g `generate_vignettes()`, `generate_man()`
+
+    # TODO move code below to separate internal functions, e.g `generate_vignettes()`, `generate_man()`
+    # WARNING: Note the different _quarto folder. This is an imortant design
+    # choice because we want to use the built-in freeze functionality of quarto
+    # and need to move _quarto/_site to docs/ after rendering.
 
     ############### Vignettes
-    # TODO: get clean titles. .get_vignettes_titles does not work as I expected
     fn_vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
         pattern = "\\.qmd$|\\.Rmd", full.names = TRUE)
@@ -44,7 +43,8 @@
     yml <- paste(sidebar, collapse = "\n")
     yml <- yaml::yaml.load(yml)
 
-    for (i in seq_along(yml$website$sidebar$contents)) {
+    # reverse order because we delete elements
+    for (i in rev(seq_along(yml$website$sidebar$contents))) {
         if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
             if (length(fn_vignettes) > 0) {
                 yml$website$sidebar$contents[[i]] <- list(section = "Articles", contents = fn_vignettes)
@@ -59,15 +59,6 @@
             }
         }
     }
-
-    
-
-    if (fs::file_exists(fs::path_join(c(.doc_path(path), "CODE_OF_CONDUCT.md")))) {
-        sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "CODE_OF_CONDUCT.md", sidebar)
-    } else {
-        sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "", sidebar)
-    }
-    ### TODO move code below to separate internal functions, e.g `generate_vignettes()`, `generate_man()`  
 
     tmp <- tempfile()
     yaml::write_yaml(yml, file = tmp)
@@ -84,20 +75,17 @@
     # yaml::write_yaml converts true to yes, but quarto complains
     sidebar <- gsub(": yes$", ": true", sidebar)
 
-    fn <- fs::path_join(c(.doc_path(path), "_quarto.yml"))
+    fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
     writeLines(sidebar, fn)
 
-    quarto::quarto_render(input = .doc_path(path), quiet = !verbose)
+    tmp <- fs::path_join(c(path, "_quarto", "docs"))
+    for (f in fs::dir_ls(tmp)) {
+        fs::file_move(f, fs::path_join(c(path, "_quarto")))
+    }
+    fs::dir_delete(tmp)
 
-    # docs/_site/* -> docs/*
-    fn <- fs::path_join(c(.doc_path(path), "_site"))
-    tmp <- tempdir()
-    fs::file_move(fn, tmp)
-    fs::dir_delete(.doc_path(path))
-    fs::file_move(
-        fs::path_join(c(tmp, "_site")),
-        .doc_path(path))
+    quarto::quarto_render(input = fs::path_join(c(path, "_quarto")), quiet = !verbose)
+
+    # move _quarto/_site to docs/
 
 }
-
-

@@ -1,41 +1,25 @@
 # Import files: README, license, news, CoC ------------------
 
-.import_readme <- function(path = ".") {
-  good_path <- .doc_path(path)
+.import_readme <- function(src_dir, tar_dir, doctype) {
 
-  if (fs::file_exists(fs::path_abs("README.md", start = path))) {
-
-    if (.doc_type(path) == "quarto_website") {
-      fs::file_copy(
-        fs::path_abs("README.md", start = path),
-        paste0(good_path, "/index.md"),
-        overwrite = TRUE)
-    } else {
-      fs::file_copy(
-        fs::path_abs("README.md", start = path),
-        paste0(good_path, "/README.md"),
-        overwrite = TRUE)
-      .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
-    }
-
+  if (fs::file_exists(fs::path_abs("README.md", start = src_dir))) {
+    src <- fs::path_join(c(src_dir, "README.md"))
   } else {
-    if (.doc_type(path) == "quarto_website") {
-      fs::file_copy(
-        system.file("docsify/README.md", package = "altdoc"),
-        fs::path_join(c(good_path, "/index.md")),
-        overwrite = TRUE)
-    } else {
-      fs::file_copy(
-        system.file("docsify/README.md", package = "altdoc"),
-        fs::path_join(c(good_path, "/README.md")),
-        overwrite = TRUE)
-      .reformat_md(paste0(good_path, "/README.md"), first = FALSE)
-    }
+    src <- system.file("docsify/README.md", package = "altdoc")
   }
 
+  if (doctype == "quarto_website") {
+    tar <- fs::path_join(c(tar_dir, "index.md"))
+  } else {
+    tar <- fs::path_join(c(tar_dir, "README.md"))
+  }
+
+  fs::file_copy(src, tar, overwrite = TRUE)
+
+  .reformat_md(tar, first = FALSE)
 
   # TODO: fix this for Quarto
-  if (.doc_type(path) != "quarto_website") {
+  if (doctype != "quarto_website") {
     .move_img_readme(path = path)
     .replace_img_paths_readme(path = path)
   }
@@ -43,10 +27,10 @@
 }
 
 
-.import_coc <- function(path = ".") {
-  good_path <- .doc_path(path)
-  if (fs::file_exists(fs::path_join(c(path, "CODE_OF_CONDUCT.md")))) {
-    .update_file("CODE_OF_CONDUCT.md", path)
+.import_coc <- function(src_dir, tar_dir, doctype) {
+  fn <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
+  if (fs::file_exists(fn)) {
+    .update_file(fn, tar_dir, doctype = doctype)
     cli::cli_alert_success("{.file Code of Conduct} imported.")
   } else {
     cli::cli_alert_info("No {.file Code of Conduct} to include.")
@@ -54,30 +38,28 @@
 }
 
 
-.import_license <- function(path = ".") {
-  good_path <- .doc_path(path)
-  file <- .which_license()
+.import_license <- function(src_dir, tar_dir, doctype) {
+  file <- .which_license(src_dir)
   if (is.null(file)) {
     cli::cli_alert_info("No {.file License / Licence} to include.")
     return(invisible())
   }
   if (fs::file_exists(file)) {
-    .update_file(file, path)
-    fs::file_copy(file, paste0(good_path, "/LICENSE.md"), overwrite = TRUE)
+    .update_file(file, tar_dir, doctype = doctype)
   }
 }
 
 
-.import_news <- function(path = ".") {
-  src <- .which_news()
-  tar <- fs::path_join(c(.doc_path(path), "NEWS.md"))
+.import_news <- function(src_dir, tar_dir, doctype) {
+  src <- .which_news(src_dir)
+  tar <- fs::path_join(c(tar_dir, "NEWS.md"))
 
-  if (is.null(src) || !fs::file_exists(fs::path_abs(src))) {
+  if (is.null(src) || !fs::file_exists(src)) {
     cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
     return(invisible())
   }
 
-  .update_file(src, path = path)
+  .update_file(src, path = tar_dir, doctype = doctype)
   .parse_news(path = path, news_path = tar)
 }
 

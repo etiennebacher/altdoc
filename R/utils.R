@@ -120,12 +120,7 @@
 
 # Get the path for files
 .doc_path <- function(path = ".") {
-  .doc_type <- .doc_type(path = path)
-  if (.doc_type == "mkdocs") {
-    return(fs::path_abs("docs", start = path))
-  } else if (.doc_type %in% c("docsify", "docute", "quarto_website")) {
-    return(fs::path_abs("docs", start = path))
-  }
+  return(fs::path_abs("docs", start = path))
 }
 
 # Detect how licence files is called: "LICENSE" or "LICENCE"
@@ -158,15 +153,30 @@
   if (!isTRUE(.dir_is_package(path))) {
     stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
   }
-
   fn <- fs::path_join(c(path, ".Rbuildignore"))
   if (!fs::file_exists(fn)) {
     fs::file_create(fn)
   }
-
   tmp <- .readlines(fn)
   if (!x %in% tmp) {
     cli::cli_alert_info("Adding {x} to .Rbuildignore")
+    tmp <- c(tmp, x)
+    writeLines(tmp, fn)
+  }
+}
+
+
+.add_gitignore <- function(x = "^docs$", path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
+    stop(".add_gitignore() must be run from the root of a package.", call. = FALSE)
+  }
+  fn <- fs::path_join(c(path, ".gitignore"))
+  if (!fs::file_exists(fn)) {
+    fs::file_create(fn)
+  }
+  tmp <- .readlines(fn)
+  if (!x %in% tmp) {
+    cli::cli_alert_info("Adding {x} to .gitignore")
     tmp <- c(tmp, x)
     writeLines(tmp, fn)
   }
