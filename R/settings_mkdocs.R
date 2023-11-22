@@ -75,7 +75,7 @@
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_MAN_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
                 title_link <- as.list(stats::setNames(fn_man, titles))
-                yml$nav[[i]] <-stats::setNames(list(title_link), section_name)
+                yml$nav[[i]] <- stats::setNames(list(title_link), section_name)
             }
         }
         tmp <- tempfile()
