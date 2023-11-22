@@ -244,8 +244,8 @@ writeLines(settings, "docs/_sidebar.md")
 
 The Quarto and MkDocs use statically built HTML files, search, and
 settings file. This means that users can write scripts for deep
-customization of their websites, but they must do so *before* calling
-`render_docs()`. A typical workflow could work like this.
+customization of their websites, but they must execute them *before*
+calling `render_docs()`. A typical workflow could work like this.
 
 First, create a MkDocs documentation structure:
 
