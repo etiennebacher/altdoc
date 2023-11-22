@@ -7,7 +7,7 @@
         if (fs::file_exists(fn)) {
             x <- gsub(regex, fn, x)
         } else {
-            x <- gsub(regex, "", x)
+            x <- x[!grepl(regex, x)]
         }
     }
 

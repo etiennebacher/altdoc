@@ -1,4 +1,9 @@
 .finalize_mkdocs <- function(settings, path, ...) {
+
+    # fix links
+    settings <- gsub(": \\/", ": ", settings)
+    settings <- gsub("\\.md$", "", settings)
+
     # write mutable sidebar
     fn <- fs::path_join(c(path, "mkdocs.yml"))
     writeLines(settings, fn)
@@ -136,25 +141,3 @@
     }
     return(sidebar)
 }
-
-
-# # Single files
-# if (fs::file_exists(fs::path_join(c(.doc_path(path), "NEWS.md")))) {
-#     sidebar <- gsub("\\$ALTDOC_NEWS", "NEWS.md", sidebar)
-# } else {
-#     sidebar <- sidebar[!grepl(".*\\$ALTDOC_NEWS", sidebar)]
-# }
-
-# if (fs::file_exists(fs::path_join(c(.doc_path(path), "LICENSE.md")))) {
-#     sidebar <- gsub("\\$ALTDOC_LICENSE", "LICENSE.md", sidebar)
-# } else {
-#     sidebar <- sidebar[!grepl(".*\\$ALTDOC_LICENSE", sidebar)]
-# }
-
-# if (fs::file_exists(fs::path_join(c(.doc_path(path), "CODE_OF_CONDUCT.md")))) {
-#     sidebar <- gsub("\\$ALTDOC_CODE_OF_CONDUCT", "CODE_OF_CONDUCT.md", sidebar)
-# } else {
-#     sidebar <- sidebar[!grepl(".*\\$ALTDOC_CODE_OF_CONDUCT", sidebar)]
-# }
-
-
