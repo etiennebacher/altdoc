@@ -240,17 +240,30 @@ nav:
   - Home: README.md
 ```
 
-Write a script to customize the settings and save an edited file to `altdoc/mkdocs.yml`:
+Write a script to customize the settings and save an edited file to `altdoc/mkdocs.yml`, and then render the website:
 
 ```{r}
 library(yaml)
+
+# read the static settings
 yml <- read_yaml("altdoc/mkdocs_static.yml")
-yml$nav[[2]] <- list(Articles = rev(list.files("docs/man", pattern = "\\.md$")))
+
+# Create a list of links in the approparite structure to insert in the sidebar
+links <- rev(list.files("man", pattern = "\\Rd$"))
+links <- setNames(
+  paste0("man/", gsub("\\.Rd", ".md", links)),
+  gsub("\\.Rd$", "", links)
+)
+links <- as.list(rev(links))
+
+# Insert the links in the settings
+yml$nav <- c(
+  yml$nav,
+  list(list(Functions = links)))
+
+# Write the settings to the `altdoc/` directory
 write_yaml(yml, "altdoc/mkdocs.yml")
-```
 
-Finally, render the site:
-
-```r
+# Render the documentation
 render_docs()
 ```
