@@ -28,6 +28,8 @@
 #'   # Create mkdocs documentation
 #'   setup_docs(tool = "mkdocs")
 #'
+#'   # Create quarto website documentation
+#'   setup_docs(tool = "quarto_website")
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
