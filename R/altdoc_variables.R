@@ -4,8 +4,8 @@
     for (vn in c("NEWS.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE.md")) {
         fn <- fs::path_join(c(.doc_path(path), vn))
         regex <- sprintf("\\$ALTDOC_%s", fs::path_ext_remove(basename(vn)))
-        if (fs::file_exists(fn)) {
-            x <- gsub(regex, fn, x)
+        if (fs::file_exists(fn) || fs::file_exists(fs::path_join(c(path, "_quarto/docs", vn)))) {
+            x <- gsub(regex, vn, x)
         } else {
             x <- x[!grepl(regex, x)]
         }

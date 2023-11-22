@@ -2,25 +2,17 @@
     # WARNING: Note the different _quarto folder. This is an imortant design
     # choice because we want to use the built-in freeze functionality of quarto
     # and need to move _quarto/_site to docs/ after rendering.
-    ############### Vignettes
-
-    tmp <- tempfile()
-    yaml::write_yaml(yml, file = tmp)
-    sidebar <- .readlines(tmp)
-
-    # drop missing sidebar entries
-    sidebar <- gsub("\\* \\[.*\\]\\(\\)$", "", sidebar)
 
     # drop empty lines
-    sidebar <- sidebar[!grepl("^\\w*$", sidebar)]
-
-    sidebar <- .substitute_altdoc_variables(sidebar, path = path)
-
-    # yaml::write_yaml converts true to yes, but quarto complains
-    sidebar <- gsub(": yes$", ": true", sidebar)
+    settings <- settings[!grepl("^\\w*$", settings)]
 
     fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
-    writeLines(sidebar, fn)
+    yaml::write_yaml(settings, fn)
+
+    # yaml::write_yaml converts true to yes, but quarto complains
+    settings <- .readlines(fn)
+    settings <- gsub(": yes$", ": true", settings)
+    writeLines(settings, fn)
 
     tmp <- fs::path_join(c(path, "_quarto", "docs"))
     for (f in fs::dir_ls(tmp)) {
@@ -31,19 +23,26 @@
     quarto::quarto_render(input = fs::path_join(c(path, "_quarto")), quiet = !verbose, use_freezer = freeze)
 
     # move _quarto/_site to docs/
+    src <- fs::path_join(c(path, "_quarto", "_site"))
+    tar <- .doc_path(path)
+    if (fs::dir_exists(tar)) {
+        fs::dir_delete(tar)
+    }
+    fs::file_move(src, .doc_path(path))
 
 }
 
 
 .sidebar_vignettes_quarto_website <- function(sidebar, path) {
     fn_vignettes <- list.files(
-        fs::path_join(c(.doc_path(path), "vignettes")),
+        fs::path_join(c(path, "_quarto/docs/vignettes")),
         pattern = "\\.qmd$|\\.Rmd", full.names = TRUE)
     fn_man <- list.files(
-        fs::path_join(c(.doc_path(path), "man")),
+        fs::path_join(c(path, "_quarto/docs/man")),
         pattern = "\\.qmd$", full.names = TRUE)
-    fn_vignettes <- gsub(paste0(.doc_path(path), "/"), "", fn_vignettes, fixed = TRUE)
-    fn_man <- gsub(paste0(.doc_path(path), "/"), "", fn_man, fixed = TRUE)
+
+    fn_man <- gsub(".*_quarto.docs.", "", fn_man)
+    fn_vignettes <- gsub(".*_quarto.docs.", "", fn_vignettes)
 
     yml <- paste(sidebar, collapse = "\n")
     yml <- yaml::yaml.load(yml)
@@ -64,5 +63,12 @@
             }
         }
     }
+
+    return(yml)
 }
 
+
+
+.sidebar_man_quarto_website <- function(sidebar, path, ...) {
+    return(sidebar)
+}
