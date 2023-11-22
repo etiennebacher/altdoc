@@ -28,6 +28,8 @@
 #'   # Create mkdocs documentation
 #'   setup_docs(tool = "mkdocs")
 #'
+#'   # Create quarto website documentation
+#'   setup_docs(tool = "quarto_website")
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
@@ -65,12 +67,18 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
   } else if (isTRUE(overwrite)) {
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, "mkdocs.yml"))), silent = TRUE)
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, "quarto_website.yml"))), silent = TRUE)
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docute.html"))), silent = TRUE)
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.html"))), silent = TRUE)
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, "docsify.md"))), silent = TRUE)
-    try(fs::file_delete(fs::path_join(c(altdoc_dir, ".nojekyll"))), silent = TRUE)
+    # start from zero when the setup is overwritten
+    fs::dir_delete(docs_dir)
+
+    file_names <- c(
+      "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
+    )
+    for (file_name in file_names) {
+      file_name <- fs::path_join(c(altdoc_dir, file_name))
+      if (fs::file_exists(file_name)) {
+        fs::file_delete(file_name)
+      }
+    }
   }
 
   if (!fs::dir_exists(docs_dir)) {
@@ -80,6 +88,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
   .add_rbuildignore("^docs$", path = path)
   .add_rbuildignore("^altdoc$", path = path)
+  .add_gitignore("altdoc/freeze.rds", path = path)
   if (tool == "quarto_website") .add_rbuildignore("^_quarto$", path = path)
 
   cli::cli_alert_info("Importing default settings file(s) to `altdoc/`")

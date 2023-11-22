@@ -11,7 +11,7 @@ modifies and overwrites the files in the ‘docs/’ folder.
 
 ## Usage
 
-<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE)
+<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 </code></pre>
 
 ## Arguments
@@ -42,6 +42,17 @@ Logical. Render man pages and vignettes in parallel using the
 <code>future</code> framework. In addition to setting this argument to
 TRUE, users must define the parallelism plan in <code>future</code>. See
 the examples section below.
+</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="render_docs_:_freeze">freeze</code>
+</td>
+<td>
+Logical. If TRUE and a man page or vignette has not changed since the
+last call to <code>render_docs()</code>, that file is skipped. File
+hashes are stored in <code>altdoc/freeze.rds</code>. If that file is
+deleted, all man pages and vignettes will be rendered anew.
 </td>
 </tr>
 </table>
