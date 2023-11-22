@@ -37,7 +37,7 @@ jobs:
 
       - name: Build site
         run: |
-          altdoc::setup_docs($ALTDOC_TOOL)
+          altdoc::setup_docs("$ALTDOC_TOOL")
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 
