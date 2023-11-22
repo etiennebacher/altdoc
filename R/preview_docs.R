@@ -3,20 +3,20 @@
 #' @inheritParams setup_docs
 #' @export
 #'
-#' @return No value returned. If RStudio is used, it shows a site preview in 
+#' @return No value returned. If RStudio is used, it shows a site preview in
 #' Viewer. To preview the site in a browser or in another text editor (ex: VS Code),
 #' see the vignette on the `altdoc` website.
 #' @examples
 #' if (interactive()) {
-#' 
+#'
 #'   preview_docs()
-#' 
+#'
 #' }
-#' 
+#'
 #' # This is an example to illustrate that code-generated images are properly
 #' # displayed. See the `altdoc` website for a rendered version.
 #' with(mtcars, plot(mpg, wt))
-#' 
+#'
 preview_docs <- function(path = ".") {
   # conditional dependencies
   .assert_dependency("servr", install = TRUE)
