@@ -187,6 +187,7 @@ The Docsify and Docute documentation systems generate documentation on the fly i
 For example, let's create a new Docsify documentation site:
 
 ```r
+library(altdoc)
 setup_docs("docsify")
 ```
 
@@ -222,7 +223,8 @@ The Quarto and MkDocs use statically built HTML files, search, and settings file
 
 First, create a MkDocs documentation structure:
 
-```{r}
+```r
+library(altdoc)
 setup_docs("mkdocs")
 ```
 
@@ -242,13 +244,13 @@ nav:
 
 Write a script to customize the settings and save an edited file to `altdoc/mkdocs.yml`, and then render the website:
 
-```{r}
+```r
 library(yaml)
 
 # read the static settings
 yml <- read_yaml("altdoc/mkdocs_static.yml")
 
-# Create a list of links in the approparite structure to insert in the sidebar
+# Create a list of links in the appropriate structure to insert in the sidebar
 links <- rev(list.files("man", pattern = "\\Rd$"))
 links <- setNames(
   paste0("man/", gsub("\\.Rd", ".md", links)),

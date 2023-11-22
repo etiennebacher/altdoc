@@ -205,3 +205,107 @@ with(mtcars, plot(mpg, wt))
 ![](vignettes/customize.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
 ![](images/hex-conductor.png)
+
+## Pre and post-processing
+
+### Post-processing: Docsify and Docute
+
+The Docsify and Docute documentation systems generate documentation on
+the fly in the browser. They use no statically built HTML files or
+settings files. This means that users can edit the files in `docs/`
+directly and see their changes reflected in the documentation website
+immediately. This is a powerful feature, because it means that users can
+use scripts to operate on the `docs/` directory for deep customization.
+
+For example, let’s create a new Docsify documentation site:
+
+``` r
+library(altdoc)
+setup_docs("docsify")
+```
+
+Let’s say we want to display the vignettes in reverse alphabetical order
+in the sidebar. First, edit `altdoc/docsify.md` to make it more
+minimalist:
+
+``` markdown
+* [Home](/)
+```
+
+Then, we render the documentation:
+
+``` r
+render_docs()
+```
+
+Finally, we run an `R` script to add a new section to the sidebar
+settings:
+
+``` r
+files <- rev(list.files("docs/man", pattern = "\\.md$"))
+files <- sprintf(
+  "  - [%s](man/%s)",
+  gsub("\\.md$", "", files),
+  files
+)
+settings <- readLines("docs/_sidebar.md")
+settings <- c(settings, "* Articles: ", files)
+writeLines(settings, "docs/_sidebar.md")
+```
+
+### Pre-processing: MkDocs and Quarto
+
+The Quarto and MkDocs use statically built HTML files, search, and
+settings file. This means that users can write scripts for deep
+customization of their websites, but they must do so *before* calling
+`render_docs()`. A typical workflow could work like this.
+
+First, create a MkDocs documentation structure:
+
+``` r
+library(altdoc)
+setup_docs("mkdocs")
+```
+
+Rename `altdoc/mkdocs.yml` to `altdoc/mkdocs_static.yml`:
+
+``` bash
+mv altdoc/mkdocs.yml altdoc/mkdocs_static.yml
+```
+
+Edit the settings file manually to make it minimalist:
+
+``` yaml
+site_name: $ALTDOC_PACKAGE_NAME
+nav:
+  - Home: README.md
+```
+
+Write a script to customize the settings and save an edited file to
+`altdoc/mkdocs.yml`, and then render the website:
+
+``` r
+library(yaml)
+
+# read the static settings
+yml <- read_yaml("altdoc/mkdocs_static.yml")
+
+# Create a list of links in the appropriate structure to insert in the sidebar
+links <- rev(list.files("man", pattern = "\\Rd$"))
+links <- setNames(
+  paste0("man/", gsub("\\.Rd", ".md", links)),
+  gsub("\\.Rd$", "", links)
+)
+links <- as.list(rev(links))
+
+# Insert the links in the settings
+yml$nav <- c(
+  yml$nav,
+  list(list(Functions = links)))
+
+# Write the settings to the `altdoc/` directory
+write_yaml(yml, "altdoc/mkdocs.yml")
+
+# Render the documentation
+render_docs()
+```
