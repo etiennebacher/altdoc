@@ -76,7 +76,7 @@
   } else {
     # can't use message_info with {}
     i <- 0
-    cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
+    cli::cli_progress_step("Converting function reference {i}/{n}: {basename(man_source[i])}", spinner = TRUE)
     conversion_worked <- vector(length = n)
     for (i in seq_along(man_source)) {
       conversion_worked[i] <- render_one_man(man_source[i])

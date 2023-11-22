@@ -50,7 +50,9 @@ the examples section below.
 </td>
 <td>
 Logical. If TRUE and a man page or vignette has not changed since the
-last call to <code>render_docs()</code>, that file is skipped.
+last call to <code>render_docs()</code>, that file is skipped. File
+hashes are stored in <code>altdoc/freeze.rds</code>. If that file is
+deleted, all man pages and vignettes will be rendered anew.
 </td>
 </tr>
 </table>

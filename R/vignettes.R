@@ -112,7 +112,7 @@
     conversion_worked <- future.apply::future_sapply(seq_along(src_files), render_one_vignette, future.seed = NULL)
   } else {
     i <- 0
-    cli::cli_progress_step("Converting {cli::qty(n)}vignette{?s}: {i}/{n}", spinner = TRUE)
+    cli::cli_progress_step("Converting vignette {i}/{n}: {basename(src_files[i])}", spinner = TRUE)
     conversion_worked <- vector(length = n)
     for (i in seq_along(src_files)) {
       conversion_worked[i] <- render_one_vignette(i)
