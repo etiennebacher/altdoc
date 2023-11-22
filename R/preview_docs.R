@@ -30,9 +30,9 @@ preview_docs <- function(path = ".") {
     } else if (doctype == "mkdocs") {
       # first build
       if (.is_windows()) {
-        shell(paste("cd", fs::path_abs("docs", start = path), " && mkdocs build -q"))
+        shell(paste("cd", fs::path_abs("docs", start = path), " && python3 -m mkdocs build -q"))
       } else {
-        system2("cd", paste(fs::path_abs("docs", start = path), " && mkdocs build -q"))
+        system2("cd", paste(fs::path_abs("docs", start = path), " && python3 -m mkdocs build -q"))
       }
       # stop it directly to avoid opening the browser
       servr::daemon_stop()
@@ -42,7 +42,7 @@ preview_docs <- function(path = ".") {
         fs::path_abs("docs/site", start = path),
         watch = fs::path_abs("docs/", start = path),
         handler = function(files) {
-          system2("cd", ".. && mkdocs build -q")
+          system2("cd", ".. && python3 -m mkdocs build -q")
         }
       )
     } else {
