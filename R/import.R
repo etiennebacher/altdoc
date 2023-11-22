@@ -27,9 +27,13 @@
 
 
 .import_coc <- function(src_dir, tar_dir, doctype) {
-  fn <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
-  if (fs::file_exists(fn)) {
-    fs::file_copy(fn, tar_dir, overwrite = TRUE)
+  src_file <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
+  tar_file <- fs::path_join(c(tar_dir, "CODE_OF_CONDUCT.md"))
+  if (fs::file_exists(src_file)) {
+    if (!fs::file_exists(tar_file)) {
+      cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported for the first time.")
+    }
+    fs::file_copy(src_file, tar_file, overwrite = TRUE)
     cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
   } else {
     cli::cli_alert_info("No {.file CODE_OF_CONDUCT} to import.")
@@ -43,6 +47,11 @@
     cli::cli_alert_info("No {.file LICENSE} to import.")
     return(invisible())
   } else {
+    tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
+    tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
+    if (!fs::file_exists(tar1) && !fs::file_exists(tar2)) {
+      cli::cli_alert_success("{.file LICENSE} imported for the first time.")
+    }
     fs::file_copy(src_file, tar_dir, overwrite = TRUE)
     cli::cli_alert_success("{.file LICENSE} imported.")
   }
@@ -56,6 +65,9 @@
     return(invisible())
   } else {
     tar <- fs::path_join(c(tar_dir, "NEWS.md"))
+    if (!fs::file_exists(tar)) {
+      cli::cli_alert_success("{.file NEWS} imported for the first time.")
+    }
     fs::file_copy(src, tar_dir, overwrite = TRUE)
   }
   .parse_news(path = src_dir, news_path = tar)
