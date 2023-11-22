@@ -22,7 +22,7 @@
 #'   render_docs(parallel = TRUE)
 #' 
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
   path <- .convert_path(path)
 
@@ -64,11 +64,11 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel)
+  .import_man(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel, freeze = freeze)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel)
+  .import_vignettes(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel, freeze = freeze)
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, doctype = doctype, verbose = verbose)

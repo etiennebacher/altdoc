@@ -6,6 +6,8 @@
     if (fs::dir_exists(src)) {
         files <- fs::dir_ls(src)
 
+        files <- files[!grepl("freeze.rds$", files)]
+
         # hidden files not detected
         fn <- fs::path_join(c(path, "altdoc/.nojekyll"))
         if (fs::file_exists(fn)) {
