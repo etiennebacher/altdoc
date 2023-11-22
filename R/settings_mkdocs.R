@@ -1,13 +1,10 @@
 .finalize_mkdocs <- function(settings, path, ...) {
-
     # fix links
     settings <- gsub(": \\/", ": ", settings)
     settings <- gsub("\\.md$", "", settings)
 
-.finalize_mkdocs <- function(settings, path, ...) {
     # write mutable sidebar
     fn <- fs::path_join(c(path, "mkdocs.yml"))
-    writeLines(settings, fn)
     writeLines(settings, fn)
 
     # plugins must be a list otherwise this command breaks: mkdocs build -q
