@@ -167,16 +167,6 @@ The Docute website hosts a detailed guide on customization. As with the other do
 * [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
 
 
-## Test
-
-The code and images in this section are inserted as a demonstration of images in Quarto vignettes.
-
-```{r}
-with(mtcars, plot(mpg, wt))
-```
-
-![](images/hex-conductor.png)
-
 
 ## Pre and post-processing
 
@@ -269,3 +259,15 @@ write_yaml(yml, "altdoc/mkdocs.yml")
 # Render the documentation
 render_docs()
 ```
+
+
+##### Test
+
+The code and images in this section are inserted as a demonstration of images in Quarto vignettes.
+
+```{r}
+with(mtcars, plot(mpg, wt))
+```
+
+![](images/hex-conductor.png)
+

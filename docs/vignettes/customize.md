@@ -193,19 +193,6 @@ files stored in the `altdoc/` directory, before calling `render_docs()`.
 -   [Docute Customization
     Guide](https://docute.egoist.dev/guide/customization)
 
-## Test
-
-The code and images in this section are inserted as a demonstration of
-images in Quarto vignettes.
-
-``` r
-with(mtcars, plot(mpg, wt))
-```
-
-![](vignettes/customize.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
-
-![](images/hex-conductor.png)
-
 ## Pre and post-processing
 
 ### Post-processing: Docsify and Docute
@@ -309,3 +296,16 @@ write_yaml(yml, "altdoc/mkdocs.yml")
 # Render the documentation
 render_docs()
 ```
+
+##### Test
+
+The code and images in this section are inserted as a demonstration of
+images in Quarto vignettes.
+
+``` r
+with(mtcars, plot(mpg, wt))
+```
+
+![](vignettes/customize.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
+
+![](images/hex-conductor.png)
