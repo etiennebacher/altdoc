@@ -4,8 +4,10 @@
     settings <- gsub(": \\/", ": ", settings)
     settings <- gsub("\\.md$", "", settings)
 
+.finalize_mkdocs <- function(settings, path, ...) {
     # write mutable sidebar
     fn <- fs::path_join(c(path, "mkdocs.yml"))
+    writeLines(settings, fn)
     writeLines(settings, fn)
 
     # plugins must be a list otherwise this command breaks: mkdocs build -q
@@ -78,8 +80,6 @@
 
 
 .sidebar_vignettes_mkdocs <- function(sidebar, path) {
-    .assert_dependency("yaml", install = TRUE)
-
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
     fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
 
@@ -89,13 +89,11 @@
         fs::path_join(c("vignettes", basename(x)))
     })
 
+    .assert_dependency("yaml", install = TRUE)
     if (length(fn_vignettes) > 0) {
         yml <- paste(sidebar, collapse = "\n")
         yml <- yaml::yaml.load(yml)
-        for (i in rev(seq_along(yml$nav))) {
-            if (is.null(yml$nav[[i]][[1]])) {
-                yml$nav[[i]] <- NULL
-            }
+        for (i in seq_along(yml$nav)) {
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
                 title_link <- as.list(stats::setNames(fn_vignettes, titles))
