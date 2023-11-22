@@ -8,9 +8,10 @@ Initialize documentation website settings
 Creates a subdirectory called
 <code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
 directory to store the settings files used to by one of the
-documentation generator utilities (docsify, docute, or mkdocs). The
-files in this folder are never altered automatically by
-<code>altdoc</code> unless the user explicitly calls
+documentation generator utilities (<code>docsify</code>,
+<code>docute</code>, <code>mkdocs</code>, or
+<code>quarto_website</code>). The files in this folder are never altered
+automatically by <code>altdoc</code> unless the user explicitly calls
 <code>overwrite=TRUE</code>. They can thus be edited manually to
 customize the sidebar and website.
 
@@ -27,7 +28,7 @@ customize the sidebar and website.
 <code id="setup_docs_:_tool">tool</code>
 </td>
 <td>
-String. "docsify", "docute", or "mkdocs".
+String. "docsify", "docute", "mkdocs", or "quarto_website".
 </td>
 </tr>
 <tr>
@@ -70,5 +71,7 @@ if (interactive()) {
   # Create mkdocs documentation
   setup_docs(tool = "mkdocs")
 
+  # Create quarto website documentation
+  setup_docs(tool = "quarto_website")
 }
 ```

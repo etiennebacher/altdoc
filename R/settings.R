@@ -1,4 +1,4 @@
-.import_settings <- function(path = ".", doctype = "docsify") {
+.import_settings <- function(path = ".", doctype = "docsify", verbose = FALSE) {
 
     # copy all files from altdoc/ into docs/
     # this allows users to store arbitrary and settings static files in altdoc/
@@ -29,6 +29,9 @@
 
     } else if (isTRUE(doctype == "mkdocs")) {
         .import_settings_mkdocs(path = path)
+
+    } else if (isTRUE(doctype == "quarto_website")) {
+        .import_settings_quarto_website(path = path, verbose = verbose)
     }
 
     cli::cli_alert_success("HTML updated.")
