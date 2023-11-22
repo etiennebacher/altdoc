@@ -89,15 +89,19 @@
   fn <- fs::path_join(c(path, "altdoc", "docute.html"))
   docute <- fs::file_exists(fn)
 
-  if (sum(c(mkdocs, docsify, docute)) == 0) {
+  fn <- fs::path_join(c(path, "altdoc", "quarto_website.yml"))
+  quarto_website <- fs::file_exists(fn)
+
+  if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
     cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
-  } else if (sum(c(mkdocs, docsify, docute)) > 1) {
+  } else if (sum(c(mkdocs, docsify, docute, quarto_website)) > 1) {
     cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
   }
 
   if (mkdocs) return("mkdocs")
   if (docsify) return("docsify")
   if (docute) return("docute")
+  if (quarto_website) return("quarto_website")
 
   return(NULL)
 }
@@ -105,16 +109,10 @@
 
 # Get the path for files
 .doc_path <- function(path = ".") {
-  .doc_type <- .doc_type(path = path)
-  if (.doc_type == "mkdocs") {
-    return(fs::path_abs("docs", start = path))
-  } else if (.doc_type %in% c("docsify", "docute")) {
-    return(fs::path_abs("docs", start = path))
-  }
+  return(fs::path_abs("docs", start = path))
 }
 
 # Detect how licence files is called: "LICENSE" or "LICENCE"
-# If no license, return "license" for cli message in .update_file()
 .which_license <- function(path = ".") {
   x <- list.files(path = path, pattern = "\\.md$")
   license <- x[grep("license", x, ignore.case = TRUE)]
@@ -143,15 +141,30 @@
   if (!isTRUE(.dir_is_package(path))) {
     stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
   }
-
   fn <- fs::path_join(c(path, ".Rbuildignore"))
   if (!fs::file_exists(fn)) {
     fs::file_create(fn)
   }
-
   tmp <- .readlines(fn)
   if (!x %in% tmp) {
     cli::cli_alert_info("Adding {x} to .Rbuildignore")
+    tmp <- c(tmp, x)
+    writeLines(tmp, fn)
+  }
+}
+
+
+.add_gitignore <- function(x = "^docs$", path = ".") {
+  if (!isTRUE(.dir_is_package(path))) {
+    stop(".add_gitignore() must be run from the root of a package.", call. = FALSE)
+  }
+  fn <- fs::path_join(c(path, ".gitignore"))
+  if (!fs::file_exists(fn)) {
+    fs::file_create(fn)
+  }
+  tmp <- .readlines(fn)
+  if (!x %in% tmp) {
+    cli::cli_alert_info("Adding {x} to .gitignore")
     tmp <- c(tmp, x)
     writeLines(tmp, fn)
   }

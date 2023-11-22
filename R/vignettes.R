@@ -9,16 +9,30 @@
 #  that it is "md_document" instead of "html_vignette"
 # * render all of the modified .Rmd files (in "docs/vignettes"), which produce .md files.
 
-.import_vignettes <- function(path = path, verbose = FALSE, parallel = FALSE) {
+.import_vignettes <- function(src_dir, tar_dir, doctype = "docsify", verbose = FALSE, parallel = FALSE) {
+
+  # quarto vignettes are rendered by quarto itself, so we just need to copy them
+  if (doctype == "quarto_website") {
+    dn_src <- fs::path_join(c(src_dir, "vignettes"))
+    dn_tar <- fs::path_join(c(tar_dir, "vignettes"))
+    if (fs::dir_exists(dn_tar)) {
+      fs::dir_delete(dn_tar)
+    }
+    if (fs::dir_exists(dn_src)) {
+      fs::dir_copy(dn_src, dn_tar)
+    }
+    return(invisible())
+  }
+
   # source directory
-  src_dir <- fs::path_abs("vignettes", start = path)
+  src_dir <- fs::path_abs("vignettes", start = src_dir)
   if (!fs::dir_exists(src_dir) || .folder_is_empty(src_dir)) {
     cli::cli_alert_info("No vignettes to convert")
     return(invisible())
   }
 
   # target directory
-  tar_dir <- fs::path_join(c(.doc_path(path = path), "/vignettes"))
+  tar_dir <- fs::path_join(c(tar_dir, "vignettes"))
   if (!dir.exists(tar_dir)) {
     fs::dir_create(tar_dir)
   }
@@ -30,7 +44,7 @@
   # docsify: vignettes/
   # docute: /
   dir_static <- Filter(fs::is_dir, fs::dir_ls(src_dir))
-  if (.doc_type(path) == "docute") {
+  if (doctype == "docute") {
     tar_dir_static <- gsub("vignettes$", "", tar_dir)
   } else {
     tar_dir_static <- tar_dir
@@ -54,6 +68,8 @@
     origin <- fs::path_join(c(src_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
     fs::file_copy(origin, destination, overwrite = TRUE)
+
+
     if (fs::path_ext(origin) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
 
@@ -68,6 +84,7 @@
     } else {
       worked <- .qmd2md(origin, tar_dir, verbose = verbose)
     }
+
     return(worked)
   }
 

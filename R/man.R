@@ -1,9 +1,10 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(path = ".", verbose = FALSE, parallel = FALSE) {
+.import_man <- function(src_dir, tar_dir, doctype = "docsify", verbose = FALSE, parallel = FALSE) {
+
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
-  man_target <- list.files(path = fs::path_join(c(.doc_path("."), "man")), pattern = "\\.md$")
+  man_target <- list.files(path = fs::path_join(c(tar_dir, "man")), pattern = "\\.md$")
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
@@ -16,13 +17,19 @@
   render_one_man <- function(fn) {
     # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
     origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
-    destination_dir <- fs::path_join(c(.doc_path(path = "."), "man"))
+    destination_dir <- fs::path_join(c(tar_dir, "man"))
     destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
-    worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
-    fs::file_delete(destination_qmd)
+
+    if (doctype != "quarto_website") {
+      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+      fs::file_delete(destination_qmd)
+    } else {
+      worked <- TRUE
+    }
+
     # section headings are too deeply nested by default
     # this is a hack because it may remove one # from comments. But that's
     # probably not the end of the world, because the line stick stays commented
@@ -32,6 +39,7 @@
       tmp <- gsub("^##", "#", tmp)
       writeLines(tmp, destination_md)
     }
+
     return(worked)
   }
 

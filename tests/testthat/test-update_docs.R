@@ -66,7 +66,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     create_local_package()
     setup_docs(tool = tool, path = getwd())
     expect_message(render_docs(path = getwd()),
-      regexp = "No.*NEWS.*to include."
+      regexp = "No.*NEWS.*to import."
     )
   })
 }
@@ -100,7 +100,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     setup_docs(tool = tool, path = getwd())
     usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
     expect_message(render_docs(path = getwd()),
-      regexp = "Code of Conduct.*was imported for the first time."
+      regexp = "CODE_OF_CONDUCT.*imported for the first time."
     )
     expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
   })
@@ -113,7 +113,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     create_local_package()
     setup_docs(tool = tool, path = getwd())
     expect_message(render_docs(path = getwd()),
-      regexp = "No.*Code of Conduct.*to include."
+      regexp = "No.*CODE_OF_CONDUCT.*to import."
     )
   })
 }
@@ -147,7 +147,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     setup_docs(tool = tool, path = getwd())
     usethis::use_mit_license("etienne.bacher@protonmail.com")
     expect_message(render_docs(path = getwd()),
-      regexp = "License / Licence.*was imported for the first time."
+      regexp = "LICENSE.*imported for the first time."
     )
     expect_true(fs::file_exists("docs/LICENSE.md"))
   })
@@ -160,7 +160,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
     create_local_package()
     setup_docs(tool = tool, path = getwd())
     expect_message(render_docs(path = getwd()),
-      regexp = "No.*License / Licence.*to include."
+      regexp = "No.*LICENSE.*to import."
     )
   })
 }
