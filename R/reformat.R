@@ -63,7 +63,7 @@
 .reformat_md <- function(file, first = FALSE) {
   stopifnot(!is.null(file), is.character(file))
 
-  md_doc <- tinkr::to_xml(file)
+  md_doc <- suppressWarnings(tinkr::to_xml(file))
 
   headers <- md_doc$body
   headers <- xml2::xml_find_all(

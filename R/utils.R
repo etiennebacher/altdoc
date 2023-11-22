@@ -124,7 +124,6 @@
 }
 
 # Detect how licence files is called: "LICENSE" or "LICENCE"
-# If no license, return "license" for cli message in .update_file()
 .which_license <- function(path = ".") {
   x <- list.files(path = path, pattern = "\\.md$")
   license <- x[grep("license", x, ignore.case = TRUE)]

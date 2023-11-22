@@ -1,22 +1,20 @@
 # Import files: README, license, news, CoC ------------------
 
 .import_readme <- function(src_dir, tar_dir, doctype) {
-
-  if (fs::file_exists(fs::path_abs("README.md", start = src_dir))) {
-    src <- fs::path_join(c(src_dir, "README.md"))
-  } else {
-    src <- system.file("docsify/README.md", package = "altdoc")
-  }
-
+  src_file <- fs::path_join(c(src_dir, "README.md"))
   if (doctype == "quarto_website") {
-    tar <- fs::path_join(c(tar_dir, "index.md"))
+    tar_file <- fs::path_join(c(tar_dir, "index.md"))
   } else {
-    tar <- fs::path_join(c(tar_dir, "README.md"))
+    tar_file <- fs::path_join(c(tar_dir, "README.md"))
   }
 
-  fs::file_copy(src, tar, overwrite = TRUE)
+  # default readme is mandatory for some docs generators
+  if (!fs::file_exists(src_file)) {
+    writeLines(c("", "Hello world!"), src_file)
+  }
 
-  .reformat_md(tar, first = FALSE)
+  fs::file_copy(src_file, tar_file, overwrite = TRUE)
+  .reformat_md(tar_file, first = FALSE)
 
   # TODO: fix this for Quarto
   if (doctype != "quarto_website") {
@@ -24,48 +22,48 @@
     .replace_img_paths_readme(path = src_dir)
   }
 
+  cli::cli_alert_success("{.file README} imported.")
 }
 
 
 .import_coc <- function(src_dir, tar_dir, doctype) {
   fn <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
   if (fs::file_exists(fn)) {
-    .update_file(fn, tar_dir, doctype = doctype)
-    cli::cli_alert_success("{.file Code of Conduct} imported.")
+    fs::file_copy(fn, tar_dir, overwrite = TRUE)
+    cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
   } else {
-    cli::cli_alert_info("No {.file Code of Conduct} to include.")
+    cli::cli_alert_info("No {.file CODE_OF_CONDUCT} to import.")
   }
 }
 
 
 .import_license <- function(src_dir, tar_dir, doctype) {
-  file <- .which_license(src_dir)
-  if (is.null(file)) {
-    cli::cli_alert_info("No {.file License / Licence} to include.")
+  src_file <- .which_license(src_dir)
+  if (is.null(src_file) || !fs::file_exists(src_file)) {
+    cli::cli_alert_info("No {.file LICENSE} to import.")
     return(invisible())
-  }
-  if (fs::file_exists(file)) {
-    .update_file(file, tar_dir, doctype = doctype)
+  } else {
+    fs::file_copy(src_file, tar_dir, overwrite = TRUE)
+    cli::cli_alert_success("{.file LICENSE} imported.")
   }
 }
 
 
 .import_news <- function(src_dir, tar_dir, doctype) {
   src <- .which_news(src_dir)
-  tar <- fs::path_join(c(tar_dir, "NEWS.md"))
-
   if (is.null(src) || !fs::file_exists(src)) {
-    cli::cli_alert_info("No {.file NEWS / Changelog} to include.")
+    cli::cli_alert_info("No {.file NEWS} to import.")
     return(invisible())
+  } else {
+    tar <- fs::path_join(c(tar_dir, "NEWS.md"))
+    fs::file_copy(src, tar_dir, overwrite = TRUE)
   }
-
-  .update_file(src, path = tar_dir, doctype = doctype)
   .parse_news(path = src_dir, news_path = tar)
+  cli::cli_alert_success("{.file NEWS} imported.")
 }
 
 
 # Detect how news files is called: "NEWS" or "CHANGELOG"
-# If no news, return "news" for cli message in .update_file()
 .which_news <- function(path = ".") {
   x <- list.files(path = path, pattern = "\\.md$")
   news <- grep("news.md", x, ignore.case = TRUE, value = TRUE)
