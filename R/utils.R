@@ -95,7 +95,7 @@
   if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
     cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
   } else if (sum(c(mkdocs, docsify, docute, quarto_website)) > 1) {
-    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one.")
+    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one or run `setup_docs()` with `overwrite=TRUE`.")
   }
 
   if (mkdocs) return("mkdocs")

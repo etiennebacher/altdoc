@@ -12,13 +12,13 @@
 .import_vignettes <- function(
   src_dir,
   tar_dir,
-  doctype = "docsify",
+  tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE) {
 
   # quarto vignettes are rendered by quarto itself, so we just need to copy them
-  if (doctype == "quarto_website") {
+  if (tool == "quarto_website") {
     dn_src <- fs::path_join(c(src_dir, "vignettes"))
     dn_tar <- fs::path_join(c(tar_dir, "vignettes"))
     if (fs::dir_exists(dn_tar)) {
@@ -50,7 +50,7 @@
   # docsify: vignettes/
   # docute: /
   dir_static <- Filter(fs::is_dir, fs::dir_ls(vig_dir))
-  if (doctype == "docute") {
+  if (tool == "docute") {
     tar_dir_static <- gsub("vignettes$", "", tar_dir)
   } else {
     tar_dir_static <- tar_dir

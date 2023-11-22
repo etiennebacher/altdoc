@@ -22,12 +22,12 @@ preview_docs <- function(path = ".") {
   .assert_dependency("servr", install = TRUE)
   .assert_dependency("rstudioapi", install = TRUE)
 
-  doctype <- .doc_type(path)
+  tool <- .doc_type(path)
 
   if (rstudioapi::isAvailable()) {
-    if (doctype %in% c("docute", "docsify")) {
+    if (tool %in% c("docute", "docsify")) {
       servr::httw(fs::path_abs("docs/"))
-    } else if (doctype == "mkdocs") {
+    } else if (tool == "mkdocs") {
       # first build
       if (.is_windows()) {
         shell(paste("cd", fs::path_abs("docs", start = path), " && python3 -m mkdocs build -q"))

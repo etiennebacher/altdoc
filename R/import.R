@@ -1,8 +1,8 @@
 # Import files: README, license, news, CoC ------------------
 
-.import_readme <- function(src_dir, tar_dir, doctype) {
+.import_readme <- function(src_dir, tar_dir, tool) {
   src_file <- fs::path_join(c(src_dir, "README.md"))
-  if (doctype == "quarto_website") {
+  if (tool == "quarto_website") {
     tar_file <- fs::path_join(c(tar_dir, "index.md"))
   } else {
     tar_file <- fs::path_join(c(tar_dir, "README.md"))
@@ -17,7 +17,7 @@
   .reformat_md(tar_file, first = FALSE)
 
   # TODO: fix this for Quarto
-  if (doctype != "quarto_website") {
+  if (tool != "quarto_website") {
     .move_img_readme(path = src_dir)
     .replace_img_paths_readme(path = src_dir)
   }
@@ -26,7 +26,7 @@
 }
 
 
-.import_coc <- function(src_dir, tar_dir, doctype) {
+.import_coc <- function(src_dir, tar_dir, tool) {
   src_file <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
   tar_file <- fs::path_join(c(tar_dir, "CODE_OF_CONDUCT.md"))
   if (fs::file_exists(src_file)) {
@@ -41,7 +41,7 @@
 }
 
 
-.import_license <- function(src_dir, tar_dir, doctype) {
+.import_license <- function(src_dir, tar_dir, tool) {
   src_file <- .which_license(src_dir)
   if (is.null(src_file) || !fs::file_exists(src_file)) {
     cli::cli_alert_info("No {.file LICENSE} to import.")
@@ -58,7 +58,7 @@
 }
 
 
-.import_news <- function(src_dir, tar_dir, doctype) {
+.import_news <- function(src_dir, tar_dir, tool) {
   src <- .which_news(src_dir)
   if (is.null(src) || !fs::file_exists(src)) {
     cli::cli_alert_info("No {.file NEWS} to import.")

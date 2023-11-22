@@ -2,7 +2,7 @@
 .import_man <- function(
   src_dir,
   tar_dir,
-  doctype = "docsify",
+  tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE) {
@@ -42,7 +42,7 @@
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
 
-    if (doctype != "quarto_website") {
+    if (tool != "quarto_website") {
       worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
       fs::file_delete(destination_qmd)
     } else {

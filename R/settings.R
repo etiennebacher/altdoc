@@ -1,4 +1,4 @@
-.import_settings <- function(path = ".", doctype = "docsify", verbose = FALSE) {
+.import_settings <- function(path = ".", tool = "docsify", verbose = FALSE, freeze = FALSE) {
 
     # copy all files from altdoc/ into docs/
     # this allows users to store arbitrary and settings static files in altdoc/
@@ -23,19 +23,36 @@
         }
     }
 
-    if (isTRUE(doctype == "docsify")) {
-        .import_settings_docsify(path = path)
+    fn <- switch(tool,
+        docsify = "docsify.md",
+        docute = "docute.html",
+        mkdocs = "mkdocs.yml",
+        quarto_website = "quarto_website.yml")
+    fn <- fs::path_join(c(path, "altdoc", fn))
+    settings <- .readlines(fn)
 
-    } else if (isTRUE(doctype == "docute")) {
-        .import_settings_docute(path = path)
+    settings <- .substitute_altdoc_variables(settings, path = path)
 
-    } else if (isTRUE(doctype == "mkdocs")) {
-        .import_settings_mkdocs(path = path)
+    vignettes <- switch(tool,
+        docsify = .sidebar_vignettes_docsify,
+        docute = .sidebar_vignettes_docute,
+        mkdocs = .sidebar_vignettes_mkdocs,
+        quarto_website = .sidebar_vignettes_quarto_website)
+    settings <- vignettes(sidebar = settings, path = path)
 
-    } else if (isTRUE(doctype == "quarto_website")) {
-        .import_settings_quarto_website(path = path, verbose = verbose)
-    }
+    man <- switch(tool,
+        docsify = .sidebar_man_docsify,
+        docute = .sidebar_man_docute,
+        mkdocs = .sidebar_man_mkdocs,
+        quarto_website = .sidebar_man_quarto_website)
+    settings <- man(settings, path)
+
+    finalize <- switch(tool,
+        docsify = .finalize_docsify,
+        docute = .finalize_docute,
+        mkdocs = .finalize_mkdocs,
+        quarto_website = .finalize_quarto_website)
+    settings <- finalize(settings, path, verbose, freeze)
 
     cli::cli_alert_success("HTML updated.")
-
 }

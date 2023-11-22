@@ -33,11 +33,11 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   }
 
-  doctype <- .doc_type(path)
+  tool <- .doc_type(path)
 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
-  if (doctype == "quarto_website") {
+  if (tool == "quarto_website") {
     docs_parent <- fs::path_join(c(path, "_quarto"))
     # avoid collisions
     if (fs::dir_exists(docs_parent)) {
@@ -58,21 +58,21 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
 
   # basic files
-  .import_readme(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_news(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_license(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_coc(src_dir = path, tar_dir = docs_dir, doctype = doctype)
+  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_news(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_license(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_coc(src_dir = path, tar_dir = docs_dir, tool = tool)
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel, freeze = freeze)
+  .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel, freeze = freeze)
+  .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   cli::cli_h1("Update HTML")
-  .import_settings(path = path, doctype = doctype, verbose = verbose)
+  .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
