@@ -22,7 +22,6 @@ Imports:
     desc,
     fs,
     quarto,
-    rmarkdown (>= 2.15),
     tools,
     utils
 Suggests: 

@@ -24,6 +24,7 @@ New:
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
 * Improved vignettes
 * Do not reformat markdown header levels automatically, but raise a warning when there is more than one level 1 header.
+* Fewer dependencies.
 
 ## altdoc 0.2.2
 
