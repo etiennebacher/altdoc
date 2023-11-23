@@ -62,28 +62,7 @@
 }
 
 
-.import_coc <- function(src_dir, tar_dir, tool) {
-  src_file <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
-  tar_file <- fs::path_join(c(tar_dir, "CODE_OF_CONDUCT.md"))
-  if (fs::file_exists(src_file)) {
-    fs::file_copy(src_file, tar_file, overwrite = TRUE)
-    cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
-  }
-}
-
-
-.import_license <- function(src_dir, tar_dir, tool) {
-  src_file <- .which_license(src_dir)
-  tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
-  tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
-  if (!is.null(src_file) && fs::file_exists(src_file)) {
-    fs::file_copy(src_file, tar_dir, overwrite = TRUE)
-    cli::cli_alert_success("{.file LICENSE} imported.")
-  }
-}
-
-
-.import_news_changelog <- function(src_dir, tar_dir, name = "NEWS") {
+.import_basic <- function(src_dir, tar_dir, name = "NEWS") {
   src <- c(
     "NEWS.md", "NEWS.txt", "NEWS", "NEWS.Rd",
     "inst/NEWS.md", "inst/NEWS.txt", "inst/NEWS", "inst/NEWS.Rd"
@@ -118,7 +97,9 @@
   }
 
   # insert links, etc.
-  .parse_news(path = src_dir, news_path = tar)
+  if (name == "NEWS") {
+    .parse_news(path = src_dir, news_path = tar)
+  }
 
   cli::cli_alert_success("{.file {name}} imported.")
 }
