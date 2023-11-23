@@ -1,4 +1,4 @@
-setup_workflow <- function(path = ".") {
+create_workflow <- function(path = ".") {
 
   if (!fs::dir_exists(".github/workflows")) {
     fs::dir_create(".github/workflows")
