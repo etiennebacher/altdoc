@@ -31,7 +31,7 @@
     fn <- fs::path_join(c(path, "altdoc", fn))
     settings <- .readlines(fn)
 
-    settings <- .substitute_altdoc_variables(settings, path = path)
+    settings <- .substitute_altdoc_variables(settings, path = path, tool = tool)
 
     vignettes <- switch(tool,
         docsify = .sidebar_vignettes_docsify,
