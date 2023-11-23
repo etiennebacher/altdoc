@@ -3,16 +3,16 @@
 
 Preview the documentation in a webpage or in viewer
 
-# Description
+## Description
 
 Preview the documentation in a webpage or in viewer
 
-# Usage
+## Usage
 
 <pre><code class='language-R'>preview_docs(path = ".")
 </code></pre>
 
-# Arguments
+## Arguments
 
 <table>
 <tr>
@@ -25,13 +25,13 @@ Path to the package root directory.
 </tr>
 </table>
 
-# Value
+## Value
 
 No value returned. If RStudio is used, it shows a site preview in
 Viewer. To preview the site in a browser or in another text editor (ex:
 VS Code), see the vignette on the <code>altdoc</code> website.
 
-# Examples
+## Examples
 
 ``` r
 library(altdoc)
