@@ -70,10 +70,20 @@
   fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
   render_one_vignette <- function(i) {
+
+    worked <- FALSE
+
     # only process new or modified vignettes
     origin <- fs::path_join(c(vig_dir, src_files[i]))
     destination <- fs::path_join(c(tar_dir, src_files[i]))
     fs::file_copy(origin, destination, overwrite = TRUE)
+
+    # raw markdown should just be copied over
+    if (fs::path_ext(src_files[i]) == "md") {
+      fs::file_copy(origin, tar_dir, overwrite = TRUE)
+      worked <- TRUE
+      return(worked)
+    }
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
@@ -163,37 +173,39 @@
 
   x <- .readlines(fn)
 
+  out <- gsub("\\.md$", "", basename(fn))
+
   # title in vignette of the same name
   vig <- fs::path_ext_remove(basename(fn))
   p <- list.files(fs::path_join(c(path, "vignettes")), pattern = vig)
   p <- p[grepl("\\.Rmd$|\\.qmd$", p)]
   if (length(p) == 1) {
     z <- .readlines(fs::path_join(c(path, "vignettes", p)))
-    title <- z[grepl("^title:\\w*", z)]
-    title <- trimws(gsub("^title:\\w*", "", title))
+    out <- z[grepl("^out:\\w*", z)]
+    out <- trimws(gsub("^out:\\w*", "", out))
   }
 
   # First h1 header
-  if (length(title) == 0) {
+  if (length(out) == 0) {
     idx <- grep("^# \\w+", x)
     if (length(idx) > 0) {
-      title <- x[idx[1]]
-      title <- gsub("^# ", "", title)
+      out <- x[idx[1]]
+      out <- gsub("^# ", "", out)
     }
   }
 
   # file name
-  if (length(title) == 0) {
-    title <- fs::path_ext_remove(basename(fn))
-    title <- gsub("_", " ", title)
-    title <- tools::toTitleCase(title)
+  if (length(out) == 0) {
+    out <- fs::path_ext_remove(basename(fn))
+    out <- gsub("_", " ", out)
+    out <- tools::toTitleCase(out)
   }
 
   # Clean up and escape
-  if (is.character(title)) {
-    title <- gsub('^"|"$', '', title)
+  if (is.character(out)) {
+    out <- gsub('^"|"$', '', out)
   }
 
-  return(title)
+  return(out)
 }
 
