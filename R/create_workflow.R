@@ -19,8 +19,10 @@ setup_workflow <- function(path = ".") {
   if (!fs::dir_exists(".github/workflows")) {
     fs::dir_create(".github/workflows")
   }
+  path <- .convert_path(path)
+
   src <- system.file("misc/altdoc.yaml", package = "altdoc")
-  tar <- ".github/workflows/altdoc.yaml"
+  tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
   fs::file_copy(src, tar)
 
   # Deal with mkdocs installation in workflow
