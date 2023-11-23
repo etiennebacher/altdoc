@@ -19,7 +19,7 @@ env:
   USE_BSPM: "true"
   _R_CHECK_FORCE_SUGGESTS_: "false"
   R_GH: true
-  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   contents: write
