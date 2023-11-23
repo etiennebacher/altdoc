@@ -54,7 +54,7 @@ jobs:
       - name: Install rsync 📚
         run: |
           apt update && apt install -y rsync git
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory $(realpath .)
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
