@@ -40,7 +40,7 @@
       tryCatch(
         {
           name <- desc::desc_get_field("Package")
-          cite <- capture.output(print(citation(name)))
+          cite <- utils::capture.output(print(citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
         error = function(e) NULL)
