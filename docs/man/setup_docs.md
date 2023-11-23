@@ -3,7 +3,7 @@
 
 Initialize documentation website settings
 
-## Description
+# Description
 
 Creates a subdirectory called
 <code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
@@ -15,12 +15,12 @@ automatically by <code>altdoc</code> unless the user explicitly calls
 <code>overwrite=TRUE</code>. They can thus be edited manually to
 customize the sidebar and website.
 
-## Usage
+# Usage
 
 <pre><code class='language-R'>setup_docs(tool, path = ".", overwrite = FALSE)
 </code></pre>
 
-## Arguments
+# Arguments
 
 <table>
 <tr>
@@ -51,11 +51,11 @@ directory, including any customizations you may have made.
 </tr>
 </table>
 
-## Value
+# Value
 
 No value returned.
 
-## Examples
+# Examples
 
 ``` r
 library(altdoc)

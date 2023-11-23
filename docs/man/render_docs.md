@@ -3,18 +3,18 @@
 
 Update documentation
 
-## Description
+# Description
 
 Render and update the man pages, vignettes, README, Changelog, License,
 Code of Conduct, and Reference sections (if ’ they exist). This section
 modifies and overwrites the files in the ‘docs/’ folder.
 
-## Usage
+# Usage
 
 <pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 </code></pre>
 
-## Arguments
+# Arguments
 
 <table>
 <tr>
@@ -57,11 +57,11 @@ deleted, all man pages and vignettes will be rendered anew.
 </tr>
 </table>
 
-## Value
+# Value
 
 No value returned. Updates and overwrites the files in folder ‘docs’.
 
-## Examples
+# Examples
 
 ``` r
 library(altdoc)
