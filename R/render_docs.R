@@ -6,6 +6,7 @@
 #'
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
+#' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -22,7 +23,7 @@
 #'   render_docs(parallel = TRUE)
 #' 
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
   path <- .convert_path(path)
 
@@ -32,11 +33,11 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
 
   }
 
-  doctype <- .doc_type(path)
+  tool <- .doc_type(path)
 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
-  if (doctype == "quarto_website") {
+  if (tool == "quarto_website") {
     docs_parent <- fs::path_join(c(path, "_quarto"))
     # avoid collisions
     if (fs::dir_exists(docs_parent)) {
@@ -57,21 +58,21 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE) {
 
 
   # basic files
-  .import_readme(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_news(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_license(src_dir = path, tar_dir = docs_dir, doctype = doctype)
-  .import_coc(src_dir = path, tar_dir = docs_dir, doctype = doctype)
+  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_news(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_license(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_coc(src_dir = path, tar_dir = docs_dir, tool = tool)
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel)
+  .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(src_dir = path, tar_dir = docs_dir, doctype = doctype, verbose = verbose, parallel = parallel)
+  .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   cli::cli_h1("Update HTML")
-  .import_settings(path = path, doctype = doctype, verbose = verbose)
+  .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")

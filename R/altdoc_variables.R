@@ -1,6 +1,16 @@
 .substitute_altdoc_variables <- function(x, filename, path = ".") {
     x <- gsub("\\$ALTDOC_VERSION",utils::packageVersion("altdoc"), x)
 
+    for (vn in c("NEWS.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE.md")) {
+        fn <- fs::path_join(c(.doc_path(path), vn))
+        regex <- sprintf("\\$ALTDOC_%s", fs::path_ext_remove(basename(vn)))
+        if (fs::file_exists(fn) || fs::file_exists(fs::path_join(c(path, "_quarto/docs", vn)))) {
+            x <- gsub(regex, vn, x)
+        } else {
+            x <- x[!grepl(regex, x)]
+        }
+    }
+
     # DESCRIPTION file
     fn <- fs::path_join(c(path, "DESCRIPTION"))
     if (fs::file_exists(fn)) {
@@ -33,6 +43,8 @@
         x <- gsub("\\$ALTDOC_PACKAGE_URL", "", x)
     }
 
+    # some commands expand the full path
+    x <- gsub(.doc_path(path), "", x, fixed = TRUE)
+
     return(x)
 }
-
