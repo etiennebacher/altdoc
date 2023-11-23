@@ -4,3 +4,4 @@
 * [Changelog]($ALTDOC_NEWS)
 * [Code of Conduct]($ALTDOC_CODE_OF_CONDUCT)
 * [License]($ALTDOC_LICENSE)
+* [Citation]($ALTDOC_CITATION)

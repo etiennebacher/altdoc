@@ -62,6 +62,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   .import_news(src_dir = path, tar_dir = docs_dir, tool = tool)
   .import_license(src_dir = path, tar_dir = docs_dir, tool = tool)
   .import_coc(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_citation(src_dir = path, tar_dir = docs_dir)
 
   # Update functions reference
   cli::cli_h1("Man pages")

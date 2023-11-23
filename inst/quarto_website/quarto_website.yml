@@ -20,3 +20,4 @@ website:
           - $ALTDOC_NEWS
           - $ALTDOC_LICENSE
           - $ALTDOC_CODE_OF_CONDUCT
+          - $ALTDOC_CITATION
