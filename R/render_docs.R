@@ -77,6 +77,5 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
-  cli::cli_alert_info("Some files might have been reformatted. Get more info with {.code ?altdoc:::.reformat_md}.")
 }
 

@@ -14,7 +14,7 @@
   }
 
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
-  .reformat_md(tar_file, first = FALSE)
+  .check_md_structure(tar_file)
 
   # TODO: fix this for Quarto
   if (tool != "quarto_website") {

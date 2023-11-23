@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Package Documentation Websites with 'Docsify.js', 'Docute', or 'Mkdocs
-Version: 0.2.2.9009
+Version: 0.2.2.9010
 Authors@R: 
     c(person(given = "Etienne",
              family = "Bacher",
@@ -23,10 +23,8 @@ Imports:
     fs,
     quarto,
     rmarkdown (>= 2.15),
-    tinkr,
     tools,
-    utils,
-    xml2
+    utils
 Suggests: 
     covr,
     digest,
