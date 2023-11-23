@@ -50,6 +50,11 @@ jobs:
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 
+      # install required dependency for github-pages-deploy action
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.4.1
