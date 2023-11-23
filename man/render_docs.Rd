@@ -15,13 +15,40 @@ render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
 }
-\value{
-No value returned. Updates and overwrites the files in folder 'docs'.
-}
 \description{
-Render and update the man pages, vignettes, README, Changelog, License, Code
-of Conduct, and Reference sections (if ' they exist). This section modifies and
-overwrites the files in the 'docs/' folder.
+Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
+and CODE_OF_CONDUCT sections, if they exist. This function overwrites the
+content of the 'docs/' folder. See details below.
+}
+\details{
+This function searches the root directory and the \verb{inst/} directory for specific filenames, renders/converts/copies them to the \verb{docs/} directory. The order of priority for each file is established as follows:
+\itemize{
+\item \code{docs/README.md}
+\itemize{
+\item README.md, README.qmd, README.Rmd
+}
+\item \code{docs/NEWS.md}
+\itemize{
+\item NEWS.md, NEWS.txt, NEWS, NEWS.Rd
+\item Note: Where possible, Github contributors and issues are linked automatically.
+}
+\item \code{docs/CHANGELOG.md}
+\itemize{
+\item CHANGELOG.md, CHANGELOG.txt, CHANGELOG
+}
+\item \code{docs/CODE_OF_CONDUCT.md}
+\itemize{
+\item CODE_OF_CONDUCT.md, CODE_OF_CONDUCT.txt, CODE_OF_CONDUCT
+}
+\item \code{docs/LICENSE.md}
+\itemize{
+\item LICENSE.md, LICENSE.txt, LICENSE
+}
+\item \code{docs/LICENCE.md}
+\itemize{
+\item LICENCE.md, LICENCE.txt, LICENCE
+}
+}
 }
 \examples{
 if (interactive()) {

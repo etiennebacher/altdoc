@@ -1,16 +1,34 @@
 #' Update documentation
 #'
-#' Render and update the man pages, vignettes, README, Changelog, License, Code
-#' of Conduct, and Reference sections (if ' they exist). This section modifies and
-#' overwrites the files in the 'docs/' folder.
+#' Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
+#' and CODE_OF_CONDUCT sections, if they exist. This function overwrites the
+#' content of the 'docs/' folder. See details below.
 #'
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
 #' @inheritParams setup_docs
 #' @export
+#' 
+#' @details
+#' 
+#' This function searches the root directory and the `inst/` directory for specific filenames, renders/converts/copies them to the `docs/` directory. The order of priority for each file is established as follows:
+#' 
+#' * `docs/README.md`
+#'   - README.md, README.qmd, README.Rmd
+#' * `docs/NEWS.md`
+#'   - NEWS.md, NEWS.txt, NEWS, NEWS.Rd
+#'   - Note: Where possible, Github contributors and issues are linked automatically. 
+#' * `docs/CHANGELOG.md`
+#'   - CHANGELOG.md, CHANGELOG.txt, CHANGELOG
+#' * `docs/CODE_OF_CONDUCT.md`
+#'   - CODE_OF_CONDUCT.md, CODE_OF_CONDUCT.txt, CODE_OF_CONDUCT
+#' * `docs/LICENSE.md`
+#'   - LICENSE.md, LICENSE.txt, LICENSE
+#' * `docs/LICENCE.md`
+#'   - LICENCE.md, LICENCE.txt, LICENCE
 #'
-#' @return No value returned. Updates and overwrites the files in folder 'docs'.
+#' @return NULL
 #'
 #' @examples
 #' if (interactive()) {
@@ -57,13 +75,13 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   cli::cli_h1("Basic files")
 
 
-  # basic files
+  basics <- c("NEWS", "CHANGELOG", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
+  for (b in basics) {
+    .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
+  }
   .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
-  .import_news_changelog(src_dir = path, tar_dir = docs_dir, name = "NEWS")
-  .import_news_changelog(src_dir = path, tar_dir = docs_dir, name = "CHANGELOG")
-  .import_license(src_dir = path, tar_dir = docs_dir, tool = tool)
-  .import_coc(src_dir = path, tar_dir = docs_dir, tool = tool)
   .import_citation(src_dir = path, tar_dir = docs_dir)
+
 
   # Update functions reference
   cli::cli_h1("Man pages")

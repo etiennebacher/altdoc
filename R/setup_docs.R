@@ -14,7 +14,7 @@
 #'
 #' @export
 #'
-#' @return No value returned.
+#' @return NULL
 #'
 #' @examples
 #' if (interactive()) {

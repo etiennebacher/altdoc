@@ -20,5 +20,6 @@ website:
           - $ALTDOC_NEWS
           - $ALTDOC_CHANGELOG
           - $ALTDOC_LICENSE
+          - $ALTDOC_LICENCE
           - $ALTDOC_CODE_OF_CONDUCT
           - $ALTDOC_CITATION

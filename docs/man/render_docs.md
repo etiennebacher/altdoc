@@ -5,9 +5,10 @@ Update documentation
 
 ## Description
 
-Render and update the man pages, vignettes, README, Changelog, License,
-Code of Conduct, and Reference sections (if ’ they exist). This section
-modifies and overwrites the files in the ‘docs/’ folder.
+Render and update the function reference manual, vignettes, README,
+NEWS, CHANGELOG, LICENSE, and CODE_OF_CONDUCT sections, if they exist.
+This function overwrites the content of the ‘docs/’ folder. See details
+below.
 
 ## Usage
 
@@ -57,9 +58,94 @@ deleted, all man pages and vignettes will be rendered anew.
 </tr>
 </table>
 
-## Value
+## Details
 
-No value returned. Updates and overwrites the files in folder ‘docs’.
+This function searches the root directory and the
+<code style="white-space: pre;">⁠inst/⁠</code> directory for specific
+filenames, renders/converts/copies them to the
+<code style="white-space: pre;">⁠docs/⁠</code> directory. The order of
+priority for each file is established as follows:
+
+<ul>
+<li>
+
+<code>docs/README.md</code>
+
+<ul>
+<li>
+
+README.md, README.qmd, README.Rmd
+
+</li>
+</ul>
+</li>
+<li>
+
+<code>docs/NEWS.md</code>
+
+<ul>
+<li>
+
+NEWS.md, NEWS.txt, NEWS, NEWS.Rd
+
+</li>
+<li>
+
+Note: Where possible, Github contributors and issues are linked
+automatically.
+
+</li>
+</ul>
+</li>
+<li>
+
+<code>docs/CHANGELOG.md</code>
+
+<ul>
+<li>
+
+CHANGELOG.md, CHANGELOG.txt, CHANGELOG
+
+</li>
+</ul>
+</li>
+<li>
+
+<code>docs/CODE_OF_CONDUCT.md</code>
+
+<ul>
+<li>
+
+CODE_OF_CONDUCT.md, CODE_OF_CONDUCT.txt, CODE_OF_CONDUCT
+
+</li>
+</ul>
+</li>
+<li>
+
+<code>docs/LICENSE.md</code>
+
+<ul>
+<li>
+
+LICENSE.md, LICENSE.txt, LICENSE
+
+</li>
+</ul>
+</li>
+<li>
+
+<code>docs/LICENCE.md</code>
+
+<ul>
+<li>
+
+LICENCE.md, LICENCE.txt, LICENCE
+
+</li>
+</ul>
+</li>
+</ul>
 
 ## Examples
 
