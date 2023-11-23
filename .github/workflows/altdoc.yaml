@@ -31,7 +31,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # use a fixed version so that we don't have to install "gh" to download
+      # It looks like the quarto-actions/setup doesn't work in containers so need to install manually
+      # https://github.com/quarto-dev/quarto-actions/issues/12
+      # Need to use a fixed version so that we don't have to install "gh" to download
       # the latest version
       - name: Manually install Quarto
         run: |
