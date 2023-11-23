@@ -1,6 +1,6 @@
 Type: Package
 Package: altdoc
-Title: Package Documentation Websites with 'Docsify.js', 'Docute', or 'Mkdocs
+Title: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'
 Version: 0.2.2.9010
 Authors@R: 
     c(person(given = "Etienne",
@@ -13,7 +13,7 @@ Authors@R:
              email = "vincent.arel-bundock@umontreal.ca",
              comment = c(ORCID = "0000-0003-2042-7063"))
     )
-Description: 'altdoc' is a simple and powerful package to create, render, preview, and deploy documentation websites for 'R' packages. It is a lightweight alternative to 'pkgdown', with support for many documentation generators, including 'Docute', 'Docsify.js', and 'Mkdocs'.
+Description: 'altdoc' is a simple and powerful package to create, render, preview, and deploy documentation websites for 'R' packages. It is a lightweight and flexible alternative to 'pkgdown', with support for many documentation generators, including 'Quarto', 'Docute', 'Docsify', and 'MkDocs'.
 License: MIT + file LICENSE
 URL: https://altdoc.etiennebacher.com, https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
