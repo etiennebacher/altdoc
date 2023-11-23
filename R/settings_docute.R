@@ -69,7 +69,7 @@
     fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
     dn_man <- fs::path_join(c(.doc_path(path), "man"))
     # multi page
-    if (fs::dir_exists(dn_man)) {
+    if (fs::dir_exists(dn_man) && length(fs::dir_ls(dn_man)) > 0) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
         fn_man <- sapply(fn_man, function(x) fs::path_join(c("/man", basename(x))))
         titles <- fs::path_ext_remove(basename(fn_man))
