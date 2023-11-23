@@ -1,6 +1,16 @@
 # Import files: README, license, news, CoC ------------------
 
 .import_readme <- function(src_dir, tar_dir, tool) {
+
+  # render .Rmd or .qmd file if available
+  fn_qmd <- fs::path_join(c(src_dir, "README.qmd"))
+  fn_rmd <- fs::path_join(c(src_dir, "README.Rmd"))
+  if (fs::file_exists(fn_qmd)) {
+    .qmd2md(fn_qmd, src_dir)
+  } else if (fs::file_exists(fn_rmd)) {
+    .qmd2md(fn_rmd, src_dir)
+  }
+
   src_file <- fs::path_join(c(src_dir, "README.md"))
   if (tool == "quarto_website") {
     tar_file <- fs::path_join(c(tar_dir, "index.md"))
