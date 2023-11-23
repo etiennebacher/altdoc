@@ -50,7 +50,7 @@
       tryCatch(
         {
           name <- desc::desc_get_field("Package")
-          cite <- utils::capture.output(print(citation(name)))
+          cite <- utils::capture.output(print(utils::citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
         error = function(e) NULL)
@@ -71,20 +71,15 @@
     }
     fs::file_copy(src_file, tar_file, overwrite = TRUE)
     cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
-  } else {
-    cli::cli_alert_info("No {.file CODE_OF_CONDUCT} to import.")
   }
 }
 
 
 .import_license <- function(src_dir, tar_dir, tool) {
   src_file <- .which_license(src_dir)
-  if (is.null(src_file) || !fs::file_exists(src_file)) {
-    cli::cli_alert_info("No {.file LICENSE} to import.")
-    return(invisible())
-  } else {
-    tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
-    tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
+  tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
+  tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
+  if (!is.null(src_file) && fs::file_exists(src_file)) {
     if (!fs::file_exists(tar1) && !fs::file_exists(tar2)) {
       cli::cli_alert_success("{.file LICENSE} imported for the first time.")
     }
@@ -96,17 +91,14 @@
 
 .import_news <- function(src_dir, tar_dir, tool) {
   src <- .which_news(src_dir)
-  if (is.null(src) || !fs::file_exists(src)) {
-    cli::cli_alert_info("No {.file NEWS} to import.")
-    return(invisible())
-  } else {
+  if (!is.null(src) && fs::file_exists(src)) {
     tar <- fs::path_join(c(tar_dir, "NEWS.md"))
     if (!fs::file_exists(tar)) {
       cli::cli_alert_success("{.file NEWS} imported for the first time.")
     }
     fs::file_copy(src, tar_dir, overwrite = TRUE)
+    .parse_news(path = src_dir, news_path = tar)
   }
-  .parse_news(path = src_dir, news_path = tar)
   cli::cli_alert_success("{.file NEWS} imported.")
 }
 

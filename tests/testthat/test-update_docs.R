@@ -60,17 +60,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 }
 
 
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs shows message when NEWS doesn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    expect_message(render_docs(path = getwd()),
-      regexp = "No.*NEWS.*to import."
-    )
-  })
-}
-
 
 # CODE OF CONDUCT --------------------------------------------------------
 
@@ -107,17 +96,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 }
 
 
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs shows message when CoC doesn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    expect_message(render_docs(path = getwd()),
-      regexp = "No.*CODE_OF_CONDUCT.*to import."
-    )
-  })
-}
-
 
 # LICENSE --------------------------------------------------------
 
@@ -153,17 +131,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
   })
 }
 
-
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs shows message when License doesn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    expect_message(render_docs(path = getwd()),
-      regexp = "No.*LICENSE.*to import."
-    )
-  })
-}
 
 
 
