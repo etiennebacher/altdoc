@@ -29,7 +29,6 @@ New:
 * Changelog and News sections can be present simultaneously.
 * Support for `NEWS.Rd`, either in the root folder or in `inst/`
 
-
 ## altdoc 0.2.2
 
 * If necessary, two spaces are automatically added in nested lists in the `NEWS` 
