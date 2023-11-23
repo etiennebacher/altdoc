@@ -57,6 +57,8 @@ jobs:
           apt-get update && apt-get install -y rsync git
           git --version
           ls
+          git init
+          git remote add origin ${action.repositoryPath}
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
