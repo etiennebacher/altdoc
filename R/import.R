@@ -107,7 +107,8 @@
   }
 
   tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
-  if (!fs::file_exists(tar)) {
+  first <- !fs::file_exists(tar)
+  if (first) {
     cli::cli_alert_success("{.file {name}} imported for the first time.")
   }
 
@@ -129,7 +130,9 @@
   # insert links, etc.
   .parse_news(path = src_dir, news_path = tar)
 
-  cli::cli_alert_success("{.file {name}} imported.")
+  if (!first) {
+    cli::cli_alert_success("{.file {name}} imported.")
+  }
 }
 
 
