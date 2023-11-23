@@ -18,7 +18,9 @@
   # they are removed in the package documentation
   if (!isTRUE(freeze)) {
     tmp <- fs::path_join(c(tar_dir, "man"))
-    fs::dir_delete(tmp)
+    if (fs::dir_exists(tmp)) {
+      fs::dir_delete(tmp)
+    }
     fs::dir_create(tmp)
   }
 
@@ -42,6 +44,7 @@
         freeze = freeze
       )
       if (isTRUE(flag)) {
+        browser()
         cli::cli_alert_info("Skipping {basename(fn)} because it already exists.")
         return(TRUE)
       }

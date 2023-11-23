@@ -51,13 +51,18 @@
         fn <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
         fn <- sapply(fn, function(x) fs::path_join(c("man", basename(x))))
         fn <- sapply(fn, fs::path_ext_remove)
-        titles <- fs::path_ext_remove(basename(fn))
-        idx <- grep("\\$ALTDOC_MAN_BLOCK", sidebar)
-        if (length(idx) == 1) {
-            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
-            indent <- gsub("^(\\w*).*", "\\1", sidebar[idx])
-            tmp <- sprintf("%s  - [%s](%s)", indent, titles, fn)
-            sidebar <- c(sidebar[1:idx], tmp, sidebar[(idx + 1):length(sidebar)])
+
+        if (length(fn) > 0) {
+            titles <- fs::path_ext_remove(basename(fn))
+            idx <- grep("\\$ALTDOC_MAN_BLOCK", sidebar)
+            if (length(idx) == 1) {
+                sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "", sidebar)
+                indent <- gsub("^(\\w*).*", "\\1", sidebar[idx])
+                tmp <- sprintf("%s  - [%s](%s)", indent, titles, fn)
+                sidebar <- c(sidebar[1:idx], tmp, sidebar[(idx + 1):length(sidebar)])
+            } else {
+                sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
+            }
         } else {
             sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
         }
