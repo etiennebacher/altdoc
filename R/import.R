@@ -125,12 +125,16 @@
   }
 
   orig_news <- .readlines(news_path)
-  orig_news <- paste(orig_news, collapse = "\n")
-  new_news <- orig_news
 
   ### Issues
 
-  issues_pr <- regmatches(orig_news, gregexpr("#\\d+", orig_news))[[1]]
+  issues_pr <- unlist(
+    regmatches(
+      orig_news,
+      gregexpr("\\[[^\\[]*#\\d+(*SKIP)(*FAIL)|#\\d+", orig_news, perl = TRUE)
+    )
+  )
+  new_news <- paste(orig_news, collapse = "\n")
   if (length(issues_pr) > 0) {
     issues_pr_link <- paste0(.gh_url(path), "/issues/", gsub("#", "", issues_pr))
 
@@ -158,7 +162,9 @@
 
   ### People
 
-  people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))[[1]]
+  people <- unlist(
+    regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))
+  )
   people <- gsub("^ ", "", people)
   people <- gsub("^\\(", "", people)
 
