@@ -21,10 +21,11 @@ env:
   R_GH: true
   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
+permissions:
+  contents: write
+
 jobs:
   altdoc:
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
     container:
       image: rocker/r2u:latest
@@ -53,9 +54,7 @@ jobs:
       # install required dependency for github-pages-deploy action
       - name: Install rsync 📚
         run: |
-          apt update && apt install -y rsync git
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git init
+          apt-get update && apt-get install -y rsync
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
