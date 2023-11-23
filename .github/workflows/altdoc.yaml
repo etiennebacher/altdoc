@@ -31,7 +31,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # use a fixed version so that we don't have to install "gh" to download
+      # the latest version
       - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.3.450
 
       - name: Package Dependencies
         run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
