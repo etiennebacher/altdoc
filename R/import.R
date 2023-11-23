@@ -1,6 +1,16 @@
 # Import files: README, license, news, CoC ------------------
 
 .import_readme <- function(src_dir, tar_dir, tool) {
+
+  # render .Rmd or .qmd file if available
+  fn_qmd <- fs::path_join(c(src_dir, "README.qmd"))
+  fn_rmd <- fs::path_join(c(src_dir, "README.Rmd"))
+  if (fs::file_exists(fn_qmd)) {
+    .qmd2md(fn_qmd, src_dir)
+  } else if (fs::file_exists(fn_rmd)) {
+    .qmd2md(fn_rmd, src_dir)
+  }
+
   src_file <- fs::path_join(c(src_dir, "README.md"))
   if (tool == "quarto_website") {
     tar_file <- fs::path_join(c(tar_dir, "index.md"))
@@ -14,7 +24,7 @@
   }
 
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
-  .reformat_md(tar_file, first = FALSE)
+  .check_md_structure(tar_file)
 
   # TODO: fix this for Quarto
   if (tool != "quarto_website") {
@@ -23,6 +33,32 @@
   }
 
   cli::cli_alert_success("{.file README} imported.")
+}
+
+
+.import_citation <- function(src_dir, tar_dir) {
+  src_file <- fs::path_join(c(src_dir, "CITATION.md"))
+  tar_file <- fs::path_join(c(tar_dir, "CITATION.md"))
+
+  # user-supplied
+  if (fs::file_exists(src_file)) {
+    fs::file_copy(src_file, tar_file, overwrite = TRUE)
+
+    # auto-generated
+  } else {
+    cite <- suppressWarnings(
+      tryCatch(
+        {
+          name <- desc::desc_get_field("Package")
+          cite <- utils::capture.output(print(citation(name)))
+          c("# Citation", "", "```verbatim", cite, "```")
+        },
+        error = function(e) NULL)
+    )
+    if (!is.null(cite)) {
+      writeLines(cite, tar_file)
+    }
+  }
 }
 
 

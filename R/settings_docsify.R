@@ -1,4 +1,7 @@
 .finalize_docsify <- function(settings, path, ...) {
+
+    tool <- .doc_type(path)
+
     # drop missing links
     settings <- settings[!grepl("\\]\\(\\)", settings)]
     settings <- stats::na.omit(settings)
@@ -13,7 +16,7 @@
     # body also includes altdoc variables
     fn <- fs::path_join(c(path, "altdoc", "docsify.html"))
     body <- .readlines(fn)
-    body <- .substitute_altdoc_variables(body, path = path)
+    body <- .substitute_altdoc_variables(body, path = path, tool = tool)
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(body, fn)
 }

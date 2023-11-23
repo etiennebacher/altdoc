@@ -5,15 +5,16 @@
   if (is.null(img_paths)) {
     return(invisible())
   }
-
   good_path <- .doc_path(path)
-  fs::dir_create(paste0(good_path, "/README_assets"))
-  for (i in seq_along(img_paths)) {
-    fs::file_copy(
-      img_paths[i],
-      paste0(good_path, "/README_assets/", trimws(basename(img_paths[i]))),
-      overwrite = TRUE
-    )
+  for (assets in c("/README_assets", "/README.markdown_strict_files")) {
+    fs::dir_create(paste0(good_path, assets))
+    for (i in seq_along(img_paths)) {
+      fs::file_copy(
+        img_paths[i],
+        fs::path_join(c(good_path, assets, trimws(basename(img_paths[i])))),
+        overwrite = TRUE
+      )
+    }
   }
 }
 
