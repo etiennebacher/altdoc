@@ -24,7 +24,7 @@
   }
 
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
-  .reformat_md(tar_file, first = FALSE)
+  .check_md_structure(tar_file)
 
   # TODO: fix this for Quarto
   if (tool != "quarto_website") {
@@ -50,7 +50,7 @@
       tryCatch(
         {
           name <- desc::desc_get_field("Package")
-          cite <- capture.output(print(citation(name)))
+          cite <- utils::capture.output(print(citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
         error = function(e) NULL)
