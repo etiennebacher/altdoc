@@ -11,7 +11,8 @@ To cite package ‘altdoc’ in publications use:
 A BibTeX entry for LaTeX users is
 
   @Manual{,
-    title = {altdoc: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'},
+    title = {altdoc: Package Documentation Websites with 'Quarto', 'Docsify',
+'Docute', or 'MkDocs'},
     author = {Etienne Bacher},
     note = {https://altdoc.etiennebacher.com, https://github.com/etiennebacher/altdoc},
   }
