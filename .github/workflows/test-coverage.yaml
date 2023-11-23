@@ -17,6 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          architecture: x64
+
+      - name: Install Mkdocs
+        run: |
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install mkdocs            # install mkdocs
+
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
