@@ -3,8 +3,8 @@ create_workflow <- function(path = ".") {
   if (!fs::dir_exists(".github/workflows")) {
     fs::dir_create(".github/workflows")
   }
-  src <- system.file("misc/altdoc.yml", package = "altdoc")
-  tar <- ".github/workflows/altdoc.yml"
+  src <- system.file("misc/altdoc.yaml", package = "altdoc")
+  tar <- ".github/workflows/altdoc.yaml"
   fs::file_copy(src, tar)
 
   # Deal with mkdocs installation in workflow
@@ -19,5 +19,5 @@ create_workflow <- function(path = ".") {
   }
   writeLines(workflow, tar)
 
-  cli::cli_alert_success("{.file .github/workflows/altdoc.yml} created.")
+  cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
 }
