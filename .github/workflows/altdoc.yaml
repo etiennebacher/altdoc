@@ -55,6 +55,8 @@ jobs:
       - name: Install rsync 📚
         run: |
           apt-get update && apt-get install -y rsync git
+          git --version
+          ls
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
