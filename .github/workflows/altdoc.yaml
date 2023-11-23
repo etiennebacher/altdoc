@@ -53,7 +53,7 @@ jobs:
       # install required dependency for github-pages-deploy action
       - name: Install rsync 📚
         run: |
-          apt-get update && apt-get install -y rsync
+          apt update && apt install -y rsync git
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
