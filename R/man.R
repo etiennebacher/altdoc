@@ -1,5 +1,11 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
-.import_man <- function(src_dir, tar_dir, doctype = "docsify", verbose = FALSE, parallel = FALSE) {
+.import_man <- function(
+  src_dir,
+  tar_dir,
+  tool = "docsify",
+  verbose = FALSE,
+  parallel = FALSE,
+  freeze = FALSE) {
 
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
@@ -10,20 +16,33 @@
 
   n <- length(man_source)
 
-
   cli::cli_alert_info("Found {n} man page{?s} to convert.")
 
-  # process man pages one by one
   render_one_man <- function(fn) {
     # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
     origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
     destination_dir <- fs::path_join(c(tar_dir, "man"))
     destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
+
+    # Skip file when frozen
+    if (isTRUE(freeze)) {
+      flag <- .read_freeze(
+        input = origin_Rd,
+        output = destination_md,
+        path = src_dir,
+        freeze = freeze
+      )
+      if (isTRUE(flag)) {
+        cli::cli_alert_info("Skipping {basename(fn)} because it already exists.")
+        return(TRUE)
+      }
+    }
+
     fs::dir_create(destination_dir)
     .rd2qmd(origin_Rd, destination_dir)
 
-    if (doctype != "quarto_website") {
+    if (tool != "quarto_website") {
       worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
       fs::file_delete(destination_qmd)
     } else {
@@ -40,16 +59,24 @@
       writeLines(tmp, destination_md)
     }
 
+    if (isTRUE(worked)) {
+      .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze) 
+    }
+
     return(worked)
   }
 
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
-    conversion_worked <- future.apply::future_sapply(man_source, render_one_man, future.seed = NULL)
+    conversion_worked <- future.apply::future_sapply(
+      man_source,
+      render_one_man,
+      freeze = freeze,
+      future.seed = NULL)
   } else {
     # can't use message_info with {}
     i <- 0
-    cli::cli_progress_step("Converting {cli::qty(n)}man page{?s}: {i}/{n}", spinner = TRUE)
+    cli::cli_progress_step("Converting function reference {i}/{n}: {basename(man_source[i])}", spinner = TRUE)
     conversion_worked <- vector(length = n)
     for (i in seq_along(man_source)) {
       conversion_worked[i] <- render_one_man(man_source[i])
@@ -75,91 +102,4 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
-}
-
-
-.rd2qmd <- function(source_file, target_dir) {
-  if (missing(source_file) || !file.exists(source_file)) {
-    stop("source_file must be a valid file path.", call. = FALSE)
-  }
-  if (missing(source_file) || !dir.exists(target_dir)) {
-    stop("target_dir must be a valid directory.", call. = FALSE)
-  }
-
-  # Rd -> html
-  rd <- tools::parse_Rd(source_file)
-  tmp_html <- paste0(tempfile(), ".html")
-  tools::Rd2HTML(rd, out = tmp_html)
-
-  # superfluous header and footer
-  tmp <- .readlines(tmp_html)
-  tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
-  tmp <- tmp[seq_len(which("</div>" == tmp) - 3)]
-
-  # first column (odd entries) of table in Arguments should not be wrapped
-  idx <- grep("<td>", tmp)
-  idx <- idx[seq_along(idx) %% 2 == 1]
-  tmp[idx] <- sub("<td>", '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">', tmp[idx])
-
-  # math in Equivalence section
-  idx <- grepl("<.code", tmp)
-
-  # examples: evaluate code blocks (assume examples are always last)
-  pkg <- basename(getwd())
-  pkg_load <- paste0("library(", pkg, ")")
-  idx <- which(tmp == "<h3>Examples</h3>")
-  if (length(idx) == 1) {
-    ex <- tmp[(idx + 1):length(tmp)]
-    ex <- gsub("<.*>", "", ex)
-    ex <- gsub("&lt;", "<", ex)
-    ex <- gsub("&gt;", ">", ex)
-    ex <- gsub("&gt;", ">", ex)
-    ex <- ex[!grepl("## Not run:", ex)]
-    ex <- ex[!grepl("## End", ex)]
-
-    # respect \dontrun{} and \donttest{}. This is too aggressive because it
-    # ignores all tests whenever one of the two tags appear anywhere, but it
-    # would be very hard to parse different examples wrapped or not wrapped in a
-    # \donttest{}.
-    block <- !any(grepl("dontrun|donttest|## Not run:", tmp))
-    block <- sprintf("```{r, warning=FALSE, message=FALSE, eval=%s}", block)
-    tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
-  }
-
-  # cleanup equations
-  tmp <- gsub(
-    '<code class="reqn">(.*?)&gt;(.*?)</code>',
-    '<code class="reqn">\\1>\\2</code>',
-    tmp
-  )
-  tmp <- gsub(
-    '<code class="reqn">(.*?)&lt;(.*?)</code>',
-    '<code class="reqn">\\1<\\2</code>',
-    tmp
-  )
-  tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
-
-  # title
-  # warning: Undefined global functions or variables: title
-  title <- "not NULL"
-  funname <- tools::file_path_sans_ext(basename(source_file))
-  if (!is.null(title)) {
-    tmp <- tmp[!grepl("h1", tmp)]
-    tmp <- c(paste("##", funname, "{.unnumbered}\n"), tmp)
-  }
-
-  # Fix title level (use ## and not <h2> so that the TOC can be generated by
-  # mkdocs)
-  tmp <- gsub("<h2[^>]*>", "", tmp, perl = TRUE)
-  tmp <- gsub("<.h2>", "", tmp)
-  tmp <- gsub("<h3>", "### ", tmp)
-  tmp <- gsub("</h3>", "", tmp)
-
-  # paragraph tags are unnecessary in markdown
-  tmp <- gsub("<p>", "", tmp, fixed = TRUE)
-  tmp <- gsub("</p>", "", tmp, fixed = TRUE)
-
-  # write to file
-  fn <- file.path(target_dir, sub("Rd$", "qmd", basename(source_file)))
-  writeLines(tmp, con = fn)
 }
