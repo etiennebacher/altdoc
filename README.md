@@ -19,7 +19,7 @@
 * Render:
   - Quarto and Rmarkdown vignettes.
   - Reference pages for exported functions, along with evaluated examples.
-  - Common sections: `README.md`, `NEWS.md`, `Changelog.md`, `CODE_OF_CONDUCT.md`, etc.
+  - Common sections: `README.md`, `NEWS.md`, `CHANGELOG.md`, `CODE_OF_CONDUCT.md`, `CITATION.md`, etc.
 * Preview the site: 
   - Browser 
   - RStudio Viewer

@@ -36,6 +36,32 @@
 }
 
 
+.import_citation <- function(src_dir, tar_dir) {
+  src_file <- fs::path_join(c(src_dir, "CITATION.md"))
+  tar_file <- fs::path_join(c(tar_dir, "CITATION.md"))
+
+  # user-supplied
+  if (fs::file_exists(src_file)) {
+    fs::file_copy(src_file, tar_file, overwrite = TRUE)
+
+    # auto-generated
+  } else {
+    cite <- suppressWarnings(
+      tryCatch(
+        {
+          name <- desc::desc_get_field("Package")
+          cite <- capture.output(print(citation(name)))
+          c("# Citation", "", "```verbatim", cite, "```")
+        },
+        error = function(e) NULL)
+    )
+    if (!is.null(cite)) {
+      writeLines(cite, tar_file)
+    }
+  }
+}
+
+
 .import_coc <- function(src_dir, tar_dir, tool) {
   src_file <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
   tar_file <- fs::path_join(c(tar_dir, "CODE_OF_CONDUCT.md"))
