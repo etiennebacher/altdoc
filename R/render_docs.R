@@ -14,7 +14,7 @@
 #' 
 #' This function searches the root directory and the `inst/` directory for specific filenames, renders/converts/copies them to the `docs/` directory. The order of priority for each file is established as follows:
 #' 
-#' * `docs/README.md``
+#' * `docs/README.md`
 #'   - README.md, README.qmd, README.Rmd
 #' * `docs/NEWS.md`
 #'   - NEWS.md, NEWS.txt, NEWS, NEWS.Rd

@@ -51,10 +51,6 @@ directory, including any customizations you may have made.
 </tr>
 </table>
 
-## Value
-
-No value returned.
-
 ## Examples
 
 ``` r

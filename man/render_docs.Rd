@@ -23,7 +23,7 @@ content of the 'docs/' folder. See details below.
 \details{
 This function searches the root directory and the \verb{inst/} directory for specific filenames, renders/converts/copies them to the \verb{docs/} directory. The order of priority for each file is established as follows:
 \itemize{
-\item `docs/README.md``
+\item \code{docs/README.md}
 \itemize{
 \item README.md, README.qmd, README.Rmd
 }
