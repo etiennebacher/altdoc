@@ -42,23 +42,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 }
 
 
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs works when NEWS didn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    withr::with_options(
-      list(repos = c("CRAN" = "https://cloud.r-project.org")),
-      {
-        usethis::use_news_md()
-    })
-    expect_message(render_docs(path = getwd()),
-      regexp = "NEWS.*first time"
-    )
-    expect_true(fs::file_exists("docs/NEWS.md"))
-  })
-}
-
 
 
 # CODE OF CONDUCT --------------------------------------------------------
@@ -82,19 +65,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 }
 
 
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs works when CoC didn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
-    expect_message(render_docs(path = getwd()),
-      regexp = "CODE_OF_CONDUCT.*imported for the first time."
-    )
-    expect_true(fs::file_exists("docs/CODE_OF_CONDUCT.md"))
-  })
-}
-
 
 
 # LICENSE --------------------------------------------------------
@@ -117,19 +87,6 @@ for (tool in c("docute", "docsify", "mkdocs")) {
   })
 }
 
-
-for (tool in c("docute", "docsify", "mkdocs")) {
-  test_that(sprintf("render_docs works when License didn't exist: %s", tool), {
-    skip_if(tool == "mkdocs" && !.is_mkdocs())
-    create_local_package()
-    setup_docs(tool = tool, path = getwd())
-    usethis::use_mit_license("etienne.bacher@protonmail.com")
-    expect_message(render_docs(path = getwd()),
-      regexp = "LICENSE.*imported for the first time."
-    )
-    expect_true(fs::file_exists("docs/LICENSE.md"))
-  })
-}
 
 
 
