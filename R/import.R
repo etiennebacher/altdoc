@@ -66,9 +66,6 @@
   src_file <- fs::path_join(c(src_dir, "CODE_OF_CONDUCT.md"))
   tar_file <- fs::path_join(c(tar_dir, "CODE_OF_CONDUCT.md"))
   if (fs::file_exists(src_file)) {
-    if (!fs::file_exists(tar_file)) {
-      cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported for the first time.")
-    }
     fs::file_copy(src_file, tar_file, overwrite = TRUE)
     cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
   }
@@ -80,9 +77,6 @@
   tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
   tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
   if (!is.null(src_file) && fs::file_exists(src_file)) {
-    if (!fs::file_exists(tar1) && !fs::file_exists(tar2)) {
-      cli::cli_alert_success("{.file LICENSE} imported for the first time.")
-    }
     fs::file_copy(src_file, tar_dir, overwrite = TRUE)
     cli::cli_alert_success("{.file LICENSE} imported.")
   }
@@ -107,10 +101,6 @@
   }
 
   tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
-  first <- !fs::file_exists(tar)
-  if (first) {
-    cli::cli_alert_success("{.file {name}} imported for the first time.")
-  }
 
   # .Rd -> .md
   if (fs::path_ext(src) == "Rd") {
@@ -130,9 +120,7 @@
   # insert links, etc.
   .parse_news(path = src_dir, news_path = tar)
 
-  if (!first) {
-    cli::cli_alert_success("{.file {name}} imported.")
-  }
+  cli::cli_alert_success("{.file {name}} imported.")
 }
 
 
