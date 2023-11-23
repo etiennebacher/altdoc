@@ -13,9 +13,6 @@ setup_docs(tool, path = ".", overwrite = FALSE)
 
 \item{overwrite}{Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the \code{altdoc} directory, including any customizations you may have made.}
 }
-\value{
-No value returned.
-}
 \description{
 Creates a subdirectory called \verb{altdoc/} in the package root directory to
 store the settings files used to by one of the documentation generator
