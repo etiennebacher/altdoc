@@ -57,6 +57,7 @@ jobs:
           apt-get update && apt-get install -y rsync git
           git --version
           ls
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git init
           git remote add origin ${action.repositoryPath}
 
