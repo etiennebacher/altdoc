@@ -55,6 +55,7 @@ jobs:
         run: |
           apt update && apt install -y rsync git
           git config --global --add safe.directory $(realpath .)
+          git init
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
