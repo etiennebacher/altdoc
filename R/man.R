@@ -44,7 +44,6 @@
         freeze = freeze
       )
       if (isTRUE(flag)) {
-        browser()
         cli::cli_alert_info("Skipping {basename(fn)} because it already exists.")
         return(TRUE)
       }
