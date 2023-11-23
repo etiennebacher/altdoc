@@ -15,9 +15,9 @@ Preview the documentation in a webpage or in viewer
 ## Arguments
 
 <table>
-<tr>
+<tr style="vertical-align: top;">
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="preview_docs_:_path">path</code>
+<code>path</code>
 </td>
 <td>
 Path to the package root directory.

@@ -60,7 +60,7 @@
     }
 
     if (isTRUE(worked)) {
-      .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze) 
+      .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze)
     }
 
     return(worked)
@@ -71,7 +71,6 @@
     conversion_worked <- future.apply::future_sapply(
       man_source,
       render_one_man,
-      freeze = freeze,
       future.seed = NULL)
   } else {
     # can't use message_info with {}

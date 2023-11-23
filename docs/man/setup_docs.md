@@ -23,25 +23,25 @@ customize the sidebar and website.
 ## Arguments
 
 <table>
-<tr>
+<tr style="vertical-align: top;">
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_tool">tool</code>
+<code>tool</code>
 </td>
 <td>
 String. "docsify", "docute", "mkdocs", or "quarto_website".
 </td>
 </tr>
-<tr>
+<tr style="vertical-align: top;">
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_path">path</code>
+<code>path</code>
 </td>
 <td>
 Path to the package root directory.
 </td>
 </tr>
-<tr>
+<tr style="vertical-align: top;">
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_overwrite">overwrite</code>
+<code>overwrite</code>
 </td>
 <td>
 Logical. If TRUE, overwrite existing files. Warning: This will

@@ -1,0 +1,77 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+name: altdoc
+
+concurrency:
+  group: altdoc-${{ github.event_name != 'pull_request' || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  USE_BSPM: "true"
+  _R_CHECK_FORCE_SUGGESTS_: "false"
+  R_GH: true
+  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  altdoc:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/r2u:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The quarto-actions/setup doesn't work in containers so need to install manually
+      # https://github.com/quarto-dev/quarto-actions/issues/12
+      - name: Manually install Quarto
+        run: |
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb
+          apt install ./quarto-1.3.450-linux-amd64.deb
+
+      $ALTDOC_MKDOCS_START
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          architecture: x64
+
+      - name: Install Mkdocs and its dependencies
+        run: |
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install mkdocs            # install mkdocs
+
+      # Uncomment this if you use "theme: material" in `altdoc/mkdocs.yml`
+      # - name: Install Material for Mkdocs
+      #   run: |
+      #     python3 -m pip install mkdocs-material   # install material theme
+      $ALTDOC_MKDOCS_END
+
+      - name: Package Dependencies
+        run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
+
+      - name: Build Package
+        run: R CMD build --no-build-vignettes --no-manual .
+
+      - name: Build site
+        run: |
+          utils::install.packages(".", repos = NULL, type = "source")
+          altdoc::render_docs(parallel = TRUE, freeze = FALSE)
+        shell: Rscript {0}
+
+      - name: Deploy to GitHub pages 🚀
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
