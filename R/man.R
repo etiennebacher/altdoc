@@ -14,6 +14,14 @@
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
+  # if not freeze, then start from zero so that old files do not stay there if
+  # they are removed in the package documentation
+  if (!isTRUE(freeze)) {
+    tmp <- fs::path_join(c(tar_dir, "man"))
+    fs::dir_delete(tmp)
+    fs::dir_create(tmp)
+  }
+
   n <- length(man_source)
 
   cli::cli_alert_info("Found {n} man page{?s} to convert.")

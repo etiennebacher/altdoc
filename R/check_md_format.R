@@ -21,6 +21,7 @@
 
   # too many level 1 header
   if (isTRUE(sum(grepl("^# ", content)) > 1)) {
-    cli::cli_alert_danger("Too many level 1 headings in {.file basename(file_path)}. {.code altdoc} assumes that the only level 1 heading is the title of the document. All other subheadings should be at least level 2, starting with: {.code ##}")
+    bn <- basename(file_path)
+    cli::cli_alert_danger("Too many level 1 headings in `{bn}`. {.code altdoc} assumes that the only level 1 heading is the title of the document. All other subheadings should be at least level 2, starting with: {.code ##}")
   }
 }
