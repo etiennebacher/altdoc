@@ -59,7 +59,8 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   # basic files
   .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
-  .import_news(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_news_changelog(src_dir = path, tar_dir = docs_dir, name = "NEWS")
+  .import_news_changelog(src_dir = path, tar_dir = docs_dir, name = "CHANGELOG")
   .import_license(src_dir = path, tar_dir = docs_dir, tool = tool)
   .import_coc(src_dir = path, tar_dir = docs_dir, tool = tool)
   .import_citation(src_dir = path, tar_dir = docs_dir)

@@ -23,6 +23,10 @@ New:
 * Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
 * Improved vignettes
+* Do not reformat markdown header levels automatically, but raise a warning when there is more than one level 1 header.
+* Fewer dependencies.
+* Changelog and News sections can be present simultaneously.
+* Support for `NEWS.Rd`, either in the root folder or in `inst/`
 
 ## altdoc 0.2.2
 

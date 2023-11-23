@@ -89,32 +89,47 @@
 }
 
 
-.import_news <- function(src_dir, tar_dir, tool) {
-  src <- .which_news(src_dir)
-  if (!is.null(src) && fs::file_exists(src)) {
-    tar <- fs::path_join(c(tar_dir, "NEWS.md"))
-    if (!fs::file_exists(tar)) {
-      cli::cli_alert_success("{.file NEWS} imported for the first time.")
-    }
-    fs::file_copy(src, tar_dir, overwrite = TRUE)
-    .parse_news(path = src_dir, news_path = tar)
-  }
-  cli::cli_alert_success("{.file NEWS} imported.")
-}
+.import_news_changelog <- function(src_dir, tar_dir, name = "NEWS") {
+  src <- c(
+    "NEWS.md", "NEWS.txt", "NEWS", "NEWS.Rd",
+    "inst/NEWS.md", "inst/NEWS.txt", "inst/NEWS", "inst/NEWS.Rd"
+  )
+  src <- gsub("NEWS", name, src, fixed = TRUE)
+  src <- sapply(src, function(x) fs::path_join(c(src_dir, x)))
+  src <- Filter(fs::file_exists, src)
 
-
-# Detect how news files is called: "NEWS" or "CHANGELOG"
-.which_news <- function(path = ".") {
-  x <- list.files(path = path, pattern = "\\.md$")
-  news <- grep("news.md", x, ignore.case = TRUE, value = TRUE)
-  changelog <- grep("changelog", x, ignore.case = TRUE, value = TRUE)
-  if (length(news) == 1) {
-    return(news)
-  } else if (length(changelog) == 1) {
-    return(changelog)
+  # no news to import
+  if (length(src) == 0) {
+    return(invisible())
+  # priority hard-coded by the order of the vector above
   } else {
-    return(NULL)
+    src <- src[1]
   }
+
+  tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
+  if (!fs::file_exists(tar)) {
+    cli::cli_alert_success("{.file {name}} imported for the first time.")
+  }
+
+  # .Rd -> .md
+  if (fs::path_ext(src) == "Rd") {
+    .rd2qmd(src, tar_dir)
+    .qmd2md(fs::path_join(c(tar_dir, paste0(name, ".qmd"))), tar_dir)
+    # the files I tried were too deeply nested
+    x <- .readlines(tar)
+    if (!any(grepl("^# ", x))) {
+      writeLines(gsub("^##", "#", x), tar)
+    }
+
+  # all other formats only require a copy
+  } else {
+    fs::file_copy(src, tar, overwrite = TRUE)
+  }
+
+  # insert links, etc.
+  .parse_news(path = src_dir, news_path = tar)
+
+  cli::cli_alert_success("{.file {name}} imported.")
 }
 
 

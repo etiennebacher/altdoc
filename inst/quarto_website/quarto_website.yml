@@ -18,6 +18,7 @@ website:
       - section: Other
         contents:
           - $ALTDOC_NEWS
+          - $ALTDOC_CHANGELOG
           - $ALTDOC_LICENSE
           - $ALTDOC_CODE_OF_CONDUCT
           - $ALTDOC_CITATION
