@@ -3,16 +3,15 @@
 ```verbatim
 To cite package ‘altdoc’ in publications use:
 
-  Bacher E (????). _altdoc: Package Documentation Websites with
-  'Docsify.js', 'Docute', or 'Mkdocs_.
-  https://altdoc.etiennebacher.com,
-  https://github.com/etiennebacher/altdoc.
+  Bacher E (????). _altdoc: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'_.
+  R package version 0.2.2.9010, https://github.com/etiennebacher/altdoc, <https://altdoc.etiennebacher.com>.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
-    title = {altdoc: Package Documentation Websites with 'Docsify.js', 'Docute', or 'Mkdocs},
+    title = {altdoc: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'},
     author = {Etienne Bacher},
-    note = {https://altdoc.etiennebacher.com, https://github.com/etiennebacher/altdoc},
+    note = {R package version 0.2.2.9010, https://github.com/etiennebacher/altdoc},
+    url = {https://altdoc.etiennebacher.com},
   }
 ```

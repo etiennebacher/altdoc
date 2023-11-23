@@ -50,7 +50,7 @@
       tryCatch(
         {
           name <- desc::desc_get_field("Package")
-          cite <- utils::capture.output(print(citation(name)))
+          cite <- utils::capture.output(print(utils::citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
         error = function(e) NULL)
@@ -71,20 +71,15 @@
     }
     fs::file_copy(src_file, tar_file, overwrite = TRUE)
     cli::cli_alert_success("{.file CODE_OF_CONDUCT} imported.")
-  } else {
-    cli::cli_alert_info("No {.file CODE_OF_CONDUCT} to import.")
   }
 }
 
 
 .import_license <- function(src_dir, tar_dir, tool) {
   src_file <- .which_license(src_dir)
-  if (is.null(src_file) || !fs::file_exists(src_file)) {
-    cli::cli_alert_info("No {.file LICENSE} to import.")
-    return(invisible())
-  } else {
-    tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
-    tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
+  tar1 <- fs::path_join(c(tar_dir, "LICENSE.md"))
+  tar2 <- fs::path_join(c(tar_dir, "LICENCE.md"))
+  if (!is.null(src_file) && fs::file_exists(src_file)) {
     if (!fs::file_exists(tar1) && !fs::file_exists(tar2)) {
       cli::cli_alert_success("{.file LICENSE} imported for the first time.")
     }
@@ -96,17 +91,14 @@
 
 .import_news <- function(src_dir, tar_dir, tool) {
   src <- .which_news(src_dir)
-  if (is.null(src) || !fs::file_exists(src)) {
-    cli::cli_alert_info("No {.file NEWS} to import.")
-    return(invisible())
-  } else {
+  if (!is.null(src) && fs::file_exists(src)) {
     tar <- fs::path_join(c(tar_dir, "NEWS.md"))
     if (!fs::file_exists(tar)) {
       cli::cli_alert_success("{.file NEWS} imported for the first time.")
     }
     fs::file_copy(src, tar_dir, overwrite = TRUE)
+    .parse_news(path = src_dir, news_path = tar)
   }
-  .parse_news(path = src_dir, news_path = tar)
   cli::cli_alert_success("{.file NEWS} imported.")
 }
 
@@ -133,12 +125,16 @@
   }
 
   orig_news <- .readlines(news_path)
-  orig_news <- paste(orig_news, collapse = "\n")
-  new_news <- orig_news
 
   ### Issues
 
-  issues_pr <- regmatches(orig_news, gregexpr("#\\d+", orig_news))[[1]]
+  issues_pr <- unlist(
+    regmatches(
+      orig_news,
+      gregexpr("\\[[^\\[]*#\\d+(*SKIP)(*FAIL)|#\\d+", orig_news, perl = TRUE)
+    )
+  )
+  new_news <- paste(orig_news, collapse = "\n")
   if (length(issues_pr) > 0) {
     issues_pr_link <- paste0(.gh_url(path), "/issues/", gsub("#", "", issues_pr))
 
@@ -166,7 +162,9 @@
 
   ### People
 
-  people <- regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))[[1]]
+  people <- unlist(
+    regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))
+  )
   people <- gsub("^ ", "", people)
   people <- gsub("^\\(", "", people)
 
