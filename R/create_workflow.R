@@ -1,3 +1,19 @@
+#' Create a Github Actions workflow
+#'
+#' This function creates a Github Actions workflow in
+#' ".github/workflows/altdoc.yaml". This workflow will automatically render the
+#' website using the setup specified in the folder "altdoc" and will push the
+#' output to the branch "gh-pages".
+#'
+#' @inheritParams render_docs
+#'
+#' @return No value returned. Creates the file ".github/workflows/altdoc.yaml"
+#' @export
+#'
+#' @examples
+#' if (interactive()) {
+#'   setup_workflow()
+#' }
 setup_workflow <- function(path = ".") {
 
   if (!fs::dir_exists(".github/workflows")) {

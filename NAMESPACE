@@ -3,3 +3,4 @@
 export(preview_docs)
 export(render_docs)
 export(setup_docs)
+export(setup_workflow)
