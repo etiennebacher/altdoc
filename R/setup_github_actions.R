@@ -12,9 +12,9 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'   setup_workflow()
+#'   setup_github_actions()
 #' }
-setup_workflow <- function(path = ".") {
+setup_github_actions <- function(path = ".") {
 
   if (!fs::dir_exists(".github/workflows")) {
     fs::dir_create(".github/workflows")
@@ -42,3 +42,4 @@ setup_workflow <- function(path = ".") {
   cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
   cli::cli_alert_success("Added {.code altdoc} in Suggests.")
 }
+
