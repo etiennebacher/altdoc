@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-^docs$
+docs
 inst/doc
 altdoc/freeze.rds
 ^altdoc/freeze.rds
