@@ -1,4 +1,6 @@
-# Get Started
+---
+title: Get Started
+---
 
 ## Quick start
 

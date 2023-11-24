@@ -1,4 +1,3 @@
-
 # Get Started
 
 ## Quick start
