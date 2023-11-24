@@ -1,5 +1,5 @@
 
-# setup_workflow
+# setup_github_actions
 
 Create a Github Actions workflow
 
@@ -12,7 +12,7 @@ push the output to the branch "gh-pages".
 
 ## Usage
 
-<pre><code class='language-R'>setup_workflow(path = ".")
+<pre><code class='language-R'>setup_github_actions(path = ".")
 </code></pre>
 
 ## Arguments
@@ -20,7 +20,7 @@ push the output to the branch "gh-pages".
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_workflow_:_path">path</code>
+<code id="setup_github_actions_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.
@@ -38,6 +38,6 @@ No value returned. Creates the file ".github/workflows/altdoc.yaml"
 library(altdoc)
 
 if (interactive()) {
-  setup_workflow()
+  setup_github_actions()
 }
 ```
