@@ -81,7 +81,7 @@
     # raw markdown should just be copied over
     if (fs::path_ext(src_files[i]) == "md") {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
-      worked <- TRUE
+      worked <- "success"
       return(worked)
     }
 
@@ -89,13 +89,12 @@
     if (isTRUE(freeze)) {
       flag <- .read_freeze(
         input = origin,
-        output = destination,
+        output = gsub("\\.Rmd$|\\.qmd$", ".md", destination),
         path = src_dir,
         freeze = freeze
       )
       if (isTRUE(flag)) {
-        cli::cli_alert_info("Skipping {basename(origin)} because it already exists.")
-        return(TRUE)
+        return("skip")
       }
     }
 
@@ -114,7 +113,7 @@
       .write_freeze(input = origin, path = src_dir, freeze = freeze)
     }
 
-    return(worked)
+    return(ifelse(worked, "success", "failure"))
   }
 
   if (isTRUE(parallel)) {
@@ -130,8 +129,9 @@
     }
   }
 
-  successes <- which(conversion_worked == TRUE)
-  fails <- which(conversion_worked == FALSE)
+  successes <- which(conversion_worked == "success")
+  fails <- which(conversion_worked == "failure")
+  skips <- which(conversion_worked == "skip")
 
   cli::cli_progress_done()
   # indent bullet points
@@ -159,6 +159,10 @@
     }
     cli::cli_par()
     cli::cli_end(id = "list-fail")
+  }
+
+  if (length(skips) > 0) {
+    cli::cli_alert("{length(skips)} vignette{?s} skipped because they were already rendered.")
   }
 }
 
