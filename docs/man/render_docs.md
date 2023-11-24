@@ -18,25 +18,25 @@ below.
 ## Arguments
 
 <table>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>path</code>
+<code id="render_docs_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.
 </td>
 </tr>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>verbose</code>
+<code id="render_docs_:_verbose">verbose</code>
 </td>
 <td>
 Logical. Print Rmarkdown or Quarto rendering output.
 </td>
 </tr>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>parallel</code>
+<code id="render_docs_:_parallel">parallel</code>
 </td>
 <td>
 Logical. Render man pages and vignettes in parallel using the
@@ -45,9 +45,9 @@ TRUE, users must define the parallelism plan in <code>future</code>. See
 the examples section below.
 </td>
 </tr>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>freeze</code>
+<code id="render_docs_:_freeze">freeze</code>
 </td>
 <td>
 Logical. If TRUE and a man page or vignette has not changed since the
