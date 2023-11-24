@@ -29,6 +29,7 @@ New:
 * Changelog and News sections can be present simultaneously.
 * Support for `NEWS.Rd`, either in the root folder or in `inst/`
 * Automatically create a Github Actions workflow with `setup_github_actions()`.
+* Skip .Rd files when they document internal functions.
 
 ## altdoc 0.2.2
 
