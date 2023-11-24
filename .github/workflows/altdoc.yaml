@@ -30,7 +30,7 @@ jobs:
     container:
       image: rocker/r2u:latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       # The quarto-actions/setup doesn't work in containers so need to install manually
       # https://github.com/quarto-dev/quarto-actions/issues/12
@@ -57,9 +57,6 @@ jobs:
           apt-get update && apt-get install -y rsync git
           git --version
           ls
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git init
-          git remote add origin ${action.repositoryPath}
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
