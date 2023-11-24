@@ -44,10 +44,11 @@ The process is usually very simple:
     files in `docs/` are committed to the repository, including hidden
     files like `.nojekyll`.
 
-Detailed instructions are available on Github’s website: \*
-https://docs.github.com/en/pages \*
-https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-\[Github offers\]
+Detailed instructions are available on Github’s website:
+
+-   https://docs.github.com/en/pages
+-   https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+    \[Github offers\]
 
 ### Netlify
 

@@ -43,6 +43,7 @@ sidebar. 3. Under "Build and deployment", select:
 `.nojekyll`.
 
 Detailed instructions are available on Github's website:
+
 * https://docs.github.com/en/pages
 * https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 [Github offers]
