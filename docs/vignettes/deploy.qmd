@@ -5,7 +5,7 @@ Once you're happy with your `altdoc` setup, you can use `setup_github_actions()`
 to create the file `.github/workflows/altdoc.yaml`. This workflow will
 automatically run `render_docs()` on Github when you push to the `main` or
 `master` branch. The rendered documentation is then stored in the `gh-pages`
-branch, that you can then use with the service of your choice to deploy your
+branch, that you can use with the service of your choice to deploy your
 website, as explained below.
 
 Note that you don't have to use this Github action workflow. If you prefer, you
