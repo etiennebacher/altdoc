@@ -28,7 +28,7 @@ New:
 * Fix parsing for issue/PR references like [org/repo#111].
 * Changelog and News sections can be present simultaneously.
 * Support for `NEWS.Rd`, either in the root folder or in `inst/`
-* Automatically create a Github Actions workflow with `setup_workflow()`.
+* Automatically create a Github Actions workflow with `setup_github_actions()`.
 
 ## altdoc 0.2.2
 
