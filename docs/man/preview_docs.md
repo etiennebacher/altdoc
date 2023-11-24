@@ -15,9 +15,9 @@ Preview the documentation in a webpage or in viewer
 ## Arguments
 
 <table>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>path</code>
+<code id="preview_docs_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.
@@ -47,4 +47,6 @@ if (interactive()) {
 with(mtcars, plot(mpg, wt))
 ```
 
-![](man/preview_docs.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)
+<img
+src="preview_docs.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png"
+id="fig-539a35d47e664c97a50115a146a7f1bd-1" />

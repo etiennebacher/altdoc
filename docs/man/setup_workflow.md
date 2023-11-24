@@ -18,9 +18,9 @@ push the output to the branch "gh-pages".
 ## Arguments
 
 <table>
-<tr style="vertical-align: top;">
+<tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code>path</code>
+<code id="setup_workflow_:_path">path</code>
 </td>
 <td>
 Path to the package root directory.
