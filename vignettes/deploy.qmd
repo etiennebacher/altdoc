@@ -33,8 +33,9 @@ custom domain of your choice.
 
 The process is usually very simple:
 
-1. Go to your Github repository settings. 2. Click on "Pages" in the left
-sidebar. 3. Under "Build and deployment", select:
+1. Go to your Github repository settings. 
+2. Click on "Pages" in the left sidebar. 
+3. Under "Build and deployment", select:
    - Deploy from branch
    - Branch: `main` or `master` (depending on your git repository settings)
    - Select folder: `docs/`

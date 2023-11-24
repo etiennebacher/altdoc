@@ -34,13 +34,14 @@ this strategy you can point readers to an address like
 
 The process is usually very simple:
 
-1.  Go to your Github repository settings. 2. Click on “Pages” in the
-    left sidebar. 3. Under “Build and deployment”, select:
+1.  Go to your Github repository settings.
+2.  Click on “Pages” in the left sidebar.
+3.  Under “Build and deployment”, select:
     -   Deploy from branch
     -   Branch: `main` or `master` (depending on your git repository
         settings)
     -   Select folder: `docs/`
-2.  Update your `altdoc` site, commit, and push to Github. Make sure all
+4.  Update your `altdoc` site, commit, and push to Github. Make sure all
     files in `docs/` are committed to the repository, including hidden
     files like `.nojekyll`.
 
