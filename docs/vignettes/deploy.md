@@ -1,5 +1,20 @@
 # Deploy
 
+Once you’re happy with your `altdoc` setup, you can use
+`setup_github_actions()` to create the file
+`.github/workflows/altdoc.yaml`. This workflow will automatically run
+`render_docs()` on Github when you push to the `main` or `master`
+branch. The rendered documentation is then stored in the `gh-pages`
+branch, that you can use with the service of your choice to deploy your
+website, as explained below.
+
+Note that you don’t have to use this Github action workflow. If you
+prefer, you can simply run `render_docs()` by yourself and push the
+changes to the branch of your choice. The workflow simply is here to
+make that systematically at each push to `main`/`master`.
+
+## Tools to deploy the website
+
 `docsify.js`, `docute` and `mkdocs` documentations can be deployed with
 several tools. The authors of these documentation generators have all
 written detailed guides to deployment, which you can read here:
@@ -9,9 +24,9 @@ written detailed guides to deployment, which you can read here:
 -   [MkDocs
     deployment](https://www.mkdocs.org/user-guide/deploying-your-docs/).
 
-I’ll just focus on GitHub Pages and Netlify here.
+We’ll just focus on GitHub Pages and Netlify here.
 
-## GitHub Pages
+### GitHub Pages
 
 Deploying package documentation to Github Pages is very convenient. With
 this strategy you can point readers to an address like
@@ -36,7 +51,7 @@ Detailed instructions are available on Github’s website:
 -   https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
     \[Github offers\]
 
-## Netlify
+### Netlify
 
 The process is the same as for deploying a blog made with `{blogdown}`,
 so we invite you to follow the steps described in the [`{blogdown}`
@@ -73,5 +88,5 @@ name so we need to change it.
 4.  Force HTTPS (automatically proposed by Netlify).
 
 Done! You can now check at `mypackage.mywebsite.com` that the
-documentation is well loaded. This will update every time you push
-changes in `/docs` on GitHub.
+documentation is well loaded. This will update every time you modify the
+source of the website on GitHub.
