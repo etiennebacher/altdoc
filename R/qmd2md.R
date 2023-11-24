@@ -25,10 +25,24 @@
     )
   }
 
+  .link_functions(tar_file)
 
   out <- !inherits(out, "try-error")
 
   return(out)
 }
 
+# Custom wrapper around `downlit::downlit_md_path()`
+.link_functions <- function(path) {
+  op <- "/man"
+  names(op) <- .pkg_name(".")
+  options(downlit.local_packages = op)
+  downlit:::downlit_md_path(path, path)
+  content <- .readlines(path)
+  # links in code blocks
+  fixed <- gsub("/man/reference/([^.]+)\\.html", "#/man/\\1.md", content)
+  # links in inline code
+  fixed <- gsub("/man/reference/([^.]+)\\.html", "/man/\\1.md", fixed)
 
+  writeLines(fixed, path)
+}
