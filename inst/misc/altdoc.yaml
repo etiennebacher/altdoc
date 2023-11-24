@@ -21,22 +21,28 @@ env:
   R_GH: true
   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
-jobs:
-  altdoc:
+
+altdoc:
+    runs-on: ubuntu-latest
+    # Only restrict concurrency for non-PR jobs
+    concurrency:
+      group: altdoc-${{ github.event_name != 'pull_request' || github.run_id }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
-    runs-on: ubuntu-latest
-    container:
-      image: rocker/r2u:latest
     steps:
       - uses: actions/checkout@v4
 
-      # The quarto-actions/setup doesn't work in containers so need to install manually
-      # https://github.com/quarto-dev/quarto-actions/issues/12
-      - name: Manually install Quarto
-        run: |
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb
-          apt install ./quarto-1.3.450-linux-amd64.deb
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::altdoc, local::.
 
       $ALTDOC_MKDOCS_START
       - name: Set up Python
@@ -56,15 +62,8 @@ jobs:
       #     python3 -m pip install mkdocs-material   # install material theme
       $ALTDOC_MKDOCS_END
 
-      - name: Package Dependencies
-        run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
-
-      - name: Build Package
-        run: R CMD build --no-build-vignettes --no-manual .
-
       - name: Build site
         run: |
-          utils::install.packages(".", repos = NULL, type = "source")
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 
