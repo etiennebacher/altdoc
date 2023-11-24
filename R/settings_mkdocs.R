@@ -3,6 +3,42 @@
     settings <- gsub(": \\/", ": ", settings)
     settings <- gsub("\\.md$", "", settings)
 
+    # Fix vignette relative links before calling `mkdocs`
+    vignettes <- list.files(
+        fs::path_join(c(.doc_path(path), "vignettes")),
+        pattern = "\\.md")
+    vignettes <- gsub("\\.md$", "", vignettes)
+    for (v in vignettes) {
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        txt <- gsub(
+            paste0("![](", .doc_path(path), "/vignettes/"),
+            "![](",
+            txt,
+            fixed = TRUE)
+        txt <- gsub(
+            sprintf('src=\\"%s.markdown_strict_files', v),
+            sprintf('src=\\"\\.\\.\\/%s.markdown_strict_files', v),
+            txt)
+        writeLines(txt, fn)
+    }
+
+    # Fix man page relative links
+    man <- list.files(
+        fs::path_join(c(.doc_path(path), "man")),
+        pattern = "\\.md")
+    man <- gsub("\\.md$", "", man)
+    for (v in man) {
+        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        txt <- .readlines(fn)
+        txt <- gsub(
+            paste0("![](", .doc_path(path), "/man/"),
+            "![](",
+            txt,
+            fixed = TRUE)
+        writeLines(txt, fn)
+    }
+
     # write mutable sidebar
     fn <- fs::path_join(c(path, "mkdocs.yml"))
     writeLines(settings, fn)
@@ -42,37 +78,6 @@
     }
     fs::dir_delete(fs::path_join(c(path, "site")))
 
-    # Fix vignette relative links
-    vignettes <- list.files(
-        fs::path_join(c(.doc_path(path), "vignettes")),
-        pattern = "\\.md")
-    vignettes <- gsub("\\.md$", "", vignettes)
-    for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
-        txt <- .readlines(fn)
-        txt <- gsub(
-            paste0("![](", .doc_path(path), "/vignettes/"),
-            "![](",
-            txt,
-            fixed = TRUE)
-        writeLines(txt, fn)
-    }
-
-    # Fix vignette relative links
-    man <- list.files(
-        fs::path_join(c(.doc_path(path), "man")),
-        pattern = "\\.md")
-    man <- gsub("\\.md$", "", man)
-    for (v in man) {
-        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
-        txt <- .readlines(fn)
-        txt <- gsub(
-            paste0("![](", .doc_path(path), "/man/"),
-            "![](",
-            txt,
-            fixed = TRUE)
-        writeLines(txt, fn)
-    }
 }
 
 

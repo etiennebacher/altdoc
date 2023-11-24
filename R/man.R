@@ -35,6 +35,14 @@
     destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
 
+    # Skip internal functions
+    flag <- tryCatch(
+      any(grepl("\\keyword\\{internal\\}", .readlines(origin_Rd))),
+      error = function(e) FALSE)
+    if (isTRUE(flag)) {
+      return("skipped")
+    }
+
     # Skip file when frozen
     if (isTRUE(freeze)) {
       flag <- .read_freeze(
@@ -45,7 +53,7 @@
       )
       if (isTRUE(flag)) {
         cli::cli_alert_info("Skipping {basename(fn)} because it already exists.")
-        return(TRUE)
+        return("skip")
       }
     }
 
@@ -73,7 +81,7 @@
       .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze)
     }
 
-    return(worked)
+    return(ifelse(worked, "success", "failure"))
   }
 
   if (isTRUE(parallel)) {
@@ -93,12 +101,17 @@
     }
   }
 
-  successes <- which(conversion_worked == TRUE)
-  fails <- which(conversion_worked == FALSE)
+  successes <- which(conversion_worked == "success")
+  fails <- which(conversion_worked == "failure")
+  skips <- which(conversion_worked == "skipped")
   cli::cli_progress_done()
 
   # indent bullet points
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+  if (length(skips) > 0) {
+    cli::cli_alert_danger("{length(skips)} .Rd files were skipped because they document internal functions.")
+  }
 
   if (length(fails) > 0) {
     cli::cli_par()
