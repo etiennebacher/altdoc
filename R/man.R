@@ -52,7 +52,6 @@
         freeze = freeze
       )
       if (isTRUE(flag)) {
-        cli::cli_alert_info("Skipping {basename(fn)} because it already exists.")
         return("skip")
       }
     }
@@ -110,7 +109,7 @@
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
   if (length(skips) > 0) {
-    cli::cli_alert_danger("{length(skips)} .Rd files were skipped because they document internal functions.")
+    cli::cli_alert("{length(skips)} .Rd files skipped because they document internal functions.")
   }
 
   if (length(fails) > 0) {
