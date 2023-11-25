@@ -7,7 +7,7 @@
     settings <- settings[!grepl("^\\w*$", settings)]
 
     fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
-    yaml::write_yaml(settings, fn)
+    yaml::write_yaml(settings, fn, indent.mapping.sequence = TRUE)
 
     # yaml::write_yaml converts true to yes, but quarto complains
     settings <- .readlines(fn)
