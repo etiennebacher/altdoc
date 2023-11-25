@@ -25,26 +25,8 @@ preview_docs <- function(path = ".") {
   tool <- .doc_type(path)
 
   if (rstudioapi::isAvailable()) {
-    if (tool %in% c("docute", "docsify")) {
+    if (tool %in% c("docute", "docsify", "mkdocs")) {
       servr::httw(fs::path_abs("docs/"))
-    } else if (tool == "mkdocs") {
-      # first build
-      if (.is_windows()) {
-        shell(paste("cd", fs::path_abs("docs", start = path), " && python3 -m mkdocs build -q"))
-      } else {
-        system2("cd", paste(fs::path_abs("docs", start = path), " && python3 -m mkdocs build -q"))
-      }
-      # stop it directly to avoid opening the browser
-      servr::daemon_stop()
-
-      # getwd has to be used outside of httw, not working otherwise
-      servr::httw(
-        fs::path_abs("docs/site", start = path),
-        watch = fs::path_abs("docs/", start = path),
-        handler = function(files) {
-          system2("cd", ".. && python3 -m mkdocs build -q")
-        }
-      )
     } else {
       cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
     }
