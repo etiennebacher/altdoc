@@ -114,7 +114,7 @@
             }
         }
         tmp <- tempfile()
-        yaml::write_yaml(yml, file = tmp)
+        yaml::write_yaml(yml, file = tmp, indent.mapping.sequence = TRUE)
         sidebar <- .readlines(tmp)
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
