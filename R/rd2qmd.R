@@ -42,6 +42,7 @@
     ex <- gsub("&lt;", "<", ex)
     ex <- gsub("&gt;", ">", ex)
     ex <- gsub("&gt;", ">", ex)
+    ex <- gsub("&amp;", "&", ex)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
 
