@@ -60,7 +60,13 @@
     .rd2qmd(origin_Rd, destination_dir)
 
     if (tool != "quarto_website") {
-      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+      pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
+      if (fs::file_exists(pre)) {
+        pre <- .readlines(pre)
+      } else {
+        pre <- NULL
+      }
+      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose, preamble = pre)
       fs::file_delete(destination_qmd)
     } else {
       worked <- TRUE

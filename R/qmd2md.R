@@ -1,4 +1,4 @@
-.qmd2md <- function(source_file, tar_dir, verbose = FALSE) {
+.qmd2md <- function(source_file, tar_dir, verbose = FALSE, preamble = NULL) {
 
 
   if (missing(source_file) || !file.exists(source_file)) {
@@ -15,18 +15,8 @@
   # if there is no YAML header, add prefer-html, because this helps with any
   # function that returns HTML output, which should be supported by our
   # documentation generators, since they get rendered to web.
-  x <- .readlines(tar_file)
-  first_non_empty <- x[which(!x == "")[1]]
-  if (!grepl("^---\\w*", first_non_empty)) {
-    x <- c(
-      "---",
-      "format:",
-      "  md:",
-      "    prefer-html: true",
-      "---",
-      "",
-      x
-    )
+  if (!is.null(preamble) && !.has_preamble(tar_file)) {
+    x <- c(preamble, .readlines(tar_file))
     writeLines(x, tar_file)
   }
 
