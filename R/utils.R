@@ -169,3 +169,10 @@
     writeLines(tmp, fn)
   }
 }
+
+
+.has_preamble <- function(fn) {
+  x <- .readlines(fn)
+  first_non_empty <- x[which(!x == "")[1]]
+  grepl("^---\\w*", first_non_empty)
+}

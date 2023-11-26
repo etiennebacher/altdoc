@@ -24,7 +24,7 @@
     return(out)
 }
 
-.write_freeze <- function(input, path, freeze) {
+.write_freeze <- function(input, path, freeze, worked = TRUE) {
     freeze_file <- fs::path_join(c(path, "altdoc/freeze.rds"))
 
     if (!fs::file_exists(freeze_file)) {
@@ -33,7 +33,11 @@
         hashes <- readRDS(freeze_file)
     }
 
-    hashes[[input]] <- digest::digest(.readlines(input))
+    if (isTRUE(worked)) {
+        hashes[[input]] <- digest::digest(.readlines(input))
+    } else {
+        hashes[[input]] <- NULL
+    }
 
     saveRDS(hashes, freeze_file)
 }
