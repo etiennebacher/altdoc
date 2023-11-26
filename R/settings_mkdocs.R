@@ -43,12 +43,15 @@
     fn <- fs::path_join(c(path, "mkdocs.yml"))
     writeLines(settings, fn)
 
-    # plugins must be a list otherwise this command breaks: mkdocs build -q
+    # These two elements should be lists in the yaml format, not single elements,
+    # otherwise mkdocs breaks
     yml <- yaml::read_yaml(fn)
-    if ("plugins" %in% names(yml)) {
-        yml[["plugins"]] <- as.list(yml[["plugins"]])
+    for (i in c("extra_css", "plugins")) {
+        if (!is.null(yml[[i]]) && !is.list(length(yml[[i]]))) {
+            yml[[i]] = as.list(yml[[i]])
+        }
     }
-    yaml::write_yaml(yml, fn)
+    yaml::write_yaml(yml, fn, indent.mapping.sequence = TRUE)
 
     # render mkdocs
     if (.is_windows()) {
@@ -103,7 +106,7 @@
             }
         }
         tmp <- tempfile()
-        yaml::write_yaml(yml, file = tmp)
+        yaml::write_yaml(yml, file = tmp, indent.mapping.sequence = TRUE)
         sidebar <- .readlines(tmp)
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
@@ -134,7 +137,7 @@
             }
         }
         tmp <- tempfile()
-        yaml::write_yaml(yml, file = tmp)
+        yaml::write_yaml(yml, file = tmp, indent.mapping.sequence = TRUE)
         sidebar <- .readlines(tmp)
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
