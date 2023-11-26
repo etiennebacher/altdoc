@@ -106,7 +106,7 @@
     # issues we'd been having when generating images from code blocks and
     # inserting ones with ![]().
     } else {
-      pre <- fs::path_join(c(src_dir, "altdoc", "preamble_vignettes_qmd.yml"))
+      pre <- fs::path_join(c(src_dir, sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(src_files[i]))))
       if (fs::file_exists(pre)) {
         pre <- .readlines(pre)
       } else {

@@ -127,6 +127,10 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     fs::path_join(c(altdoc_dir, "preamble_vignettes_qmd.yml")),
     overwrite = TRUE)
   .safe_copy(
+    system.file("preamble/preamble_vignettes_rmd.yml", package = "altdoc"),
+    fs::path_join(c(altdoc_dir, "preamble_vignettes_rmd.yml")),
+    overwrite = TRUE)
+  .safe_copy(
     system.file("preamble/preamble_man_qmd.yml", package = "altdoc"),
     fs::path_join(c(altdoc_dir, "preamble_man_qmd.yml")),
     overwrite = TRUE)
