@@ -36,7 +36,7 @@
     if (isTRUE(worked)) {
         hashes[[input]] <- digest::digest(.readlines(input))
     } else {
-        hashes[[input]] <- NULL
+        hashes <- hashes[names(hashes) != input]
     }
 
     saveRDS(hashes, freeze_file)
