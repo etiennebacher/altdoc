@@ -115,9 +115,7 @@
       worked <- .qmd2md(origin, tar_dir, verbose = verbose, preamble = pre)
     }
 
-    if (isTRUE(worked)) {
-      .write_freeze(input = origin, path = src_dir, freeze = freeze)
-    }
+    .write_freeze(input = origin, path = src_dir, freeze = freeze, worked = worked)
 
     return(ifelse(worked, "success", "failure"))
   }

@@ -82,9 +82,7 @@
       writeLines(tmp, destination_md)
     }
 
-    if (isTRUE(worked)) {
-      .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze)
-    }
+    .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze, worked = worked)
 
     return(ifelse(worked, "success", "failure"))
   }
