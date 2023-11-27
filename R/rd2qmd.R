@@ -29,6 +29,7 @@
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 
+
   if (length(idx) == 1) {
     # until next section or the end
     idx_post_examples <- grep("<h3>", tmp)
@@ -67,6 +68,10 @@
     tmp
   )
   tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
+
+  # cleanup code
+  tmp <- gsub("&#8288;</code>", "`", tmp, fixed = TRUE) 
+  tmp <- gsub('<code style="white-space: pre;">&#8288;', "`", tmp, fixed = TRUE)
 
   # title
   # warning: Undefined global functions or variables: title
