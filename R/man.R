@@ -146,8 +146,8 @@
     return(NULL)
   }
   fn <- eval(parse(text = fn))
-  line <- getSrcLocation(fn, "line")
-  file <- paste0("R/", getSrcFilename(fn))
+  line <- utils::getSrcLocation(fn, "line")
+  file <- paste0("R/", utils::getSrcFilename(fn))
   gh_urls <- c(
     tryCatch(desc::desc_get_urls(), error = function(e) NULL),
     tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL)
