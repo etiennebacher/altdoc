@@ -14,12 +14,15 @@
     writeLines(settings, fn)
 
     # relative links
-    md_files <- fs::dir_ls(fs::path_join(c(path, "docs", "vignettes")), regexp = "\\.md$")
-    for (md in md_files) {
-        src <- sprintf('src="/%s.markdown_strict_files', gsub("\\.md$", "", basename(md)))
-        tar <- sprintf('src="vignettes/%s.markdown_strict_files', gsub("\\.md$", "", basename(md)))
-        content <- gsub(src, tar, .readlines(md), fixed = TRUE)
-        writeLines(content, md)
+    dn <- fs::path_join(c(path, "docs", "vignettes"))
+    if (fs::dir_exists(dn)) {
+        md_files <- fs::dir_ls(dn, regexp = "\\.md$")
+        for (md in md_files) {
+            src <- sprintf('src="%s.markdown_strict_files', gsub("\\.md$", "", basename(md)))
+            tar <- sprintf('src="vignettes/%s.markdown_strict_files', gsub("\\.md$", "", basename(md)))
+            content <- gsub(src, tar, .readlines(md), fixed = TRUE)
+            writeLines(content, md)
+        }
     }
 
     # body also includes altdoc variables
