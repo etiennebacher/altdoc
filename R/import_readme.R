@@ -73,4 +73,7 @@
     overwrite = TRUE
   )
 
+  # cleanup
+  fs::dir_delete(src_dir)
+
 }
