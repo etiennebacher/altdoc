@@ -17,10 +17,13 @@
         files <- files[!grepl("docute.html$|docsify.md$|mkdocs.yml$", files)]
 
         # docs/* files are mutable and should be overwritten
-        for (src in files) {
-            tar <- fs::path_join(c(.doc_path(path), basename(src)))
-            file.copy(src, .doc_path(path), overwrite = TRUE, recursive = TRUE)
+        if (grepl("^quarto", tool)) {
+            tar_dir <- fs::path_join(c(path, "_quarto/docs"))
+        } else {
+            tar_dir <- .doc_path(path)
         }
+
+        fs::dir_copy(src, tar_dir, overwrite = TRUE)
     }
 
     fn <- switch(tool,

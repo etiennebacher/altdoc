@@ -26,7 +26,8 @@
 
   # relative links for altdoc/ static files
   content <- .readlines(tar_file)
-  content <- gsub('img src="altdoc/', 'img src="', content)
+  content <- gsub('img src="altdoc/', 'img src="', content, fixed = TRUE)
+  content <- gsub('![](altdoc/', '![](', content, fixed = TRUE)
   writeLines(content, tar_file)
 
   .move_img_readme(path = src_dir, tool = tool)
