@@ -12,7 +12,13 @@
     # yaml::write_yaml converts true to yes, but quarto complains
     settings <- .readlines(fn)
     settings <- gsub(": yes$", ": true", settings)
+    settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
+
+    # copy README.md to _quarto/index.qmd
+    src <- fs::path_join(c(path, "README.qmd"))
+    tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
+    fs::file_copy(src, tar, overwrite = TRUE)
 
     tmp <- fs::path_join(c(path, "_quarto", "docs"))
     for (f in fs::dir_ls(tmp)) {
@@ -23,12 +29,19 @@
     quarto::quarto_render(input = fs::path_join(c(path, "_quarto")), quiet = !verbose, use_freezer = freeze)
 
     # move _quarto/_site to docs/
-    src <- fs::path_join(c(path, "_quarto", "_site"))
+    # allow book
+    for (x in c("_site", "_book")) {
+        tmp <- fs::path_join(c(path, "_quarto", x))
+        if (fs::file_exists(tmp)) {
+            src <- tmp
+        }
+    }
     tar <- .doc_path(path)
     if (fs::dir_exists(tar)) {
         fs::dir_delete(tar)
     }
     fs::file_move(src, .doc_path(path))
+
 
 }
 
