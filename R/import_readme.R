@@ -24,11 +24,15 @@
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
 
-  # relative links for altdoc/ static files
-  content <- .readlines(tar_file)
-  content <- gsub('img src="altdoc/', 'img src="', content, fixed = TRUE)
-  content <- gsub('![](altdoc/', '![](', content, fixed = TRUE)
-  writeLines(content, tar_file)
+  relative_links <- function(fn) {
+    content <- .readlines(fn)
+    content <- gsub('img src="altdoc/', 'img src="', content, fixed = TRUE)
+    content <- gsub("![](altdoc/", "![](", content, fixed = TRUE)
+    content <- gsub("![](README.markdown_strict_files/", "![](man/figures/README/", content, fixed = TRUE)
+    writeLines(content, fn)
+  }
+  relative_links(tar_file) # for website
+  relative_links(src_file) # for CRAN
 
   .move_img_readme(path = src_dir, tool = tool)
 
@@ -44,14 +48,29 @@
     return(invisible())
   }
   is_quarto <- grepl("^quarto", tool)
+
+  # copy to docs/man/figures/README for website
   if (is_quarto) {
-    tar_dir <- fs::path_join(c(path, "_quarto", "docs/README.markdown_strict_files"))
+    tar_dir <- fs::path_join(c(path, "_quarto", "docs/man/figures/README"))
   } else {
-    tar_dir <- fs::path_join(c(path, "docs/README.markdown_strict_files"))
+    tar_dir <- fs::path_join(c(path, "docs/man/figures/README"))
   }
   fs::dir_copy(
     src_dir,
     tar_dir,
     overwrite = TRUE
   )
+
+  # copy to man/figures/README/ for CRAN
+  if (is_quarto) {
+    tar_dir <- fs::path_join(c(path, "_quarto", "man/figures/README"))
+  } else {
+    tar_dir <- fs::path_join(c(path, "man/figures/README"))
+  }
+  fs::dir_copy(
+    src_dir,
+    tar_dir,
+    overwrite = TRUE
+  )
+
 }
