@@ -60,7 +60,13 @@
     .rd2qmd(origin_Rd, destination_dir)
 
     if (tool != "quarto_website") {
-      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose)
+      pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
+      if (fs::file_exists(pre)) {
+        pre <- .readlines(pre)
+      } else {
+        pre <- NULL
+      }
+      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose, preamble = pre)
       fs::file_delete(destination_qmd)
     } else {
       worked <- TRUE
@@ -76,9 +82,7 @@
       writeLines(tmp, destination_md)
     }
 
-    if (isTRUE(worked)) {
-      .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze)
-    }
+    .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze, worked = worked)
 
     return(ifelse(worked, "success", "failure"))
   }

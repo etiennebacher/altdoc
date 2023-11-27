@@ -51,7 +51,18 @@
             yml[[i]] = as.list(yml[[i]])
         }
     }
+
+    # clean and rebuild index
+    if (fs::file_exists(fn)) {
+        fs::file_delete(fn)
+    }
     yaml::write_yaml(yml, fn, indent.mapping.sequence = TRUE)
+
+    fn <- fs::path_join(c(path, "index.html"))
+    if (fs::file_exists(fn)) {
+        fs::file_delete(fn)
+    }
+
 
     # render mkdocs
     if (.is_windows()) {

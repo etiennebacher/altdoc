@@ -121,6 +121,23 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     .safe_copy(src, tar, overwrite = overwrite)
   }
 
+  # preambles
+  # quarto_website render directly to HTML, not via markdown
+  if (tool != "quarto_website") {
+    .safe_copy(
+      system.file("preamble/preamble_vignettes_qmd.yml", package = "altdoc"),
+      fs::path_join(c(altdoc_dir, "preamble_vignettes_qmd.yml")),
+      overwrite = TRUE)
+    .safe_copy(
+      system.file("preamble/preamble_vignettes_rmd.yml", package = "altdoc"),
+      fs::path_join(c(altdoc_dir, "preamble_vignettes_rmd.yml")),
+      overwrite = TRUE)
+    .safe_copy(
+      system.file("preamble/preamble_man_qmd.yml", package = "altdoc"),
+      fs::path_join(c(altdoc_dir, "preamble_man_qmd.yml")),
+      overwrite = TRUE)
+  }
+
   # README.md is mandatory
   fn <- fs::path_join(c(path, "README.md"))
   if (!fs::file_exists(fn)) {

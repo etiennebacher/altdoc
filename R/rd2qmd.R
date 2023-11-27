@@ -28,12 +28,21 @@
   pkg <- .pkg_name(".")
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
+
   if (length(idx) == 1) {
-    ex <- tmp[(idx + 1):length(tmp)]
+    # until next section or the end
+    idx_post_examples <- grep("<h3>", tmp)
+    idx_post_examples <- idx_post_examples[idx_post_examples > idx]
+    if (length(idx_post_examples) > 0) {
+      ex <- tmp[(idx + 1):(idx_post_examples[1] - 1)]
+    } else {
+      ex <- tmp[(idx + 1):length(tmp)]
+    }
     ex <- gsub("<.*>", "", ex)
     ex <- gsub("&lt;", "<", ex)
     ex <- gsub("&gt;", ">", ex)
     ex <- gsub("&gt;", ">", ex)
+    ex <- gsub("&amp;", "&", ex)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
 

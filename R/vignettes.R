@@ -106,12 +106,16 @@
     # issues we'd been having when generating images from code blocks and
     # inserting ones with ![]().
     } else {
-      worked <- .qmd2md(origin, tar_dir, verbose = verbose)
+      pre <- fs::path_join(c(src_dir, sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(src_files[i]))))
+      if (fs::file_exists(pre)) {
+        pre <- .readlines(pre)
+      } else {
+        pre <- NULL
+      }
+      worked <- .qmd2md(origin, tar_dir, verbose = verbose, preamble = pre)
     }
 
-    if (isTRUE(worked)) {
-      .write_freeze(input = origin, path = src_dir, freeze = freeze)
-    }
+    .write_freeze(input = origin, path = src_dir, freeze = freeze, worked = worked)
 
     return(ifelse(worked, "success", "failure"))
   }
