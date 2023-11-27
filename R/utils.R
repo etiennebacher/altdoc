@@ -176,3 +176,12 @@
   first_non_empty <- x[which(!x == "")[1]]
   grepl("^---\\w*", first_non_empty)
 }
+
+# find the head branch of git repository
+.find_head_branch <- function(path = ".") {
+  if (!fs::file_exists(".git/HEAD")) {
+    return(NULL)
+  }
+  branch <- .readlines(".git/HEAD")
+  gsub("^ref: refs/heads/", "", branch)
+}

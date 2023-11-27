@@ -72,6 +72,16 @@
       worked <- TRUE
     }
 
+    github_source <- .find_github_source(fn)
+    if (!is.null(github_source)) {
+      to_insert <- paste0("[**Source code**](", github_source, ")")
+      rendered_man <- gsub("\\.qmd$", ".md", destination_qmd)
+      temp <- .readlines(rendered_man)
+      header_idx <- grep("^## ", temp)[1]
+      new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
+      writeLines(new, rendered_man)
+    }
+
     # section headings are too deeply nested by default
     # this is a hack because it may remove one # from comments. But that's
     # probably not the end of the world, because the line stick stays commented
@@ -127,4 +137,22 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
+}
+
+
+.find_github_source <- function(fn) {
+  head_branch <- .find_head_branch(path = ".")
+  if (is.null(head_branch)) {
+    return(NULL)
+  }
+  fn <- eval(parse(text = fn))
+  line <- getSrcLocation(fn, "line")
+  file <- paste0("R/", getSrcFilename(fn))
+  gh_urls <- c(
+    tryCatch(desc::desc_get_urls(), error = function(e) NULL),
+    tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL)
+  )
+  gh_link <- Filter(function(x) grepl("github.com", x), gh_urls)[1]
+
+  paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
 }
