@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="altdoc/files/altdoc_logo_web.png" height = "125"><br>
+<img src="files/altdoc_logo_web.png" height = "125"><br>
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
 <img src="https://codecov.io/gh/etiennebacher/altdoc/branch/master/graph/badge.svg">
