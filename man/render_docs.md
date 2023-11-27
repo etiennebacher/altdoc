@@ -60,11 +60,10 @@ deleted, all man pages and vignettes will be rendered anew.
 
 ## Details
 
-This function searches the root directory and the
-<code style="white-space: pre;">⁠inst/⁠</code> directory for specific
-filenames, renders/converts/copies them to the
-<code style="white-space: pre;">⁠docs/⁠</code> directory. The order of
-priority for each file is established as follows:
+This function searches the root directory and the `inst/` directory for
+specific filenames, renders/converts/copies them to the `docs/`
+directory. The order of priority for each file is established as
+follows:
 
 <ul>
 <li>

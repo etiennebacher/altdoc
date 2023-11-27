@@ -5,15 +5,13 @@ Initialize documentation website settings
 
 ## Description
 
-Creates a subdirectory called
-<code style="white-space: pre;">⁠altdoc/⁠</code> in the package root
-directory to store the settings files used to by one of the
-documentation generator utilities (<code>docsify</code>,
-<code>docute</code>, <code>mkdocs</code>, or
-<code>quarto_website</code>). The files in this folder are never altered
-automatically by <code>altdoc</code> unless the user explicitly calls
-<code>overwrite=TRUE</code>. They can thus be edited manually to
-customize the sidebar and website.
+Creates a subdirectory called `altdoc/` in the package root directory to
+store the settings files used to by one of the documentation generator
+utilities (<code>docsify</code>, <code>docute</code>,
+<code>mkdocs</code>, or <code>quarto_website</code>). The files in this
+folder are never altered automatically by <code>altdoc</code> unless the
+user explicitly calls <code>overwrite=TRUE</code>. They can thus be
+edited manually to customize the sidebar and website.
 
 ## Usage
 
