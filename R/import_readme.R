@@ -24,6 +24,11 @@
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
 
+  # relative links for altdoc/ static files
+  content <- .readlines(tar_file)
+  content <- gsub('img src="altdoc/', 'img src="', content)
+  writeLines(content, tar_file)
+
   .move_img_readme(path = src_dir, tool = tool)
 
   cli::cli_alert_success("{.file README} imported.")
