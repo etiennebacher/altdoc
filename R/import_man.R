@@ -152,6 +152,7 @@
       is_404 <<- grepl("404", w)
     }
   )
+  close(final_link)
 
   if (is_404) {
     return(NULL)
