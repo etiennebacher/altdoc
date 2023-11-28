@@ -143,6 +143,19 @@
     tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL)
   )
   gh_link <- Filter(function(x) grepl("github.com", x), gh_urls)[1]
+  final_link <- paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
 
-  paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
+  is_404 <- FALSE
+  tryCatch(
+    file(final_link, "rt", encoding = ""),
+    warning = function(w) {
+      is_404 <<- grepl("404", w)
+    }
+  )
+
+  if (is_404) {
+    return(NULL)
+  } else {
+    final_link
+  }
 }
