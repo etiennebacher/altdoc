@@ -47,4 +47,4 @@ if (interactive()) {
 with(mtcars, plot(mpg, wt))
 ```
 
-![](man/preview_docs.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)
+![](preview_docs.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)

@@ -21,10 +21,10 @@
   if (tool == "quarto_website") {
     dn_src <- fs::path_join(c(src_dir, "vignettes"))
     dn_tar <- fs::path_join(c(tar_dir, "vignettes"))
-    if (fs::dir_exists(dn_tar)) {
-      fs::dir_delete(dn_tar)
-    }
     if (fs::dir_exists(dn_src)) {
+      if (!fs::dir_exists(dn_tar)) {
+        fs::dir_create(dn_tar)
+      }
       fs::dir_copy(dn_src, dn_tar)
     }
     return(invisible())
@@ -32,6 +32,8 @@
 
   # source directory
   vig_dir <- fs::path_abs("vignettes", start = src_dir)
+
+  # no vignette
   if (!fs::dir_exists(vig_dir) || .folder_is_empty(vig_dir)) {
     cli::cli_alert_info("No vignettes to convert")
     return(invisible())
@@ -39,44 +41,28 @@
 
   # target directory
   tar_dir <- fs::path_join(c(tar_dir, "vignettes"))
-  if (!dir.exists(tar_dir)) {
+  if (!fs::dir_exists(tar_dir)) {
     fs::dir_create(tar_dir)
   }
 
-  # source files
-  src_files <- list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$")
-
-  # copy all subdirectories: images, static files, etc.
-  # docsify: vignettes/
-  # docute: /
-  dir_static <- Filter(fs::is_dir, fs::dir_ls(vig_dir))
-  if (tool == "docute") {
-    tar_dir_static <- gsub("vignettes$", "", tar_dir)
-  } else {
-    tar_dir_static <- tar_dir
+  # copy all subdirectories of vignettes/ to docs/vignettes/
+  # images, static files, etc.
+  if (!fs::dir_exists(tar_dir)) {
+    fs::dir_create(tar_dir)
   }
-  for (d in dir_static) {
-    fs::dir_copy(
-      d,
-      fs::path_join(c(tar_dir_static, basename(d))),
-      overwrite = TRUE
-    )
-  }
+  fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
+  src_files <- fs::dir_ls(tar_dir, regexp = "\\.Rmd$|\\.qmd$")
   n <- length(src_files)
 
   cli::cli_alert_info("Found {n} vignette{?s} to convert.")
-
-  fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
   render_one_vignette <- function(i) {
 
     worked <- FALSE
 
     # only process new or modified vignettes
-    origin <- fs::path_join(c(vig_dir, src_files[i]))
-    destination <- fs::path_join(c(tar_dir, src_files[i]))
-    fs::file_copy(origin, destination, overwrite = TRUE)
+    origin <- src_files[i]
 
     # raw markdown should just be copied over
     if (fs::path_ext(src_files[i]) == "md") {
@@ -89,7 +75,7 @@
     if (isTRUE(freeze)) {
       flag <- .read_freeze(
         input = origin,
-        output = gsub("\\.Rmd$|\\.qmd$", ".md", destination),
+        output = gsub("\\.Rmd$|\\.qmd$", ".md", origin),
         path = src_dir,
         freeze = freeze
       )
@@ -98,14 +84,7 @@
       }
     }
 
-    if (fs::path_ext(origin) == "md") {
-      fs::file_copy(origin, tar_dir, overwrite = TRUE)
-
-    # We now use Quarto to render all vignettes, even .Rmd ones, because this
-    # makes the file structure more uniform, and fixes a lot of the file path
-    # issues we'd been having when generating images from code blocks and
-    # inserting ones with ![]().
-    } else {
+    if (fs::path_ext(origin) != "md") {
       pre <- fs::path_join(c(src_dir, sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(src_files[i]))))
       if (fs::file_exists(pre)) {
         pre <- .readlines(pre)

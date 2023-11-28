@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="get-started-with-altdoc">Get Started with ‘altdoc’</h1>
+<h2 id="quick-start">Quick start</h2>
+<p>To create, render, and preview a new documentation website, execute these commands from the root directory of your package:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(altdoc)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">### Initialize</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">setup_docs</span>(<span class="st">&quot;docsify&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="co">## setup_docs(&quot;docute&quot;)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">## setup_docs(&quot;mkdocs&quot;)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">### Render</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">render_docs</span>()</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">### Preview</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">preview_docs</span>()</span></code></pre></div>
+<p>Below, we explain in more detail what these commands do.</p>
+<h2 id="installation">Installation</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">install.packages</span>(<span class="st">&quot;altdoc&quot;</span>)</span></code></pre></div>
+<p>To create documentation websites with either <code>docsify</code> or <code>docute</code>, you only need to install <code>altdoc</code> in <code>R</code>.</p>
+<p>To use <code>mkdocs</code> or its variants (such as <code>mkdocs-material</code>), you will first need to install those packages in <code>Python</code> using a tool like <code>pip</code>. From the command line:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>pip install mkdocs mkdocs<span class="op">-</span>material</span></code></pre></div>
+<p>See the <a href="https://www.mkdocs.org/user-guide/installation/"><code>mkdocs</code></a> and <a href="https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip"><code>mkdocs-material</code></a> installation guides for details.</p>
+<h2 id="package-structure">Package structure</h2>
+<p><code>altdoc</code> makes assumptions about your package structure:</p>
+<ul>
+<li><code>vignettes/</code> stores the vignettes in <code>.md</code>, <code>.Rmd</code> or <code>.qmd</code> format.</li>
+<li><code>docs/</code> stores the rendered website. This folder is overwritten every time a user calls <code>render_docs()</code>, so you should not edit it manually.</li>
+<li><code>altdoc/</code> stores the settings files created by <code>setup_docs()</code>. These files are never modified automatically after initialization, so you can edit them manually to customize the settings of your documentation and website. All the files stored in <code>altdoc/</code> are copied to <code>docs/</code> and made available as static files in the root of the website.</li>
+<li><code>README.md</code> is the homepage of the website.</li>
+<li>The content of the (optional) “news” section is stored in <code>NEWS.md</code> or <code>CHANGELOG.md</code></li>
+<li>The content of the (optional) “code of conduct” section is stored in <code>CODE_OF_CONDUCT.md</code>.</li>
+<li>The license is stored in <code>LICENSE.md</code> or <code>LICENSE.md</code>.</li>
+</ul>
+<h2 id="initialize">Initialize</h2>
+<p>These functions initialize a documentation website structure: <code>setup_docs(tool = &quot;docsify&quot;)</code>, <code>setup_docs(tool = &quot;docute&quot;)</code> and <code>setup_docs(tool = &quot;mkdocs&quot;)</code>. Calling one of them will:</p>
+<ol>
+<li>Create a <code>docs/</code> folder</li>
+<li>Create a <code>altdoc/</code> folder</li>
+<li>Add <code>altdoc/</code> to <code>.Rbuildignore</code></li>
+<li>Copy default settings files to <code>altdoc/</code> for the chosen documentation generator</li>
+</ol>
+<h2 id="customize">Customize</h2>
+<p>To customize the documentation, you can edit the settings files in the <code>altdoc/</code> folder. The settings files differ between the different documentation generators. For example, this is the default <code>mkdocs.yml</code> settings created when one calls <code>setup_docs(tool = &quot;mkdocs&quot;)</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="fu">site_name</span><span class="kw">:</span><span class="at"> $ALTDOC_PACKAGE_NAME</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="fu">repo_url</span><span class="kw">:</span><span class="at"> $ALTDOC_PACKAGE_URL</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="fu">repo_name</span><span class="kw">:</span><span class="at"> $ALTDOC_PACKAGE_NAME</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="fu">plugins</span><span class="kw">:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> search</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="fu">nav</span><span class="kw">:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">Home</span><span class="kw">:</span><span class="at"> README.md</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="at">$ALTDOC_VIGNETTE_BLOCK</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">Changelog</span><span class="kw">:</span><span class="at"> $ALTDOC_NEWS</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">Code of Conduct</span><span class="kw">:</span><span class="at"> $ALTDOC_CODE_OF_CONDUCT</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">License</span><span class="kw">:</span><span class="at"> $ALTDOC_LICENSE</span></span></code></pre></div>
+<p>By editing this file, you can change the name of the website, the order of the sections, add new sections or drop irrelevant ones, etc.</p>
+<p>The settings files can include <code>$ALTDOC</code> variables which are replaced automatically by <code>altdoc</code> when calling <code>render_docs()</code>:</p>
+<ul>
+<li><code>$ALTDOC_PACKAGE_NAME</code>: Name of the package from <code>DESCRIPTION</code>.</li>
+<li><code>$ALTDOC_PACKAGE_VERSION</code>: Version number of the package from <code>DESCRIPTION</code></li>
+<li><code>$ALTDOC_PACKAGE_URL</code>: First URL listed in the DESCRIPTION file of the package.</li>
+<li><code>$ALTDOC_PACKAGE_URL_GITHUB</code>: First URL that contains “github.com” from the URLs listed in the DESCRIPTION file of the package. If no such URL is found, lines containing this variable are removed from the settings file.</li>
+<li><code>$ALTDOC_MAN_BLOCK</code>: Nested list of links to the individual help pages for each exported function of the package. The format of this block depends on the documentation generator.</li>
+<li><code>$ALTDOC_VIGNETTE_BLOCK</code>: Nested list of links to the vignettes. The format of this block depends on the documentation generator.</li>
+<li><code>$ALTDOC_VERSION</code>: Version number of the altdoc package.</li>
+</ul>
+<p>Also note that you can store images and static files in the <code>altdoc/</code> directory. All the files in this folder are copied to <code>docs/</code> and made available in the root of the website, so you can link to them easily.</p>
+<p>Interested readers should refer to their chosen documentation generator documentation for more details:</p>
+<ul>
+<li><a href="https://docsify.js.org/">https://docsify.js.org/</a></li>
+<li><a href="https://docute.egoist.dev/">https://docute.egoist.dev/</a></li>
+<li><a href="https://www.mkdocs.org/">https://www.mkdocs.org/</a></li>
+</ul>
+<h2 id="render-and-update">Render and update</h2>
+<p>Once the documentation is initialized, you can render it with:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">render_docs</span>()</span></code></pre></div>
+<p>This function will:</p>
+<ol>
+<li>Render and copy standard <code>R</code> package files to <code>docs/</code>.
+<ul>
+<li>Ex: <code>NEWS.md</code>, <code>README.md</code>, <code>LICENSE.md</code>, <code>CODE_OF_CONDUCT.md</code>, etc.</li>
+</ul></li>
+<li>Render Rmarkdown and Quarto files (<code>.Rmd</code> and <code>.qmd</code> extensions) from the <code>vignettes/</code> directory and store them in <code>docs/vignettes/</code>.</li>
+<li>Copy Markdown files with extension <code>.md</code> from <code>vignettes/</code> to <code>docs/vignettes/</code>.</li>
+<li>Convert the manual pages stored in <code>man/</code> from <code>.Rd</code> to <code>.md</code> format, and copy them to <code>docs/man/</code>.</li>
+<li>Copy all static files from <code>altdoc/</code> to <code>docs/</code>.</li>
+</ol>
+<p>Whenever you make changes to the man pages or to the vignettes, you can call <code>render_docs()</code> again to render the new files and update the website.</p>
+<h2 id="preview">Preview</h2>
+<p>To preview the website, you need to run a local web server.</p>
+<p>In RStudio you can launch one automatically in the Preview Pane by calling:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">preview_docs</span>()</span></code></pre></div>
+<p>In Visual Studio Code, you can use one of the many “live preview” or “local server” extensions available. For example,</p>
+<ol>
+<li>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server">Live Preview</a> extension from Microsoft.</li>
+<li>From the command palette, select “Live Preview: Start Server”.</li>
+<li>When the preview pane opens, navigate to the <code>docs/</code> folder.</li>
+</ol>
+<!-- end list -->
+
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">plot</span>(mtcars<span class="op">$</span>hp, mtcars<span class="op">$</span>wt)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+
+</body>
+</html>

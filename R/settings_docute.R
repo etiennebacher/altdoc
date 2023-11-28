@@ -6,6 +6,12 @@
     writeLines(settings, fn)
 
     # Fix vignette relative links
+    dn <- fs::path_join(c(path, "docs/vignettes/"))
+    if (fs::dir_exists(dn)) {
+        files <- fs::dir_ls(dn)
+        files <- Filter(function(x) !grepl("\\.md$|\\.qmd$|\\.Rmd$|\\.html$", x), files)
+    }
+
     vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
         pattern = "\\.md")
@@ -18,6 +24,7 @@
             paste0("![](vignettes/", v),
             txt,
             fixed = TRUE)
+        browser()
         writeLines(txt, fn)
     }
 

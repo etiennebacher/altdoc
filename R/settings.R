@@ -4,18 +4,6 @@
     # this allows users to store arbitrary and settings static files in altdoc/
     src <- fs::path_abs(fs::path_join(c(path, "altdoc")))
     if (fs::dir_exists(src)) {
-        files <- fs::dir_ls(src)
-
-        files <- files[!grepl("freeze.rds$", files)]
-
-        # hidden files not detected
-        fn <- fs::path_join(c(path, "altdoc/.nojekyll"))
-        if (fs::file_exists(fn)) {
-            files <- c(files, fn)
-        }
-
-        files <- files[!grepl("docute.html$|docsify.md$|mkdocs.yml$", files)]
-
         # docs/* files are mutable and should be overwritten
         if (grepl("^quarto", tool)) {
             tar_dir <- fs::path_join(c(path, "_quarto/docs"))
@@ -24,6 +12,16 @@
         }
 
         fs::dir_copy(src, tar_dir, overwrite = TRUE)
+
+        fn <- fs::path_join(c(path, "altdoc/.nojekyll"))
+        if (!fs::file_exists(fn)) {
+            fs::file_create(fn)
+        }
+
+        # clean up unnecessary files
+        files <- fs::dir_ls(tar_dir, recursive = TRUE)
+        bad <- files[grepl("docute.html$|docsify.md$|mkdocs.yml$|freeze.rds$", files)]
+        fs::file_delete(bad)
     }
 
     fn <- switch(tool,
