@@ -48,7 +48,7 @@
     yml <- yaml::read_yaml(fn)
     for (i in c("extra_css", "plugins")) {
         if (!is.null(yml[[i]]) && !is.list(length(yml[[i]]))) {
-            yml[[i]] = as.list(yml[[i]])
+            yml[[i]] <- as.list(yml[[i]])
         }
     }
 
