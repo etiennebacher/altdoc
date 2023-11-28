@@ -1,5 +1,5 @@
 .substitute_altdoc_variables <- function(x, filename, path = ".", tool = "docsify") {
-    x <- gsub("\\$ALTDOC_VERSION",utils::packageVersion("altdoc"), x)
+    x <- gsub("\\$ALTDOC_VERSION", utils::packageVersion("altdoc"), x)
 
     for (vn in c("NEWS.md", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE.md", "LICENCE.md", "CITATION.md")) {
         fn <- fs::path_join(c(.doc_path(path), vn))
