@@ -35,7 +35,10 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
   .safe_copy <- function(src, tar, overwrite) {
     if (fs::file_exists(tar) && !isTRUE(overwrite)) {
-      cli::cli_abort("{tar} already exists. Delete it or set `overwrite=TRUE`.", call = NULL)
+      cli::cli_abort(
+        "{tar} already exists. Delete it or set `overwrite=TRUE`.",
+        .envir = parent.frame(1L)
+      )
     } else {
       fs::file_copy(src, tar, overwrite = TRUE)
     }

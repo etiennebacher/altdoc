@@ -93,9 +93,15 @@
   quarto_website <- fs::file_exists(fn)
 
   if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
-    cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
+    cli::cli_abort(
+      "No documentation tool detected. Please run the {.code setup_docs()} function.",
+      .envir = parent.frame(sys.nframe() - 1)
+    )
   } else if (sum(c(mkdocs, docsify, docute, quarto_website)) > 1) {
-    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one or run `setup_docs()` with `overwrite=TRUE`.")
+    cli::cli_abort(
+      "Settings detected for multiple output formats in `altdoc/`. Please remove all but one or run `setup_docs()` with `overwrite=TRUE`.",
+      .envir = parent.frame(sys.nframe() - 1)
+    )
   }
 
   if (mkdocs) return("mkdocs")
