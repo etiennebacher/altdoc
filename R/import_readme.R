@@ -26,8 +26,11 @@
 
   relative_links <- function(fn) {
     content <- .readlines(fn)
-    content <- gsub('img src="altdoc/', 'img src="', content, fixed = TRUE)
+    # we try both syntaxes because it seems to depend on Quarto version or other
+    # system-dependent factor
+    content <- gsub('src="altdoc/', 'src="', content, fixed = TRUE)
     content <- gsub("![](altdoc/", "![](", content, fixed = TRUE)
+    content <- gsub('src="README.markdown_strict_files/', 'src="man/figures/README/', content, fixed = TRUE)
     content <- gsub("![](README.markdown_strict_files/", "![](man/figures/README/", content, fixed = TRUE)
     writeLines(content, fn)
   }
