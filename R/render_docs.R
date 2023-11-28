@@ -9,16 +9,16 @@
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
 #' @inheritParams setup_docs
 #' @export
-#' 
+#'
 #' @details
-#' 
+#'
 #' This function searches the root directory and the `inst/` directory for specific filenames, renders/converts/copies them to the `docs/` directory. The order of priority for each file is established as follows:
-#' 
+#'
 #' * `docs/README.md`
 #'   - README.md, README.qmd, README.Rmd
 #' * `docs/NEWS.md`
 #'   - NEWS.md, NEWS.txt, NEWS, NEWS.Rd
-#'   - Note: Where possible, Github contributors and issues are linked automatically. 
+#'   - Note: Where possible, Github contributors and issues are linked automatically.
 #' * `docs/CHANGELOG.md`
 #'   - CHANGELOG.md, CHANGELOG.txt, CHANGELOG
 #' * `docs/CODE_OF_CONDUCT.md`
@@ -32,14 +32,14 @@
 #'
 #' @examples
 #' if (interactive()) {
-#' 
+#'
 #'   render_docs()
-#' 
+#'
 #'   # parallel rendering
 #'   library(future)
 #'   plan(multicore)
 #'   render_docs(parallel = TRUE)
-#' 
+#'
 #' }
 render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
@@ -48,7 +48,6 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
     cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
-
   }
 
   tool <- .doc_type(path)
