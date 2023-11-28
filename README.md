@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="altdoc/files/altdoc_logo_web.png" height = "125"><br>
+<img src="files/altdoc_logo_web.png" height = "125"><br>
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
 <img src="https://codecov.io/gh/etiennebacher/altdoc/branch/master/graph/badge.svg">
@@ -60,15 +60,59 @@ See [the Get Started vignette](vignettes/get-started.md) for more details.
 
 ## Demos
 
-Websites created with `altdoc`:
+The websites in this table were created using Altdoc:
 
-* [altdoc](https://altdoc.etiennebacher.com/) itself (Docute)
-* [conductor](https://conductor.etiennebacher.com/) (Docsify)
+<table border=".5">
+  <tr>
+    <th>Document Generator</th>
+    <th><code>R</code> Package</th>
+    <th>Website</th>
+    <th>Settings</th>
+  </tr>
+  <tr>
+    <td>Docute</td>
+    <td><code>altdoc</code></td>
+    <td>🌐<a href="https://altdoc.etiennebacher.com">altdoc.etiennebacher.com</a></td>
+    <td><a href="https://github.com/etiennebacher/altdoc/tree/main/altdoc">Altdoc Settings</a></td>
+  </tr>
+  <tr>
+    <td>Quarto</td>
+    <td><code>modelsummary</code></td>
+    <td>🌐<a href="https://modelsummary.com">modelsummary.com</a></td>
+    <td><a href="https://github.com/vincentarelbundock/modelsummary/tree/main/altdoc">Altdoc settings</a></td>
+  </tr>
+  <tr>
+    <td>MkDocs</td>
+    <td><code>marginaleffects</code></td>
+    <td>🌐<a href="https://marginaleffects.com">marginaleffects.com</a></td>
+    <td><a href="https://github.com/vincentarelbundock/marginaleffects/tree/main/altdoc">Altdoc Settings</a></td>
+  </tr>
+  <tr>
+    <td>MkDocs</td>
+    <td><code>polars</code></td>
+    <td>🌐<a href="https://rpolars.github.io">rpolars.github.io</a></td>
+    <td><a href="https://github.com/pola-rs/r-polars">Github Repository</a></td>
+  </tr>
+  <tr>
+    <td>Docsify</td>
+    <td><code>conductor</code></td>
+    <td>🌐<a href="https://conductor.etiennebacher.com">conductor.etiennebacher.com</a></td>
+    <td><a href="https://github.com/etiennebacher/conductor">GitHub Repository</a></td>
+  </tr>
+  <tr>
+    <td>Docsify</td>
+    <td><code>countrycode</code></td>
+    <td>🌐<a href="https://vincentarelbundock.github.io/countrycode">vincentarelbundock.github.io/countrycode</a></td>
+    <td><a href="https://github.com/vincentarelbundock/countrycode/tree/main/altdoc">Altdoc Settings</a></td>
+  </tr>
+  <tr>
+    <td>Docsify</td>
+    <td><code>WDI</code></td>
+    <td>🌐<a href="https://vincentarelbundock.github.io/WDI">vincentarelbundock.github.io/WDI</a></td>
+    <td><a href="https://github.com/vincentarelbundock/WDI/tree/main/altdoc">Altdoc Settings</a></td>
+  </tr>
+</table>
 
-Websites created with the documentation generators supported by `altdoc`:
-
-* [firebase](https://firebase.john-coene.com/) by John Coene (uses Mkdocs, theme Material)
-* [sever](https://sever.john-coene.com/) by John Coene (uses Mkdocs, theme readthedocs)
 
 ## More
 

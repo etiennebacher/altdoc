@@ -24,14 +24,16 @@
     out <- try(quarto::quarto_render(
       input = path.expand(tar_file),
       output_format = "md",
-      quiet = FALSE
+      quiet = FALSE,
+      as_job = FALSE
     ), silent = FALSE)
   } else {
     void <- utils::capture.output(
       out <- try(quarto::quarto_render(
         input = path.expand(tar_file),
         output_format = "md",
-        quiet = TRUE
+        quiet = TRUE,
+        as_job = FALSE
       ), silent = TRUE)
     )
   }
