@@ -135,16 +135,26 @@
   if (is.null(head_branch)) {
     return(NULL)
   }
-  fn <- eval(parse(text = fn))
+  # find file and row location
+  fn <- try(eval(parse(text = paste0(.pkg_name("."), "::", fn))), silent = TRUE)
+  if (inherits(fn, "try-error")) {
+    return(NULL)
+  }
   line <- utils::getSrcLocation(fn, "line")
   file <- paste0("R/", utils::getSrcFilename(fn))
+
+  # build URL
   gh_urls <- c(
     tryCatch(desc::desc_get_urls(), error = function(e) NULL),
     tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL)
   )
   gh_link <- Filter(function(x) grepl("github.com", x), gh_urls)[1]
+  if (is.na(gh_link)) {
+    return(NULL)
+  }
   final_link <- paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
 
+  # test URL
   is_404 <- FALSE
   tryCatch(
     {
@@ -160,4 +170,5 @@
     return(NULL)
   } else {
     final_link
-  }}
+  }
+}
