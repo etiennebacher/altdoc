@@ -1,6 +1,8 @@
 
 # render_docs
 
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/#L)
+
 Update documentation
 
 ## Description
