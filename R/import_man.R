@@ -144,11 +144,7 @@
   file <- paste0("R/", utils::getSrcFilename(fn))
 
   # build URL
-  gh_urls <- c(
-    tryCatch(desc::desc_get_urls(), error = function(e) NULL),
-    tryCatch(desc::desc_get_field("BugReports"), error = function(e) NULL)
-  )
-  gh_link <- Filter(function(x) grepl("github.com", x), gh_urls)[1]
+  gh_link <- .gh_url(".")
   if (is.na(gh_link)) {
     return(NULL)
   }
