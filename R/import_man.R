@@ -146,13 +146,14 @@
   final_link <- paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
 
   is_404 <- FALSE
+  connection <- NULL
   tryCatch(
-    file(final_link, "rt", encoding = ""),
+    connection <<- file(final_link, "rt", encoding = ""),
     warning = function(w) {
       is_404 <<- grepl("404", w)
     }
   )
-  close(final_link)
+  close(connection)
 
   if (is_404) {
     return(NULL)
