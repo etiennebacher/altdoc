@@ -66,10 +66,12 @@
     if (!is.null(github_source)) {
       to_insert <- paste0("[**Source code**](", github_source, ")")
       rendered_man <- gsub("\\.qmd$", ".md", destination_qmd)
-      temp <- .readlines(rendered_man)
-      header_idx <- grep("^## ", temp)[1]
-      new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
-      writeLines(new, rendered_man)
+      if (fs::file_exists(rendered_man)) {
+        temp <- .readlines(rendered_man)
+        header_idx <- grep("^## ", temp)[1]
+        new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
+        writeLines(new, rendered_man)
+      }
     }
 
     # section headings are too deeply nested by default
