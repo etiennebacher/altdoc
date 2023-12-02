@@ -17,7 +17,17 @@
   # qmd -> md
   fn <- fs::path_join(c(src_dir, "README.qmd"))
   if (fs::file_exists(fn)) {
-    .qmd2md(fn, src_dir)
+    if (tool == "quarto_website") {
+      # copy to quarto file
+      fs::file_copy(
+        fn,
+        fs::path_join(c(tar_dir, "index.qmd")),
+        overwrite = TRUE)
+      # process in-place for use on Github
+      .qmd2md(fn, src_dir)
+    } else {
+      .qmd2md(fn, src_dir)
+    }
   } else if (tool == "quarto_website") {
     cli::cli_abort("Quarto websites require a README.qmd file in the root of the package directory.", call = NULL)
   }

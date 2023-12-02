@@ -86,5 +86,13 @@
 
 
 .sidebar_man_quarto_website <- function(sidebar, path, ...) {
+    # the sidebar should not include text entries with no associated link
+    # delete backwards to preserve order
+    for (i in rev(seq_along(sidebar$website$sidebar$contents))) {
+        tmp <- sidebar$website$sidebar$contents[[i]]
+        if ("text" %in% names(tmp) && !"file" %in% names(tmp)) {
+            sidebar$website$sidebar$contents[[i]] <- NULL
+        }
+    }
     return(sidebar)
 }
