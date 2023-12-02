@@ -176,10 +176,10 @@ In Visual Studio Code, you can use one of the many “live preview” or
 2.  From the command palette, select “Live Preview: Start Server”.
 3.  When the preview pane opens, navigate to the `docs/` folder.
 
-## Test
+##### Test
 
-The code and images in this section are inserted as a demonstration of
-images in Rmarkdown vignettes.
+The code and images in this subsection are inserted as a demonstration
+of images in Rmarkdown vignettes.
 
 ``` r
 with(mtcars, plot(mpg, wt))
@@ -187,4 +187,4 @@ with(mtcars, plot(mpg, wt))
 
 ![](vignettes/get-started.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)
 
-![](images/hex-conductor.png)
+![](images/altdoc_logo_web.png)

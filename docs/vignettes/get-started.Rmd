@@ -139,12 +139,12 @@ In Visual Studio Code, you can use one of the many "live preview" or "local serv
 
 
 
-## Test
+##### Test
 
-The code and images in this section are inserted as a demonstration of images in Rmarkdown vignettes.
+The code and images in this subsection are inserted as a demonstration of images in Rmarkdown vignettes.
 
 ```{r}
 with(mtcars, plot(mpg, wt))
 ```
 
-![](images/hex-conductor.png)
+![](images/altdoc_logo_web.png)

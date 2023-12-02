@@ -308,4 +308,4 @@ with(mtcars, plot(mpg, wt))
 
 ![](vignettes/customize.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
-![](images/hex-conductor.png)
+![](images/altdoc_logo_web.png)
