@@ -1,27 +1,39 @@
 .import_readme <- function(src_dir, tar_dir, tool) {
 
-  # render .Rmd or .qmd file if available
-  fn_qmd <- fs::path_join(c(src_dir, "README.qmd"))
-  fn_rmd <- fs::path_join(c(src_dir, "README.Rmd"))
-  if (fs::file_exists(fn_qmd)) {
-    .qmd2md(fn_qmd, src_dir)
-  } else if (fs::file_exists(fn_rmd)) {
-    .qmd2md(fn_rmd, src_dir)
+  # order is important. We want to prioritize .qmd, so we do it last.
+
+  # no extension -> md
+  fn <- fs::path_join(c(src_dir, "README"))
+  if (fs::file_exists(fn)) {
+    fs::file_copy(fn, fs::path_join(c(src_dir, "README.md")))
   }
 
-  src_file <- fs::path_join(c(src_dir, "README.md"))
+  # rmd -> md
+  fn <- fs::path_join(c(src_dir, "README.Rmd"))
+  if (fs::file_exists(fn)) {
+    .qmd2md(fn, src_dir)
+  }
+
+  # qmd -> md
+  fn <- fs::path_join(c(src_dir, "README.qmd"))
+  if (fs::file_exists(fn)) {
+    .qmd2md(fn, src_dir)
+  }
+
+  # no README -> create a dummy
+  fn <- fs::path_join(c(src_dir, "README.md"))
+  if (!fs::file_exists(fn)) {
+    writeLines(c("", "Hello world!"), fn)
+  }
+
   if (tool == "quarto_website") {
     tar_file <- fs::path_join(c(tar_dir, "index.md"))
   } else {
     tar_file <- fs::path_join(c(tar_dir, "README.md"))
   }
 
-  # default readme is mandatory for some docs generators
-  if (!fs::file_exists(src_file)) {
-    writeLines(c("", "Hello world!"), src_file)
-  }
-
-  fs::file_copy(src_file, tar_file, overwrite = TRUE)
+  src_file <- fs::path_join(c(src_dir, "README.md"))
+  fs::file_copy(fn, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
 
   relative_links <- function(fn) {

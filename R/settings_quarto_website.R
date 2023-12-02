@@ -15,18 +15,30 @@
     settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
 
-    # copy README.md to _quarto/index.qmd
-    src <- fs::path_join(c(path, "README.qmd"))
-    tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
-    fs::file_copy(src, tar, overwrite = TRUE)
+    # copy README to _quarto/index.qmd
+    src_qmd <- fs::path_join(c(path, "README.qmd"))
+    src_rmd <- fs::path_join(c(path, "README.Rmd"))
+    src_md <- fs::path_join(c(path, "README.md"))
+    if (fs::file_exists(src_qmd)) {
+        tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
+        fs::file_copy(src_qmd, tar, overwrite = TRUE)
+    } else if (fs::file_exists(src_qmd)) {
+        tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
+        fs::file_copy(src_qmd, tar, overwrite = TRUE)
+    } else if (fs::file_exists(src_rmd)) {
+        tar <- fs::path_join(c(path, "_quarto"))
+        .qmd2md(src_rmd, tar)
+    }
 
     tmp <- fs::path_join(c(path, "_quarto", "docs"))
-    for (f in fs::dir_ls(tmp)) {
-        fs::file_move(f, fs::path_join(c(path, "_quarto")))
-    }
+    fs::dir_copy(tmp, fs::path_join(c(path, "_quarto")), overwrite = TRUE)
     fs::dir_delete(tmp)
 
-    quarto::quarto_render(input = fs::path_join(c(path, "_quarto")), quiet = !verbose, use_freezer = freeze)
+    quarto::quarto_render(
+        input = fs::path_join(c(path, "_quarto")),
+        quiet = !verbose,
+        as_job = FALSE,
+        use_freezer = freeze)
 
     # move _quarto/_site to docs/
     # allow book
