@@ -14,6 +14,17 @@
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
+  # copy the full content of the `man/` directory because developers often store
+  # static files there for their README and other files.
+  # but we don't want all those raw man pages.
+  fs::dir_copy(
+    fs::path_join(c(src_dir, "man")),
+    fs::path_join(c(tar_dir, "man"))
+  )
+  cruft <- fs::dir_ls(fs::path_join(c(tar_dir, "man")), pattern = "\\.Rd$")
+  cruft <- Filter(fs::is_file, cruft)
+  fs::file_delete(cruft)
+
   n <- length(man_source)
 
   cli::cli_alert_info("Found {n} man page{?s} to convert.")

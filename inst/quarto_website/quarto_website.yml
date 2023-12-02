@@ -11,8 +11,6 @@ website:
         aria-label: $ALTDOC_PACKAGE_NAME GitHub
   sidebar:
     contents:
-      - section: index.md
-        text: " "
       - section: $ALTDOC_VIGNETTE_BLOCK
       - section: $ALTDOC_MAN_BLOCK
       - section: Other

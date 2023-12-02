@@ -15,24 +15,15 @@
     settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
 
-    # copy README to _quarto/index.qmd
-    src_qmd <- fs::path_join(c(path, "README.qmd"))
-    src_rmd <- fs::path_join(c(path, "README.Rmd"))
-    src_md <- fs::path_join(c(path, "README.md"))
-    if (fs::file_exists(src_qmd)) {
-        tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
-        fs::file_copy(src_qmd, tar, overwrite = TRUE)
-    } else if (fs::file_exists(src_qmd)) {
-        tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
-        fs::file_copy(src_qmd, tar, overwrite = TRUE)
-    } else if (fs::file_exists(src_rmd)) {
-        tar <- fs::path_join(c(path, "_quarto"))
-        .qmd2md(src_rmd, tar)
-    }
-
     tmp <- fs::path_join(c(path, "_quarto", "docs"))
     fs::dir_copy(tmp, fs::path_join(c(path, "_quarto")), overwrite = TRUE)
     fs::dir_delete(tmp)
+
+    # index.md breaks rendering
+    fn <- fs::path_join(c(path, "_quarto", "index.md"))
+    if (fs::file_exists(fn)) {
+        fs::file_delete(fn)
+    }
 
     quarto::quarto_render(
         input = fs::path_join(c(path, "_quarto")),
@@ -54,7 +45,6 @@
     }
     fs::file_move(src, .doc_path(path))
 
-
 }
 
 
@@ -74,6 +64,7 @@
 
     # reverse order because we delete elements
     for (i in rev(seq_along(yml$website$sidebar$contents))) {
+        if (!"section" %in% names(yml$website$sidebar$contents[[i]])) next
         if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
             if (length(fn_vignettes) > 0) {
                 yml$website$sidebar$contents[[i]] <- list(section = "Articles", contents = fn_vignettes)
@@ -81,7 +72,7 @@
                 yml$website$sidebar$contents[[i]] <- NULL
             }
         } else if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_MAN_BLOCK")) {
-            if (length(fn_vignettes) > 0) {
+            if (length(fn_man) > 0) {
                 yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = fn_man)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
