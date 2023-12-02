@@ -274,5 +274,5 @@ The code and images in this section are inserted as a demonstration of images in
 with(mtcars, plot(mpg, wt))
 ```
 
-![](images/hex-conductor.png)
+![](images/altdoc_logo_web.png)
 
