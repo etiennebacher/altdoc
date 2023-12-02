@@ -17,7 +17,19 @@
   # qmd -> md
   fn <- fs::path_join(c(src_dir, "README.qmd"))
   if (fs::file_exists(fn)) {
-    .qmd2md(fn, src_dir)
+    if (tool == "quarto_website") {
+      # copy to quarto file
+      fs::file_copy(
+        fn,
+        fs::path_join(c(tar_dir, "index.qmd")),
+        overwrite = TRUE)
+      # process in-place for use on Github
+      .qmd2md(fn, src_dir)
+    } else {
+      .qmd2md(fn, src_dir)
+    }
+  } else if (tool == "quarto_website") {
+    cli::cli_abort("Quarto websites require a README.qmd file in the root of the package directory.", call = NULL)
   }
 
   # no README -> create a dummy
@@ -36,18 +48,18 @@
   fs::file_copy(fn, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
 
-  relative_links <- function(fn) {
-    content <- .readlines(fn)
-    # we try both syntaxes because it seems to depend on Quarto version or other
-    # system-dependent factor
-    content <- gsub('src="altdoc/', 'src="', content, fixed = TRUE)
-    content <- gsub("![](altdoc/", "![](", content, fixed = TRUE)
-    content <- gsub('src="README.markdown_strict_files/', 'src="man/figures/README/', content, fixed = TRUE)
-    content <- gsub("![](README.markdown_strict_files/", "![](man/figures/README/", content, fixed = TRUE)
-    writeLines(content, fn)
-  }
-  relative_links(tar_file) # for website
-  relative_links(src_file) # for CRAN
+  # relative_links <- function(fn) {
+  #   content <- .readlines(fn)
+  #   # we try both syntaxes because it seems to depend on Quarto version or other
+  #   # system-dependent factor
+  #   content <- gsub('src="altdoc/', 'src="', content, fixed = TRUE)
+  #   content <- gsub("![](altdoc/", "![](", content, fixed = TRUE)
+  #   content <- gsub('src="README.markdown_strict_files/', 'src="man/figures/README/', content, fixed = TRUE)
+  #   content <- gsub("![](README.markdown_strict_files/", "![](man/figures/README/", content, fixed = TRUE)
+  #   writeLines(content, fn)
+  # }
+  # relative_links(tar_file) # for website
+  # relative_links(src_file) # for CRAN
 
   .move_img_readme(path = src_dir, tool = tool)
 
@@ -64,31 +76,6 @@
   }
   is_quarto <- grepl("^quarto", tool)
 
-  # copy to docs/man/figures/README for website
-  if (is_quarto) {
-    tar_dir <- fs::path_join(c(path, "_quarto", "docs/man/figures/README"))
-  } else {
-    tar_dir <- fs::path_join(c(path, "docs/man/figures/README"))
-  }
-  fs::dir_copy(
-    src_dir,
-    tar_dir,
-    overwrite = TRUE
-  )
-
-  # copy to man/figures/README/ for CRAN
-  if (is_quarto) {
-    tar_dir <- fs::path_join(c(path, "_quarto", "man/figures/README"))
-  } else {
-    tar_dir <- fs::path_join(c(path, "man/figures/README"))
-  }
-  fs::dir_copy(
-    src_dir,
-    tar_dir,
-    overwrite = TRUE
-  )
-
   # cleanup
   fs::dir_delete(src_dir)
-
 }
