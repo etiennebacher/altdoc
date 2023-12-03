@@ -1,6 +1,8 @@
 
 # setup_github_actions
 
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/readme_fig_path/R/#L)
+
 Create a Github Actions workflow
 
 ## Description

@@ -48,34 +48,10 @@
   fs::file_copy(fn, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
 
-  # relative_links <- function(fn) {
-  #   content <- .readlines(fn)
-  #   # we try both syntaxes because it seems to depend on Quarto version or other
-  #   # system-dependent factor
-  #   content <- gsub('src="altdoc/', 'src="', content, fixed = TRUE)
-  #   content <- gsub("![](altdoc/", "![](", content, fixed = TRUE)
-  #   content <- gsub('src="README.markdown_strict_files/', 'src="man/figures/README/', content, fixed = TRUE)
-  #   content <- gsub("![](README.markdown_strict_files/", "![](man/figures/README/", content, fixed = TRUE)
-  #   writeLines(content, fn)
-  # }
-  # relative_links(tar_file) # for website
-  # relative_links(src_file) # for CRAN
-
-  .move_img_readme(path = src_dir, tool = tool)
+  tmp <- fs::path_join(c(src_dir, "README.markdown_strict_files"))
+  if (fs::dir_exists(tmp)) {
+    cli::cli_alert("We recommend using a `knitr` option to set the path of your images to `man/figures/README-`. This would ensure that images are properly stored and displayed on multiple platforms like CRAN, Github, and on your `altdoc` website.")
+  }
 
   cli::cli_alert_success("{.file README} imported.")
-}
-
-
-# Copy images/GIF that are in README in 'docs'
-
-.move_img_readme <- function(path = ".", tool) {
-  src_dir <- fs::path_join(c(path, "README.markdown_strict_files"))
-  if (!fs::dir_exists(src_dir)) {
-    return(invisible())
-  }
-  is_quarto <- grepl("^quarto", tool)
-
-  # cleanup
-  fs::dir_delete(src_dir)
 }

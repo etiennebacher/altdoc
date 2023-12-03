@@ -1,19 +1,4 @@
----
-title: Deploy
----
-Once you're happy with your `altdoc` setup, you can use `setup_github_actions()`
-to create the file `.github/workflows/altdoc.yaml`. This workflow will
-automatically run `render_docs()` on Github when you push to the `main` or
-`master` branch. The rendered documentation is then stored in the `gh-pages`
-branch, that you can use with the service of your choice to deploy your
-website, as explained below.
-
-Note that you don't have to use this Github action workflow. If you prefer, you
-can simply run `render_docs()` by yourself and push the changes to the branch of
-your choice. The workflow simply is here to make that systematically at each
-push to `main`/`master`.
-
-## Tools to deploy the website
+# Deploy
 
 `docsify.js`, `docute` and `mkdocs` documentations can be deployed with several
 tools. The authors of these documentation generators have all written detailed
@@ -25,13 +10,15 @@ guides to deployment, which you can read here:
 
 We'll just focus on GitHub Pages and Netlify here.
 
-### GitHub Pages
+## GitHub Pages
 
 Deploying package documentation to Github Pages is very convenient. With this
 strategy you can point readers to an address like `mypackage.github.io` or to a
 custom domain of your choice.
 
-The process is usually very simple:
+### Using the `main` branch and `docs/` directory
+
+The simplest way to deploy a website from Github is to use the `docs/` directory from the `main` (or `master`) branch of your repository. Thuis process is usually very simple:
 
 1. Go to your Github repository settings. 
 2. Click on "Pages" in the left sidebar. 
@@ -49,7 +36,22 @@ Detailed instructions are available on Github's website:
 * https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 [Github offers]
 
-### Netlify
+### Github Actions
+
+Once you're happy with your `altdoc` setup, you can use `setup_github_actions()`
+to create the file `.github/workflows/altdoc.yaml`. This workflow will
+automatically run `render_docs()` on Github when you push to the `main` or
+`master` branch. The rendered documentation is then stored in the `gh-pages`
+branch, that you can use with the service of your choice to deploy your
+website, as explained below.
+
+Note that you don't have to use this Github action workflow. If you prefer, you
+can simply run `render_docs()` by yourself and push the changes to the branch of
+your choice. The workflow simply is here to make that systematically at each
+push to `main`/`master`.
+
+
+## Netlify
 
 The process is the same as for deploying a blog made with `{blogdown}`, so we
 invite you to follow the steps described in the [`{blogdown}`
