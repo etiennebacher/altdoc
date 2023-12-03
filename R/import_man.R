@@ -21,7 +21,7 @@
   b <- fs::path_join(c(tar_dir, "man"))
   if (fs::file_exists(a)) {
     fs::dir_copy(a, b, overwrite = TRUE)
-    cruft <- fs::dir_ls(fs::path_join(c(tar_dir, "man")), pattern = "\\.Rd$")
+    cruft <- fs::dir_ls(fs::path_join(c(tar_dir, "man")), regexp = "\\.Rd$")
     cruft <- Filter(fs::is_file, cruft)
     fs::file_delete(cruft)
   }
