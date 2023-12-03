@@ -48,6 +48,7 @@ installation guides for details.
 
 `altdoc` makes assumptions about your package structure:
 
+-   `README.md` is the homepage of the website.
 -   `vignettes/` stores the vignettes in `.md`, `.Rmd` or `.qmd` format.
 -   `docs/` stores the rendered website. This folder is overwritten
     every time a user calls `render_docs()`, so you should not edit it
@@ -58,12 +59,35 @@ installation guides for details.
     documentation and website. All the files stored in `altdoc/` are
     copied to `docs/` and made available as static files in the root of
     the website.  
--   `README.md` is the homepage of the website.
 -   The content of the (optional) “news” section is stored in `NEWS.md`
     or `CHANGELOG.md`
 -   The content of the (optional) “code of conduct” section is stored in
     `CODE_OF_CONDUCT.md`.
 -   The license is stored in `LICENSE.md` or `LICENSE.md`.
+
+### README images
+
+When using a Rmarkdown or Quarto document to generate the README and
+Home Page of the package website, we recommend that you include this
+code chunk at the top of the document:
+
+```` markdown
+```{r}
+knitr::opts_chunk$set(
+  fig.path = "man/figures/README-"
+)
+```
+````
+
+This will store images in the `man/` and allow them to be displayed on
+CRAN, Github, as well as on the website.
+
+Static images can also be stored in `man/`, and linked using the normal
+syntax, ex:
+
+``` markdown
+![](man/figures/static_image.png)
+```
 
 ## Initialize
 
@@ -185,6 +209,6 @@ of images in Rmarkdown vignettes.
 with(mtcars, plot(mpg, wt))
 ```
 
-![](vignettes/get-started.markdown_strict_files/figure-markdown_strict/unnamed-chunk-1-1.png)
+![](vignettes/get-started.markdown_strict_files/figure-markdown_strict/unnamed-chunk-2-1.png)
 
 ![](images/altdoc_logo_web.png)
