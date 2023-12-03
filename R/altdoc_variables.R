@@ -31,7 +31,7 @@
         website_url <- Filter(function(x) !grepl("github.com", x), all_urls)
 
         if (length(website_url) > 0) {
-            x <- gsub("\\$ALTDOC_PACKAGE_URL", website_url, x)
+            x <- gsub("\\$ALTDOC_PACKAGE_URL", website_url[1], x)
         } else {
             x <- x[!grepl("\\$ALTDOC_PACKAGE_URL", x)]
         }
