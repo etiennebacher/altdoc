@@ -117,6 +117,7 @@
   )
   people <- gsub("^ ", "", people)
   people <- gsub("^\\(", "", people)
+  people <- unique(people)
 
   if (length(people) > 0) {
     people_link <- paste0("https://github.com/", gsub("@", "", people))
@@ -132,8 +133,8 @@
 
     for (i in seq_len(nrow(people_out))) {
       new_news <- gsub(
-        people_out[i, "in_text"],
-        people_out[i, "replacement"],
+        paste0("[^[]", people_out[i, "in_text"]),
+        paste0(" ", people_out[i, "replacement"]),
         new_news
       )
     }
