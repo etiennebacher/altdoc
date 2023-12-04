@@ -21,6 +21,51 @@ altered automatically by \code{altdoc} unless the user explicitly calls
 \code{overwrite=TRUE}. They can thus be edited manually to customize the sidebar and
 website.
 }
+\section{Package structure}{
+
+
+\code{altdoc} makes assumptions about your package structure:
+\itemize{
+\item The homepage of the website is stored in \code{README.qmd}, \code{README.Rmd}, or \code{README.md}.
+\item \verb{vignettes/} stores the vignettes in \code{.md}, \code{.Rmd} or \code{.qmd} format.
+\item \verb{docs/} stores the rendered website. This folder is overwritten every time a user calls \code{render_docs()}, so you should not edit it manually.
+\item \verb{altdoc/} stores the settings files created by \code{setup_docs()}. These files are never modified automatically after initialization, so you can edit them manually to customize the settings of your documentation and website. All the files stored in \verb{altdoc/} are copied to \verb{docs/} and made available as static files in the root of the website.
+\item These files are imported automatically: \code{NEWS.md}, \code{CHANGELOG.md}, \code{CODE_OF_CONDUCT.md}, \code{LICENSE.md}, \code{LICENCE.md}.
+}
+}
+
+\section{Altdoc variables}{
+
+
+The settings files in the \verb{altdoc/} directory can include \verb{$ALTDOC} variables which are replaced automatically by \code{altdoc} when calling \code{render_docs()}:
+\itemize{
+\item \verb{$ALTDOC_PACKAGE_NAME}: Name of the package from \code{DESCRIPTION}.
+\item \verb{$ALTDOC_PACKAGE_VERSION}: Version number of the package from \code{DESCRIPTION}
+\item \verb{$ALTDOC_PACKAGE_URL}: First URL listed in the DESCRIPTION file of the package.
+\item \verb{$ALTDOC_PACKAGE_URL_GITHUB}: First URL that contains "github.com" from the URLs listed in the DESCRIPTION file of the package. If no such URL is found, lines containing this variable are removed from the settings file.
+\item \verb{$ALTDOC_MAN_BLOCK}: Nested list of links to the individual help pages for each exported function of the package. The format of this block depends on the documentation generator.
+\item \verb{$ALTDOC_VIGNETTE_BLOCK}: Nested list of links to the vignettes. The format of this block depends on the documentation generator.
+\item \verb{$ALTDOC_VERSION}: Version number of the altdoc package.
+}
+
+Also note that you can store images and static files in the \verb{altdoc/} directory. All the files in this folder are copied to \verb{docs/} and made available in the root of the website, so you can link to them easily.
+}
+
+\section{Altdoc preambles}{
+
+
+When you call \code{render_docs()}, \code{altdoc} will automatically paste the content of one of these three files to the top of a document:
+\itemize{
+\item \code{altdoc/preamble_vignettes_qmd.yml}
+\item \code{altdoc/preamble_vignettes_rmd.yml}
+\item \code{altdoc/preamble_man_qmd.yml}
+}
+
+The README file uses the vignette preamble.
+
+To preempt this behavior, add your own preamble to the README file or to a vignette.
+}
+
 \examples{
 if (interactive()) {
 
