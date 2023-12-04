@@ -150,7 +150,7 @@
     return(NULL)
   }
   # find file and row location
-  fn <- try(eval(parse(text = paste0(.pkg_name("."), "::", fn))), silent = TRUE)
+  fn <- try(eval(parse(text = paste0(.pkg_name("."), ":::", fn))), silent = TRUE)
   if (inherits(fn, "try-error")) {
     return(NULL)
   }
