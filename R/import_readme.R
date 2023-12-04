@@ -11,12 +11,16 @@
   # rmd -> md
   fn <- fs::path_join(c(src_dir, "README.Rmd"))
   if (fs::file_exists(fn)) {
-    .qmd2md(fn, src_dir)
+    pre <- fs::path_join(c( src_dir, "altdoc/preamble_vignettes_rmd.yml"))
+    pre <- tryCatch(.readlines(pre), error = function(e) NULL)
+    .qmd2md(fn, src_dir, preamble = pre)
   }
 
   # qmd -> md
   fn <- fs::path_join(c(src_dir, "README.qmd"))
   if (fs::file_exists(fn)) {
+    pre <- fs::path_join(c( src_dir, "altdoc/preamble_vignettes_qmd.yml"))
+    pre <- tryCatch(.readlines(pre), error = function(e) NULL)
     if (tool == "quarto_website") {
       # copy to quarto file
       fs::file_copy(
@@ -24,9 +28,9 @@
         fs::path_join(c(tar_dir, "index.qmd")),
         overwrite = TRUE)
       # process in-place for use on Github
-      .qmd2md(fn, src_dir)
+      .qmd2md(fn, src_dir, preamble = pre)
     } else {
-      .qmd2md(fn, src_dir)
+      .qmd2md(fn, src_dir, preamble = pre)
     }
   } else if (tool == "quarto_website") {
     cli::cli_abort("Quarto websites require a README.qmd file in the root of the package directory.", call = NULL)
