@@ -29,6 +29,8 @@
 #'   - LICENCE.md, LICENCE.txt, LICENCE
 #'
 #' @return NULL
+#' @template altdoc_variables
+#' @template altdoc_preambles
 #'
 #' @examples
 #' if (interactive()) {

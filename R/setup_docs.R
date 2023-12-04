@@ -15,6 +15,9 @@
 #' @export
 #'
 #' @return NULL
+#' @template package_structure
+#' @template altdoc_variables
+#' @template altdoc_preambles
 #'
 #' @examples
 #' if (interactive()) {
