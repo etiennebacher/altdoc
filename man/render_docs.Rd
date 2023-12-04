@@ -50,6 +50,38 @@ This function searches the root directory and the \verb{inst/} directory for spe
 }
 }
 }
+\section{Altdoc variables}{
+
+
+The settings files in the \verb{altdoc/} directory can include \verb{$ALTDOC} variables which are replaced automatically by \code{altdoc} when calling \code{render_docs()}:
+\itemize{
+\item \verb{$ALTDOC_PACKAGE_NAME}: Name of the package from \code{DESCRIPTION}.
+\item \verb{$ALTDOC_PACKAGE_VERSION}: Version number of the package from \code{DESCRIPTION}
+\item \verb{$ALTDOC_PACKAGE_URL}: First URL listed in the DESCRIPTION file of the package.
+\item \verb{$ALTDOC_PACKAGE_URL_GITHUB}: First URL that contains "github.com" from the URLs listed in the DESCRIPTION file of the package. If no such URL is found, lines containing this variable are removed from the settings file.
+\item \verb{$ALTDOC_MAN_BLOCK}: Nested list of links to the individual help pages for each exported function of the package. The format of this block depends on the documentation generator.
+\item \verb{$ALTDOC_VIGNETTE_BLOCK}: Nested list of links to the vignettes. The format of this block depends on the documentation generator.
+\item \verb{$ALTDOC_VERSION}: Version number of the altdoc package.
+}
+
+Also note that you can store images and static files in the \verb{altdoc/} directory. All the files in this folder are copied to \verb{docs/} and made available in the root of the website, so you can link to them easily.
+}
+
+\section{Altdoc preambles}{
+
+
+When you call \code{render_docs()}, \code{altdoc} will automatically paste the content of one of these three files to the top of a document:
+\itemize{
+\item \code{altdoc/preamble_vignettes_qmd.yml}
+\item \code{altdoc/preamble_vignettes_rmd.yml}
+\item \code{altdoc/preamble_man_qmd.yml}
+}
+
+The README file uses the vignette preamble.
+
+To preempt this behavior, add your own preamble to the README file or to a vignette.
+}
+
 \examples{
 if (interactive()) {
 
