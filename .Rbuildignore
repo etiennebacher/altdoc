@@ -5,6 +5,7 @@
 ^LICENSE\.md$
 ^\.yarnrc$
 ^cran-comments\.md$
+^README.qmd$
 ^CRAN-RELEASE$
 \.gif$
 ^codecov\.yml$

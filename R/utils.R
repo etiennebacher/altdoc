@@ -93,9 +93,15 @@
   quarto_website <- fs::file_exists(fn)
 
   if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
-    cli::cli_abort("No documentation tool detected. Please run the {.code setup_docs()} function.")
+    cli::cli_abort(
+      "No documentation tool detected. Please run the {.code setup_docs()} function.",
+      .envir = parent.frame(sys.nframe() - 1)
+    )
   } else if (sum(c(mkdocs, docsify, docute, quarto_website)) > 1) {
-    cli::cli_abort("Settings detected for multiple output formats in `altdoc/`. Please remove all but one or run `setup_docs()` with `overwrite=TRUE`.")
+    cli::cli_abort(
+      "Settings detected for multiple output formats in `altdoc/`. Please remove all but one or run `setup_docs()` with `overwrite=TRUE`.",
+      .envir = parent.frame(sys.nframe() - 1)
+    )
   }
 
   if (mkdocs) return("mkdocs")
@@ -175,4 +181,13 @@
   x <- .readlines(fn)
   first_non_empty <- x[which(!x == "")[1]]
   grepl("^---\\w*", first_non_empty)
+}
+
+# find the head branch of git repository
+.find_head_branch <- function(path = ".") {
+  if (!fs::file_exists(".git/HEAD")) {
+    return(NULL)
+  }
+  branch <- .readlines(".git/HEAD")
+  gsub("^ref: refs/heads/", "", branch)
 }

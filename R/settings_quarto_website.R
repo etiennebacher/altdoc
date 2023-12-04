@@ -15,18 +15,21 @@
     settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
 
-    # copy README.md to _quarto/index.qmd
-    src <- fs::path_join(c(path, "README.qmd"))
-    tar <- fs::path_join(c(path, "_quarto", "index.qmd"))
-    fs::file_copy(src, tar, overwrite = TRUE)
-
     tmp <- fs::path_join(c(path, "_quarto", "docs"))
-    for (f in fs::dir_ls(tmp)) {
-        fs::file_move(f, fs::path_join(c(path, "_quarto")))
-    }
+    fs::dir_copy(tmp, fs::path_join(c(path, "_quarto")), overwrite = TRUE)
     fs::dir_delete(tmp)
 
-    quarto::quarto_render(input = fs::path_join(c(path, "_quarto")), quiet = !verbose, use_freezer = freeze)
+    # index.md breaks rendering
+    fn <- fs::path_join(c(path, "_quarto", "index.md"))
+    if (fs::file_exists(fn)) {
+        fs::file_delete(fn)
+    }
+
+    quarto::quarto_render(
+        input = fs::path_join(c(path, "_quarto")),
+        quiet = !verbose,
+        as_job = FALSE,
+        use_freezer = freeze)
 
     # move _quarto/_site to docs/
     # allow book
@@ -41,7 +44,6 @@
         fs::dir_delete(tar)
     }
     fs::file_move(src, .doc_path(path))
-
 
 }
 
@@ -62,6 +64,7 @@
 
     # reverse order because we delete elements
     for (i in rev(seq_along(yml$website$sidebar$contents))) {
+        if (!"section" %in% names(yml$website$sidebar$contents[[i]])) next
         if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
             if (length(fn_vignettes) > 0) {
                 yml$website$sidebar$contents[[i]] <- list(section = "Articles", contents = fn_vignettes)
@@ -69,7 +72,7 @@
                 yml$website$sidebar$contents[[i]] <- NULL
             }
         } else if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_MAN_BLOCK")) {
-            if (length(fn_vignettes) > 0) {
+            if (length(fn_man) > 0) {
                 yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = fn_man)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
@@ -83,5 +86,13 @@
 
 
 .sidebar_man_quarto_website <- function(sidebar, path, ...) {
+    # the sidebar should not include text entries with no associated link
+    # delete backwards to preserve order
+    for (i in rev(seq_along(sidebar$website$sidebar$contents))) {
+        tmp <- sidebar$website$sidebar$contents[[i]]
+        if ("text" %in% names(tmp) && !"file" %in% names(tmp)) {
+            sidebar$website$sidebar$contents[[i]] <- NULL
+        }
+    }
     return(sidebar)
 }

@@ -1,6 +1,6 @@
 # News
 
-## altdoc (development version)
+## (development version)
 
 Breaking changes:
 
@@ -19,6 +19,7 @@ New:
 * Support Quarto vignettes (.qmd) in the `vignettes/` folder.
 * `render_docs(parallel=TRUE)` uses `future` to parallelize the rendering of vignettes and man pages.
 * `render_docs(freeze = TRUE)` no longer renders vignettes or man pages when they have not changed and are already stored in `docs/`.
+* Link to source code at the top of function reference.
 * Settings files are now permanently stored in the `altdoc/` directory. These files can be edited manually to customize the website.
 * Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
 * `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
@@ -31,19 +32,19 @@ New:
 * Automatically create a Github Actions workflow with `setup_github_actions()`.
 * Skip .Rd files when they document internal functions.
 
-## altdoc 0.2.2
+## 0.2.2
 
 * If necessary, two spaces are automatically added in nested lists in the `NEWS` 
   (or `Changelog`) file. 
   
 * This is the last release before a large rework of this package.
 
-## altdoc 0.2.1
+## 0.2.1
 
 * Fix test failures on CRAN due to the new version of `usethis` 
   (see https://github.com/cynkra/fledge/issues/683).
 
-## altdoc 0.2.0 
+## 0.2.0 
 
 #### Breaking changes
 
@@ -77,6 +78,6 @@ New:
 * Fix some CRAN failures.
 
 
-## altdoc 0.1.0
+## 0.1.0
 
 * First version.
