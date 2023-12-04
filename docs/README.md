@@ -152,7 +152,7 @@ Docsify
 <code>plot2</code>
 </td>
 <td>
-🌐<a href="https://grantmcdermott.com/plot2"></a>grantmcdermott.com/plot2</a>
+🌐<a href="https://grantmcdermott.com/plot2">grantmcdermott.com/plot2</a>
 </td>
 <td>
 <a href="https://github.com/grantmcdermott/plot2/tree/main/altdoc">Altdoc
