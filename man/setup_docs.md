@@ -1,7 +1,7 @@
 
 # setup_docs
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/#L)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/setup_docs.R#L37)
 
 Initialize documentation website settings
 

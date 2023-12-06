@@ -1,7 +1,7 @@
 
 # setup_github_actions
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/#L)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/setup_github_actions.R#L17)
 
 Create a Github Actions workflow
 

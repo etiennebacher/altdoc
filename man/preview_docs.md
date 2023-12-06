@@ -1,7 +1,7 @@
 
 # preview_docs
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/#L)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/preview_docs.R#L20)
 
 Preview the documentation in a webpage or in viewer
 
