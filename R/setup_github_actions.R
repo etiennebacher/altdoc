@@ -25,18 +25,6 @@ setup_github_actions <- function(path = ".") {
   tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
   fs::file_copy(src, tar)
 
-  # Deal with mkdocs installation in workflow
-  doctype <- .doc_type(path)
-  workflow <- .readlines(tar)
-  start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
-  end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
-  if (doctype == "mkdocs") {
-    workflow <- workflow[-c(start, end)]
-  } else {
-    workflow <- workflow[-(start:end)]
-  }
-  writeLines(workflow, tar)
-
   invisible(desc::desc_set_dep("altdoc", "Suggests"))
 
   cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
