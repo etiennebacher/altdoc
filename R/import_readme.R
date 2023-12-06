@@ -19,7 +19,7 @@
   # qmd -> md
   fn <- fs::path_join(c(src_dir, "README.qmd"))
   if (fs::file_exists(fn)) {
-    pre <- fs::path_join(c( src_dir, "altdoc/preamble_vignettes_qmd.yml"))
+    pre <- fs::path_join(c(src_dir, "altdoc/preamble_vignettes_qmd.yml"))
     pre <- tryCatch(.readlines(pre), error = function(e) NULL)
     if (tool == "quarto_website") {
       # copy to quarto file
