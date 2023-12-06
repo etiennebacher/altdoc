@@ -38,6 +38,7 @@ jobs:
       - name: Build site
         run: |
           install.packages(".", repos = NULL, type = "source")
+          library(altdoc:::.pkg_name("."))
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 
