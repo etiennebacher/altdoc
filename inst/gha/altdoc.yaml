@@ -45,6 +45,8 @@ jobs:
         run: |
           future::plan(future::multicore)
           install.packages(".", repos = NULL, type = "source")
+          install.packages("pkgload")
+          pkgload::load_all()
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 

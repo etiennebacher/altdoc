@@ -154,12 +154,9 @@
   if (inherits(fn, "try-error")) {
     return(NULL)
   }
-  print(fn)
   line <- utils::getSrcLocation(fn, "line")
   file <- paste0("R/", utils::getSrcFilename(fn))
-  print(utils:::getSrcfile(fn))
-  print(line)
-  print(file)
+
   # build URL
   gh_link <- .gh_url(".")
   if (is.na(gh_link)) {
