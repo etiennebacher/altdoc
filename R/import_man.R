@@ -157,6 +157,7 @@
   print(fn)
   line <- utils::getSrcLocation(fn, "line")
   file <- paste0("R/", utils::getSrcFilename(fn))
+  print(utils:::getSrcfile(fn))
   print(line)
   print(file)
   # build URL
