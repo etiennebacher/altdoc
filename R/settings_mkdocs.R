@@ -1,15 +1,13 @@
 .finalize_mkdocs <- function(settings, path, ...) {
     # fix links
     settings <- gsub(": \\/", ": ", settings)
-    settings <- gsub("\\.md$", "", settings)
 
     # Fix vignette relative links before calling `mkdocs`
     vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
         pattern = "\\.md")
-    vignettes <- gsub("\\.md$", "", vignettes)
     for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/vignettes/"),
@@ -27,9 +25,8 @@
     man <- list.files(
         fs::path_join(c(.doc_path(path), "man")),
         pattern = "\\.md")
-    man <- gsub("\\.md$", "", man)
     for (v in man) {
-        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "man", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/man/"),
@@ -79,19 +76,10 @@
         system2("cd", goback)
     }
 
-    # move to docs/
-    fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-    tmp <- fs::path_join(c(path, "site/"))
-    src <- fs::dir_ls(tmp, recurse = TRUE)
-    tar <- sub("site\\/", "docs\\/", src)
-    for (i in seq_along(src)) {
-        fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
-        if (fs::is_file(src[i])) {
-            fs::file_copy(src[i], tar[i], overwrite = TRUE)
-        }
-    }
-    fs::dir_delete(fs::path_join(c(path, "site")))
-
+    # cleanup
+    fs::file_delete(fs::path_join(c(path, "mkdocs.yml")))
+    fs::dir_delete(fs::path_join(c(path, "docs")))
+    fs::file_move(c(path, "site"), c(path, "docs"))
 }
 
 

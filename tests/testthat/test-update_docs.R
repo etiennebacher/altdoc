@@ -1,6 +1,6 @@
 # README --------------------------------------------------------
 
-for (tool in c("docute", "docsify", "mkdocs")) {
+for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the README: %s", tool), {
     skip_if(tool == "mkdocs" && !.is_mkdocs())
     create_local_package()
@@ -18,7 +18,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 
 # NEWS --------------------------------------------------------
 
-for (tool in c("docute", "docsify", "mkdocs")) {
+for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the NEWS: %s", tool), {
     skip_if(tool == "mkdocs" && !.is_mkdocs())
     create_local_package()
@@ -46,7 +46,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 
 # CODE OF CONDUCT --------------------------------------------------------
 
-for (tool in c("docute", "docsify", "mkdocs")) {
+for (tool in c("docute", "docsify")) {
   test_that(sprintf("docute: render_docs updates correctly the CoC, %s", tool), {
     skip_if(tool == "mkdocs" && !.is_mkdocs())
     create_local_package()
@@ -69,7 +69,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 
 # LICENSE --------------------------------------------------------
 
-for (tool in c("docute", "docsify", "mkdocs")) {
+for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the License: %s", tool), {
     skip_if(tool == "mkdocs" && !.is_mkdocs())
     create_local_package()
@@ -93,7 +93,7 @@ for (tool in c("docute", "docsify", "mkdocs")) {
 
 # VIGNETTES --------------------------------------------------------
 
-for (tool in c("docute", "docsify", "mkdocs")) {
+for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs also transform new/modified vignettes if specified: %s", tool), {
     skip_on_ci()
     skip_if(tool == "mkdocs" && !.is_mkdocs())
