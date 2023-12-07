@@ -78,8 +78,8 @@
 
     # cleanup
     fs::file_delete(fs::path_join(c(path, "mkdocs.yml")))
-    fs::dir_delete("docs")
-    fs::file_move("site", "docs")
+    fs::dir_delete(fs::path_join(c(path, "docs")))
+    fs::file_move(c(path, "site"), c(path, "docs"))
 }
 
 
