@@ -1,15 +1,13 @@
 .finalize_mkdocs <- function(settings, path, ...) {
     # fix links
     settings <- gsub(": \\/", ": ", settings)
-    settings <- gsub("\\.md$", "", settings)
 
     # Fix vignette relative links before calling `mkdocs`
     vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
         pattern = "\\.md")
-    vignettes <- gsub("\\.md$", "", vignettes)
     for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/vignettes/"),
@@ -27,9 +25,8 @@
     man <- list.files(
         fs::path_join(c(.doc_path(path), "man")),
         pattern = "\\.md")
-    man <- gsub("\\.md$", "", man)
     for (v in man) {
-        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "man", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/man/"),
