@@ -1,4 +1,9 @@
-.is_frozen <- function(input, hashes) {
+.read_freeze <- function(input, output, hashes) {
+
+    if (!fs::file_exists(input) || !fs::file_exists(output) ||is.null(hashes)) {
+        return(FALSE)
+    }
+
     out <- FALSE
     if (input %in% names(hashes)) {
         old <- hashes[[input]]

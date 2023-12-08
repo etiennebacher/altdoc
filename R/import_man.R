@@ -57,7 +57,7 @@
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
-      flag <- .is_frozen(input = origin_Rd, hashes = hashes)
+      flag <- .read_freeze(input = origin_Rd, output = destination_md, hashes = hashes)
       if (isTRUE(flag)) {
         return("skip")
       }

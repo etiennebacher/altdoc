@@ -96,7 +96,7 @@
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
-      flag <- .is_frozen(input = origin, hashes = hashes)
+      flag <- .read_freeze(input = origin, output = gsub("\\.Rmd$|\\.qmd$", ".md", destination), hashes = hashes)
       if (isTRUE(flag)) {
         return("skip")
       }
