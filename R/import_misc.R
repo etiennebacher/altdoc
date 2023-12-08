@@ -111,10 +111,11 @@
 
 
   ### People
-
+  # regex from https://github.com/r-lib/pkgdown/blob/main/R/repo.R
   people <- unlist(
-    regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))
+    regmatches(orig_news, gregexpr("(\\s|^|\\()@([-\\w]+)", orig_news, perl = TRUE))
   )
+
   people <- gsub("^ ", "", people)
   people <- gsub("^\\(", "", people)
   people <- unique(people)
