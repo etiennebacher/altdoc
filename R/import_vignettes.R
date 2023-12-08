@@ -69,6 +69,15 @@
 
   fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
+  # Read the hashes, used if freeze = TRUE
+  freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
+  if (isTRUE(freeze) && fs::file_exists(freeze_file)) {
+    .assert_dependency("digest", install = TRUE)
+    hashes <- readRDS(freeze_file)
+  } else {
+    hashes <- NULL
+  }
+
   render_one_vignette <- function(i) {
 
     worked <- FALSE
@@ -87,12 +96,7 @@
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
-      flag <- .read_freeze(
-        input = origin,
-        output = gsub("\\.Rmd$|\\.qmd$", ".md", destination),
-        path = src_dir,
-        freeze = freeze
-      )
+      flag <- .is_frozen(input = origin, hashes = hashes)
       if (isTRUE(flag)) {
         return("skip")
       }
@@ -122,7 +126,11 @@
 
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
-    conversion_worked <- future.apply::future_sapply(seq_along(src_files), render_one_vignette, future.seed = NULL)
+    conversion_worked <- future.apply::future_sapply(
+      seq_along(src_files),
+      render_one_vignette,
+      future.seed = NULL
+    )
   } else {
     i <- 0
     cli::cli_progress_step("Converting vignette {i}/{n}: {basename(src_files[i])}", spinner = TRUE)

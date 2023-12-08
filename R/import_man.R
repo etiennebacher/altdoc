@@ -30,6 +30,15 @@
 
   cli::cli_alert_info("Found {n} man page{?s} to convert.")
 
+  # Read the hashes, used if freeze = TRUE
+  freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
+  if (isTRUE(freeze) && fs::file_exists(freeze_file)) {
+    .assert_dependency("digest", install = TRUE)
+    hashes <- readRDS(freeze_file)
+  } else {
+    hashes <- NULL
+  }
+
   render_one_man <- function(fn) {
     # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
     origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
@@ -40,19 +49,15 @@
     # Skip internal functions
     flag <- tryCatch(
       any(grepl("\\keyword\\{internal\\}", .readlines(origin_Rd))),
-      error = function(e) FALSE)
+      error = function(e) FALSE
+    )
     if (isTRUE(flag)) {
       return("skipped")
     }
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
-      flag <- .read_freeze(
-        input = origin_Rd,
-        output = destination_md,
-        path = src_dir,
-        freeze = freeze
-      )
+      flag <- .is_frozen(input = origin_Rd, hashes = hashes)
       if (isTRUE(flag)) {
         return("skip")
       }
