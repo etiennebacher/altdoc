@@ -70,10 +70,14 @@
   fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
   # Read the hashes, used if freeze = TRUE
-  freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
-  if (isTRUE(freeze) && fs::file_exists(freeze_file)) {
-    .assert_dependency("digest", install = TRUE)
-    hashes <- readRDS(freeze_file)
+  if (isTRUE(freeze)) {
+    freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
+    if (fs::file_exists(freeze_file)) {
+      .assert_dependency("digest", install = TRUE)
+      hashes <- readRDS(freeze_file)
+    } else {
+      hashes <- NULL
+    }
   } else {
     hashes <- NULL
   }
