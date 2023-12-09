@@ -31,6 +31,8 @@ test_that("rendering skipped because internal", {
 })
 
 test_that("rendering skipped because unchanged and freeze = TRUE", {
+  # writing freeze.rds is disabled in CI
+  skip_on_ci()
   source <- test_path("examples/examples-man/between.Rd")
   dest <- tempfile(fileext = ".Rd")
   fs::file_copy(source, dest)
