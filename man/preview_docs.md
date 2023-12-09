@@ -1,9 +1,7 @@
 
-# preview_docs
+# Preview the documentation in a webpage or in viewer
 
 [**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/preview_docs.R#L20)
-
-Preview the documentation in a webpage or in viewer
 
 ## Description
 
