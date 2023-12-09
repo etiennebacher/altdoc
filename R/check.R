@@ -2,13 +2,12 @@
 
 .check_is_package <- function(path) {
   if (!.dir_is_package(path)) {
-    cli::cli_alert_danger("{.code altdoc} only works in packages.")
-    .stop_quietly()
+    cli::cli_abort("{.code altdoc} only works in packages.")
   }
 }
 
 
-# 
+#
 # Check that mkdocs/sphinx are installed -------------------------
 
 .check_tools <- function(tool) {
