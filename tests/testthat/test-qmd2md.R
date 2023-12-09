@@ -8,22 +8,8 @@ test_that("use template preamble if no preamble in file", {
   preamble <- .readlines("altdoc/preamble_vignettes_qmd.yml")
   vignette_qmd <- list.files("vignettes", full.names = TRUE)[1]
 
-  tar_file <- fs::path_join(c("vignettes", basename(vignette_qmd)))
-  print(
-    quarto::quarto_render(
-      input = path.expand(tar_file),
-      output_format = "md",
-      quiet = FALSE,
-      as_job = FALSE
-    )
-  )
-
   .qmd2md(vignette_qmd, "vignettes", preamble = preamble)
-
   vignette_md <- list.files("vignettes", full.names = TRUE, pattern = "\\.md$")[1]
-  print(vignette_md)
-  print(fs::file_exists(vignette_md))
-  print(list.files("vignettes"))
 
   # we use our preamble so quarto shouldn't automatically add the ".png" extension
   content <- .readlines(vignette_md)
