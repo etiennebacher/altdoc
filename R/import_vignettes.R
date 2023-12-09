@@ -113,7 +113,11 @@
       worked <- .qmd2md(origin, tar_dir, verbose = verbose, preamble = pre)
     }
 
-    .write_freeze(input = origin, path = src_dir, freeze = freeze, worked = worked)
+    # do not try to read/write the RDS file if we run in CI because the updated
+    # RDS won't be available to us anyway
+    if (!.on_ci()) {
+      .write_freeze(input = origin, path = src_dir, freeze = freeze, worked = worked)
+    }
 
     return(ifelse(worked, "success", "failure"))
   }
