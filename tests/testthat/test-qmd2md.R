@@ -7,7 +7,7 @@ test_that("use template preamble if no preamble in file", {
   fs::file_copy(source, "vignettes")
   preamble <- .readlines("altdoc/preamble_vignettes_qmd.yml")
   vignette_qmd <- list.files("vignettes", full.names = TRUE)[1]
-  .qmd2md(vignette_qmd, "vignettes", preamble = preamble)
+  .qmd2md(vignette_qmd, fs::path_abs("vignettes"), preamble = preamble)
 
   vignette_md <- list.files("vignettes", full.names = TRUE, pattern = "\\.md$")[1]
 
@@ -25,7 +25,7 @@ test_that("do not use template preamble if preamble in file", {
   fs::file_copy(source, "vignettes")
   preamble <- .readlines("altdoc/preamble_vignettes_qmd.yml")
   vignette_qmd <- list.files("vignettes", full.names = TRUE)[1]
-  .qmd2md(vignette_qmd, "vignettes", preamble = preamble)
+  .qmd2md(vignette_qmd, fs::path_abs("vignettes"), preamble = preamble)
 
   vignette_md <- list.files("vignettes", full.names = TRUE, pattern = "\\.md$")[1]
 
