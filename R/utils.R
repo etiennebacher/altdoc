@@ -196,3 +196,7 @@
   branch <- .readlines(".git/HEAD")
   gsub("^ref: refs/heads/", "", branch)
 }
+
+.on_ci <- function() {
+  isTRUE(as.logical(Sys.getenv("CI", "false")))
+}
