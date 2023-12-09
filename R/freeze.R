@@ -30,3 +30,14 @@
 
     saveRDS(hashes, freeze_file)
 }
+
+.get_hashes <- function(src_dir, freeze) {
+    hashes <- NULL
+    if (isTRUE(freeze)) {
+        freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
+        if (fs::file_exists(freeze_file)) {
+            .assert_dependency("digest", install = TRUE)
+            hashes <- readRDS(freeze_file)
+        }
+    }
+}

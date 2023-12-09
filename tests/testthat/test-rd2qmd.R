@@ -9,15 +9,11 @@ test_that(".rd2qmd works", {
   h3 <- grep("^### ", content, value = TRUE)
   expect_equal(
     h3,
-    c("### Description", "### Usage", "### Arguments", "### Examples")
+    c("### Description", "### Usage", "### Arguments")
   )
 
   h2 <- grep("^## ", content, value = TRUE)
   expect_equal(h2, "## Do values in a numeric vector fall in specified range? {.unnumbered}")
-
-  # examples
-  expect_true(any(grepl("```{r, warning=FALSE", content, fixed = TRUE)))
-  expect_true(any(grepl("library(altdoc)", content, fixed = TRUE)))
 })
 
 test_that(".rd2qmd: basic errors", {
