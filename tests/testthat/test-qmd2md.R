@@ -10,6 +10,9 @@ test_that("use template preamble if no preamble in file", {
   .qmd2md(vignette_qmd, fs::path_abs("vignettes"), preamble = preamble)
 
   vignette_md <- list.files("vignettes", full.names = TRUE, pattern = "\\.md$")[1]
+  print(vignette_md)
+  print(fs::file_exists(vignette_md))
+  print(list.files("vignettes"))
 
   # we use our preamble so quarto shouldn't automatically add the ".png" extension
   content <- .readlines(vignette_md)
