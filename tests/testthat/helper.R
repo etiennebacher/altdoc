@@ -62,7 +62,7 @@ create_local_thing <- function(
     },
     envir = env
   )
-  ui_silence(
+  usethis::ui_silence(
     switch(thing,
       package = create_package(dir, rstudio = rstudio, open = FALSE, check_name = FALSE),
       project = create_project(dir, rstudio = rstudio, open = FALSE)

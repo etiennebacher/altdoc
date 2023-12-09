@@ -1,0 +1,13 @@
+---
+date: 2054-12-12
+---
+
+# first section
+
+hello there, this document *does have* a preamble
+
+# path
+
+here's a path to a badge: [![R-universe status
+badge](https://grantmcdermott.r-universe.dev/badges/plot2)](https://grantmcdermott.r-universe.dev)
+

@@ -72,18 +72,24 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (!fs::dir_exists(altdoc_dir)) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
-  } else if (isTRUE(overwrite)) {
-    # start from zero when the setup is overwritten
-    fs::dir_delete(docs_dir)
+  } else {
+    if (isTRUE(overwrite)) {
+      # start from zero when the setup is overwritten
+      fs::dir_delete(docs_dir)
 
-    file_names <- c(
-      "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
-    )
-    for (file_name in file_names) {
-      file_name <- fs::path_join(c(altdoc_dir, file_name))
-      if (fs::file_exists(file_name)) {
-        fs::file_delete(file_name)
+      file_names <- c(
+        "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
+      )
+      for (file_name in file_names) {
+        file_name <- fs::path_join(c(altdoc_dir, file_name))
+        if (fs::file_exists(file_name)) {
+          fs::file_delete(file_name)
+        }
       }
+    } else {
+      cli::cli_abort(
+        "{.file {altdoc_dir}} already exists. Delete it or set `overwrite=TRUE`."
+      )
     }
   }
 
