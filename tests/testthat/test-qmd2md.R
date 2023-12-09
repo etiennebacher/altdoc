@@ -8,6 +8,7 @@ test_that("use template preamble if no preamble in file", {
   preamble <- .readlines("altdoc/preamble_vignettes_qmd.yml")
   vignette_qmd <- list.files("vignettes", full.names = TRUE)[1]
 
+  tar_file <- fs::path_join(c("vignettes", basename(vignette_qmd)))
   print(
     quarto::quarto_render(
       input = path.expand(tar_file),
