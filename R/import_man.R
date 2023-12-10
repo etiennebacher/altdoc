@@ -63,7 +63,7 @@
         cli::cli_progress_update(inc = 1)
         out
       },
-      FUN.VALUE = logical(1L)
+      FUN.VALUE = character(1L)
     )
   }
 
