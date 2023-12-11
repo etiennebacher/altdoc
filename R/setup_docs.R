@@ -61,7 +61,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       cli::cli_abort(
         c(
           "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
-          "i" = "See `{.url https://docs.python.org/3/library/venv.html#how-venvs-work}` to know how to create a virtual environment."
+          "i" = "More information: `{.url https://docs.python.org/3/library/venv.html#how-venvs-work}`."
         )
       )
     }
