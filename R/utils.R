@@ -14,6 +14,10 @@
   .Platform$OS.type == "windows"
 }
 
+.venv_exists <- function(path = ".") {
+  fs::dir_exists(fs::path_abs(".venv", start = path))
+}
+
 # this will give priority to the .venv folder if there is one in the package
 # root directory, and it will pick the more general installation otherwise
 .python_installation <- function() {
@@ -28,7 +32,14 @@
 
 # Is mkdocs installed?
 .is_mkdocs <- function() {
-  x <- try(system2(.python_installation(), args = "-m mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  if (!.venv_exists()) {
+    return(FALSE)
+  }
+  if (.is_windows()) {
+    x <- try(shell(".venv\\Scripts\\activate.bat && mkdocs", intern = TRUE), silent = TRUE)
+  } else {
+    x <- try(system2("bash", "source .venv/bin/activate mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
+  }
   return(!inherits(x, "try-error"))
 }
 
