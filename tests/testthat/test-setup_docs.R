@@ -46,7 +46,7 @@ test_that("overwrite=TRUE works: docsify", {
 })
 
 test_that("overwrite=TRUE works: mkdocs", {
-    skip_if_not(.is_mkdocs())
+    skip_if_not(.venv_exists()())
     create_local_package()
     setup_docs(tool = "mkdocs", path = getwd())
     cat("Cruft", file = "altdoc/mkdocs.yml", append = TRUE)

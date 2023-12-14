@@ -61,16 +61,9 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       cli::cli_abort(
         c(
           "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
-          "i" = "More information: `{.url https://docs.python.org/3/library/venv.html#how-venvs-work}`."
-        )
-      )
-    }
-    if (!.is_mkdocs()) {
-      cli::cli_abort(
-        c(
-          "Apparently, {.code mkdocs} is not installed on your system.",
-          "i" = "You can install it with {.code pip3 install mkdocs} in your terminal.",
-          "i" = "More information: {.url https://www.mkdocs.org/user-guide/installation/}"
+          "i" = "Set up a Python venv: {.code python -m venv .venv_altdoc}",
+          "i" = "Activate the venv (depends on your OS): {.url https://docs.python.org/3/library/venv.html#how-venvs-work}.",
+          "i" = "Install `mkdocs`: {.code pip install mkdocs}"
         )
       )
     }

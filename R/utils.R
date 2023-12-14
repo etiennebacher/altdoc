@@ -15,7 +15,7 @@
 }
 
 .venv_exists <- function(path = ".") {
-  fs::dir_exists(fs::path_abs(".venv", start = path))
+  fs::dir_exists(fs::path_abs(".venv_altdoc", start = path))
 }
 
 # this will give priority to the .venv folder if there is one in the package
@@ -27,25 +27,6 @@
 # Is pip3 installed?
 .is_pip3 <- function() {
   x <- try(system2("pip3", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  return(!inherits(x, "try-error"))
-}
-
-# Is mkdocs installed?
-.is_mkdocs <- function() {
-  if (!.venv_exists()) {
-    return(FALSE)
-  }
-  if (.is_windows()) {
-    x <- try(shell(".venv\\Scripts\\activate.bat && mkdocs", intern = TRUE), silent = TRUE)
-  } else {
-    x <- try(system2("bash", "source .venv/bin/activate mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  }
-  return(!inherits(x, "try-error"))
-}
-
-# Is sphinx installed?
-.is_sphinx <- function() {
-  x <- try(system2("sphinx-build", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
   return(!inherits(x, "try-error"))
 }
 
