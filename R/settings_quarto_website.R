@@ -73,7 +73,11 @@
             }
         } else if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_MAN_BLOCK")) {
             if (length(fn_man) > 0) {
-                yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = fn_man)
+                man_list <- lapply(fn_man, function(x) list(
+                    text = sub("\\.qmd$", "", basename(x)),
+                    file = x
+                ))
+                yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = man_list)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
             }
@@ -96,3 +100,5 @@
     }
     return(sidebar)
 }
+
+
