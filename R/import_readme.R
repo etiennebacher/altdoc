@@ -20,7 +20,11 @@
   fn <- fs::path_join(c(src_dir, "README.qmd"))
   if (fs::file_exists(fn)) {
     pre <- fs::path_join(c(src_dir, "altdoc/preamble_vignettes_qmd.yml"))
-    pre <- tryCatch(.readlines(pre), error = function(e) NULL)
+    if (fs::file_exists(pre)) {
+      pre <- tryCatch(.readlines(pre), error = function(e) NULL)
+    } else {
+      pre <- ""
+    }
     if (tool == "quarto_website") {
       # copy to quarto file
       fs::file_copy(
@@ -29,6 +33,8 @@
         overwrite = TRUE)
       # process in-place for use on Github
       .qmd2md(fn, src_dir, preamble = pre)
+      cli::cli_alert_success("{.file README} imported.")
+      return(invisible())
     } else {
       .qmd2md(fn, src_dir, preamble = pre)
     }
