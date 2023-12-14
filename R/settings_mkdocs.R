@@ -71,7 +71,7 @@
         shell(paste("cd", goback))
     } else {
         goback <- getwd()
-        cmd <- paste(fs::path_abs(path), "&& .venv_altdoc/bin/activate && -m mkdocs build -q")
+        cmd <- paste(fs::path_abs(path), "&& .venv_altdoc/bin/activate && mkdocs build -q")
         system2("cd", cmd)
         system2("cd", goback)
     }
