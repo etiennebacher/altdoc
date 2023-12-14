@@ -2,7 +2,7 @@
 
 for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the README: %s", tool), {
-    skip_if(tool == "mkdocs" && !.venv_exists()())
+    skip_if(tool == "mkdocs" && !.venv_exists())
     create_local_package()
     setup_docs(tool = tool, path = getwd())
     usethis::use_readme_md(open = FALSE)
@@ -20,7 +20,7 @@ for (tool in c("docute", "docsify")) {
 
 for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the NEWS: %s", tool), {
-    skip_if(tool == "mkdocs" && !.venv_exists()())
+    skip_if(tool == "mkdocs" && !.venv_exists())
     create_local_package()
     # https://github.com/cynkra/fledge/issues/683
     withr::with_options(
@@ -48,7 +48,7 @@ for (tool in c("docute", "docsify")) {
 
 for (tool in c("docute", "docsify")) {
   test_that(sprintf("docute: render_docs updates correctly the CoC, %s", tool), {
-    skip_if(tool == "mkdocs" && !.venv_exists()())
+    skip_if(tool == "mkdocs" && !.venv_exists())
     create_local_package()
     usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
     writeLines("Hello", con = "CODE_OF_CONDUCT.md")
@@ -71,7 +71,7 @@ for (tool in c("docute", "docsify")) {
 
 for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs updates correctly the License: %s", tool), {
-    skip_if(tool == "mkdocs" && !.venv_exists()())
+    skip_if(tool == "mkdocs" && !.venv_exists())
     create_local_package()
     usethis::use_mit_license("etienne.bacher@protonmail.com")
     writeLines("Hello", con = "LICENSE.md")
@@ -96,7 +96,7 @@ for (tool in c("docute", "docsify")) {
 for (tool in c("docute", "docsify")) {
   test_that(sprintf("render_docs also transform new/modified vignettes if specified: %s", tool), {
     skip_on_ci()
-    skip_if(tool == "mkdocs" && !.venv_exists()())
+    skip_if(tool == "mkdocs" && !.venv_exists())
     # setup
     first_rmd <- .readlines(
       testthat::test_path("examples/examples-vignettes", "basic.Rmd")
