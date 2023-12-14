@@ -20,8 +20,12 @@
 
 # this will give priority to the .venv folder if there is one in the package
 # root directory, and it will pick the more general installation otherwise
-.python_installation <- function() {
-  Sys.which("python")
+.venv_activate <- function(path = ".") {
+  if (.is_windows()) {
+    fs::path_join(c(path, ".venv_altdoc\\Scripts\\activate.bat"))
+  } else {
+    paste("source", fs::path_join(c(path, ".venv_altdoc/bin/activate")))
+  }
 }
 
 # Is pip3 installed?

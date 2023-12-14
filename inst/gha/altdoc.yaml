@@ -41,8 +41,10 @@ jobs:
 
       - name: Install Mkdocs and its dependencies
         run: |
-          python3 -m pip install --upgrade pip     # install pip
-          python3 -m pip install mkdocs            # install mkdocs
+          python -m venv .venv_altdoc
+          source .venv_altdoc/bin/activate
+          pip install --upgrade pip     # install pip
+          pip install mkdocs            # install mkdocs
 
       # Uncomment this if you use "theme: material" in `altdoc/mkdocs.yml`
       # - name: Install Material for Mkdocs

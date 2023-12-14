@@ -66,12 +66,12 @@
         ### TODO: (cd <path> && python3 -m mkdocs build -q) should automatically go back to the previous directory
         ### https://stackoverflow.com/questions/10382141/temporarily-change-current-working-directory-in-bash-to-run-a-command
         goback <- fs::path_abs(getwd())
-        cmd <- paste("cd", fs::path_abs(path), "&&", .python_installation(), "-m mkdocs build -q")
+        cmd <- paste("cd", fs::path_abs(path), "&& .venv_altdoc\\Scripts\\activate.bat &&", " mkdocs build -q")
         shell(cmd)
         shell(paste("cd", goback))
     } else {
         goback <- getwd()
-        cmd <- paste(fs::path_abs(path), "&&", .python_installation(), "-m mkdocs build -q")
+        cmd <- paste(fs::path_abs(path), "&& .venv_altdoc/bin/activate && -m mkdocs build -q")
         system2("cd", cmd)
         system2("cd", goback)
     }
