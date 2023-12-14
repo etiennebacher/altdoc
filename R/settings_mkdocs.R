@@ -71,9 +71,15 @@
         shell(paste("cd", goback))
     } else {
         goback <- getwd()
-        cmd <- paste(fs::path_abs(path), "&& source .venv_altdoc/bin/activate && mkdocs build -q")
-        system2("cd", cmd)
-        system2("cd", goback)
+        # browser()
+        system2(
+          "bash",
+          paste0(
+            "-c 'source ",
+            fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
+            " && python3 -m mkdocs build -q'"
+          )
+        )
     }
 
     # move to docs/

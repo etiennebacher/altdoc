@@ -63,7 +63,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
           "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
           "i" = "Set up a Python venv: {.code python -m venv .venv_altdoc}",
           "i" = "Activate the venv (depends on your OS): {.url https://docs.python.org/3/library/venv.html#how-venvs-work}.",
-          "i" = "Install `mkdocs`: {.code pip install mkdocs}"
+          "i" = "Install `mkdocs`: {.code python3 -m pip install mkdocs}"
         )
       )
     }
