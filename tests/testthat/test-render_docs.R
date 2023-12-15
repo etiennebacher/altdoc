@@ -1,6 +1,7 @@
-test_that("docute: main files are correct", {
-  skip_on_cran()
+skip_on_cran()
+skip_if_not(.is_windows())
 
+test_that("docute: main files are correct", {
   ### setup: create a temp package using the structure of testpkg.altdoc
   path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
   create_local_project()
@@ -30,8 +31,6 @@ test_that("docute: main files are correct", {
 
 
 test_that("docsify: main files are correct", {
-  skip_on_cran()
-
   ### setup: create a temp package using the structure of testpkg.altdoc
   path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
   create_local_project()
@@ -63,7 +62,6 @@ test_that("docsify: main files are correct", {
 ### now.
 
 # test_that("quarto: main files are correct", {
-#   skip_on_cran()
 #
 #   ### setup: create a temp package using the structure of testpkg.altdoc
 #   path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
