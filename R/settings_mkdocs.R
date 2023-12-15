@@ -63,15 +63,14 @@
 
     # render mkdocs
     if (.is_windows()) {
-        ### TODO: (cd <path> && python3 -m mkdocs build -q) should automatically go back to the previous directory
-        ### https://stackoverflow.com/questions/10382141/temporarily-change-current-working-directory-in-bash-to-run-a-command
-        goback <- fs::path_abs(getwd())
-        cmd <- paste("cd", fs::path_abs(path), "&& .venv_altdoc\\Scripts\\activate.bat &&", " mkdocs build -q")
-        shell(cmd)
-        shell(paste("cd", goback))
+        shell(
+          paste(
+            fs::path_join(c(fs::path_abs(path), ".venv_altdoc\\Scripts\\activate.bat")),
+            "&& python3 -m mkdocs build -q"
+          )
+        )
     } else {
         goback <- getwd()
-        # browser()
         system2(
           "bash",
           paste0(
