@@ -30,7 +30,6 @@ Suggests:
     future,
     future.apply,
     knitr,
-    pkgload,
     rstudioapi,
     servr,
     spelling,
