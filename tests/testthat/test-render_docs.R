@@ -14,6 +14,7 @@ test_that("docute: main files are correct", {
 
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
+  pkgload::load_all()
   setup_docs("docute")
   render_docs(verbose = TRUE)
 
@@ -44,6 +45,7 @@ test_that("docsify: main files are correct", {
 
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
+  pkgload::load_all()
   setup_docs("docsify")
   render_docs(verbose = TRUE)
 
