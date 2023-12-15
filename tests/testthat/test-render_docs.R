@@ -58,7 +58,7 @@ test_that("docsify: main files are correct", {
 })
 
 ### Quarto output changes depending on the version, I don't have a solution for
-### now
+### now.
 
 # test_that("quarto: main files are correct", {
 #   skip_on_cran()
