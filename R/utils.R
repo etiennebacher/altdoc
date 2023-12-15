@@ -18,12 +18,6 @@
   fs::dir_exists(fs::path_abs(".venv_altdoc", start = path))
 }
 
-# Is pip3 installed?
-.is_pip3 <- function() {
-  x <- try(system2("pip3", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  return(!inherits(x, "try-error"))
-}
-
 # https://stackoverflow.com/a/42945293/11598948
 .stop_quietly <- function() {
   opt <- options(show.error.messages = FALSE)

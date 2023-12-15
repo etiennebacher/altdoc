@@ -67,6 +67,8 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
         )
       )
     }
+    .add_gitignore("^.venv_altdoc$", path = path)
+    .add_rbuildignore("^.venv_altdoc$", path = path)
   }
 
 
