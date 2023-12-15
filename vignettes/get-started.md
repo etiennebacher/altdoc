@@ -30,14 +30,35 @@ install.packages("altdoc")
 ```
 
 To create documentation websites with either `docsify` or `docute`, you
-only need to install `altdoc` in `R`.
+only need to install `altdoc` in `R`. The rest of this section only
+concerns `mkdocs` users.
 
-To use `mkdocs` or its variants (such as `mkdocs-material`), you will
-first need to install those packages in `Python` using a tool like
-`pip`. From the command line:
+The procedure to use `mkdocs` is slightly more involved. `mkdocs` is a
+Python library, meaning that you will first need to set up a Python
+virtual environment (or “venv”) in your package folder. In the terminal,
+run the following:
 
-``` python
-pip install mkdocs mkdocs-material
+``` bash
+python -m venv .venv_altdoc
+```
+
+You then need to activate this virtual environment and the way to do
+that [depends on your
+OS](https://docs.python.org/3/library/venv.html#how-venvs-work):
+
+``` bash
+# Windows
+.venv_altdoc\Scripts\activate.bat
+
+# Mac / Linux
+source .venv_altdoc/bin/activate
+```
+
+You can now install `mkdocs` (and other libraries such as
+`mkdocs-material` if needed):
+
+``` bash
+python3 -m pip install mkdocs mkdocs-material
 ```
 
 See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and
