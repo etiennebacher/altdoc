@@ -41,6 +41,8 @@ jobs:
 
       - name: Install Mkdocs and its dependencies
         run: |
+          python -m venv .venv_altdoc
+          source .venv_altdoc/bin/activate
           python3 -m pip install --upgrade pip     # install pip
           python3 -m pip install mkdocs            # install mkdocs
 

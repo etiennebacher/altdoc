@@ -20,6 +20,7 @@ test_that(".setup_github_actions works if not mkdocs", {
 })
 
 test_that(".setup_github_actions works if mkdocs", {
+  skip_if_not(.venv_exists())
   create_local_package()
   setup_docs("mkdocs")
   setup_github_actions()
