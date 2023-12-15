@@ -56,12 +56,21 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       'The `tool` argument must be "docsify", "docute", "mkdocs", or "quarto_website".')
   }
 
-  if (tool == "mkdocs" && !.is_mkdocs()) {
-    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
-    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
-    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
-    return(invisible())
+  if (tool == "mkdocs") {
+    if (!.venv_exists()) {
+      cli::cli_abort(
+        c(
+          "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
+          "i" = "Set up a Python venv: {.code python -m venv .venv_altdoc}",
+          "i" = "Activate the venv (depends on your OS): {.url https://docs.python.org/3/library/venv.html#how-venvs-work}.",
+          "i" = "Install `mkdocs`: {.code python3 -m pip install mkdocs}"
+        )
+      )
+    }
+    .add_gitignore(".venv_altdoc", path = path)
+    .add_rbuildignore(".venv_altdoc", path = path)
   }
+
 
   # paths
   path <- .convert_path(path)
