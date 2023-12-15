@@ -78,6 +78,8 @@
         } else {
             sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
         }
+    } else {
+        sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]
     }
     return(sidebar)
 }

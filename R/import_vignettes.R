@@ -33,7 +33,7 @@
   # source directory
   vig_dir <- fs::path_abs("vignettes", start = src_dir)
   if (!fs::dir_exists(vig_dir) || .folder_is_empty(vig_dir)) {
-    cli::cli_alert_info("No vignettes to convert")
+    cli::cli_alert_info("No vignettes to convert.")
     return(invisible())
   }
 
@@ -65,7 +65,12 @@
 
   n <- length(src_files)
 
-  cli::cli_alert_info("Found {n} vignette{?s} to convert.")
+  if (n == 0) {
+    cli::cli_alert_info("No vignettes to convert.")
+    return(invisible())
+  } else {
+    cli::cli_alert_info("Found {n} vignette{?s} to convert.")
+  }
 
   fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 

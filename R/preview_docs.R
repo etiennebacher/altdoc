@@ -28,7 +28,7 @@ preview_docs <- function(path = ".") {
   }
 
   if (rstudioapi::isAvailable()) {
-    servr::httw(fs::path_abs("docs/"))
+    servr::httw(fs::path_join(c(path, "docs")))
   } else {
     if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
       utils::browseURL(fs::path_abs("docs/index.html", start = path))

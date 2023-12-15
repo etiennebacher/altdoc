@@ -28,7 +28,12 @@
 
   n <- length(man_source)
 
-  cli::cli_alert_info("Found {n} man page{?s} to convert.")
+  if (n == 0) {
+    cli::cli_alert_info("No man pages to convert.")
+    return(invisible())
+  } else {
+    cli::cli_alert_info("Found {n} man page{?s} to convert.")
+  }
 
   # Read the hashes, used when freeze = TRUE
   hashes <- .get_hashes(src_dir = src_dir, freeze = freeze)

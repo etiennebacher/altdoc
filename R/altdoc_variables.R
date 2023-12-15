@@ -27,7 +27,7 @@
             x <- x[!grepl("\\$ALTDOC_PACKAGE_URL_GITHUB", x)]
         }
 
-        all_urls <- tryCatch(desc::desc_get_urls(), error = function(e) NULL)
+        all_urls <- tryCatch(desc::desc_get_urls(path), error = function(e) NULL)
         website_url <- Filter(function(x) !grepl("github.com", x), all_urls)
 
         if (length(website_url) > 0) {
@@ -36,8 +36,8 @@
             x <- x[!grepl("\\$ALTDOC_PACKAGE_URL", x)]
         }
 
-        x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package"), x)
-        x <- gsub("\\$ALTDOC_PACKAGE_VERSION", desc::desc_get("Version"), x)
+        x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package", path), x)
+        x <- gsub("\\$ALTDOC_PACKAGE_VERSION", desc::desc_get("Version", path), x)
 
 
     } else {

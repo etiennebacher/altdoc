@@ -12,7 +12,7 @@
     cite <- suppressWarnings(
       tryCatch(
         {
-          name <- desc::desc_get_field("Package")
+          name <- .pkg_name(src_dir)
           cite <- utils::capture.output(print(utils::citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
