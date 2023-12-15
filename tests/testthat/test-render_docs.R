@@ -15,7 +15,7 @@ test_that("docute: main files are correct", {
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
   setup_docs("docute")
-  render_docs()
+  render_docs(verbose = TRUE)
 
   ### test
   expect_snapshot(.readlines("docs/README.md"))
@@ -45,7 +45,7 @@ test_that("docsify: main files are correct", {
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
   setup_docs("docsify")
-  render_docs()
+  render_docs(verbose = TRUE)
 
   ### test
   expect_snapshot(.readlines("docs/README.md"))
