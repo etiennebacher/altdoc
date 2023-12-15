@@ -14,7 +14,7 @@
   # superfluous header and footer
   tmp <- .readlines(tmp_html)
   tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
-  tmp <- tmp[seq_len(which("</div>" == tmp) - 3)]
+  tmp <- head(tmp, -4)
 
   # first column (odd entries) of table in Arguments should not be wrapped
   idx <- grep("<td>", tmp)
