@@ -13,7 +13,7 @@ test_that("docute: main files are correct", {
   fs::dir_delete("testpkg.altdoc")
 
   ### generate docs
-  install.packages(".", repos = NULL, type = "source")
+  pkgbuild::build()
   setup_docs("docute")
   render_docs(verbose = TRUE)
 
@@ -43,7 +43,7 @@ test_that("docsify: main files are correct", {
   fs::dir_delete("testpkg.altdoc")
 
   ### generate docs
-  install.packages(".", repos = NULL, type = "source")
+  pkgbuild::build()
   setup_docs("docsify")
   render_docs(verbose = TRUE)
 
@@ -75,7 +75,7 @@ test_that("docsify: main files are correct", {
 #   fs::dir_delete("testpkg.altdoc")
 #
 #   ### generate docs
-#   install.packages(".", repos = NULL, type = "source")
+#   pkgbuild::build()
 #   fs::file_move("README.Rmd", "README.qmd") # special thing quarto
 #   setup_docs("quarto_website")
 #   render_docs()
