@@ -370,7 +370,7 @@
       [1] "* [Home](/)"                      "* Articles: "                    
       [3] "  - [test](vignettes/test.md)"    "* Reference: "                   
       [5] "  - [hello_base](man/hello_base)" "  - [hello_r6](man/hello_r6)"    
-      [7] "* [News](NEWS.md)"               
+      [7] "* [News](NEWS.md)"                "* [Citation](CITATION.md)"       
 
 ---
 
