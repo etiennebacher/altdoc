@@ -76,7 +76,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   cli::cli_h1("Basic files")
 
 
-  basics <- c("NEWS", "CHANGELOG", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
+  basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
   }
