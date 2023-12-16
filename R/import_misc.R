@@ -42,7 +42,7 @@
     src <- src[1]
   }
 
-  tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
+  tar <- fs::path_join(c(tar_dir, paste0(toupper(name), ".md")))
 
   # .Rd -> .md
   if (fs::path_ext(src) == "Rd") {
