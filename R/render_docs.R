@@ -62,7 +62,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
     if (fs::dir_exists(docs_parent)) {
       fs::dir_delete(docs_parent)
     }
-    .add_gitignore("^_quarto$")
+    .add_gitignore("^_quarto$", path = path)
   } else {
     docs_parent <- path
   }
