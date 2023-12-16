@@ -42,7 +42,7 @@
 
 .sidebar_vignettes_docute <- function(sidebar, path) {
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
+    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
@@ -50,6 +50,11 @@
 
     # escape because we enclose in single quotes in the json file
     titles <- gsub("'", "\\\\'", titles)
+
+    # # static assets strict relative path
+    # fn_vignettes <- ifelse(tools::file_ext(fn_vignettes) == "pdf",
+    #                        paste0(fn_vignettes, "':ignore'"),
+    #                        fn_vignettes)
 
     if (length(fn_vignettes) > 0) {
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_vignettes)
