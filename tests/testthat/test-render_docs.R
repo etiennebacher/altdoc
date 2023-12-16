@@ -16,15 +16,15 @@ test_that("docute: main files are correct", {
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
   setup_docs("docute")
-  render_docs(verbose = TRUE)
+  render_docs(verbose = .on_ci())
 
   ### test
-  expect_snapshot(.readlines("docs/README.md"))
-  expect_snapshot(.readlines("docs/docute.html"))
-  expect_snapshot(.readlines("docs/NEWS.md"))
-  expect_snapshot(.readlines("docs/man/hello_base.md"))
-  expect_snapshot(.readlines("docs/man/hello_r6.md"))
-  expect_snapshot(.readlines("docs/vignettes/test.md"))
+  expect_snapshot(.readlines("docs/README.md"), variant = "docute")
+  expect_snapshot(.readlines("docs/docute.html"), variant = "docute")
+  expect_snapshot(.readlines("docs/NEWS.md"), variant = "docute")
+  expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docute")
+  expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docute")
+  expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docute")
 })
 
 
@@ -47,16 +47,55 @@ test_that("docsify: main files are correct", {
   ### generate docs
   install.packages(".", repos = NULL, type = "source")
   setup_docs("docsify")
-  render_docs(verbose = TRUE)
+  render_docs(verbose = .on_ci())
 
   ### test
-  expect_snapshot(.readlines("docs/README.md"))
-  expect_snapshot(.readlines("docs/_sidebar.md"))
-  expect_snapshot(.readlines("docs/index.html"))
-  expect_snapshot(.readlines("docs/NEWS.md"))
-  expect_snapshot(.readlines("docs/man/hello_base.md"))
-  expect_snapshot(.readlines("docs/man/hello_r6.md"))
-  expect_snapshot(.readlines("docs/vignettes/test.md"))
+  expect_snapshot(.readlines("docs/README.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/_sidebar.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/index.html"), variant = "docsify")
+  expect_snapshot(.readlines("docs/NEWS.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
+})
+
+test_that("mkdocs: main files are correct", {
+  skip_on_cran()
+  skip_if_offline() # we download mkdocs every time
+  skip_if(.is_windows() && .on_ci(), "Windows on CI")
+
+  ### setup: create a temp package using the structure of testpkg.altdoc
+  path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
+  create_local_project()
+  fs::dir_delete("R")
+  fs::dir_copy(path_to_example_pkg, ".")
+  all_files <- list.files("testpkg.altdoc", full.names = TRUE)
+  for (i in all_files) {
+    fs::file_move(i, ".")
+  }
+  fs::dir_delete("testpkg.altdoc")
+
+  ### special mkdocs stuff
+  if (.is_windows()) {
+    shell("python3 -m venv .venv_altdoc")
+    shell(".venv_altdoc\\Scripts\\activate.bat && python3 -m pip install mkdocs")
+  } else {
+    system2("python3", "-m venv .venv_altdoc")
+    system2("bash", "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs'", stdout = FALSE)
+  }
+
+  ### generate docs
+  install.packages(".", repos = NULL, type = "source")
+  setup_docs("mkdocs")
+  render_docs(verbose = .on_ci())
+
+  ### test
+  # no good way to test the site structure ("docs/mkdocs.yml" only shows
+  # the old yaml, not the one with replaced variables)
+  expect_snapshot(.readlines("docs/NEWS.md"), variant = "mkdocs")
+  expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "mkdocs")
+  expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "mkdocs")
+  expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "mkdocs")
 })
 
 ### Quarto output changes depending on the version, I don't have a solution for
