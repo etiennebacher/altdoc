@@ -1,7 +1,9 @@
 test_that(".rd2qmd works", {
   rd_file <- testthat::test_path("examples/examples-man/between.Rd")
+  # .rd2qmd works only in pkg directory
+  fs::file_create("DESCRIPTION")
   dest <- tempdir()
-  .rd2qmd(rd_file, dest)
+  .rd2qmd(rd_file, dest, path = ".")
   qmd_file <- fs::path_join(c(dest, "between.qmd"))
   expect_true(fs::file_exists(qmd_file))
 
@@ -22,7 +24,7 @@ test_that(".rd2qmd: basic errors", {
     "must be a valid file path"
   )
   expect_error(
-    .rd2qmd(testthat::test_path("examples/examples-man/between.Rd"), "foo"),
+    .rd2qmd(testthat::test_path("examples/examples-man/between.Rd"), "foo", path = "."),
     "must be a valid directory"
   )
 })

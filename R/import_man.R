@@ -128,7 +128,7 @@
   }
 
   fs::dir_create(destination_dir)
-  .rd2qmd(origin_Rd, destination_dir)
+  .rd2qmd(origin_Rd, destination_dir, path = src_dir)
 
   if (tool != "quarto_website") {
     pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
