@@ -98,7 +98,7 @@
 
 .sidebar_vignettes_mkdocs <- function(sidebar, path) {
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
+    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
@@ -111,11 +111,13 @@
         yml <- paste(sidebar, collapse = "\n")
         yml <- yaml::yaml.load(yml)
         for (i in seq_along(yml$nav)) {
+        for (i in seq_along(yml$nav)) {
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
                 title_link <- as.list(stats::setNames(fn_vignettes, titles))
                 yml$nav[[i]] <- stats::setNames(list(title_link), section_name)
             }
+        }
         }
         tmp <- tempfile()
         yaml::write_yaml(yml, file = tmp, indent.mapping.sequence = TRUE)

@@ -51,7 +51,7 @@
 .sidebar_vignettes_quarto_website <- function(sidebar, path) {
     fn_vignettes <- list.files(
         fs::path_join(c(path, "_quarto/docs/vignettes")),
-        pattern = "\\.qmd$|\\.Rmd", full.names = TRUE)
+        pattern = "\\.qmd$|\\.Rmd|\\.pdf$", full.names = TRUE)
     fn_man <- list.files(
         fs::path_join(c(path, "_quarto/docs/man")),
         pattern = "\\.qmd$", full.names = TRUE)
