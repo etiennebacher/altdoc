@@ -1,7 +1,7 @@
 test_that(".reformat_md works", {
   # Need to write and read to avoid all \n differences
   create_local_package()
-  setup_docs(tool = "docsify", path = getwd())
+  setup_docs(tool = "docsify")
   tmp <- fs::file_temp(ext = ".md")
   txt <- "# Package
 

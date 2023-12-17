@@ -1,20 +1,15 @@
-.finalize_docsify <- function(settings, path, ...) {
+.finalize_docsify <- function(settings, ...) {
 
-    tool <- .doc_type(path)
+    tool <- .doc_type()
 
     # drop missing links
     settings <- settings[!grepl("\\]\\(\\)", settings)]
     settings <- stats::na.omit(settings)
 
-    fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
-    dn_man <- fs::path_join(c(.doc_path(path), "man"))
-
-
-    fn <- fs::path_join(c(.doc_path(path), "_sidebar.md"))
-    writeLines(settings, fn)
+    writeLines(settings, "docs/_sidebar.md")
 
     # relative links
-    dn <- fs::path_join(c(path, "docs", "vignettes"))
+    dn <- "docs/vignettes"
     if (fs::dir_exists(dn)) {
         md_files <- fs::dir_ls(dn, regexp = "\\.md$")
         for (md in md_files) {
@@ -26,17 +21,14 @@
     }
 
     # body also includes altdoc variables
-    fn <- fs::path_join(c(path, "altdoc", "docsify.html"))
-    body <- .readlines(fn)
-    body <- .substitute_altdoc_variables(body, path = path, tool = tool)
-    fn <- fs::path_join(c(.doc_path(path), "index.html"))
-    writeLines(body, fn)
+    body <- .readlines("altdoc/docsify.html")
+    body <- .substitute_altdoc_variables(body, tool = tool)
+    writeLines(body, "docs/index.html")
 }
 
 
-.sidebar_vignettes_docsify <- function(sidebar, path) {
-    dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
+.sidebar_vignettes_docsify <- function(sidebar) {
+    fn_vignettes <- list.files("docs/vignettes", pattern = "\\.md$|\\.pdf$", full.names = TRUE)
     # before gsub on files
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
     fn_vignettes <- sapply(fn_vignettes, function(x) {
@@ -60,8 +52,8 @@
 }
 
 
-.sidebar_man_docsify <- function(sidebar, path) {
-    dn <- fs::path_join(c(.doc_path(path), "man"))
+.sidebar_man_docsify <- function(sidebar) {
+    dn <- "docs/man"
     if (fs::dir_exists(dn)) {
         fn <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
         fn <- sapply(fn, function(x) fs::path_join(c("man", basename(x))))

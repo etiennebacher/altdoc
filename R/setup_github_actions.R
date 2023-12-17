@@ -5,7 +5,6 @@
 #' website using the setup specified in the folder "altdoc" and will push the
 #' output to the branch "gh-pages".
 #'
-#' @inheritParams render_docs
 #'
 #' @return No value returned. Creates the file ".github/workflows/altdoc.yaml"
 #' @export
@@ -14,24 +13,27 @@
 #' if (interactive()) {
 #'   setup_github_actions()
 #' }
-setup_github_actions <- function(path = ".") {
+setup_github_actions <- function() {
 
-  path <- .convert_path(path)
+  .check_is_package(getwd())
 
-  if (!fs::dir_exists(fs::path_join(c(path, ".github/workflows")))) {
-    fs::dir_create(fs::path_join(c(path, ".github/workflows")))
+  tar_file <- ".github/workflows/altdoc.yaml"
+
+  if (!fs::dir_exists(".github/workflows")) {
+    fs::dir_create(".github/workflows")
   }
-  if (fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))) {
+  if (fs::file_exists(tar_file)) {
     cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
   }
 
-  src <- system.file("gha/altdoc.yaml", package = "altdoc")
-  tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
-  fs::file_copy(src, tar)
+  fs::file_copy(
+    system.file("gha/altdoc.yaml", package = "altdoc"),
+    ".github/workflows/altdoc.yaml"
+  )
 
   # Deal with mkdocs installation in workflow
-  doctype <- .doc_type(path)
-  workflow <- .readlines(tar)
+  doctype <- .doc_type()
+  workflow <- .readlines(tar_file)
   start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
   end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
   if (doctype == "mkdocs") {

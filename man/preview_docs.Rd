@@ -4,10 +4,7 @@
 \alias{preview_docs}
 \title{Preview the documentation in a webpage or in viewer}
 \usage{
-preview_docs(path = ".")
-}
-\arguments{
-\item{path}{Path to the package root directory.}
+preview_docs()
 }
 \value{
 No value returned. If RStudio is used, it shows a site preview in

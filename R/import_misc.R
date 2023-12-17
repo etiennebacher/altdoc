@@ -1,6 +1,6 @@
 
-.import_citation <- function(src_dir, tar_dir) {
-  src_file <- fs::path_join(c(src_dir, "CITATION.md"))
+.import_citation <- function(tar_dir) {
+  src_file <- "CITATION.md"
   tar_file <- fs::path_join(c(tar_dir, "CITATION.md"))
 
   # user-supplied
@@ -12,7 +12,7 @@
     cite <- suppressWarnings(
       tryCatch(
         {
-          name <- .pkg_name(src_dir)
+          name <- .pkg_name(".")
           cite <- utils::capture.output(print(utils::citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
@@ -25,13 +25,12 @@
 }
 
 
-.import_basic <- function(src_dir, tar_dir, name = "NEWS") {
+.import_basic <- function(tar_dir, name = "NEWS") {
   src <- c(
     "NEWS.md", "NEWS.txt", "NEWS", "NEWS.Rd",
     "inst/NEWS.md", "inst/NEWS.txt", "inst/NEWS", "inst/NEWS.Rd"
   )
   src <- gsub("NEWS", name, src, fixed = TRUE)
-  src <- sapply(src, function(x) fs::path_join(c(src_dir, x)))
   src <- Filter(fs::file_exists, src)
 
   # no news to import
@@ -46,7 +45,7 @@
 
   # .Rd -> .md
   if (fs::path_ext(src) == "Rd") {
-    .rd2qmd(src, tar_dir, path = src_dir)
+    .rd2qmd(src, tar_dir)
     .qmd2md(fs::path_join(c(tar_dir, paste0(name, ".qmd"))), tar_dir)
     # the files I tried were too deeply nested
     x <- .readlines(tar)
@@ -61,7 +60,7 @@
 
   # insert links, etc.
   if (name == "NEWS") {
-    .parse_news(path = src_dir, news_path = tar)
+    .parse_news(news_path = tar)
   }
 
   cli::cli_alert_success("{.file {name}} imported.")
@@ -69,7 +68,7 @@
 
 
 # Autolink news, PR, and people in NEWS
-.parse_news <- function(path, news_path) {
+.parse_news <- function(news_path) {
   if (!fs::file_exists(news_path)) {
     return(invisible())
   }
@@ -86,7 +85,7 @@
   )
   new_news <- paste(orig_news, collapse = "\n")
   if (length(issues_pr) > 0) {
-    issues_pr_link <- paste0(.gh_url(path), "/issues/", gsub("#", "", issues_pr))
+    issues_pr_link <- paste0(.gh_url("."), "/issues/", gsub("#", "", issues_pr))
 
     issues_pr_out <- data.frame(
       in_text = issues_pr,

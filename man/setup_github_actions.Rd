@@ -4,10 +4,7 @@
 \alias{setup_github_actions}
 \title{Create a Github Actions workflow}
 \usage{
-setup_github_actions(path = ".")
-}
-\arguments{
-\item{path}{Path to the package root directory.}
+setup_github_actions()
 }
 \value{
 No value returned. Creates the file ".github/workflows/altdoc.yaml"

@@ -65,17 +65,13 @@
 
 # Get the tool that was used
 .doc_type <- function(path = ".") {
-  fn <- fs::path_join(c(path, "altdoc", "mkdocs.yml"))
-  mkdocs <- fs::file_exists(fn)
 
-  fn <- fs::path_join(c(path, "altdoc", "docsify.md"))
-  docsify <- fs::file_exists(fn)
+  .check_is_package(getwd())
 
-  fn <- fs::path_join(c(path, "altdoc", "docute.html"))
-  docute <- fs::file_exists(fn)
-
-  fn <- fs::path_join(c(path, "altdoc", "quarto_website.yml"))
-  quarto_website <- fs::file_exists(fn)
+  mkdocs <- fs::file_exists("altdoc/mkdocs.yml")
+  docsify <- fs::file_exists("altdoc/docsify.md")
+  docute <- fs::file_exists("altdoc/docute.html")
+  quarto_website <- fs::file_exists("altdoc/quarto_website.yml")
 
   if (sum(c(mkdocs, docsify, docute, quarto_website)) == 0) {
     cli::cli_abort(

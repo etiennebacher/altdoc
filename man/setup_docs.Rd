@@ -4,12 +4,10 @@
 \alias{setup_docs}
 \title{Initialize documentation website settings}
 \usage{
-setup_docs(tool, path = ".", overwrite = FALSE)
+setup_docs(tool, overwrite = FALSE)
 }
 \arguments{
 \item{tool}{String. "docsify", "docute", "mkdocs", or "quarto_website".}
-
-\item{path}{Path to the package root directory.}
 
 \item{overwrite}{Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the \code{altdoc} directory, including any customizations you may have made.}
 }

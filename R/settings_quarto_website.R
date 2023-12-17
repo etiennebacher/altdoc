@@ -1,4 +1,4 @@
-.finalize_quarto_website <- function(settings, path, verbose = FALSE, freeze = FALSE, ...) {
+.finalize_quarto_website <- function(settings, verbose = FALSE, freeze = FALSE, ...) {
     # WARNING: Note the different _quarto folder. This is an imortant design
     # choice because we want to use the built-in freeze functionality of quarto
     # and need to move _quarto/_site to docs/ after rendering.
@@ -6,7 +6,7 @@
     # drop empty lines
     settings <- settings[!grepl("^\\w*$", settings)]
 
-    fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
+    fn <- fs::path_join(c("_quarto", "_quarto.yml"))
     yaml::write_yaml(settings, fn, indent.mapping.sequence = TRUE)
 
     # yaml::write_yaml converts true to yes, but quarto complains
@@ -15,18 +15,16 @@
     settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
 
-    tmp <- fs::path_join(c(path, "_quarto", "docs"))
-    fs::dir_copy(tmp, fs::path_join(c(path, "_quarto")), overwrite = TRUE)
-    fs::dir_delete(tmp)
+    fs::dir_copy("_quarto/docs", "_quarto")
+    fs::dir_delete("_quarto/docs")
 
     # index.md breaks rendering
-    fn <- fs::path_join(c(path, "_quarto", "index.md"))
-    if (fs::file_exists(fn)) {
-        fs::file_delete(fn)
+    if (fs::file_exists("_quarto/index.md")) {
+        fs::file_delete("_quarto/index.md")
     }
 
     quarto::quarto_render(
-        input = fs::path_join(c(path, "_quarto")),
+        input = "_quarto",
         quiet = !verbose,
         as_job = FALSE,
         use_freezer = freeze)
@@ -34,16 +32,15 @@
     # move _quarto/_site to docs/
     # allow book
     for (x in c("_site", "_book")) {
-        tmp <- fs::path_join(c(path, "_quarto", x))
+        tmp <- fs::path_join(c("_quarto", x))
         if (fs::file_exists(tmp)) {
             src <- tmp
         }
     }
-    tar <- .doc_path(path)
-    if (fs::dir_exists(tar)) {
-        fs::dir_delete(tar)
+    if (fs::dir_exists("docs")) {
+        fs::dir_delete("docs")
     }
-    fs::file_move(src, .doc_path(path))
+    fs::file_move(src, "docs")
 
 }
 

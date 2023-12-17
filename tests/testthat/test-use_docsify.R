@@ -2,8 +2,8 @@
 
 test_that("use_docsify creates the right files", {
   create_local_package()
-  setup_docs(tool = "docsify", path = getwd())
-  render_docs(path = getwd())
+  setup_docs(tool = "docsify")
+  render_docs()
   expect_true(fs::file_exists("docs/index.html"))
   expect_true(fs::file_exists("docs/README.md"))
 })

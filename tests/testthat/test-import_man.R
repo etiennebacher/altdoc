@@ -9,7 +9,7 @@ test_that("rendering fails", {
   fs::file_copy(dest, "man")
   src <- fs::path_ext_remove(list.files("man"))
   expect_equal(
-    .render_one_man(src, tool = "docute", src_dir = ".", tar_dir = ".", freeze = FALSE, hashes = NULL),
+    .render_one_man(src, tool = "docute",  tar_dir = ".", freeze = FALSE, hashes = NULL),
     "failure"
   )
 })
@@ -25,7 +25,7 @@ test_that("rendering skipped because internal", {
   fs::file_copy(dest, "man")
   src <- fs::path_ext_remove(list.files("man"))
   expect_equal(
-    .render_one_man(src, tool = "docute", src_dir = ".", tar_dir = ".", freeze = FALSE, hashes = NULL),
+    .render_one_man(src, tool = "docute",  tar_dir = ".", freeze = FALSE, hashes = NULL),
     "skipped_internal"
   )
 })
@@ -44,11 +44,11 @@ test_that("rendering skipped because unchanged and freeze = TRUE", {
   src <- fs::path_ext_remove(list.files("man"))
 
   # first rendering to store the hash
-  .render_one_man(src, tool = "docute", src_dir = ".", tar_dir = ".", freeze = FALSE, hashes = NULL)
-  hashes <- .get_hashes(".", freeze = TRUE)
+  .render_one_man(src, tool = "docute",  tar_dir = ".", freeze = FALSE, hashes = NULL)
+  hashes <- .get_hashes(freeze = TRUE)
 
   expect_equal(
-    .render_one_man(src, tool = "docute", src_dir = ".", tar_dir = ".", freeze = TRUE, hashes = hashes),
+    .render_one_man(src, tool = "docute",  tar_dir = ".", freeze = TRUE, hashes = hashes),
     "skipped_unchanged"
   )
 })

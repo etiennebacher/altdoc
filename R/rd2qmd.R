@@ -1,4 +1,4 @@
-.rd2qmd <- function(source_file, target_dir, path) {
+.rd2qmd <- function(source_file, target_dir) {
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -25,7 +25,7 @@
   idx <- grepl("<.code", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
-  pkg <- .pkg_name(path)
+  pkg <- .pkg_name(getwd())
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 

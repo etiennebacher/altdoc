@@ -10,16 +10,16 @@
 # * render all of the modified .Rmd files (in "docs/vignettes"), which produce .md files.
 
 .import_vignettes <- function(
-  src_dir,
   tar_dir,
-  tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE) {
 
+  tool <- .doc_type()
+
   # quarto vignettes are rendered by quarto itself, so we just need to copy them
   if (tool == "quarto_website") {
-    dn_src <- fs::path_join(c(src_dir, "vignettes"))
+    dn_src <- "vignettes"
     dn_tar <- fs::path_join(c(tar_dir, "vignettes"))
     if (fs::dir_exists(dn_tar)) {
       fs::dir_delete(dn_tar)
@@ -31,7 +31,7 @@
   }
 
   # source directory
-  vig_dir <- fs::path_abs("vignettes", start = src_dir)
+  vig_dir <- fs::path_abs("vignettes", start = "vignettes")
   if (!fs::dir_exists(vig_dir) || .folder_is_empty(vig_dir)) {
     cli::cli_alert_info("No vignettes to convert.")
     return(invisible())
@@ -75,14 +75,13 @@
   fs::dir_copy(vig_dir, tar_dir, overwrite = TRUE)
 
   # Read the hashes, used if freeze = TRUE
-  hashes <- .get_hashes(src_dir = src_dir, freeze = freeze)
+  hashes <- .get_hashes(freeze = freeze)
 
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
     conversion_worked <- future.apply::future_sapply(
       src_files,
       .render_one_vignette,
-      src_dir = src_dir,
       vig_dir = vig_dir,
       tar_dir = tar_dir,
       freeze = freeze,
@@ -97,7 +96,6 @@
         cli::cli_progress_step("Converting vignette {x}/{n}: {basename(src_files[x])}", spinner = TRUE)
         out <- .render_one_vignette(
           vignette = src_files[x],
-          src_dir = src_dir,
           vig_dir = vig_dir,
           tar_dir = tar_dir,
           freeze = freeze,
@@ -136,7 +134,7 @@
 }
 
 
-.render_one_vignette <- function(vignette, src_dir, vig_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
+.render_one_vignette <- function(vignette, vig_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
 
   worked <- FALSE
 
@@ -168,7 +166,7 @@
     # issues we'd been having when generating images from code blocks and
     # inserting ones with ![]().
   } else {
-    pre <- fs::path_join(c(src_dir, sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(vignette))))
+    pre <- fs::path_join(c(sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(vignette))))
     if (fs::file_exists(pre)) {
       pre <- .readlines(pre)
     } else {
@@ -180,7 +178,7 @@
   # do not try to read/write the RDS file if we run in CI because the updated
   # RDS won't be available to us anyway
   if (!.on_ci()) {
-    .write_freeze(input = origin, src_dir = src_dir, freeze = freeze, worked = worked)
+    .write_freeze(input = origin, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))

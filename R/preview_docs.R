@@ -1,6 +1,5 @@
 #' Preview the documentation in a webpage or in viewer
 #'
-#' @inheritParams setup_docs
 #' @export
 #'
 #' @return No value returned. If RStudio is used, it shows a site preview in
@@ -17,21 +16,24 @@
 #' # displayed. See the `altdoc` website for a rendered version.
 #' with(mtcars, plot(mpg, wt))
 #'
-preview_docs <- function(path = ".") {
+preview_docs <- function() {
+  .check_is_package(getwd())
   # conditional dependencies
   .assert_dependency("servr", install = TRUE)
   .assert_dependency("rstudioapi", install = TRUE)
 
-  tool <- .doc_type(path)
-  if (.folder_is_empty(fs::path_join(c(path, "docs")))) {
+  # .doc_type() checks if setup_docs() was called
+  tool <- .doc_type()
+
+  if (.folder_is_empty("docs")) {
     cli::cli_abort("You must render the docs before previewing them. Use {.code altdoc::render_docs()}.")
   }
 
   if (rstudioapi::isAvailable()) {
-    servr::httw(fs::path_join(c(path, "docs")))
+    servr::httw("docs")
   } else {
-    if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-      utils::browseURL(fs::path_abs("docs/index.html", start = path))
+    if (fs::file_exists(fs::path_abs("docs/index.html"))) {
+      utils::browseURL(fs::path_abs("docs/index.html"))
     }
   }
 }

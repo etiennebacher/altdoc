@@ -1,70 +1,52 @@
-.import_readme <- function(src_dir, tar_dir, tool) {
+.import_readme <- function(tar_dir) {
+
+  tool <- .doc_type()
 
   # order is important. We want to prioritize .qmd, so we do it last.
 
   # no extension -> md
-  fn <- fs::path_join(c(src_dir, "README"))
-  if (fs::file_exists(fn)) {
-    fs::file_copy(fn, fs::path_join(c(src_dir, "README.md")))
+  if (fs::file_exists("README")) {
+    fs::file_copy("README", "README.md")
   }
 
   # rmd -> md
-  fn <- fs::path_join(c(src_dir, "README.Rmd"))
-  if (fs::file_exists(fn)) {
-    pre <- fs::path_join(c( src_dir, "altdoc/preamble_vignettes_rmd.yml"))
-    pre <- tryCatch(.readlines(pre), error = function(e) NULL)
-    .qmd2md(fn, src_dir, preamble = pre)
+  if (fs::file_exists("README.Rmd")) {
+    .qmd2md("README.Rmd", getwd())
   }
 
   # qmd -> md
-  fn <- fs::path_join(c(src_dir, "README.qmd"))
-  if (fs::file_exists(fn)) {
-    pre <- fs::path_join(c(src_dir, "altdoc/preamble_vignettes_qmd.yml"))
-    if (fs::file_exists(pre)) {
-      pre <- tryCatch(.readlines(pre), error = function(e) NULL)
-    } else {
-      pre <- ""
-    }
+  # process in-place for use on Github
+  # TODO: preambles inserted in the README often break Quarto websites. It's
+  # not a big problem to omit the preamble, but it would be good to
+  # investigate this, because I am not sure what is going on -VAB
+  if (fs::file_exists("README.qmd")) {
     if (tool == "quarto_website") {
       # copy to quarto file
-      fs::file_copy(
-        fn,
-        fs::path_join(c(tar_dir, "index.qmd")),
-        overwrite = TRUE)
-      # process in-place for use on Github
-      # TODO: preambles inserted in the README often break Quarto websites. It's
-      # not a big problem to omit the preamble, but it would be good to
-      # investigate this, because I am not sure what is going on -VAB
-      .qmd2md(fn, src_dir)
-      # .qmd2md(fn, src_dir, preamble = pre)
+      fs::file_copy("README.qmd", fs::path_join(c(tar_dir, "index.qmd")), overwrite = TRUE)
+      # also render in place for Github
+      .qmd2md("README.qmd", getwd())
       cli::cli_alert_success("{.file README} imported.")
       return(invisible())
     } else {
-      .qmd2md(fn, src_dir)
-      # .qmd2md(fn, src_dir, preamble = pre)
+      .qmd2md("README.qmd", getwd())
     }
   } else if (tool == "quarto_website") {
     cli::cli_abort("Quarto websites require a README.qmd file in the root of the package directory.", call = NULL)
   }
 
   # no README -> create a dummy
-  fn <- fs::path_join(c(src_dir, "README.md"))
-  if (!fs::file_exists(fn)) {
-    writeLines(c("", "Hello world!"), fn)
+  if (!fs::file_exists("README.md")) {
+    writeLines(c("", "Hello world!"), "README.md")
   }
 
-  if (tool == "quarto_website") {
-    tar_file <- fs::path_join(c(tar_dir, "index.md"))
-  } else {
+  if (tool != "quarto_website") {
     tar_file <- fs::path_join(c(tar_dir, "README.md"))
+    fs::file_copy("README.md", tar_file, overwrite = TRUE)
+   .check_md_structure(tar_file)
   }
 
-  src_file <- fs::path_join(c(src_dir, "README.md"))
-  fs::file_copy(fn, tar_file, overwrite = TRUE)
-  .check_md_structure(tar_file)
 
-  tmp <- fs::path_join(c(src_dir, "README.markdown_strict_files"))
-  if (fs::dir_exists(tmp)) {
+  if (fs::dir_exists("README.markdown_strict_files")) {
     cli::cli_alert("We recommend using a `knitr` option to set the path of your images to `man/figures/README-`. This would ensure that images are properly stored and displayed on multiple platforms like CRAN, Github, and on your `altdoc` website.")
   }
 

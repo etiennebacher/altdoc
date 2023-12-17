@@ -1,11 +1,11 @@
 # Convert and unite .Rd files to 'docs/reference.md'.
 .import_man <- function(
-  src_dir,
   tar_dir,
-  tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE) {
+
+  tool <- .doc_type()
 
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
@@ -17,7 +17,7 @@
   # copy the full content of the `man/` directory because developers often store
   # static files there for their README and other files.
   # but we don't want all those raw man pages.
-  a <- fs::path_join(c(src_dir, "man"))
+  a <- "man"
   b <- fs::path_join(c(tar_dir, "man"))
   if (fs::file_exists(a)) {
     fs::dir_copy(a, b, overwrite = TRUE)
@@ -36,7 +36,7 @@
   }
 
   # Read the hashes, used when freeze = TRUE
-  hashes <- .get_hashes(src_dir = src_dir, freeze = freeze)
+  hashes <- .get_hashes(freeze = freeze)
 
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
@@ -44,7 +44,6 @@
       man_source,
       .render_one_man,
       tool = tool,
-      src_dir = src_dir,
       tar_dir = tar_dir,
       freeze = freeze,
       hashes = hashes,
@@ -59,7 +58,6 @@
         out <- .render_one_man(
           man_source[x],
           tool = tool,
-          src_dir = src_dir,
           tar_dir = tar_dir,
           freeze = freeze,
           hashes = hashes,
@@ -103,7 +101,7 @@
 }
 
 
-.render_one_man <- function(fn, tool, src_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
+.render_one_man <- function(fn, tool, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
   # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
   origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
   destination_dir <- fs::path_join(c(tar_dir, "man"))
@@ -128,10 +126,10 @@
   }
 
   fs::dir_create(destination_dir)
-  .rd2qmd(origin_Rd, destination_dir, path = src_dir)
+  .rd2qmd(origin_Rd, destination_dir)
 
   if (tool != "quarto_website") {
-    pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
+    pre <- fs::path_join(c("altdoc", "preamble_man_qmd.yml"))
     if (fs::file_exists(pre)) {
       pre <- .readlines(pre)
     } else {
@@ -168,7 +166,7 @@
   # do not try to read/write the RDS file if we run in CI because the updated
   # RDS won't be available to us anyway
   if (!.on_ci()) {
-    .write_freeze(input = origin_Rd, src_dir = src_dir, freeze = freeze, worked = worked)
+    .write_freeze(input = origin_Rd, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))

@@ -1,6 +1,6 @@
 # Check that project is a package -------------------------
 
-.check_is_package <- function(path) {
+.check_is_package <- function(path = getwd()) {
   if (!.dir_is_package(path)) {
     cli::cli_abort("{.code altdoc} only works in packages.")
   }

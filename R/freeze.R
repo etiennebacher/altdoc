@@ -18,13 +18,12 @@
 # src_dir = path to package root
 # freeze = TRUE/FALSE
 # worked = TRUE/FALSE - did the conversion of the file work?
-.write_freeze <- function(input, src_dir, freeze, worked) {
-    freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
-
-    if (!fs::file_exists(freeze_file)) {
+.write_freeze <- function(input, freeze, worked) {
+    fn <- "altdoc/freeze.rds"
+    if (!fs::file_exists(fn)) {
         hashes <- vector("character")
     } else {
-        hashes <- readRDS(freeze_file)
+        hashes <- readRDS(fn)
     }
 
     # if conversion failed we don't want to store the hash of the input because
@@ -35,18 +34,17 @@
         hashes <- hashes[names(hashes) != input]
     }
 
-    saveRDS(hashes, freeze_file)
+    saveRDS(hashes, fn)
 }
 
 # src_dir = path to package root
 # freeze = TRUE/FALSE
-.get_hashes <- function(src_dir, freeze) {
+.get_hashes <- function(freeze) {
     hashes <- NULL
     if (isTRUE(freeze)) {
-        freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
-        if (fs::file_exists(freeze_file)) {
+        if (fs::file_exists("altdoc/freeze.rds")) {
             .assert_dependency("digest", install = TRUE)
-            hashes <- readRDS(freeze_file)
+            hashes <- readRDS("altdoc/freeze.rds")
         }
     }
 }

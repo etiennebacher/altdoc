@@ -4,11 +4,9 @@
 \alias{render_docs}
 \title{Update documentation}
 \usage{
-render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
+render_docs(verbose = FALSE, parallel = FALSE, freeze = FALSE)
 }
 \arguments{
-\item{path}{Path to the package root directory.}
-
 \item{verbose}{Logical. Print Rmarkdown or Quarto rendering output.}
 
 \item{parallel}{Logical. Render man pages and vignettes in parallel using the \code{future} framework. In addition to setting this argument to TRUE, users must define the parallelism plan in \code{future}. See the examples section below.}

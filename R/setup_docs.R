@@ -9,7 +9,6 @@
 #' website.
 #'
 #' @param tool String. "docsify", "docute", "mkdocs", or "quarto_website".
-#' @param path Path to the package root directory.
 #' @param overwrite Logical. If TRUE, overwrite existing files. Warning: This will completely delete the settings files in the `altdoc` directory, including any customizations you may have made.
 #'
 #' @export
@@ -34,7 +33,9 @@
 #'   # Create quarto website documentation
 #'   setup_docs(tool = "quarto_website")
 #' }
-setup_docs <- function(tool, path = ".", overwrite = FALSE) {
+setup_docs <- function(tool, overwrite = FALSE) {
+
+  .check_is_package(getwd())
 
   .safe_copy <- function(src, tar, overwrite) {
     if (fs::file_exists(tar) && !isTRUE(overwrite)) {
@@ -57,7 +58,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   }
 
   if (tool == "mkdocs") {
-    if (!.venv_exists(path)) {
+    if (!.venv_exists(getwd())) {
       cli::cli_abort(
         c(
           "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
@@ -67,81 +68,82 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
         )
       )
     }
-    .add_gitignore(".venv_altdoc", path = path)
-    .add_rbuildignore(".venv_altdoc", path = path)
+    .add_gitignore(".venv_altdoc")
+    .add_rbuildignore(".venv_altdoc")
   }
 
 
   # paths
-  path <- .convert_path(path)
-  .check_is_package(path)
-  altdoc_dir <- fs::path_abs(fs::path_join(c(path, "altdoc")))
-  docs_dir <- fs::path_abs(fs::path_join(c(path, "docs")))
+  .check_is_package()
 
-  if (!fs::dir_exists(altdoc_dir)) {
+  if (!fs::dir_exists("altdoc")) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
-    fs::dir_create(altdoc_dir)
+    fs::dir_create("altdoc")
+
   } else {
     if (isTRUE(overwrite)) {
       # start from zero when the setup is overwritten
-      if (isTRUE(fs::dir_exists(docs_dir))) {
-        fs::dir_delete(docs_dir)
+      if (isTRUE(fs::dir_exists("docs"))) {
+        fs::dir_delete("docs")
       }
 
       file_names <- c(
         "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
       )
       for (file_name in file_names) {
-        file_name <- fs::path_join(c(altdoc_dir, file_name))
+        file_name <- fs::path_join(c("altdoc", file_name))
         if (fs::file_exists(file_name)) {
           fs::file_delete(file_name)
         }
       }
     } else {
       cli::cli_abort(
-        "{.file {altdoc_dir}} already exists. Delete it or set `overwrite=TRUE`."
+        "{.file altdoc} directory already exists. Delete it or set `overwrite=TRUE`."
       )
     }
   }
 
-  if (!fs::dir_exists(docs_dir)) {
+  if (!fs::dir_exists("docs")) {
     cli::cli_alert_info("Creating `docs/` directory.")
-    fs::dir_create(docs_dir)
+    fs::dir_create("docs")
   }
 
-  .add_rbuildignore("^docs$", path = path)
-  .add_rbuildignore("^altdoc$", path = path)
-  .add_gitignore("altdoc/freeze.rds", path = path)
-  if (tool == "quarto_website") .add_rbuildignore("^_quarto$", path = path)
+  .add_rbuildignore("^docs$")
+  .add_rbuildignore("^altdoc$")
+  .add_gitignore("altdoc/freeze.rds")
+  if (tool == "quarto_website") .add_rbuildignore("^_quarto$")
 
   cli::cli_alert_info("Importing default settings file(s) to `altdoc/`")
 
   if (isTRUE(tool == "docsify")) {
     src <- system.file("docsify/docsify.html", package = "altdoc")
-    tar <- fs::path_join(c(altdoc_dir, "docsify.html"))
+    tar <- "altdoc/docsify.html"
     .safe_copy(src, tar, overwrite = overwrite)
 
     src <- system.file("docsify/docsify.md", package = "altdoc")
-    tar <- fs::path_join(c(altdoc_dir, "docsify.md"))
+    tar <- "altdoc/docsify.md"
     .safe_copy(src, tar, overwrite = overwrite)
 
-    tar <- fs::path_join(c(altdoc_dir, ".nojekyll"))
+    tar <- "altdoc/.nojekyll"
     fs::file_create(tar)
 
   } else if (isTRUE(tool == "docute")) {
-    src <- system.file("docute/docute.html", package = "altdoc")
-    tar <- fs::path_join(c(altdoc_dir, "docute.html"))
-    .safe_copy(src, tar, overwrite = overwrite)
+    .safe_copy(
+      system.file("docute/docute.html", package = "altdoc"),
+      "altdoc/docute.html",
+      overwrite = overwrite)
 
   } else if (isTRUE(tool == "mkdocs")) {
-    src <- system.file("mkdocs/mkdocs.yml", package = "altdoc")
-    tar <- fs::path_join(c(altdoc_dir, "mkdocs.yml"))
-    .safe_copy(src, tar, overwrite = overwrite)
+    .safe_copy(
+      system.file("mkdocs/mkdocs.yml", package = "altdoc"),
+      "altdoc/mkdocs.yml",
+      overwrite = overwrite)
 
   } else if (isTRUE(tool == "quarto_website")) {
-    src <- system.file("quarto_website/quarto_website.yml", package = "altdoc")
-    tar <- fs::path_join(c(altdoc_dir, "quarto_website.yml"))
-    .safe_copy(src, tar, overwrite = overwrite)
+    .safe_copy(
+      system.file("quarto_website/quarto_website.yml", package = "altdoc"),
+      "altdoc/quarto_website.yml",
+      overwrite = overwrite)
   }
 
   # preambles
@@ -149,23 +151,22 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (tool != "quarto_website") {
     .safe_copy(
       system.file("preamble/preamble_vignettes_qmd.yml", package = "altdoc"),
-      fs::path_join(c(altdoc_dir, "preamble_vignettes_qmd.yml")),
+      "altdoc/preamble_vignettes_qmd.yml",
       overwrite = TRUE)
     .safe_copy(
       system.file("preamble/preamble_vignettes_rmd.yml", package = "altdoc"),
-      fs::path_join(c(altdoc_dir, "preamble_vignettes_rmd.yml")),
+      "altdoc/preamble_vignettes_rmd.yml",
       overwrite = TRUE)
     .safe_copy(
       system.file("preamble/preamble_man_qmd.yml", package = "altdoc"),
-      fs::path_join(c(altdoc_dir, "preamble_man_qmd.yml")),
+      "altdoc/preamble_man_qmd.yml",
       overwrite = TRUE)
   }
 
   # README.md is mandatory
-  fn <- fs::path_join(c(path, "README.md"))
-  if (!fs::file_exists(fn)) {
+  if (!fs::file_exists("README.md")) {
     cli::cli_alert_info("README.md is mandatory. `altdoc` created a dummy README file in the package directory.")
-    writeLines("Hello World!", fn)
+    writeLines("Hello World!", "README.md")
   }
 
   return(invisible())

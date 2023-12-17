@@ -1,16 +1,14 @@
-.finalize_mkdocs <- function(settings, path, ...) {
+.finalize_mkdocs <- function(settings, ...) {
     # fix links
     settings <- gsub(": \\/", ": ", settings)
 
     # Fix vignette relative links before calling `mkdocs`
-    vignettes <- list.files(
-        fs::path_join(c(.doc_path(path), "vignettes")),
-        pattern = "\\.md")
+    vignettes <- list.files("docs/vignettes", pattern = "\\.md")
     for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", v))
+        fn <- fs::path_join("docs/vignettes", v)
         txt <- .readlines(fn)
         txt <- gsub(
-            paste0("![](", .doc_path(path), "/vignettes/"),
+            paste0("![](", "docs/vignettes/"),
             "![](",
             txt,
             fixed = TRUE)
@@ -22,14 +20,12 @@
     }
 
     # Fix man page relative links
-    man <- list.files(
-        fs::path_join(c(.doc_path(path), "man")),
-        pattern = "\\.md")
+    man <- list.files("docs/man", pattern = "\\.md")
     for (v in man) {
-        fn <- fs::path_join(c(.doc_path(path), "man", v))
+        fn <- fs::path_join(c("docs/man", v))
         txt <- .readlines(fn)
         txt <- gsub(
-            paste0("![](", .doc_path(path), "/man/"),
+            paste0("![](", "docs/man/"),
             "![](",
             txt,
             fixed = TRUE)
@@ -37,8 +33,7 @@
     }
 
     # write mutable sidebar
-    fn <- fs::path_join(c(path, "mkdocs.yml"))
-    writeLines(settings, fn)
+    writeLines(settings, "docs/mkdocs.yml")
 
     # These two elements should be lists in the yaml format, not single elements,
     # otherwise mkdocs breaks
@@ -55,7 +50,7 @@
     }
     yaml::write_yaml(yml, fn, indent.mapping.sequence = TRUE)
 
-    fn <- fs::path_join(c(path, "index.html"))
+    fn <- "index.html"
     if (fs::file_exists(fn)) {
         fs::file_delete(fn)
     }
@@ -65,7 +60,7 @@
     if (.is_windows()) {
         shell(
           paste(
-            "cd", fs::path_abs(path),
+            "cd", fs::path_abs(getwd()),
             "&& .venv_altdoc\\Scripts\\activate.bat",
             "&& python3 -m mkdocs build -q"
           )
@@ -76,16 +71,15 @@
           "bash",
           paste0(
             "-c 'source ",
-            fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
+            fs::path_join(c(fs::path_abs(getwd()), "/.venv_altdoc/bin/activate")),
             " && python3 -m mkdocs build -q'"
           )
         )
     }
 
     # move to docs/
-    fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-    tmp <- fs::path_join(c(path, "site/"))
-    src <- fs::dir_ls(tmp, recurse = TRUE)
+    fs::file_move("mkdocs.yml", "docs/")
+    src <- fs::dir_ls("site/", recurse = TRUE)
     tar <- sub("site\\/", "docs\\/", src)
     for (i in seq_along(src)) {
         fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
@@ -93,13 +87,12 @@
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
         }
     }
-    fs::dir_delete(fs::path_join(c(path, "site")))
+    fs::dir_delete("site")
 }
 
 
-.sidebar_vignettes_mkdocs <- function(sidebar, path) {
-    dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
+.sidebar_vignettes_mkdocs <- function(sidebar) {
+    fn_vignettes <- list.files("docs/vignettes", pattern = "\\.md$|\\.pdf$", full.names = TRUE)
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
@@ -131,11 +124,10 @@
 }
 
 
-.sidebar_man_mkdocs <- function(sidebar, path) {
+.sidebar_man_mkdocs <- function(sidebar) {
     .assert_dependency("yaml", install = TRUE)
 
-    fn_man <- fs::path_join(c(.doc_path(path), "reference.md"))
-    dn_man <- fs::path_join(c(.doc_path(path), "man"))
+    dn_man <- "docs/man"
 
     if (fs::dir_exists(dn_man) && length(fs::dir_ls(dn_man)) > 0) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
