@@ -44,7 +44,7 @@
         if (i %in% files_success) {
             hashes[[i]] <- digest::digest(.readlines(i))
         } else if (i %in% files_fail) {
-            hashes[[i]] <- NULL
+            hashes <- hashes[names(hashes) != i]
         }
     }
     saveRDS(hashes, freeze_file)
