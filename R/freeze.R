@@ -1,6 +1,6 @@
 .read_freeze <- function(input, output, hashes) {
 
-    if (!fs::file_exists(input) || !fs::file_exists(output) ||is.null(hashes)) {
+    if (!fs::file_exists(input) || !fs::file_exists(output) || is.null(hashes)) {
         return(FALSE)
     }
 
