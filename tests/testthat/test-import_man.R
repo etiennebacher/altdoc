@@ -45,6 +45,7 @@ test_that("rendering skipped because unchanged and freeze = TRUE", {
 
   # first rendering to store the hash
   .render_one_man(src, tool = "docute", src_dir = ".", tar_dir = ".", freeze = FALSE, hashes = NULL)
+  .update_freeze(".", src, successes = 1, fails = NULL, type = "man")
   hashes <- .get_hashes(".", freeze = TRUE)
 
   expect_equal(
