@@ -162,7 +162,9 @@ automatically by `altdoc` when calling `render_docs()`:
     pages for each exported function of the package. The format of this
     block depends on the documentation generator.
 -   `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The
-    format of this block depends on the documentation generator.
+    format of this block depends on the documentation generator. Note
+    that PDF files in the “vignettes/” folder are included, except when
+    docute is used.
 -   `$ALTDOC_VERSION`: Version number of the altdoc package.
 
 Also note that you can store images and static files in the `altdoc/`
