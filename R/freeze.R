@@ -1,20 +1,24 @@
-.read_freeze <- function(input, output, hashes) {
-
+# input = original man page or vignette
+# output = rendered man page or vignette (md file)
+# hashes = content of altdoc/freeze.rds
+.is_frozen <- function(input, output, hashes) {
     if (!fs::file_exists(input) || !fs::file_exists(output) || is.null(hashes)) {
         return(FALSE)
     }
-
     out <- FALSE
     if (input %in% names(hashes)) {
         old <- hashes[[input]]
         new <- digest::digest(.readlines(input))
         out <- identical(old, new)
     }
-    return(out)
+    out
 }
 
-.write_freeze <- function(input, path, freeze, worked = TRUE) {
-    freeze_file <- fs::path_join(c(path, "altdoc/freeze.rds"))
+# input = filename
+# src_dir = path to package root
+# freeze = TRUE/FALSE
+.write_freeze <- function(input, src_dir, freeze) {
+    freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
 
     if (!fs::file_exists(freeze_file)) {
         hashes <- vector("character")
@@ -22,15 +26,12 @@
         hashes <- readRDS(freeze_file)
     }
 
-    if (isTRUE(worked)) {
-        hashes[[input]] <- digest::digest(.readlines(input))
-    } else {
-        hashes <- hashes[names(hashes) != input]
-    }
-
+    hashes[[input]] <- digest::digest(.readlines(input))
     saveRDS(hashes, freeze_file)
 }
 
+# src_dir = path to package root
+# freeze = TRUE/FALSE
 .get_hashes <- function(src_dir, freeze) {
     hashes <- NULL
     if (isTRUE(freeze)) {
