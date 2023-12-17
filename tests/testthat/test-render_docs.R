@@ -59,6 +59,8 @@ test_that("docsify: main files are correct", {
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
 })
 
+
+
 test_that("mkdocs: main files are correct", {
   skip_on_cran()
   skip_if_offline() # we download mkdocs every time
