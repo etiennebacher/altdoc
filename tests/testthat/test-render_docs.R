@@ -80,10 +80,10 @@ test_that("mkdocs: main files are correct", {
   ### special mkdocs stuff
   if (.is_windows()) {
     shell("python3 -m venv .venv_altdoc")
-    shell(".venv_altdoc\\Scripts\\activate.bat && python3 -m pip install mkdocs")
+    shell(".venv_altdoc\\Scripts\\activate.bat && python3 -m pip install mkdocs --quiet")
   } else {
     system2("python3", "-m venv .venv_altdoc")
-    system2("bash", "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs'", stdout = FALSE)
+    system2("bash", "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs --quiet'", stdout = FALSE)
   }
 
   ### generate docs
