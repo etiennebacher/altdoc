@@ -119,14 +119,13 @@
   skipped_unchanged <- which(conversion_worked == "skipped_unchanged")
   cli::cli_progress_done()
 
-  # indent bullet points
-  cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
-
   if (length(skipped_unchanged) > 0) {
     cli::cli_alert("{length(skipped_unchanged)} vignette{?s} skipped because {?it/they} didn't change.")
   }
 
   if (length(fails) > 0) {
+    # indent bullet points
+    cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
     cli::cli_par()
     cli::cli_end()
     cli::cli_alert_danger("{length(successes)}The conversion failed for the following vignette{?s}:")
