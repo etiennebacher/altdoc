@@ -67,7 +67,7 @@
     # qmd -> md
     "qmd" = {
         pre <- fs::path_join(c(src_dir, "altdoc/preamble_vignettes_qmd.yml"))
-        pre <- tryCatch(.readlines(pre), error = function(e) NULL)
+        pre <- tryCatch(.readlines(pre), warning = function(w) NULL, error = function(e) NULL)
         # copy to quarto file
         if (tool == "quarto_website") {
           fs::file_copy(
