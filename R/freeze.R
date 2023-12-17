@@ -5,6 +5,9 @@
     if (!fs::file_exists(input) || !fs::file_exists(output) || is.null(hashes)) {
         return(FALSE)
     }
+    if (grepl("/vignettes/", input)) {
+      input <- paste0("vignettes/", basename(input))
+    }
     out <- FALSE
     if (input %in% names(hashes)) {
         old <- hashes[[input]]
@@ -14,12 +17,22 @@
     out
 }
 
-# input = filename
 # src_dir = path to package root
-# freeze = TRUE/FALSE
-# worked = TRUE/FALSE - did the conversion of the file work?
-.write_freeze <- function(input, src_dir, freeze, worked) {
+# src_files = either all vignettes or all man pages
+# successes = indices of src_files whose conversion succeeded
+# fails = indices of src_files whose conversion failed
+# type = "man" or "vignettes"
+.update_freeze <- function(src_dir, src_files, successes, fails, type) {
     freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
+
+    if (type == "man") {
+        src_files <- paste0("man/", src_files, ".Rd")
+    } else if (type == "vignettes") {
+        src_files <- paste0("vignettes/", src_files)
+    }
+
+    files_success <- src_files[successes]
+    files_fail <- src_files[fails]
 
     if (!fs::file_exists(freeze_file)) {
         hashes <- vector("character")
@@ -27,14 +40,13 @@
         hashes <- readRDS(freeze_file)
     }
 
-    # if conversion failed we don't want to store the hash of the input because
-    # it contains an error
-    if (isTRUE(worked)) {
-        hashes[[input]] <- digest::digest(.readlines(input))
-    } else {
-        hashes <- hashes[names(hashes) != input]
+    for (i in src_files) {
+        if (i %in% files_success) {
+            hashes[[i]] <- digest::digest(.readlines(i))
+        } else if (i %in% files_fail) {
+            hashes[[i]] <- NULL
+        }
     }
-
     saveRDS(hashes, freeze_file)
 }
 
