@@ -44,7 +44,12 @@
   }
 
   # source files
-  src_files <- list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$|\\.pdf$")
+  # docute can't open PDF in external tab because it adds ".md" after all files
+  src_files <- if (tool == "docute") {
+    list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$")
+  } else {
+    list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$|\\.pdf$")
+  }
 
   # copy all subdirectories: images, static files, etc.
   # docsify: vignettes/

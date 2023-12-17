@@ -42,7 +42,7 @@
 
 .sidebar_vignettes_docute <- function(sidebar, path) {
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
+    fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)

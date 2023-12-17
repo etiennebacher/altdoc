@@ -45,10 +45,15 @@
     Code
       .readlines("docs/_sidebar.md")
     Output
-      [1] "* [Home](/)"                      "* Articles: "                    
-      [3] "  - [test](vignettes/test.md)"    "* Reference: "                   
-      [5] "  - [hello_base](man/hello_base)" "  - [hello_r6](man/hello_r6)"    
-      [7] "* [News](NEWS.md)"                "* [Citation](CITATION.md)"       
+      [1] "* [Home](/)"                                 
+      [2] "* Articles: "                                
+      [3] "  - [here.pdf](vignettes/here.pdf ':ignore')"
+      [4] "  - [test](vignettes/test.md)"               
+      [5] "* Reference: "                               
+      [6] "  - [hello_base](man/hello_base)"            
+      [7] "  - [hello_r6](man/hello_r6)"                
+      [8] "* [News](NEWS.md)"                           
+      [9] "* [Citation](CITATION.md)"                   
 
 ---
 
