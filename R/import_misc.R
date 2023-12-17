@@ -42,11 +42,11 @@
     src <- src[1]
   }
 
-  tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
+  tar <- fs::path_join(c(tar_dir, paste0(toupper(name), ".md")))
 
   # .Rd -> .md
   if (fs::path_ext(src) == "Rd") {
-    .rd2qmd(src, tar_dir)
+    .rd2qmd(src, tar_dir, path = src_dir)
     .qmd2md(fs::path_join(c(tar_dir, paste0(name, ".qmd"))), tar_dir)
     # the files I tried were too deeply nested
     x <- .readlines(tar)

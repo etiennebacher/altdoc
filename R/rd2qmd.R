@@ -1,4 +1,4 @@
-.rd2qmd <- function(source_file, target_dir) {
+.rd2qmd <- function(source_file, target_dir, path) {
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -14,7 +14,7 @@
   # superfluous header and footer
   tmp <- .readlines(tmp_html)
   tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
-  tmp <- head(tmp, -4)
+  tmp <- utils::head(tmp, -4)
 
   # first column (odd entries) of table in Arguments should not be wrapped
   idx <- grep("<td>", tmp)
@@ -25,7 +25,7 @@
   idx <- grepl("<.code", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
-  pkg <- .pkg_name(".")
+  pkg <- .pkg_name(path)
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 

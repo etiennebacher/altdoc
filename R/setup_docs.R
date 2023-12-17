@@ -84,7 +84,9 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   } else {
     if (isTRUE(overwrite)) {
       # start from zero when the setup is overwritten
-      fs::dir_delete(docs_dir)
+      if (isTRUE(fs::dir_exists(docs_dir))) {
+        fs::dir_delete(docs_dir)
+      }
 
       file_names <- c(
         "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"

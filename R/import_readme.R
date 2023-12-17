@@ -32,11 +32,16 @@
         fs::path_join(c(tar_dir, "index.qmd")),
         overwrite = TRUE)
       # process in-place for use on Github
-      .qmd2md(fn, src_dir, preamble = pre)
+      # TODO: preambles inserted in the README often break Quarto websites. It's
+      # not a big problem to omit the preamble, but it would be good to
+      # investigate this, because I am not sure what is going on -VAB
+      .qmd2md(fn, src_dir)
+      # .qmd2md(fn, src_dir, preamble = pre)
       cli::cli_alert_success("{.file README} imported.")
       return(invisible())
     } else {
-      .qmd2md(fn, src_dir, preamble = pre)
+      .qmd2md(fn, src_dir)
+      # .qmd2md(fn, src_dir, preamble = pre)
     }
   } else if (tool == "quarto_website") {
     cli::cli_abort("Quarto websites require a README.qmd file in the root of the package directory.", call = NULL)

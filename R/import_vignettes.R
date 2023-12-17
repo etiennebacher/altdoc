@@ -44,7 +44,7 @@
   }
 
   # source files
-  src_files <- list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$")
+  src_files <- list.files(vig_dir, pattern = "\\.Rmd$|\\.qmd$|\\.md$|\\.pdf$")
 
   # copy all subdirectories: images, static files, etc.
   # docsify: vignettes/
@@ -101,8 +101,9 @@
       }
     }
 
-    if (fs::path_ext(origin) == "md") {
+    if (fs::path_ext(origin) %in% c("md", "pdf")) {
       fs::file_copy(origin, tar_dir, overwrite = TRUE)
+      worked <- TRUE
 
     # We now use Quarto to render all vignettes, even .Rmd ones, because this
     # makes the file structure more uniform, and fixes a lot of the file path
