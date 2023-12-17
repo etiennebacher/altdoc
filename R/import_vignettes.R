@@ -114,6 +114,9 @@
   successes <- which(conversion_worked == "success")
   fails <- which(conversion_worked == "failure")
   skipped_unchanged <- which(conversion_worked == "skipped_unchanged")
+
+  .update_freeze(src_dir, src_files, successes, fails, type = "vignettes")
+
   cli::cli_progress_done()
 
   if (length(skipped_unchanged) > 0) {
@@ -175,12 +178,6 @@
       pre <- NULL
     }
     worked <- .qmd2md(origin, tar_dir, verbose = verbose, preamble = pre)
-  }
-
-  # do not try to read/write the RDS file if we run in CI because the updated
-  # RDS won't be available to us anyway
-  if (!.on_ci()) {
-    .write_freeze(input = origin, src_dir = src_dir, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))

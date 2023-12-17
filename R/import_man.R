@@ -76,6 +76,9 @@
   fails <- which(conversion_worked == "failure")
   skipped_internal <- which(conversion_worked == "skipped_internal")
   skipped_unchanged <- which(conversion_worked == "skipped_unchanged")
+
+  .update_freeze(src_dir, man_source, successes, fails, type = "man")
+
   cli::cli_progress_done()
 
   # indent bullet points
@@ -163,12 +166,6 @@
     tmp <- .readlines(destination_md)
     tmp <- gsub("^##", "#", tmp)
     writeLines(tmp, destination_md)
-  }
-
-  # do not try to read/write the RDS file if we run in CI because the updated
-  # RDS won't be available to us anyway
-  if (!.on_ci()) {
-    .write_freeze(input = origin_Rd, src_dir = src_dir, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))
