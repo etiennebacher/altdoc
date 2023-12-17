@@ -57,7 +57,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   }
 
   if (tool == "mkdocs") {
-    if (!.venv_exists()) {
+    if (!.venv_exists(path)) {
       cli::cli_abort(
         c(
           "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",

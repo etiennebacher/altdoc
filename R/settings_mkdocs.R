@@ -65,7 +65,8 @@
     if (.is_windows()) {
         shell(
           paste(
-            fs::path_join(c(fs::path_abs(path), ".venv_altdoc\\Scripts\\activate.bat")),
+            "cd", fs::path_abs(path),
+            "&& .venv_altdoc\\Scripts\\activate.bat",
             "&& python3 -m mkdocs build -q"
           )
         )
