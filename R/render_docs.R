@@ -80,7 +80,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
   }
-  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool, freeze = freeze)
   .import_citation(src_dir = path, tar_dir = docs_dir)
 
 
