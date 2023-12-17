@@ -30,11 +30,11 @@ setup_github_actions <- function(path = ".") {
   fs::file_copy(src, tar)
 
   # Deal with mkdocs installation in workflow
-  doctype <- .doc_type(path)
+  tool <- .doc_type(path)
   workflow <- .readlines(tar)
   start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
   end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
-  if (doctype == "mkdocs") {
+  if (tool == "mkdocs") {
     workflow <- workflow[-c(start, end)]
   } else {
     workflow <- workflow[-(start:end)]
