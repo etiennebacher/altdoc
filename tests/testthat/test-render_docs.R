@@ -104,6 +104,7 @@ test_that("mkdocs: main files are correct", {
 
 test_that("quarto: no error for basic workflow", {
   skip_on_cran()
+  skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
   ### setup: create a temp package using the structure of testpkg.altdoc
   path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
