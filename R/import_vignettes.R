@@ -179,8 +179,8 @@
 
   # do not try to read/write the RDS file if we run in CI because the updated
   # RDS won't be available to us anyway
-  if (!.on_ci() && isTRUE(worked)) {
-    .write_freeze(input = origin, src_dir = src_dir, freeze = freeze)
+  if (!.on_ci()) {
+    .write_freeze(input = origin, src_dir = src_dir, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))

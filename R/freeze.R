@@ -17,7 +17,8 @@
 # input = filename
 # src_dir = path to package root
 # freeze = TRUE/FALSE
-.write_freeze <- function(input, src_dir, freeze) {
+# worked = TRUE/FALSE - did the conversion of the file work?
+.write_freeze <- function(input, src_dir, freeze, worked) {
     freeze_file <- fs::path_join(c(src_dir, "altdoc/freeze.rds"))
 
     if (!fs::file_exists(freeze_file)) {
@@ -26,7 +27,14 @@
         hashes <- readRDS(freeze_file)
     }
 
-    hashes[[input]] <- digest::digest(.readlines(input))
+    # if conversion failed we don't want to store the hash of the input because
+    # it contains an error
+    if (isTRUE(worked)) {
+        hashes[[input]] <- digest::digest(.readlines(input))
+    } else {
+        hashes <- hashes[names(hashes) != input]
+    }
+
     saveRDS(hashes, freeze_file)
 }
 
