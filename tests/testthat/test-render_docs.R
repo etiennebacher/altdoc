@@ -120,7 +120,7 @@ test_that("quarto: no error for basic workflow", {
   install.packages(".", repos = NULL, type = "source")
   fs::file_move("README.Rmd", "README.qmd") # special thing quarto
   setup_docs("quarto_website")
-  expect_no_error(render_docs())
+  expect_no_error(render_docs(verbose = .on_ci()))
 
   ### Quarto output changes depending on the version, I don't have a solution for
   ### now.
