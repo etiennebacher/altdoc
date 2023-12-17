@@ -36,17 +36,6 @@
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
-  .safe_copy <- function(src, tar, overwrite) {
-    if (fs::file_exists(tar) && !isTRUE(overwrite)) {
-      cli::cli_abort(
-        "{tar} already exists. Delete it or set `overwrite=TRUE`.",
-        .envir = parent.frame(1L)
-      )
-    } else {
-      fs::file_copy(src, tar, overwrite = TRUE)
-    }
-  }
-
   # input sanity checks
   if (missing(tool) ||
       !is.character(tool) ||
@@ -70,7 +59,6 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     .add_gitignore(".venv_altdoc", path = path)
     .add_rbuildignore(".venv_altdoc", path = path)
   }
-
 
   # paths
   path <- .convert_path(path)
@@ -167,6 +155,16 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     cli::cli_alert_info("README.md is mandatory. `altdoc` created a dummy README file in the package directory.")
     writeLines("Hello World!", fn)
   }
+}
 
-  return(invisible())
+
+.safe_copy <- function(src, tar, overwrite) {
+  if (fs::file_exists(tar) && !isTRUE(overwrite)) {
+    cli::cli_abort(
+      "{tar} already exists. Delete it or set `overwrite=TRUE`.",
+      .envir = parent.frame(1L)
+    )
+  } else {
+    fs::file_copy(src, tar, overwrite = TRUE)
+  }
 }

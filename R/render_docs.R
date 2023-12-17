@@ -46,13 +46,12 @@
 render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
   path <- .convert_path(path)
-
+  tool <- .doc_type(path)
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
+
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
     cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
   }
-
-  tool <- .doc_type(path)
 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
@@ -74,7 +73,6 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   }
 
   cli::cli_h1("Basic files")
-
 
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {

@@ -3,11 +3,10 @@
   # priorities: .qmd > .Rmd > .md
   readme_files <- list.files(src_dir, pattern = "README")
 
-  # no README -> create a dummy .qmd (choose .qmd because quarto requires a .qmd)
+  # setup_docs() already created README.md if there is none, so if we don't find
+  # any, it means the user has deleted it and we error
   if (length(readme_files) == 0) {
-    fn <- fs::path_join(c(src_dir, "README.qmd"))
-    writeLines(c("", "Hello world!"), fn)
-    readme_files <- "README.qmd"
+    cli::cli_abort("README.md is mandatory.")
   }
 
   # Find the preferred README extension
