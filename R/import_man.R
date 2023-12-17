@@ -121,7 +121,7 @@
 
   # Skip file when frozen
   if (isTRUE(freeze)) {
-    flag <- .read_freeze(input = origin_Rd, output = destination_md, hashes = hashes)
+    flag <- .is_frozen(input = origin_Rd, output = destination_md, hashes = hashes)
     if (isTRUE(flag)) {
       return("skipped_unchanged")
     }
@@ -168,7 +168,7 @@
   # do not try to read/write the RDS file if we run in CI because the updated
   # RDS won't be available to us anyway
   if (!.on_ci()) {
-    .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze, worked = worked)
+    .write_freeze(input = origin_Rd, src_dir = src_dir, freeze = freeze, worked = worked)
   }
 
   return(ifelse(worked, "success", "failure"))
