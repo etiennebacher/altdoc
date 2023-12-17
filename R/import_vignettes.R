@@ -80,13 +80,11 @@
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
     conversion_worked <- future.apply::future_sapply(
-      seq_along(src_files),
+      src_files,
       .render_one_vignette,
-      vignette = src_files[x],
       src_dir = src_dir,
       vig_dir = vig_dir,
       tar_dir = tar_dir,
-      pre = pre,
       freeze = freeze,
       hashes = hashes,
       verbose = verbose,
@@ -102,7 +100,6 @@
           src_dir = src_dir,
           vig_dir = vig_dir,
           tar_dir = tar_dir,
-          pre = pre,
           freeze = freeze,
           hashes = hashes,
           verbose = verbose
@@ -139,7 +136,7 @@
 }
 
 
-.render_one_vignette <- function(vignette, src_dir, vig_dir, tar_dir, pre, freeze, hashes = NULL, verbose = FALSE) {
+.render_one_vignette <- function(vignette, src_dir, vig_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
 
   worked <- FALSE
 
