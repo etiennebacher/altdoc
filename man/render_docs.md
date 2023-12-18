@@ -60,10 +60,11 @@ deleted, all man pages and vignettes will be rendered anew.
 
 ## Details
 
-This function searches the root directory and the `inst/` directory for
-specific filenames, renders/converts/copies them to the `docs/`
-directory. The order of priority for each file is established as
-follows:
+This function searches the root directory and the
+<code style="white-space: pre;">inst/</code> directory for specific
+filenames, renders/converts/copies them to the
+<code style="white-space: pre;">docs/</code> directory. The order of
+priority for each file is established as follows:
 
 <ul>
 <li>
@@ -148,60 +149,66 @@ LICENCE.md, LICENCE.txt, LICENCE
 
 ## Altdoc variables
 
-The settings files in the `altdoc/` directory can include `$ALTDOC`
+The settings files in the <code style="white-space: pre;">altdoc/</code>
+directory can include <code style="white-space: pre;">$ALTDOC</code>
 variables which are replaced automatically by <code>altdoc</code> when
 calling <code>render_docs()</code>:
 
 <ul>
 <li>
 
-`$ALTDOC_PACKAGE_NAME`: Name of the package from
-<code>DESCRIPTION</code>.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_NAME</code>: Name of the
+package from <code>DESCRIPTION</code>.
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_VERSION`: Version number of the package from
-<code>DESCRIPTION</code>
+<code style="white-space: pre;">$ALTDOC_PACKAGE_VERSION</code>: Version
+number of the package from <code>DESCRIPTION</code>
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of the
-package.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_URL</code>: First URL
+listed in the DESCRIPTION file of the package.
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains "github.com" from
-the URLs listed in the DESCRIPTION file of the package. If no such URL
-is found, lines containing this variable are removed from the settings
-file.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_URL_GITHUB</code>: First
+URL that contains "github.com" from the URLs listed in the DESCRIPTION
+file of the package. If no such URL is found, lines containing this
+variable are removed from the settings file.
 
 </li>
 <li>
 
-`$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help pages
-for each exported function of the package. The format of this block
-depends on the documentation generator.
+<code style="white-space: pre;">$ALTDOC_MAN_BLOCK</code>: Nested list of
+links to the individual help pages for each exported function of the
+package. The format of this block depends on the documentation
+generator.
 
 </li>
 <li>
 
-`$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The
-format of this block depends on the documentation generator.
+<code style="white-space: pre;">$ALTDOC_VIGNETTE_BLOCK</code>: Nested
+list of links to the vignettes. The format of this block depends on the
+documentation generator.
 
 </li>
 <li>
 
-`$ALTDOC_VERSION`: Version number of the altdoc package.
+<code style="white-space: pre;">$ALTDOC_VERSION</code>: Version number
+of the altdoc package.
 
 </li>
 </ul>
 
-Also note that you can store images and static files in the `altdoc/`
-directory. All the files in this folder are copied to `docs/` and made
-available in the root of the website, so you can link to them easily.
+Also note that you can store images and static files in the
+<code style="white-space: pre;">altdoc/</code> directory. All the files
+in this folder are copied to
+<code style="white-space: pre;">docs/</code> and made available in the
+root of the website, so you can link to them easily.
 
 ## Altdoc preambles
 

@@ -5,13 +5,15 @@
 
 ## Description
 
-Creates a subdirectory called `altdoc/` in the package root directory to
-store the settings files used to by one of the documentation generator
-utilities (<code>docsify</code>, <code>docute</code>,
-<code>mkdocs</code>, or <code>quarto_website</code>). The files in this
-folder are never altered automatically by <code>altdoc</code> unless the
-user explicitly calls <code>overwrite=TRUE</code>. They can thus be
-edited manually to customize the sidebar and website.
+Creates a subdirectory called
+<code style="white-space: pre;">altdoc/</code> in the package root
+directory to store the settings files used to by one of the
+documentation generator utilities (<code>docsify</code>,
+<code>docute</code>, <code>mkdocs</code>, or
+<code>quarto_website</code>). The files in this folder are never altered
+automatically by <code>altdoc</code> unless the user explicitly calls
+<code>overwrite=TRUE</code>. They can thus be edited manually to
+customize the sidebar and website.
 
 ## Usage
 
@@ -62,25 +64,26 @@ The homepage of the website is stored in <code>README.qmd</code>,
 </li>
 <li>
 
-`vignettes/` stores the vignettes in <code>.md</code>, <code>.Rmd</code>
-or <code>.qmd</code> format.
+<code style="white-space: pre;">vignettes/</code> stores the vignettes
+in <code>.md</code>, <code>.Rmd</code> or <code>.qmd</code> format.
 
 </li>
 <li>
 
-`docs/` stores the rendered website. This folder is overwritten every
-time a user calls <code>render_docs()</code>, so you should not edit it
-manually.
+<code style="white-space: pre;">docs/</code> stores the rendered
+website. This folder is overwritten every time a user calls
+<code>render_docs()</code>, so you should not edit it manually.
 
 </li>
 <li>
 
-`altdoc/` stores the settings files created by
-<code>setup_docs()</code>. These files are never modified automatically
-after initialization, so you can edit them manually to customize the
-settings of your documentation and website. All the files stored in
-`altdoc/` are copied to `docs/` and made available as static files in
-the root of the website.
+<code style="white-space: pre;">altdoc/</code> stores the settings files
+created by <code>setup_docs()</code>. These files are never modified
+automatically after initialization, so you can edit them manually to
+customize the settings of your documentation and website. All the files
+stored in <code style="white-space: pre;">altdoc/</code> are copied to
+<code style="white-space: pre;">docs/</code> and made available as
+static files in the root of the website.
 
 </li>
 <li>
@@ -94,60 +97,66 @@ These files are imported automatically: <code>NEWS.md</code>,
 
 ## Altdoc variables
 
-The settings files in the `altdoc/` directory can include `$ALTDOC`
+The settings files in the <code style="white-space: pre;">altdoc/</code>
+directory can include <code style="white-space: pre;">$ALTDOC</code>
 variables which are replaced automatically by <code>altdoc</code> when
 calling <code>render_docs()</code>:
 
 <ul>
 <li>
 
-`$ALTDOC_PACKAGE_NAME`: Name of the package from
-<code>DESCRIPTION</code>.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_NAME</code>: Name of the
+package from <code>DESCRIPTION</code>.
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_VERSION`: Version number of the package from
-<code>DESCRIPTION</code>
+<code style="white-space: pre;">$ALTDOC_PACKAGE_VERSION</code>: Version
+number of the package from <code>DESCRIPTION</code>
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of the
-package.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_URL</code>: First URL
+listed in the DESCRIPTION file of the package.
 
 </li>
 <li>
 
-`$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains "github.com" from
-the URLs listed in the DESCRIPTION file of the package. If no such URL
-is found, lines containing this variable are removed from the settings
-file.
+<code style="white-space: pre;">$ALTDOC_PACKAGE_URL_GITHUB</code>: First
+URL that contains "github.com" from the URLs listed in the DESCRIPTION
+file of the package. If no such URL is found, lines containing this
+variable are removed from the settings file.
 
 </li>
 <li>
 
-`$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help pages
-for each exported function of the package. The format of this block
-depends on the documentation generator.
+<code style="white-space: pre;">$ALTDOC_MAN_BLOCK</code>: Nested list of
+links to the individual help pages for each exported function of the
+package. The format of this block depends on the documentation
+generator.
 
 </li>
 <li>
 
-`$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The
-format of this block depends on the documentation generator.
+<code style="white-space: pre;">$ALTDOC_VIGNETTE_BLOCK</code>: Nested
+list of links to the vignettes. The format of this block depends on the
+documentation generator.
 
 </li>
 <li>
 
-`$ALTDOC_VERSION`: Version number of the altdoc package.
+<code style="white-space: pre;">$ALTDOC_VERSION</code>: Version number
+of the altdoc package.
 
 </li>
 </ul>
 
-Also note that you can store images and static files in the `altdoc/`
-directory. All the files in this folder are copied to `docs/` and made
-available in the root of the website, so you can link to them easily.
+Also note that you can store images and static files in the
+<code style="white-space: pre;">altdoc/</code> directory. All the files
+in this folder are copied to
+<code style="white-space: pre;">docs/</code> and made available in the
+root of the website, so you can link to them easily.
 
 ## Altdoc preambles
 
