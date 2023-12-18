@@ -32,7 +32,6 @@
   tmp <- gsub("$", "\\$", tmp, fixed = TRUE)
   tmp <- gsub("&lt;", "<", tmp)
   tmp <- gsub("&gt;", ">", tmp)
-  tmp <- gsub("&gt;", ">", tmp)
   tmp <- gsub("&amp;", "&", tmp)
 
   if (length(idx) == 1) {
