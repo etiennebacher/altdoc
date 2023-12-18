@@ -21,17 +21,14 @@
   idx <- idx[seq_along(idx) %% 2 == 1]
   tmp[idx] <- sub("<td>", '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">', tmp[idx])
 
-  # math in Equivalence section
-  idx <- grepl("<.code", tmp)
+  # escape the $ in man pages otherwise it thinks it is a latex equation and
+  # doesn't escape symbols between two $.
+  tmp <- gsub("\\$", "\\\\$", tmp)
 
   # examples: evaluate code blocks (assume examples are always last)
   pkg <- .pkg_name(path)
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
-
-  # escape the $ in man pages otherwise it thinks it is a latex equation and
-  # doesn't escape symbols between two $.
-  tmp <- gsub("\\$", "\\\\$", tmp)
 
   if (length(idx) == 1) {
     # until next section or the end
@@ -46,6 +43,7 @@
     ex <- gsub("&lt;", "<", ex)
     ex <- gsub("&gt;", ">", ex)
     ex <- gsub("&amp;", "&", ex)
+    ex <- gsub("\\$", "$", ex, fixed = TRUE)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
 

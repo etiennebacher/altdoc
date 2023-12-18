@@ -22,4 +22,7 @@ Some equations: \eqn{\partial Y / \partial X = a + \varepsilon/2}
 }
 \examples{
 hello_base()
+
+mtcars$drat <- mtcars$drat + 1
+head(mtcars[["drat"]], 2)
 }
