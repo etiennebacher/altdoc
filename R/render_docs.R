@@ -84,11 +84,20 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+  fail_man <- .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+  fail_vignettes <- .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+
+  # Error so that CI fails
+  if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
+    cli::cli_abort("There were some failures when rendering vignettes and man pages.")
+  } else if (length(fail_vignettes) > 0 & length(fail_man) == 0) {
+    cli::cli_abort("There were some failures when rendering vignettes.")
+  } else if (length(fail_vignettes) == 0 & length(fail_man) > 0) {
+    cli::cli_abort("There were some failures when rendering man pages.")
+  }
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
