@@ -15,6 +15,11 @@ Some value
 \description{
 Base function
 }
+\details{
+Some code with weird symbols: \code{pl$when(condition)} and \code{pl$then(output)}
+
+Some equations: \eqn{\partial Y / \partial X = a + \varepsilon/2}
+}
 \examples{
 hello_base()
 }
