@@ -29,6 +29,9 @@
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 
+  # escape the $ in man pages otherwise it thinks it is a latex equation and
+  # doesn't escape symbols between two $.
+  tmp <- gsub("\\$", "\\\\$", tmp)
 
   if (length(idx) == 1) {
     # until next section or the end
@@ -41,7 +44,6 @@
     }
     ex <- gsub("<.*>", "", ex)
     ex <- gsub("&lt;", "<", ex)
-    ex <- gsub("&gt;", ">", ex)
     ex <- gsub("&gt;", ">", ex)
     ex <- gsub("&amp;", "&", ex)
     ex <- ex[!grepl("## Not run:", ex)]
@@ -70,8 +72,7 @@
   tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
 
   # cleanup code
-  tmp <- gsub("&#8288;</code>", "`", tmp, fixed = TRUE)
-  tmp <- gsub('<code style="white-space: pre;">&#8288;', "`", tmp, fixed = TRUE)
+  tmp <- gsub("&#8288;", "", tmp, fixed = TRUE)
 
   # title
   tmp <- gsub("<h2[^>]*>(.*)</h2>", "## \\1 {.unnumbered}\n", tmp)
