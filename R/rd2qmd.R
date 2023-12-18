@@ -29,6 +29,8 @@
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 
+  # escape the $ in man pages otherwise it thinks it is a latex equation and
+  # doesn't escape symbols between two $.
   tmp <- gsub("\\$", "\\\\$", tmp)
 
   if (length(idx) == 1) {
