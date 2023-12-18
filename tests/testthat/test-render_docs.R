@@ -133,3 +133,28 @@ test_that("quarto: no error for basic workflow", {
   # expect_snapshot(.readlines("docs/man/hello_r6.html"))
   # expect_snapshot(.readlines("docs/vignettes/test.html"))
 })
+
+
+# Test failures ------------------------------
+
+test_that("render_docs errors if vignettes fail", {
+  create_local_package()
+  fs::dir_create("vignettes")
+  cat("# Get Started\n```{r}\n1 +\n```\n", file = "vignettes/foo.Rmd")
+  setup_docs("docute", path = getwd())
+  expect_error(
+    render_docs(path = getwd()),
+    "some failures when rendering vignettes"
+  )
+})
+
+test_that("render_docs errors if man fail", {
+  create_local_package()
+  fs::dir_create("man")
+  cat("\\name{hi}\n\\title{hi}\n\\usage{\nhi()\n}\n\\examples{\n1 +\n}\n", file = "man/foo.Rd")
+  setup_docs("docute", path = getwd())
+  expect_error(
+    render_docs(path = getwd()),
+    "some failures when rendering man pages"
+  )
+})

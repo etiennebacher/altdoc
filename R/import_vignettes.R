@@ -141,6 +141,8 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
+
+  fails
 }
 
 
