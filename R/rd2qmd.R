@@ -29,10 +29,7 @@
   pkg_load <- paste0("library(", pkg, ")")
   idx <- which(tmp == "<h3>Examples</h3>")
 
-  tmp <- gsub("$", "\\$", tmp, fixed = TRUE)
-  tmp <- gsub("&lt;", "<", tmp)
-  tmp <- gsub("&gt;", ">", tmp)
-  tmp <- gsub("&amp;", "&", tmp)
+  tmp <- gsub("\\$", "\\\\$", tmp)
 
   if (length(idx) == 1) {
     # until next section or the end
@@ -44,6 +41,9 @@
       ex <- tmp[(idx + 1):length(tmp)]
     }
     ex <- gsub("<.*>", "", ex)
+    ex <- gsub("&lt;", "<", ex)
+    ex <- gsub("&gt;", ">", ex)
+    ex <- gsub("&amp;", "&", ex)
     ex <- ex[!grepl("## Not run:", ex)]
     ex <- ex[!grepl("## End", ex)]
 
