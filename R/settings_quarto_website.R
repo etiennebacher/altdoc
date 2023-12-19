@@ -47,11 +47,19 @@
             src <- tmp
         }
     }
+
     tar <- .doc_path(path)
-    if (fs::dir_exists(tar)) {
-        fs::dir_delete(tar)
+
+    # CNAME is used by Github and other providers to redirect to a custom domain
+    files <- fs::dir_ls(tar)
+    for (f in files) {
+        if (basename(f) != "CNAME") {
+            if (fs::is_dir(f)) fs::dir_delete(f)
+            if (fs::is_file(f)) fs::file_delete(f)
+        }
     }
-    fs::file_move(src, .doc_path(path))
+
+    fs::file_move(fs::dir_ls(src), tar)
 
 }
 
