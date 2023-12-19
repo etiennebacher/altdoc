@@ -25,6 +25,14 @@
         fs::file_delete(fn)
     }
 
+    # NEWS.qmd breaks rendering, so we delete it if NEWS.md is available.
+    # This happens when when converting from NEWS.Rd
+    a <- fs::path_join(c(path, "_quarto", "NEWS.md"))
+    b <- fs::path_join(c(path, "_quarto", "NEWS.qmd"))
+    if (fs::file_exists(a) && fs::file_exists(b)) {
+        fs::file_delete(b)
+    }
+
     quarto::quarto_render(
         input = fs::path_join(c(path, "_quarto")),
         quiet = !verbose,
@@ -67,7 +75,21 @@
         if (!"section" %in% names(yml$website$sidebar$contents[[i]])) next
         if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
             if (length(fn_vignettes) > 0) {
-                yml$website$sidebar$contents[[i]] <- list(section = "Articles", contents = fn_vignettes)
+                fn_vignettes <- lapply(fn_vignettes, function(x) {
+                    # Quarto cannot retrieve titles from .pdf, so we use the file name
+                    if (tools::file_ext(x) == "pdf") {
+                        list(
+                            text = sub("\\.pdf$", "", basename(x)),
+                            file = x
+                        )
+                    # Quarto retrieves the title from .qmd files automatically, so we only supply the file path
+                    } else {
+                        x
+                    }
+                })
+                yml$website$sidebar$contents[[i]] <- list(
+                    section = "Articles",
+                    contents = fn_vignettes)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
             }
