@@ -72,12 +72,13 @@
         )
     } else {
         goback <- getwd()
+        print(settings)
         system2(
           "bash",
           paste0(
             "-c 'source ",
             fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
-            " && python3 -m mkdocs build -q'"
+            " && python3 -m mkdocs build'"
           )
         )
     }
