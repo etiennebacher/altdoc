@@ -112,13 +112,11 @@
         yml <- paste(sidebar, collapse = "\n")
         yml <- yaml::yaml.load(yml)
         for (i in seq_along(yml$nav)) {
-        for (i in seq_along(yml$nav)) {
             if (isTRUE(yml$nav[[i]][[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
                 section_name <- names(yml$nav[[i]])
                 title_link <- as.list(stats::setNames(fn_vignettes, titles))
                 yml$nav[[i]] <- stats::setNames(list(title_link), section_name)
             }
-        }
         }
         tmp <- tempfile()
         yaml::write_yaml(yml, file = tmp, indent.mapping.sequence = TRUE)
