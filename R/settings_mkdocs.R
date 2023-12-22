@@ -73,6 +73,7 @@
     } else {
         goback <- getwd()
         print(settings)
+        # browser()
         system2(
           "bash",
           paste0(
@@ -81,6 +82,7 @@
             " && python3 -m mkdocs build'"
           )
         )
+        print(fs::dir_tree("site/vignettes"))
     }
 
     # move to docs/
