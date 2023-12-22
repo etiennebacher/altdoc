@@ -102,6 +102,8 @@
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
         }
     }
+    print(fs::dir_tree("docs/vignettes"))
+
     fs::dir_delete(fs::path_join(c(path, "site")))
 }
 
