@@ -85,7 +85,7 @@
         print(fs::dir_tree("site/vignettes"))
     }
 
-    # browser()
+    browser()
 
     # move to docs/
     fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
