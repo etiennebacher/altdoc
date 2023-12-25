@@ -84,9 +84,9 @@
 
     # move to docs/
     fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-    tmp <- fs::path_join(c(path, "site/"))
-    src <- fs::dir_ls(tmp, recurse = TRUE)
-    tar <- sub("site\\/", "docs\\/", src)
+    src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
+    tar <- sub("/site/", "/docs/", src)
+
     for (i in seq_along(src)) {
         fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
         if (fs::is_file(src[i])) {
