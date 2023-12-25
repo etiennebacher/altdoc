@@ -85,26 +85,23 @@
         print(fs::dir_tree("site/vignettes"))
     }
 
-    browser()
+    # browser()
 
     # move to docs/
-    fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-    tmp <- fs::path_join(c(path, "site/"))
-    src <- fs::dir_ls(tmp, recurse = TRUE)
-    tar <- sub("site\\/", "docs\\/", src)
+    fs::file_move("site", "docs")
 
-    print(tail(src, n = 15))
-    print(tail(tar, n = 15))
+    # print(tail(src, n = 15))
+    # print(tail(tar, n = 15))
+    #
+    # for (i in seq_along(src)) {
+    #     fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
+    #     if (fs::is_file(src[i])) {
+    #         fs::file_copy(src[i], tar[i], overwrite = TRUE)
+    #     }
+    # }
+    # print(fs::dir_tree("docs/vignettes"))
 
-    for (i in seq_along(src)) {
-        fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
-        if (fs::is_file(src[i])) {
-            fs::file_copy(src[i], tar[i], overwrite = TRUE)
-        }
-    }
-    print(fs::dir_tree("docs/vignettes"))
-
-    fs::dir_delete(fs::path_join(c(path, "site")))
+    # fs::dir_delete(fs::path_join(c(path, "site")))
 }
 
 
