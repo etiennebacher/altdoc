@@ -88,6 +88,7 @@
     # browser()
 
     # move to docs/
+    fs::dir_delete("docs")
     fs::file_move("site", "docs")
 
     # print(tail(src, n = 15))
