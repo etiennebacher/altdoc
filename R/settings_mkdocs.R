@@ -1,15 +1,13 @@
 .finalize_mkdocs <- function(settings, path, ...) {
     # fix links
     settings <- gsub(": \\/", ": ", settings)
-    settings <- gsub("\\.md$", "", settings)
 
     # Fix vignette relative links before calling `mkdocs`
     vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
         pattern = "\\.md")
-    vignettes <- gsub("\\.md$", "", vignettes)
     for (v in vignettes) {
-        fn <- fs::path_join(c(.doc_path(path), "vignettes", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "vignettes", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/vignettes/"),
@@ -27,9 +25,8 @@
     man <- list.files(
         fs::path_join(c(.doc_path(path), "man")),
         pattern = "\\.md")
-    man <- gsub("\\.md$", "", man)
     for (v in man) {
-        fn <- fs::path_join(c(.doc_path(path), "man", paste0(v, ".md")))
+        fn <- fs::path_join(c(.doc_path(path), "man", v))
         txt <- .readlines(fn)
         txt <- gsub(
             paste0("![](", .doc_path(path), "/man/"),
@@ -66,24 +63,30 @@
 
     # render mkdocs
     if (.is_windows()) {
-        ### TODO: (cd <path> && python3 -m mkdocs build -q) should automatically go back to the previous directory
-        ### https://stackoverflow.com/questions/10382141/temporarily-change-current-working-directory-in-bash-to-run-a-command
-        goback <- fs::path_abs(getwd())
-        cmd <- paste("cd", fs::path_abs(path), "&& python3 -m mkdocs build -q")
-        shell(cmd)
-        shell(paste("cd", goback))
+        shell(
+          paste(
+            "cd", fs::path_abs(path),
+            "&& .venv_altdoc\\Scripts\\activate.bat",
+            "&& python3 -m mkdocs build -q"
+          )
+        )
     } else {
         goback <- getwd()
-        cmd <- paste(fs::path_abs(path), "&& python3 -m mkdocs build -q")
-        system2("cd", cmd)
-        system2("cd", goback)
+        system2(
+          "bash",
+          paste0(
+            "-c 'source ",
+            fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
+            " && python3 -m mkdocs build -q'"
+          )
+        )
     }
 
     # move to docs/
     fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
-    tmp <- fs::path_join(c(path, "site/"))
-    src <- fs::dir_ls(tmp, recurse = TRUE)
-    tar <- sub("site\\/", "docs\\/", src)
+    src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
+    tar <- sub("/site/", "/docs/", src)
+
     for (i in seq_along(src)) {
         fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
         if (fs::is_file(src[i])) {
@@ -91,13 +94,12 @@
         }
     }
     fs::dir_delete(fs::path_join(c(path, "site")))
-
 }
 
 
 .sidebar_vignettes_mkdocs <- function(sidebar, path) {
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$", full.names = TRUE)
+    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)

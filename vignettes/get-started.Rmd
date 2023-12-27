@@ -29,15 +29,37 @@ Below, we explain in more detail what these commands do.
 install.packages("altdoc")
 ```
 
-To create documentation websites with either `docsify` or `docute`, you only need to install `altdoc` in `R`.
+To create documentation websites with either `docsify` or `docute`, you only need
+to install `altdoc` in `R`. The rest of this section only concerns `mkdocs` users.
 
-To use `mkdocs` or its variants (such as `mkdocs-material`), you will first need to install those packages in `Python` using a tool like `pip`. From the command line:
+The procedure to use `mkdocs` is slightly more involved. `mkdocs` is a Python
+library, meaning that you will first need to set up a Python virtual environment
+(or "venv") in your package folder. In the terminal, run the following:
 
-```python
-pip install mkdocs mkdocs-material
+```bash
+python -m venv .venv_altdoc
 ```
 
-See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip) installation guides for details.
+You then need to activate this virtual environment and the way to do that 
+[depends on your OS](https://docs.python.org/3/library/venv.html#how-venvs-work):
+
+```bash
+# Windows
+.venv_altdoc\Scripts\activate.bat
+
+# Mac / Linux
+source .venv_altdoc/bin/activate
+```
+You can now install `mkdocs` (and other libraries such as `mkdocs-material` if 
+needed):
+
+```bash
+python3 -m pip install mkdocs mkdocs-material
+```
+
+See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and
+[`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip)
+installation guides for details.
 
 ## Package structure
 
@@ -110,7 +132,7 @@ The settings files can include `$ALTDOC` variables which are replaced automatica
 * `$ALTDOC_PACKAGE_URL`: First URL listed in the DESCRIPTION file of the package.
 * `$ALTDOC_PACKAGE_URL_GITHUB`: First URL that contains "github.com" from the URLs listed in the DESCRIPTION file of the package. If no such URL is found, lines containing this variable are removed from the settings file.
 * `$ALTDOC_MAN_BLOCK`: Nested list of links to the individual help pages for each exported function of the package. The format of this block depends on the documentation generator.
-* `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The format of this block depends on the documentation generator.
+* `$ALTDOC_VIGNETTE_BLOCK`: Nested list of links to the vignettes. The format of this block depends on the documentation generator. Note that PDF files in the "vignettes/" folder are included, except when docute is used.
 * `$ALTDOC_VERSION`: Version number of the altdoc package.
 
 Also note that you can store images and static files in the `altdoc/` directory. All the files in this folder are copied to `docs/` and made available in the root of the website, so you can link to them easily.

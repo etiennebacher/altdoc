@@ -23,6 +23,8 @@ jobs:
           python-version: 3.11
           architecture: x64
 
+      - uses: quarto-dev/quarto-actions/setup@v2
+
       - name: Install Mkdocs
         run: |
           python3 -m pip install --upgrade pip     # install pip

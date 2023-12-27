@@ -46,13 +46,12 @@
 render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
   path <- .convert_path(path)
-
+  tool <- .doc_type(path)
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
+
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
     cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
   }
-
-  tool <- .doc_type(path)
 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
@@ -62,7 +61,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
     if (fs::dir_exists(docs_parent)) {
       fs::dir_delete(docs_parent)
     }
-    .add_gitignore("^_quarto$")
+    .add_gitignore("^_quarto$", path = path)
   } else {
     docs_parent <- path
   }
@@ -75,22 +74,30 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   cli::cli_h1("Basic files")
 
-
-  basics <- c("NEWS", "CHANGELOG", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
+  basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
   }
-  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool)
+  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool, freeze = freeze)
   .import_citation(src_dir = path, tar_dir = docs_dir)
 
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+  fail_man <- .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+  fail_vignettes <- .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+
+  # Error so that CI fails
+  if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
+    cli::cli_abort("There were some failures when rendering vignettes and man pages.")
+  } else if (length(fail_vignettes) > 0 & length(fail_man) == 0) {
+    cli::cli_abort("There were some failures when rendering vignettes.")
+  } else if (length(fail_vignettes) == 0 & length(fail_man) > 0) {
+    cli::cli_abort("There were some failures when rendering man pages.")
+  }
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)

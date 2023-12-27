@@ -12,7 +12,7 @@
     cite <- suppressWarnings(
       tryCatch(
         {
-          name <- desc::desc_get_field("Package")
+          name <- .pkg_name(src_dir)
           cite <- utils::capture.output(print(utils::citation(name)))
           c("# Citation", "", "```verbatim", cite, "```")
         },
@@ -42,11 +42,11 @@
     src <- src[1]
   }
 
-  tar <- fs::path_join(c(tar_dir, paste0(name, ".md")))
+  tar <- fs::path_join(c(tar_dir, paste0(toupper(name), ".md")))
 
   # .Rd -> .md
   if (fs::path_ext(src) == "Rd") {
-    .rd2qmd(src, tar_dir)
+    .rd2qmd(src, tar_dir, path = src_dir)
     .qmd2md(fs::path_join(c(tar_dir, paste0(name, ".qmd"))), tar_dir)
     # the files I tried were too deeply nested
     x <- .readlines(tar)
@@ -111,10 +111,11 @@
 
 
   ### People
-
+  # regex from https://github.com/r-lib/pkgdown/blob/main/R/repo.R
   people <- unlist(
-    regmatches(orig_news, gregexpr("(^|[^@\\w])@(\\w{1,50})\\b", orig_news))
+    regmatches(orig_news, gregexpr("(\\s|^|\\()@([-\\w]+)", orig_news, perl = TRUE))
   )
+
   people <- gsub("^ ", "", people)
   people <- gsub("^\\(", "", people)
   people <- unique(people)

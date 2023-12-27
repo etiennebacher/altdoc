@@ -18,23 +18,19 @@
 #' with(mtcars, plot(mpg, wt))
 #'
 preview_docs <- function(path = ".") {
-  # conditional dependencies
   .assert_dependency("servr", install = TRUE)
   .assert_dependency("rstudioapi", install = TRUE)
 
   tool <- .doc_type(path)
+  if (.folder_is_empty(fs::path_join(c(path, "docs")))) {
+    cli::cli_abort("You must render the docs before previewing them. Use {.code altdoc::render_docs()}.")
+  }
 
   if (rstudioapi::isAvailable()) {
-    if (tool %in% c("docute", "docsify", "mkdocs")) {
-      servr::httw(fs::path_abs("docs/"))
-    } else {
-      cli::cli_alert_danger("{.file index.html} was not found. You can run one of {.code altdoc::use_*} functions to create it.")
-    }
+    servr::httw(fs::path_join(c(path, "docs")))
   } else {
     if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
       utils::browseURL(fs::path_abs("docs/index.html", start = path))
-    } else if (fs::file_exists(fs::path_abs("docs/site/index.html", start = path))) {
-      utils::browseURL(fs::path_abs("docs/site/index.html", start = path))
     }
   }
 }

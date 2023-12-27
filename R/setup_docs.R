@@ -36,17 +36,6 @@
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
-  .safe_copy <- function(src, tar, overwrite) {
-    if (fs::file_exists(tar) && !isTRUE(overwrite)) {
-      cli::cli_abort(
-        "{tar} already exists. Delete it or set `overwrite=TRUE`.",
-        .envir = parent.frame(1L)
-      )
-    } else {
-      fs::file_copy(src, tar, overwrite = TRUE)
-    }
-  }
-
   # input sanity checks
   if (missing(tool) ||
       !is.character(tool) ||
@@ -56,11 +45,19 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       'The `tool` argument must be "docsify", "docute", "mkdocs", or "quarto_website".')
   }
 
-  if (tool == "mkdocs" && !.is_mkdocs()) {
-    cli::cli_alert_danger("Apparently, {.code mkdocs} is not installed on your system.")
-    cli::cli_alert_info("You can install it with {.code pip3 install mkdocs} in your terminal.")
-    cli::cli_alert_info("More information: {.url https://www.mkdocs.org/user-guide/installation/}")
-    return(invisible())
+  if (tool == "mkdocs") {
+    if (!.venv_exists(path)) {
+      cli::cli_abort(
+        c(
+          "`altdoc` needs `mkdocs` to be installed in a Python virtual environment.",
+          "i" = "Set up a Python venv: {.code python -m venv .venv_altdoc}",
+          "i" = "Activate the venv (depends on your OS): {.url https://docs.python.org/3/library/venv.html#how-venvs-work}.",
+          "i" = "Install `mkdocs`: {.code python3 -m pip install mkdocs}"
+        )
+      )
+    }
+    .add_gitignore(".venv_altdoc", path = path)
+    .add_rbuildignore(".venv_altdoc", path = path)
   }
 
   # paths
@@ -72,18 +69,26 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   if (!fs::dir_exists(altdoc_dir)) {
     cli::cli_alert_info("Creating `altdoc/` directory.")
     fs::dir_create(altdoc_dir)
-  } else if (isTRUE(overwrite)) {
-    # start from zero when the setup is overwritten
-    fs::dir_delete(docs_dir)
-
-    file_names <- c(
-      "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
-    )
-    for (file_name in file_names) {
-      file_name <- fs::path_join(c(altdoc_dir, file_name))
-      if (fs::file_exists(file_name)) {
-        fs::file_delete(file_name)
+  } else {
+    if (isTRUE(overwrite)) {
+      # start from zero when the setup is overwritten
+      if (isTRUE(fs::dir_exists(docs_dir))) {
+        fs::dir_delete(docs_dir)
       }
+
+      file_names <- c(
+        "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
+      )
+      for (file_name in file_names) {
+        file_name <- fs::path_join(c(altdoc_dir, file_name))
+        if (fs::file_exists(file_name)) {
+          fs::file_delete(file_name)
+        }
+      }
+    } else {
+      cli::cli_abort(
+        "{.file {altdoc_dir}} already exists. Delete it or set `overwrite=TRUE`."
+      )
     }
   }
 
@@ -150,6 +155,16 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     cli::cli_alert_info("README.md is mandatory. `altdoc` created a dummy README file in the package directory.")
     writeLines("Hello World!", fn)
   }
+}
 
-  return(invisible())
+
+.safe_copy <- function(src, tar, overwrite) {
+  if (fs::file_exists(tar) && !isTRUE(overwrite)) {
+    cli::cli_abort(
+      "{tar} already exists. Delete it or set `overwrite=TRUE`.",
+      .envir = parent.frame(1L)
+    )
+  } else {
+    fs::file_copy(src, tar, overwrite = TRUE)
+  }
 }

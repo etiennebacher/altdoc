@@ -1,4 +1,29 @@
-test_that(paste("overwrite=TRUE works:", "docute"), {
+test_that("must be a package", {
+  create_local_project()
+  expect_error(
+    setup_docs(tool = "docute", path = getwd()),
+    "only works in packages"
+  )
+})
+
+test_that("setup_docs doesn't automatically overwrite", {
+    create_local_package()
+    setup_docs(tool = "docute", path = getwd())
+    expect_error(
+      setup_docs("docsify", path = getwd()),
+      "already exists"
+    )
+})
+
+test_that("setup_docs errors if missing tool", {
+    create_local_package()
+    expect_error(
+      setup_docs(path = getwd()),
+      "argument must be \"docsify\", \"docute\""
+    )
+})
+
+test_that("overwrite=TRUE works: docute", {
     create_local_package()
     setup_docs(tool = "docute", path = getwd())
     cat("Cruft", file = "altdoc/docute.html", append = TRUE)
@@ -9,7 +34,7 @@ test_that(paste("overwrite=TRUE works:", "docute"), {
     expect_false("Cruft" %in% txt)
 })
 
-test_that(paste("overwrite=TRUE works:", "docsify"), {
+test_that("overwrite=TRUE works: docsify", {
     create_local_package()
     setup_docs(tool = "docsify", path = getwd())
     cat("Cruft", file = "altdoc/docsify.html", append = TRUE)
@@ -20,10 +45,8 @@ test_that(paste("overwrite=TRUE works:", "docsify"), {
     expect_false("Cruft" %in% txt)
 })
 
-
-
-test_that(paste("overwrite=TRUE works:", "mkdocs"), {
-    skip_if_not(.is_mkdocs())
+test_that("overwrite=TRUE works: mkdocs", {
+    skip_if_not(.venv_exists())
     create_local_package()
     setup_docs(tool = "mkdocs", path = getwd())
     cat("Cruft", file = "altdoc/mkdocs.yml", append = TRUE)

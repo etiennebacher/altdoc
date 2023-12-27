@@ -19,3 +19,38 @@ test_that(".pkg_version() works", {
   expect_true(nchar(.pkg_version(".")) > 0)
 })
 
+test_that(".parse_news works", {
+  input <- "# 1.1.0\n\n* thanks @foo-bar for their contribution (#111)\n\n* thanks @foo2- for their contribution (#11)\n\n* due to issue in another repo (pola-rs/polars#112)\n\n* thanks @JohnDoe, @JaneDoe"
+  temp <- tempfile()
+  cat(input, file = temp)
+  .parse_news(".", temp)
+  parsed <- paste(.readlines(temp), collapse = "")
+
+  should_be_found <- c(
+    "[@foo-bar](https://github.com/foo-bar)",
+    "[#111](https://github.com/etiennebacher/altdoc/issues/111)",
+    "[@foo2-](https://github.com/foo2-)",
+    "[#11](https://github.com/etiennebacher/altdoc/issues/11)",
+    "[@JohnDoe](https://github.com/JohnDoe), [@JaneDoe](https://github.com/JaneDoe)"
+  )
+
+  expect_true(
+    all(sapply(should_be_found, grepl, x = parsed, fixed = TRUE))
+  )
+})
+
+test_that(".which_license works", {
+  create_local_package()
+  fs::file_create("LICENSE.md")
+  expect_equal(.which_license(), "LICENSE.md")
+  fs::file_delete("LICENSE.md")
+  fs::file_create("LICENCE.md")
+  expect_equal(.which_license(), "LICENCE.md")
+  fs::file_delete("LICENCE.md")
+  expect_null(.which_license())
+})
+
+test_that(".find_head_branch works if no git", {
+  create_local_package()
+  expect_null(.find_head_branch())
+})

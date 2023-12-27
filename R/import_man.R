@@ -28,106 +28,68 @@
 
   n <- length(man_source)
 
-  cli::cli_alert_info("Found {n} man page{?s} to convert.")
-
-  render_one_man <- function(fn) {
-    # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
-    origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
-    destination_dir <- fs::path_join(c(tar_dir, "man"))
-    destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
-    destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
-
-    # Skip internal functions
-    flag <- tryCatch(
-      any(grepl("\\keyword\\{internal\\}", .readlines(origin_Rd))),
-      error = function(e) FALSE)
-    if (isTRUE(flag)) {
-      return("skipped")
-    }
-
-    # Skip file when frozen
-    if (isTRUE(freeze)) {
-      flag <- .read_freeze(
-        input = origin_Rd,
-        output = destination_md,
-        path = src_dir,
-        freeze = freeze
-      )
-      if (isTRUE(flag)) {
-        return("skip")
-      }
-    }
-
-    fs::dir_create(destination_dir)
-    .rd2qmd(origin_Rd, destination_dir)
-
-    if (tool != "quarto_website") {
-      pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
-      if (fs::file_exists(pre)) {
-        pre <- .readlines(pre)
-      } else {
-        pre <- NULL
-      }
-      worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose, preamble = pre)
-      fs::file_delete(destination_qmd)
-    } else {
-      worked <- TRUE
-    }
-
-    github_source <- .find_github_source(fn)
-    if (!is.null(github_source)) {
-      to_insert <- paste0("[**Source code**](", github_source, ")")
-      rendered_man <- gsub("\\.qmd$", ".md", destination_qmd)
-      if (fs::file_exists(rendered_man)) {
-        temp <- .readlines(rendered_man)
-        header_idx <- grep("^## ", temp)[1]
-        new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
-        writeLines(new, rendered_man)
-      }
-    }
-
-    # section headings are too deeply nested by default
-    # this is a hack because it may remove one # from comments. But that's
-    # probably not the end of the world, because the line stick stays commented
-    # out.
-    if (fs::file_exists(destination_md)) {
-      tmp <- .readlines(destination_md)
-      tmp <- gsub("^##", "#", tmp)
-      writeLines(tmp, destination_md)
-    }
-
-    .write_freeze(input = origin_Rd, path = src_dir, freeze = freeze, worked = worked)
-
-    return(ifelse(worked, "success", "failure"))
+  if (n == 0) {
+    cli::cli_alert_info("No man pages to convert.")
+    return(invisible())
+  } else {
+    cli::cli_alert_info("Found {n} man page{?s} to convert.")
   }
+
+  # Read the hashes, used when freeze = TRUE
+  hashes <- .get_hashes(src_dir = src_dir, freeze = freeze)
 
   if (isTRUE(parallel)) {
     .assert_dependency("future.apply", install = TRUE)
     conversion_worked <- future.apply::future_sapply(
       man_source,
-      render_one_man,
-      future.seed = NULL)
+      .render_one_man,
+      tool = tool,
+      src_dir = src_dir,
+      tar_dir = tar_dir,
+      freeze = freeze,
+      hashes = hashes,
+      verbose = verbose,
+      future.seed = NULL
+    )
   } else {
-    # can't use message_info with {}
-    i <- 0
-    cli::cli_progress_step("Converting function reference {i}/{n}: {basename(man_source[i])}", spinner = TRUE)
-    conversion_worked <- vector(length = n)
-    for (i in seq_along(man_source)) {
-      conversion_worked[i] <- render_one_man(man_source[i])
-      cli::cli_progress_update(inc = 1)
-    }
+    conversion_worked <- vapply(
+      seq_along(man_source),
+      function(x) {
+        cli::cli_progress_step("Converting function reference {x}/{n}: {basename(man_source[x])}", spinner = TRUE)
+        out <- .render_one_man(
+          man_source[x],
+          tool = tool,
+          src_dir = src_dir,
+          tar_dir = tar_dir,
+          freeze = freeze,
+          hashes = hashes,
+          verbose = verbose
+        )
+        cli::cli_progress_update(inc = 1)
+        out
+      },
+      FUN.VALUE = character(1L)
+    )
   }
 
   successes <- which(conversion_worked == "success")
   fails <- which(conversion_worked == "failure")
-  skips <- which(conversion_worked == "skipped")
+  skipped_internal <- which(conversion_worked == "skipped_internal")
+  skipped_unchanged <- which(conversion_worked == "skipped_unchanged")
+
+  .update_freeze(src_dir, man_source, successes, fails, type = "man")
+
   cli::cli_progress_done()
 
   # indent bullet points
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
-  if (length(skips) > 0) {
-    cli::cli_alert("{length(skips)} .Rd files skipped because they document internal functions.")
+  if (length(skipped_internal) > 0) {
+    cli::cli_alert("{length(skipped_internal)} .Rd files skipped because they document internal functions.")
+  }
+
+  if (length(skipped_unchanged) > 0) {
+    cli::cli_alert("{length(skipped_unchanged)} .Rd files skipped because they didn't change.")
   }
 
   if (length(fails) > 0) {
@@ -141,7 +103,76 @@
     cli::cli_par()
     cli::cli_end(id = "list-fail")
   }
+
+  fails
 }
+
+
+.render_one_man <- function(fn, tool, src_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
+  # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
+  origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
+  destination_dir <- fs::path_join(c(tar_dir, "man"))
+  destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
+  destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
+
+  # Skip internal functions
+  flag <- tryCatch(
+    any(grepl("\\keyword\\{internal\\}", .readlines(origin_Rd))),
+    error = function(e) FALSE
+  )
+  if (isTRUE(flag)) {
+    return("skipped_internal")
+  }
+
+  # Skip file when frozen
+  if (isTRUE(freeze)) {
+    flag <- .is_frozen(input = origin_Rd, output = destination_md, hashes = hashes)
+    if (isTRUE(flag)) {
+      return("skipped_unchanged")
+    }
+  }
+
+  fs::dir_create(destination_dir)
+  .rd2qmd(origin_Rd, destination_dir, path = src_dir)
+
+  if (tool != "quarto_website") {
+    pre <- fs::path_join(c(src_dir, "altdoc", "preamble_man_qmd.yml"))
+    if (fs::file_exists(pre)) {
+      pre <- .readlines(pre)
+    } else {
+      pre <- NULL
+    }
+    worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose, preamble = pre)
+    fs::file_delete(destination_qmd)
+  } else {
+    worked <- TRUE
+  }
+
+  github_source <- .find_github_source(fn)
+  if (!is.null(github_source)) {
+    to_insert <- paste0("[**Source code**](", github_source, ")")
+    rendered_man <- gsub("\\.qmd$", ".md", destination_qmd)
+    if (fs::file_exists(rendered_man)) {
+      temp <- .readlines(rendered_man)
+      header_idx <- grep("^## ", temp)[1]
+      new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
+      writeLines(new, rendered_man)
+    }
+  }
+
+  # section headings are too deeply nested by default
+  # this is a hack because it may remove one # from comments. But that's
+  # probably not the end of the world, because the line stick stays commented
+  # out.
+  if (fs::file_exists(destination_md)) {
+    tmp <- .readlines(destination_md)
+    tmp <- gsub("^##", "#", tmp)
+    writeLines(tmp, destination_md)
+  }
+
+  return(ifelse(worked, "success", "failure"))
+}
+
 
 
 .find_github_source <- function(fn) {
@@ -150,7 +181,7 @@
     return(NULL)
   }
   # find file and row location
-  fn <- try(eval(parse(text = paste0(.pkg_name("."), "::", fn))), silent = TRUE)
+  fn <- try(eval(parse(text = paste0(.pkg_name("."), ":::", fn))), silent = TRUE)
   if (inherits(fn, "try-error")) {
     return(NULL)
   }

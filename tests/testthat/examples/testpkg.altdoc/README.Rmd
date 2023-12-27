@@ -1,0 +1,41 @@
+---
+output: github_document
+default-image-extension: ""
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# testpkg.altdoc
+
+<!-- badges: start -->
+[![R-universe status badge](https://grantmcdermott.r-universe.dev/badges/plot2)](https://grantmcdermott.r-universe.dev)
+<!-- badges: end -->
+
+The goal of testpkg.altdoc is to ...
+
+## Installation
+
+You can install the development version of testpkg.altdoc like so:
+
+``` r
+# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(testpkg.altdoc)
+summary(cars)
+```
+

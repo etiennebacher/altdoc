@@ -25,6 +25,14 @@
         fs::file_delete(fn)
     }
 
+    # NEWS.qmd breaks rendering, so we delete it if NEWS.md is available.
+    # This happens when when converting from NEWS.Rd
+    a <- fs::path_join(c(path, "_quarto", "NEWS.md"))
+    b <- fs::path_join(c(path, "_quarto", "NEWS.qmd"))
+    if (fs::file_exists(a) && fs::file_exists(b)) {
+        fs::file_delete(b)
+    }
+
     quarto::quarto_render(
         input = fs::path_join(c(path, "_quarto")),
         quiet = !verbose,
@@ -39,11 +47,19 @@
             src <- tmp
         }
     }
+
     tar <- .doc_path(path)
-    if (fs::dir_exists(tar)) {
-        fs::dir_delete(tar)
+
+    # CNAME is used by Github and other providers to redirect to a custom domain
+    files <- fs::dir_ls(tar)
+    for (f in files) {
+        if (basename(f) != "CNAME") {
+            if (fs::is_dir(f)) fs::dir_delete(f)
+            if (fs::is_file(f)) fs::file_delete(f)
+        }
     }
-    fs::file_move(src, .doc_path(path))
+
+    fs::file_move(fs::dir_ls(src), tar)
 
 }
 
@@ -51,7 +67,7 @@
 .sidebar_vignettes_quarto_website <- function(sidebar, path) {
     fn_vignettes <- list.files(
         fs::path_join(c(path, "_quarto/docs/vignettes")),
-        pattern = "\\.qmd$|\\.Rmd", full.names = TRUE)
+        pattern = "\\.qmd$|\\.Rmd|\\.pdf$", full.names = TRUE)
     fn_man <- list.files(
         fs::path_join(c(path, "_quarto/docs/man")),
         pattern = "\\.qmd$", full.names = TRUE)
@@ -67,13 +83,31 @@
         if (!"section" %in% names(yml$website$sidebar$contents[[i]])) next
         if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_VIGNETTE_BLOCK")) {
             if (length(fn_vignettes) > 0) {
-                yml$website$sidebar$contents[[i]] <- list(section = "Articles", contents = fn_vignettes)
+                fn_vignettes <- lapply(fn_vignettes, function(x) {
+                    # Quarto cannot retrieve titles from .pdf, so we use the file name
+                    if (tools::file_ext(x) == "pdf") {
+                        list(
+                            text = sub("\\.pdf$", "", basename(x)),
+                            file = x
+                        )
+                    # Quarto retrieves the title from .qmd files automatically, so we only supply the file path
+                    } else {
+                        x
+                    }
+                })
+                yml$website$sidebar$contents[[i]] <- list(
+                    section = "Articles",
+                    contents = fn_vignettes)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
             }
         } else if (isTRUE(yml$website$sidebar$contents[[i]]$section[[1]] == "$ALTDOC_MAN_BLOCK")) {
             if (length(fn_man) > 0) {
-                yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = fn_man)
+                man_list <- lapply(fn_man, function(x) list(
+                    text = sub("\\.qmd$", "", basename(x)),
+                    file = x
+                ))
+                yml$website$sidebar$contents[[i]] <- list(section = "Reference", contents = man_list)
             } else {
                 yml$website$sidebar$contents[[i]] <- NULL
             }
@@ -96,3 +130,5 @@
     }
     return(sidebar)
 }
+
+

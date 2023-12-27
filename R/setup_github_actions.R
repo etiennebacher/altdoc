@@ -16,21 +16,25 @@
 #' }
 setup_github_actions <- function(path = ".") {
 
-  if (!fs::dir_exists(".github/workflows")) {
-    fs::dir_create(".github/workflows")
-  }
   path <- .convert_path(path)
 
-  src <- system.file("misc/altdoc.yaml", package = "altdoc")
+  if (!fs::dir_exists(fs::path_join(c(path, ".github/workflows")))) {
+    fs::dir_create(fs::path_join(c(path, ".github/workflows")))
+  }
+  if (fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))) {
+    cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
+  }
+
+  src <- system.file("gha/altdoc.yaml", package = "altdoc")
   tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
   fs::file_copy(src, tar)
 
   # Deal with mkdocs installation in workflow
-  doctype <- .doc_type(path)
+  tool <- .doc_type(path)
   workflow <- .readlines(tar)
   start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
   end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
-  if (doctype == "mkdocs") {
+  if (tool == "mkdocs") {
     workflow <- workflow[-c(start, end)]
   } else {
     workflow <- workflow[-(start:end)]

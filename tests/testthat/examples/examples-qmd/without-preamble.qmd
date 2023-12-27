@@ -1,0 +1,8 @@
+# first section
+
+hello there, this document doesn't have a preamble
+
+# path
+
+here's a path to a badge: [![R-universe status
+badge](https://grantmcdermott.r-universe.dev/badges/plot2)](https://grantmcdermott.r-universe.dev)

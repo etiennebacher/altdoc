@@ -14,24 +14,9 @@
   .Platform$OS.type == "windows"
 }
 
-# Is pip3 installed?
-.is_pip3 <- function() {
-  x <- try(system2("pip3", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  return(!inherits(x, "try-error"))
+.venv_exists <- function(path = ".") {
+  fs::dir_exists(fs::path_abs(".venv_altdoc", start = path))
 }
-
-# Is mkdocs installed?
-.is_mkdocs <- function() {
-  x <- try(system2("python3", args = "-m mkdocs", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  return(!inherits(x, "try-error"))
-}
-
-# Is sphinx installed?
-.is_sphinx <- function() {
-  x <- try(system2("sphinx-build", args = "--version", stdout = TRUE, stderr = TRUE), silent = TRUE)
-  return(!inherits(x, "try-error"))
-}
-
 
 # https://stackoverflow.com/a/42945293/11598948
 .stop_quietly <- function() {
@@ -190,4 +175,8 @@
   }
   branch <- .readlines(".git/HEAD")
   gsub("^ref: refs/heads/", "", branch)
+}
+
+.on_ci <- function() {
+  isTRUE(as.logical(Sys.getenv("CI", "false")))
 }

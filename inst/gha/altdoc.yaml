@@ -32,12 +32,25 @@ jobs:
       - name: Bootstrap
         run: ./run.sh bootstrap
 
-      # - name: Install Mkdocs and its dependencies
-      #   run: |
-      #     python3 -m pip install --upgrade pip     # install pip
-      #     python3 -m pip install mkdocs            # install mkdocs
-      #     python3 -m pip install mkdocs-material   # install material theme
+      $ALTDOC_MKDOCS_START
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          architecture: x64
 
+      - name: Install Mkdocs and its dependencies
+        run: |
+          python -m venv .venv_altdoc
+          source .venv_altdoc/bin/activate
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install mkdocs            # install mkdocs
+
+      # Uncomment this if you use "theme: material" in `altdoc/mkdocs.yml`
+      # - name: Install Material for Mkdocs
+      #   run: |
+      #     python3 -m pip install mkdocs-material   # install material theme
+      $ALTDOC_MKDOCS_END
       - name: Dependencies
         run: ./run.sh install_all
 
@@ -45,6 +58,8 @@ jobs:
         run: |
           future::plan(future::multicore)
           install.packages(".", repos = NULL, type = "source")
+          install.packages("pkgload")
+          pkgload::load_all()
           altdoc::render_docs(parallel = TRUE, freeze = FALSE)
         shell: Rscript {0}
 
