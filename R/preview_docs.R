@@ -19,18 +19,11 @@
 #'
 preview_docs <- function(path = ".") {
   .assert_dependency("servr", install = TRUE)
-  .assert_dependency("rstudioapi", install = TRUE)
 
   tool <- .doc_type(path)
   if (.folder_is_empty(fs::path_join(c(path, "docs")))) {
     cli::cli_abort("You must render the docs before previewing them. Use {.code altdoc::render_docs()}.")
   }
 
-  if (rstudioapi::isAvailable()) {
-    servr::httw(fs::path_join(c(path, "docs")))
-  } else {
-    if (fs::file_exists(fs::path_abs("docs/index.html", start = path))) {
-      utils::browseURL(fs::path_abs("docs/index.html", start = path))
-    }
-  }
+  servr::httw(fs::path_join(c(path, "docs")))
 }
