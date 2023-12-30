@@ -69,9 +69,9 @@
     paths <- Filter(fs::is_file, fs::dir_ls())
     for (p in paths) {
         if (fs::is_file(p)) {
-            fs::file_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
+            fs::file_copy(p, fs::path_join(c(path, "docs")), overwrite = TRUE)
         } else {
-            fs::dir_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
+            fs::dir_copy(p, fs::path_join(c(path, "docs")), overwrite = TRUE)
         }
     }
 
