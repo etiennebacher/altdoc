@@ -26,7 +26,7 @@
     }
 
     # NEWS.qmd breaks rendering, so we delete it if NEWS.md is available.
-    # This happens when when converting from NEWS.Rd
+    # This happens when converting from NEWS.Rd
     a <- fs::path_join(c(path, "_quarto", "NEWS.md"))
     b <- fs::path_join(c(path, "_quarto", "NEWS.qmd"))
     if (fs::file_exists(a) && fs::file_exists(b)) {
@@ -60,6 +60,20 @@
     }
 
     fs::file_move(fs::dir_ls(src), tar)
+
+    # copy the content of altdoc/ to docs/. This is important because the
+    # process above rendered the site in a completely different directory, so
+    # did not have the static files, and we want the static files in altdoc/ to
+    # be served on the website. This a core feature of altdoc: users can store
+    # files in altdoc/ and those will be copied to the root of the website
+    paths <- Filter(fs::is_file, fs::dir_ls())
+    for (p in paths) {
+        if (fs::is_file(p)) {
+            fs::file_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
+        } else {
+            fs::dir_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
+        }
+    }
 
 }
 
