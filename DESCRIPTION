@@ -30,7 +30,6 @@ Suggests:
     future,
     future.apply,
     knitr,
-    rstudioapi,
     servr,
     spelling,
     testthat (>= 3.0.0),
