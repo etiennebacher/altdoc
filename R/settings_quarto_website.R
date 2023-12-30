@@ -50,6 +50,11 @@
 
     tar <- .doc_path(path)
 
+    # make sure docs/ exists
+    if (!fs::dir_exists(tar)) {
+        fs::dir_create(tar)
+    }
+
     # CNAME is used by Github and other providers to redirect to a custom domain
     files <- fs::dir_ls(tar)
     for (f in files) {
@@ -66,14 +71,7 @@
     # did not have the static files, and we want the static files in altdoc/ to
     # be served on the website. This a core feature of altdoc: users can store
     # files in altdoc/ and those will be copied to the root of the website
-    paths <- Filter(fs::is_file, fs::dir_ls())
-    for (p in paths) {
-        if (fs::is_file(p)) {
-            fs::file_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
-        } else {
-            fs::dir_copy(p, fs::path_join(c(path, "altdoc")), overwrite = TRUE)
-        }
-    }
+    fs::dir_copy(fs::path_join(c(path, "altdoc")), tar, overwrite = TRUE)
 
 }
 
