@@ -77,7 +77,7 @@
           paste0(
             "-c 'source ",
             fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
-            " && python3 -m mkdocs build'"
+            " && python3 -m mkdocs build -q'"
           )
         )
     }
