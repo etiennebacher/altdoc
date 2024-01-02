@@ -90,12 +90,19 @@
     print("Same length of src and tar:")
     print(length(src) == length(tar))
 
+    print("File is in src: site/vignettes/install/index.html")
+    print(any(grepl("site/vignettes/install/index.html", src)))
+
     print("File is in tar: docs/vignettes/install/index.html")
     print(any(grepl("docs/vignettes/install/index.html", tar)))
 
     for (i in seq_along(src)) {
 
         fs::dir_create(fs::path_dir(tar[i]))
+
+        if (grepl("site/vignettes/install/index.html", src[i])) {
+            print("site/vignettes/install/index.html is in the loop")
+        }
 
 
         if (fs::is_file(src[i])) {
