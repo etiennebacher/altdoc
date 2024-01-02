@@ -77,7 +77,7 @@
           paste0(
             "-c 'source ",
             fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
-            " && python3 -m mkdocs build -q'"
+            " && python3 -m mkdocs build'"
           )
         )
     }
@@ -93,6 +93,9 @@
         print("Several paths with double 'r-polars'")
         print(path_with_dbl_path)
     }
+
+    print("Dir tree site/vignettes")
+    print(fs::dir_tree("site/vignettes"))
 
     print("Same length of src and tar:")
     print(length(src) == length(tar))
