@@ -107,6 +107,10 @@
 
         if (fs::is_file(src[i])) {
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
+            if (grepl("site/vignettes/install/index.html", src[i])) {
+                print("site/vignettes/install/index.html is copied")
+                print(tar[i])
+            }
         }
     }
 
