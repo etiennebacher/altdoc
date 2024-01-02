@@ -141,8 +141,8 @@
 
     fs::dir_delete(fs::path_join(c(path, "site")))
 
-    if (fs::file_exists(fs::path_join(c(path, "vignettes/.gitignore")))) {
-        fs::file_delete(fs::path_join(c(path, "vignettes/.gitignore")))
+    if (fs::file_exists(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))) {
+        fs::file_delete(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))
     }
 }
 
