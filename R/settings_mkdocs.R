@@ -85,64 +85,21 @@
     # move to docs/
     fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
     src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
-    # src <- src[-grep("\\.gitignore$", src)]
     tar <- sub("/site/", "/docs/", src)
 
-    print(src)
-    print(tar)
-
-    path_with_dbl_path <- grep("r-polars/r-polars", tar, value = TRUE)
-    if (length(path_with_dbl_path) > 0) {
-        print("Several paths with double 'r-polars'")
-        print(path_with_dbl_path)
-    }
-
-    print("Dir tree site/vignettes")
-    print(fs::dir_tree("site/vignettes"))
-
-    print("Same length of src and tar:")
-    print(length(src) == length(tar))
-
-    print("File is in src: site/vignettes/install/index.html")
-    print(any(grepl("site/vignettes/install/index.html", src, fixed = TRUE)))
-
-    print("File is in tar: docs/vignettes/install/index.html")
-    print(any(grepl("docs/vignettes/install/index.html", tar, fixed = TRUE)))
-
     for (i in seq_along(src)) {
-
         fs::dir_create(fs::path_dir(tar[i]))
-
-        if (grepl("site/vignettes/install/index.html", src[i])) {
-            print("site/vignettes/install/index.html is in the loop")
-        }
-
-
         if (fs::is_file(src[i])) {
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
-            if (grepl("site/vignettes/install/index.html", src[i])) {
-                print("site/vignettes/install/index.html is copied")
-                print(tar[i])
-            }
         }
     }
-
-    print("Dir exists: docs/vignettes/install")
-    print(fs::dir_exists("docs/vignettes/install"))
-
-    print("File exists: docs/vignettes/install/index.html")
-    print(fs::dir_exists("docs/vignettes/install/index.html"))
-
-    print("Dir tree")
-    print(fs::dir_tree("docs", all = TRUE))
-
-    print("Root")
-    print(getwd())
 
     fs::dir_delete(fs::path_join(c(path, "site")))
 
+    # for some reason, the folder "docs/vignettes" gets a gitignore that
+    # prevents HTML files to be committed so we remove it (happened several times
+    # in polars, see e.g https://github.com/pola-rs/r-polars/pull/646)
     if (fs::file_exists(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))) {
-        print("here")
         fs::file_delete(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))
     }
 }
