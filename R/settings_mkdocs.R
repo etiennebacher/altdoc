@@ -87,6 +87,12 @@
     src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
     tar <- sub("/site/", "/docs/", src)
 
+    path_with_dbl_path <- grep("r-polars/r-polars", tar, value = TRUE)
+    if (length(path_with_dbl_path) > 0) {
+        print("Several paths with double 'r-polars'")
+        print(path_with_dbl_path)
+    }
+
     print("Same length of src and tar:")
     print(length(src) == length(tar))
 
