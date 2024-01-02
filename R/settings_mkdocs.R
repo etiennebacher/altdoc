@@ -87,12 +87,28 @@
     src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
     tar <- sub("/site/", "/docs/", src)
 
+    print("Same length of src and tar:")
+    print(length(src) == length(tar))
+
+    print("File is in tar: docs/vignettes/install/index.html")
+    print(any(grepl("docs/vignettes/install/index.html", tar)))
+
     for (i in seq_along(src)) {
-        fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
+
+        fs::dir_create(fs::path_dir(tar[i]))
+
+
         if (fs::is_file(src[i])) {
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
         }
     }
+
+    print("Dir exists: docs/vignettes/install")
+    print(fs::dir_exists("docs/vignettes/install"))
+
+    print("File exists: docs/vignettes/install/index.html")
+    print(fs::dir_exists("docs/vignettes/install/index.html"))
+
     fs::dir_delete(fs::path_join(c(path, "site")))
 }
 
