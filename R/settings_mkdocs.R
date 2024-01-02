@@ -128,7 +128,7 @@
     print(fs::dir_exists("docs/vignettes/install/index.html"))
 
     print("Dir tree")
-    print(fs::dir_tree("docs"))
+    print(fs::dir_tree("docs", all = TRUE))
 
     print("Root")
     print(getwd())
