@@ -85,6 +85,7 @@
     # move to docs/
     fs::file_move(fs::path_join(c(path, "mkdocs.yml")), .doc_path(path))
     src <- fs::dir_ls(fs::path_join(c(path, "site/")), recurse = TRUE)
+    src <- src[-grep("\\.gitignore$", src)]
     tar <- sub("/site/", "/docs/", src)
 
     path_with_dbl_path <- grep("r-polars/r-polars", tar, value = TRUE)
