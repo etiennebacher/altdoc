@@ -88,6 +88,9 @@
     src <- src[-grep("\\.gitignore$", src)]
     tar <- sub("/site/", "/docs/", src)
 
+    print(src)
+    print(tar)
+
     path_with_dbl_path <- grep("r-polars/r-polars", tar, value = TRUE)
     if (length(path_with_dbl_path) > 0) {
         print("Several paths with double 'r-polars'")
@@ -101,10 +104,10 @@
     print(length(src) == length(tar))
 
     print("File is in src: site/vignettes/install/index.html")
-    print(any(grepl("site/vignettes/install/index.html", src)))
+    print(any(grepl("site/vignettes/install/index.html", src, fixed = TRUE)))
 
     print("File is in tar: docs/vignettes/install/index.html")
-    print(any(grepl("docs/vignettes/install/index.html", tar)))
+    print(any(grepl("docs/vignettes/install/index.html", tar, fixed = TRUE)))
 
     for (i in seq_along(src)) {
 
