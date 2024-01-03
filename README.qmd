@@ -55,6 +55,7 @@ A typical workflow with `altdoc` is to execute these commands from the root dire
 setup_docs(tool = "docsify")
 # setup_docs(tool = "docute")
 # setup_docs(tool = "mkdocs")
+# setup_docs(tool = "quarto_website")
 
 ### Render the vignettes and man pages
 render_docs()
@@ -89,7 +90,7 @@ The websites in this table were created using Altdoc:
     <td><a href="https://github.com/vincentarelbundock/modelsummary/tree/main/altdoc">Altdoc settings</a></td>
   </tr>
   <tr>
-    <td>MkDocs</td>
+    <td>Quarto</td>
     <td><code>marginaleffects</code></td>
     <td>🌐<a href="https://marginaleffects.com">marginaleffects.com</a></td>
     <td><a href="https://github.com/vincentarelbundock/marginaleffects/tree/main/altdoc">Altdoc Settings</a></td>
