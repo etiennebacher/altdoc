@@ -42,23 +42,18 @@ run the following:
 python -m venv .venv_altdoc
 ```
 
-You then need to activate this virtual environment and the way to do
-that [depends on your
-OS](https://docs.python.org/3/library/venv.html#how-venvs-work):
+Then, you can now install `mkdocs` (and other libraries such as
+`mkdocs-material` if needed). The correct commands to run can depend on
+your environment. For example, on Linux or Mac, this command may work:
 
 ``` bash
-# Windows
-.venv_altdoc\Scripts\activate.bat
-
-# Mac / Linux
-source .venv_altdoc/bin/activate
+.venv_altdoc/bin/pip install mkdocs mkdocs-material
 ```
 
-You can now install `mkdocs` (and other libraries such as
-`mkdocs-material` if needed):
+On Windows, this might work:
 
 ``` bash
-python3 -m pip install mkdocs mkdocs-material
+.venv_altdoc\Scripts\pip.exe install mkdocs mkdocs-material
 ```
 
 See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and
