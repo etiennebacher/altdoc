@@ -88,12 +88,20 @@
     tar <- sub("/site/", "/docs/", src)
 
     for (i in seq_along(src)) {
-        fs::dir_create(fs::path_dir(tar[i]))  # Create the directory if it doesn't exist
+        fs::dir_create(fs::path_dir(tar[i]))
         if (fs::is_file(src[i])) {
             fs::file_copy(src[i], tar[i], overwrite = TRUE)
         }
     }
+
     fs::dir_delete(fs::path_join(c(path, "site")))
+
+    # for some reason, the folder "docs/vignettes" gets a gitignore that
+    # prevents HTML files to be committed so we remove it (happened several times
+    # in polars, see e.g https://github.com/pola-rs/r-polars/pull/646)
+    if (fs::file_exists(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))) {
+        fs::file_delete(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))
+    }
 }
 
 
