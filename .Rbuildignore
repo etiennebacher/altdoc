@@ -15,3 +15,4 @@
 ^vignettes$
 ^.lintr$
 man-roxygen
+^inst/NEWS\.Rd$
