@@ -1,10 +1,11 @@
 test_that(".rd2qmd works", {
-  rd_file <- testthat::test_path("examples/examples-man/between.Rd")
   # .rd2qmd works only in pkg directory
-  fs::file_create("DESCRIPTION")
-  dest <- tempdir()
-  .rd2qmd(rd_file, dest, path = ".")
-  qmd_file <- fs::path_join(c(dest, "between.qmd"))
+  rd_file <- fs::path_abs(testthat::test_path("examples/examples-man/between.Rd"))
+  create_local_package()
+  fs::file_copy(rd_file, ".")
+  fs::dir_create("docs")
+  .rd2qmd(rd_file, "docs", path = ".")
+  qmd_file <- fs::path_join(c("docs", "between.qmd"))
   expect_true(fs::file_exists(qmd_file))
 
   content <- .readlines(qmd_file)
