@@ -12,7 +12,6 @@
 ^CRAN-SUBMISSION$
 ^docs$
 ^altdoc$
-^vignettes$
 ^.lintr$
 man-roxygen
 ^inst/NEWS\.Rd$
