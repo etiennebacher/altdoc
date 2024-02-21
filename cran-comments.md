@@ -2,5 +2,5 @@
 
 0 errors | 0 warnings | 0 note
 
-
-Resubmission to fix test failures on CRAN due to the new version of `usethis`.
+This is the second submission of altdoc 0.3.0 (first one was an hour ago). I 
+corrected the NOTEs reported.

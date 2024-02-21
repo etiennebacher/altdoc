@@ -1,36 +1,66 @@
 # News
 
-## (development version)
+## 0.3.0
 
-Breaking changes:
+All functions have changed so any change listed below technically is a breaking 
+change.
+
+### Breaking changes
 
 * Functions renamed:
   - `use_docute()`, `use_docsify()` and `use_mkdocs()` are combined into `setup_docs()` 
   - `update_docs()` -> `render_docs()`
   - `preview()` -> `preview_docs()`
-* `setup_docs()` (previously `use_*()`) no longer updates and previews the website by default.
-* `custom_reference` argument is removed. See the `Post-processing` vignette for a description of the new proposed workflow.
-* `theme` argument is removed. Users can change themes by editing settings files in `altdoc/`
+  
+* `setup_docs()` (previously `use_*()`) no longer updates and previews the website 
+  by default.
+* `custom_reference` argument is removed. See the `Post-processing` vignette for 
+  a description of the new proposed workflow.
+* `theme` argument is removed. Users can change themes by editing settings files 
+  in `altdoc/`
 * `mkdocs` documentation is no longer stored in `docs/docs/`
 
-New:
+### New features
 
 * Support Quarto websites as a documentation format.
+
 * Support Quarto vignettes (.qmd) in the `vignettes/` folder.
-* `render_docs(parallel=TRUE)` uses `future` to parallelize the rendering of vignettes and man pages.
-* `render_docs(freeze = TRUE)` no longer renders vignettes or man pages when they have not changed and are already stored in `docs/`.
+
+* `render_docs(parallel = TRUE)` uses `future` to parallelize the rendering of 
+  vignettes and man pages.
+  
+* `render_docs(freeze = TRUE)` no longer renders vignettes or man pages when they
+  have not changed and are already stored in `docs/`.
+  
 * Link to source code at the top of function reference.
-* Settings files are now permanently stored in the `altdoc/` directory. These files can be edited manually to customize the website.
-* Major internal changes to the .Rd -> .md conversion system. We now use Quarto to convert man pages and execute examples, and the man pages are stored in separate markdown files instead of combined in a single large file.
-* `mkdocs` now behaves like the other documentation generators and stores its files in `docs/`. This means that `mkdocs` websites can be deployed to Github Pages.
+
+* Settings files are now permanently stored in the `altdoc/` directory. These 
+  files can be edited manually to customize the website.
+  
+* Major internal changes to the .Rd -> .md conversion system. We now use Quarto 
+  to convert man pages and execute examples, and the man pages are stored in 
+  separate markdown files instead of combined in a single large file.
+  
+* `mkdocs` now behaves like the other documentation generators and stores its 
+  files in `docs/`. This means that `mkdocs` websites can be deployed to Github 
+  Pages.
+  
 * Improved vignettes
-* Do not reformat markdown header levels automatically, but raise a warning when there is more than one level 1 header.
+
+* Do not reformat markdown header levels automatically, but raise a warning when 
+  there is more than one level 1 header.
+  
 * Fewer dependencies.
 * Fix parsing for issue/PR references like [org/repo#111].
+
 * Changelog and News sections can be present simultaneously.
+
 * Support for `NEWS.Rd`, either in the root folder or in `inst/`
+
 * Automatically create a Github Actions workflow with `setup_github_actions()`.
+
 * Skip .Rd files when they document internal functions.
+
 
 ## 0.2.2
 

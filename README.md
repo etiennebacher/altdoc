@@ -65,8 +65,9 @@ render_docs()
 preview_docs()
 ```
 
-See [the Get Started vignette](vignettes/get-started.md) for more
-details.
+See [the Get Started
+vignette](https://altdoc.etiennebacher.com/#/vignettes/get-started.md)
+for more details.
 
 ## Demos
 
@@ -154,10 +155,10 @@ Docsify
 <code>plot2</code>
 </td>
 <td>
-🌐<a href="https://grantmcdermott.com/plot2">grantmcdermott.com/plot2</a>
+🌐<a href="https://grantmcdermott.com/tinyplot/">grantmcdermott.com/tinyplot</a>
 </td>
 <td>
-<a href="https://github.com/grantmcdermott/plot2/tree/main/altdoc">Altdoc
+<a href="https://github.com/grantmcdermott/tinyplot/tree/main/altdoc">Altdoc
 Settings</a>
 </td>
 </tr>
@@ -184,7 +185,7 @@ Docsify
 <code>countrycode</code>
 </td>
 <td>
-🌐<a href="https://vincentarelbundock.github.io/countrycode">vincentarelbundock.github.io/countrycode</a>
+🌐<a href="https://vincentarelbundock.github.io/countrycode/">vincentarelbundock.github.io/countrycode</a>
 </td>
 <td>
 <a href="https://github.com/vincentarelbundock/countrycode/tree/main/altdoc">Altdoc
@@ -199,7 +200,7 @@ Docsify
 <code>WDI</code>
 </td>
 <td>
-🌐<a href="https://vincentarelbundock.github.io/WDI">vincentarelbundock.github.io/WDI</a>
+🌐<a href="https://vincentarelbundock.github.io/WDI/">vincentarelbundock.github.io/WDI</a>
 </td>
 <td>
 <a href="https://github.com/vincentarelbundock/WDI/tree/main/altdoc">Altdoc
