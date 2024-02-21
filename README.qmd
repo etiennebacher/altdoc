@@ -104,7 +104,7 @@ The websites in this table were created using Altdoc:
   </tr>
   <tr>
     <td>Quarto</td>
-    <td><code>plot2</code></td>
+    <td><code>tinyplot</code></td>
     <td>🌐<a href="https://grantmcdermott.com/tinyplot/">grantmcdermott.com/tinyplot</a></td>
     <td><a href="https://github.com/grantmcdermott/tinyplot/tree/main/altdoc">Altdoc Settings</a></td>
   </tr>
