@@ -1,4 +1,5 @@
 
+
 # Update documentation
 
 [**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L46)

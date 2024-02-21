@@ -1,5 +1,5 @@
+# Get started
 
-# Get Started
 
 ## Quick start
 
