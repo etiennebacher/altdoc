@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'
-Version: 0.3.0
+Version: 0.3.0.9000
 Authors@R: 
     c(person(given = "Etienne",
              family = "Bacher",
@@ -9,7 +9,7 @@ Authors@R:
              email = "etienne.bacher@protonmail.com"),
       person(given = "Vincent",
              family = "Arel-Bundock",
-             role = "ctb",
+             role = "aut",
              email = "vincent.arel-bundock@umontreal.ca",
              comment = c(ORCID = "0000-0003-2042-7063"))
     )

@@ -1,5 +1,4 @@
 
-
 <img src="man/figures/altdoc_logo_web.png" height = "125"><br>
 
 <img src="https://github.com/etiennebacher/altdoc/workflows/R-CMD-check/badge.svg">
@@ -135,21 +134,22 @@ Settings</a>
 </tr>
 <tr>
 <td>
-MkDocs
+Quarto
 </td>
 <td>
-<code>polars</code>
+<code>tinytable</code>
 </td>
 <td>
-🌐<a href="https://rpolars.github.io">rpolars.github.io</a>
+🌐<a href="https://vincentarelbundock.github.io/tinytable/">vincentarelbundock.github.io/tinytable/</a>
 </td>
 <td>
-<a href="https://github.com/pola-rs/r-polars">Github Repository</a>
+<a href="https://github.com/vincentarelbundock/tintyable/tree/main/altdoc">Altdoc
+Settings</a>
 </td>
 </tr>
 <tr>
 <td>
-Docsify
+Quarto
 </td>
 <td>
 <code>plot2</code>
@@ -160,6 +160,20 @@ Docsify
 <td>
 <a href="https://github.com/grantmcdermott/tinyplot/tree/main/altdoc">Altdoc
 Settings</a>
+</td>
+</tr>
+<tr>
+<td>
+MkDocs
+</td>
+<td>
+<code>polars</code>
+</td>
+<td>
+🌐<a href="https://rpolars.github.io">rpolars.github.io</a>
+</td>
+<td>
+<a href="https://github.com/pola-rs/r-polars">Github Repository</a>
 </td>
 </tr>
 <tr>
