@@ -65,8 +65,9 @@ render_docs()
 preview_docs()
 ```
 
-See [the Get Started vignette](vignettes/get-started.md) for more
-details.
+See [the Get Started
+vignette](https://altdoc.etiennebacher.com/#/vignettes/get-started.md)
+for more details.
 
 ## Demos
 
