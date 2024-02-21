@@ -20,11 +20,13 @@ test_that(".pkg_version() works", {
 })
 
 test_that(".parse_news works", {
+  skip_if_not_installed("desc")
+  create_local_package()
+  desc::desc_set_urls("https://github.com/etiennebacher/altdoc")
   input <- "# 1.1.0\n\n* thanks @foo-bar for their contribution (#111)\n\n* thanks @foo2- for their contribution (#11)\n\n* due to issue in another repo (pola-rs/polars#112)\n\n* thanks @JohnDoe, @JaneDoe"
-  temp <- tempfile()
-  cat(input, file = temp)
-  .parse_news(".", temp)
-  parsed <- paste(.readlines(temp), collapse = "")
+  cat(input, file = "NEWS.md")
+  .parse_news(".", "NEWS.md")
+  parsed <- paste(.readlines("NEWS.md"), collapse = "")
 
   should_be_found <- c(
     "[@foo-bar](https://github.com/foo-bar)",
