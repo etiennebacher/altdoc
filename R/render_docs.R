@@ -58,11 +58,17 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   if (tool == "quarto_website") {
     docs_dir <- fs::path_join(c(path, "_quarto"))
 
-    # TODO: Delete every folder besides _freeze/
-    # # avoid collisions
-    # if (fs::dir_exists(docs_dir)) {
-    #   fs::dir_delete(docs_dir)
-    # }
+    # Delete everything in `_quarto/` besides `_freeze/`
+    if (fs::dir_exists(docs_dir)) {
+      docs_files = fs::dir_ls(docs_dir)
+
+      for (f in docs_files) {
+        if (freeze == FALSE || basename(f) != "_freeze") {
+          if (fs::is_dir(f)) fs::dir_delete(f)
+          if (fs::is_file(f)) fs::file_delete(f)
+        }
+      }
+    }
 
     .add_gitignore("_quarto/", path = path)
     .add_gitignore("!_quarto/_freeze/", path = path)
@@ -75,6 +81,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
     fs::dir_create(docs_dir)
   }
 
+  # TODO: freeze functionality should not apply to qaurto websites; instead freeze functionality should be toggled via quarto tools (either in `quarto_website.yml` or on a per file basis. Use `execute:\n\t freeze: auto` in the yml to do this.)
   cli::cli_h1("Basic files")
   
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
