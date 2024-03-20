@@ -28,16 +28,11 @@
 
     # Clear out `docs_path`
     tar <- .doc_path(path)
-    if (!fs::dir_exists(tar)) {
-      fs::dir_create(tar)
-    }
-    for (f in fs::dir_ls(tar)) {
-        # CNAME is used by Github and other providers to redirect to a custom domain
-        if (basename(f) != "CNAME") {
-            if (fs::is_dir(f)) fs::dir_delete(f)
-            if (fs::is_file(f)) fs::file_delete(f)
-        }
-    }
+    fs::dir_create(tar)
+
+    # CNAME is used by Github and other providers to redirect to a custom domain
+    files = Filter(function(f) basename(f) != "CNAME", fs::dir_ls(tar))
+    fs::file_delete(files)
 
     # render to `output-dir: ../docs/`
     quarto::quarto_render(
