@@ -5,15 +5,12 @@
 
     # drop empty lines
     settings <- settings[!grepl("^\\w*$", settings)]
-    
-    fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
-    yaml::write_yaml(settings, fn, indent.mapping.sequence = TRUE)
-
-    # yaml::write_yaml converts true to yes, but quarto complains
-    settings <- .readlines(fn)
-    settings <- gsub(": yes$", ": true", settings)
-    settings <- gsub(": no$", ": false", settings)
-    writeLines(settings, fn)
+    settings = yaml::as.yaml(
+      settings, indent.mapping.sequence = TRUE, 
+      handler = list(logical = yaml::verbatim_logical)
+    )
+    settings = strsplit(settings, "\\n")[[1]]
+    writeLines(settings, fs::path_join(c(path, "_quarto", "_quarto.yml")))
 
     # index.md breaks rendering
     fn <- fs::path_join(c(path, "_quarto", "index.md"))
