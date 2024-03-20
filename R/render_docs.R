@@ -76,14 +76,10 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
     docs_dir <- fs::path_join(c(path, "docs"))
   }
 
-  # create docs/
-  if (!fs::dir_exists(docs_dir)) {
-    fs::dir_create(docs_dir)
-  }
+  # create `docs_dir/`
+  fs::dir_create(docs_dir)
 
-  # TODO: freeze functionality should not apply to qaurto websites; instead freeze functionality should be toggled via quarto tools (either in `quarto_website.yml` or on a per file basis. Use `execute:\n\t freeze: auto` in the yml to do this.)
-  cli::cli_h1("Basic files")
-  
+  cli::cli_h1("Basic files")  
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
