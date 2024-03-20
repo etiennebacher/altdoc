@@ -1,5 +1,10 @@
 project:
   type: website
+  output-dir: ../docs/
+
+# Note: freeze functionality can be set at a project level or for individual .qmd files
+# execute:
+#   freeze: false
 
 website:
   title: "$ALTDOC_PACKAGE_NAME"

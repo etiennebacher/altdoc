@@ -5,7 +5,7 @@
     for (vn in files) {
         fn <- fs::path_join(c(.doc_path(path), vn))
         regex <- sprintf("\\$ALTDOC_%s", fs::path_ext_remove(basename(vn)))
-        if (fs::file_exists(fn) || fs::file_exists(fs::path_join(c(path, "_quarto/docs", vn)))) {
+        if (fs::file_exists(fn) || fs::file_exists(fs::path_join(c(path, "_quarto", vn)))) {
             if (tool == "docute") {
                 new <- paste0("/", vn)
             } else {

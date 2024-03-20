@@ -18,7 +18,7 @@
 
         # docs/* files are mutable and should be overwritten
         if (grepl("^quarto", tool)) {
-            tar_dir <- fs::path_join(c(path, "_quarto/docs"))
+            tar_dir <- fs::path_join(c(path, "_quarto"))
         } else {
             tar_dir <- .doc_path(path)
         }

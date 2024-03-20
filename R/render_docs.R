@@ -56,24 +56,27 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
   if (tool == "quarto_website") {
-    docs_parent <- fs::path_join(c(path, "_quarto"))
-    # avoid collisions
-    if (fs::dir_exists(docs_parent)) {
-      fs::dir_delete(docs_parent)
-    }
-    .add_gitignore("^_quarto$", path = path)
+    docs_dir <- fs::path_join(c(path, "_quarto"))
+
+    # TODO: Delete every folder besides _freeze/
+    # # avoid collisions
+    # if (fs::dir_exists(docs_dir)) {
+    #   fs::dir_delete(docs_dir)
+    # }
+
+    .add_gitignore("_quarto/", path = path)
+    .add_gitignore("!_quarto/_freeze/", path = path)
   } else {
-    docs_parent <- path
+    docs_dir <- fs::path_join(c(path, "docs"))
   }
 
   # create docs/
-  docs_dir <- fs::path_join(c(docs_parent, "docs"))
   if (!fs::dir_exists(docs_dir)) {
     fs::dir_create(docs_dir)
   }
 
   cli::cli_h1("Basic files")
-
+  
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)

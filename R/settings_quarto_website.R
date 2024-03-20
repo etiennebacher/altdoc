@@ -5,7 +5,7 @@
 
     # drop empty lines
     settings <- settings[!grepl("^\\w*$", settings)]
-
+    
     fn <- fs::path_join(c(path, "_quarto", "_quarto.yml"))
     yaml::write_yaml(settings, fn, indent.mapping.sequence = TRUE)
 
@@ -14,10 +14,6 @@
     settings <- gsub(": yes$", ": true", settings)
     settings <- gsub(": no$", ": false", settings)
     writeLines(settings, fn)
-
-    tmp <- fs::path_join(c(path, "_quarto", "docs"))
-    fs::dir_copy(tmp, fs::path_join(c(path, "_quarto")), overwrite = TRUE)
-    fs::dir_delete(tmp)
 
     # index.md breaks rendering
     fn <- fs::path_join(c(path, "_quarto", "index.md"))
@@ -33,38 +29,26 @@
         fs::file_delete(b)
     }
 
-    quarto::quarto_render(
-        input = fs::path_join(c(path, "_quarto")),
-        quiet = !verbose,
-        as_job = FALSE,
-        use_freezer = freeze)
-
-    # move _quarto/_site to docs/
-    # allow book
-    for (x in c("_site", "_book")) {
-        tmp <- fs::path_join(c(path, "_quarto", x))
-        if (fs::file_exists(tmp)) {
-            src <- tmp
-        }
-    }
-
+    # Clear out `docs_path`
     tar <- .doc_path(path)
-
-    # make sure docs/ exists
     if (!fs::dir_exists(tar)) {
-        fs::dir_create(tar)
+      fs::dir_create(tar)
     }
-
-    # CNAME is used by Github and other providers to redirect to a custom domain
-    files <- fs::dir_ls(tar)
-    for (f in files) {
+    for (f in fs::dir_ls(tar)) {
+        # CNAME is used by Github and other providers to redirect to a custom domain
         if (basename(f) != "CNAME") {
             if (fs::is_dir(f)) fs::dir_delete(f)
             if (fs::is_file(f)) fs::file_delete(f)
         }
     }
 
-    fs::file_move(fs::dir_ls(src), tar)
+    # render to `output-dir: ../docs/`
+    quarto::quarto_render(
+        input = fs::path_join(c(path, "_quarto")),
+        quiet = !verbose,
+        as_job = FALSE,
+        use_freezer = freeze
+    )
 
     # copy the content of altdoc/ to docs/. This is important because the
     # process above rendered the site in a completely different directory, so
@@ -78,14 +62,14 @@
 
 .sidebar_vignettes_quarto_website <- function(sidebar, path) {
     fn_vignettes <- list.files(
-        fs::path_join(c(path, "_quarto/docs/vignettes")),
+        fs::path_join(c(path, "_quarto/vignettes")),
         pattern = "\\.qmd$|\\.Rmd|\\.pdf$", full.names = TRUE)
     fn_man <- list.files(
-        fs::path_join(c(path, "_quarto/docs/man")),
+        fs::path_join(c(path, "_quarto/man")),
         pattern = "\\.qmd$", full.names = TRUE)
 
-    fn_man <- gsub(".*_quarto.docs.", "", fn_man)
-    fn_vignettes <- gsub(".*_quarto.docs.", "", fn_vignettes)
+    fn_man <- gsub(".*_quarto.", "", fn_man)
+    fn_vignettes <- gsub(".*_quarto.", "", fn_vignettes)
 
     yml <- paste(sidebar, collapse = "\n")
     yml <- yaml::yaml.load(yml)
