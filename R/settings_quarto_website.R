@@ -5,11 +5,11 @@
 
     # drop empty lines
     settings <- settings[!grepl("^\\w*$", settings)]
-    settings = yaml::as.yaml(
+    settings <- yaml::as.yaml(
       settings, indent.mapping.sequence = TRUE, 
       handler = list(logical = yaml::verbatim_logical)
     )
-    settings = strsplit(settings, "\\n")[[1]]
+    settings <- strsplit(settings, "\\n")[[1]]
     writeLines(settings, fs::path_join(c(path, "_quarto", "_quarto.yml")))
 
     # index.md breaks rendering
@@ -31,7 +31,7 @@
     fs::dir_create(tar)
 
     # CNAME is used by Github and other providers to redirect to a custom domain
-    files = Filter(function(f) basename(f) != "CNAME", fs::dir_ls(tar))
+    files <- Filter(function(f) basename(f) != "CNAME", fs::dir_ls(tar))
     fs::file_delete(files)
 
     # render to `output-dir: ../docs/`

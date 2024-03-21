@@ -60,9 +60,9 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
     # Delete everything in `_quarto/` besides `_freeze/`
     if (fs::dir_exists(docs_dir)) {
-      docs_files = fs::dir_ls(docs_dir)
+      docs_files <- fs::dir_ls(docs_dir)
       if (freeze == TRUE) {
-        docs_files = Filter(function(f) basename(f) != "_freeze", docs_files)
+        docs_files <- Filter(function(f) basename(f) != "_freeze", docs_files)
       } 
       fs::file_delete(docs_files)
     }
