@@ -31,6 +31,7 @@
 #' @return NULL
 #' @template altdoc_variables
 #' @template altdoc_preambles
+#' @template altdoc_freeze
 #'
 #' @examples
 #' if (interactive()) {

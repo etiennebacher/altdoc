@@ -26,12 +26,12 @@
         fs::file_delete(b)
     }
 
-    # Clear out `docs_path`
     tar <- .doc_path(path)
     fs::dir_create(tar)
 
     # CNAME is used by Github and other providers to redirect to a custom domain
     files <- Filter(function(f) basename(f) != "CNAME", fs::dir_ls(tar))
+    # Clear out `tar`
     fs::file_delete(files)
 
     # render to `output-dir: ../docs/`
@@ -47,6 +47,8 @@
     # did not have the static files, and we want the static files in altdoc/ to
     # be served on the website. This a core feature of altdoc: users can store
     # files in altdoc/ and those will be copied to the root of the website
+
+    # this can be done automatically with `project:` > `resources: ../altdoc/` 
     fs::dir_copy(fs::path_join(c(path, "altdoc")), tar, overwrite = TRUE)
 
 }
