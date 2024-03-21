@@ -39,9 +39,7 @@
 
   # target directory
   tar_dir <- fs::path_join(c(tar_dir, "vignettes"))
-  if (!dir.exists(tar_dir)) {
-    fs::dir_create(tar_dir)
-  }
+  fs::dir_create(tar_dir)
 
   # source files
   # docute can't open PDF in external tab because it adds ".md" after all files

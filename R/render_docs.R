@@ -31,6 +31,7 @@
 #' @return NULL
 #' @template altdoc_variables
 #' @template altdoc_preambles
+#' @template altdoc_freeze
 #'
 #' @examples
 #' if (interactive()) {
@@ -56,24 +57,27 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
   if (tool == "quarto_website") {
-    docs_parent <- fs::path_join(c(path, "_quarto"))
-    # avoid collisions
-    if (fs::dir_exists(docs_parent)) {
-      fs::dir_delete(docs_parent)
+    docs_dir <- fs::path_join(c(path, "_quarto"))
+
+    # Delete everything in `_quarto/` besides `_freeze/`
+    if (fs::dir_exists(docs_dir)) {
+      docs_files <- fs::dir_ls(docs_dir)
+      if (freeze == TRUE) {
+        docs_files <- Filter(function(f) basename(f) != "_freeze", docs_files)
+      } 
+      fs::file_delete(docs_files)
     }
-    .add_gitignore("^_quarto$", path = path)
+
+    .add_gitignore("_quarto/", path = path)
+    .add_gitignore("!_quarto/_freeze/", path = path)
   } else {
-    docs_parent <- path
+    docs_dir <- fs::path_join(c(path, "docs"))
   }
 
-  # create docs/
-  docs_dir <- fs::path_join(c(docs_parent, "docs"))
-  if (!fs::dir_exists(docs_dir)) {
-    fs::dir_create(docs_dir)
-  }
+  # create `docs_dir/`
+  fs::dir_create(docs_dir)
 
-  cli::cli_h1("Basic files")
-
+  cli::cli_h1("Basic files")  
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
