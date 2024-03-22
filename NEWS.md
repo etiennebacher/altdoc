@@ -18,12 +18,15 @@
     freeze: auto
   ```
 
+### Other changes
 
+* Update `github-pages-deploy-action` to v4
 
 ## 0.3.0
 
 All functions have changed so any change listed below technically is a breaking 
 change.
+
 
 ### Breaking changes
 
