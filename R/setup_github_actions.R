@@ -17,10 +17,7 @@
 setup_github_actions <- function(path = ".") {
 
   path <- .convert_path(path)
-
-  if (!fs::dir_exists(fs::path_join(c(path, ".github/workflows")))) {
-    fs::dir_create(fs::path_join(c(path, ".github/workflows")))
-  }
+  fs::dir_create(fs::path_join(c(path, ".github/workflows")))
   if (fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))) {
     cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
   }

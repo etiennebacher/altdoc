@@ -1,6 +1,24 @@
 # News
 
-## Development
+## dev
+
+### Breaking changes
+
+* Simplified rendering for Quarto websites. Previously, the website was rendered into `_quarto/_site` and manually copied over to `docs/`. The new version removes this logic and instead uses the `output-dir` project option. To transition, change `quarto_website.yml` to:
+  ``` yml
+  project:
+    output-dir: ../docs/
+  ```
+
+### New features
+
+* `render_docs(freeze = TRUE)` now works correctly when output is `"quarto_website"`. Freezing a document needs to be set either at a project or per-file level. To do so, add to either `quarto_website.yml` or the frontmatter of a file:
+  ``` yml
+  execute:
+    freeze: auto
+  ```
+
+### Other changes
 
 * Update `github-pages-deploy-action` to v4
 
@@ -8,6 +26,7 @@
 
 All functions have changed so any change listed below technically is a breaking 
 change.
+
 
 ### Breaking changes
 
