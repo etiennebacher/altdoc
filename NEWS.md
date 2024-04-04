@@ -21,6 +21,7 @@
 ### Other changes
 
 * Update `github-pages-deploy-action` to v4
+* Support `@examplesIf` tag in `roxygen2`
 
 ## 0.3.0
 
