@@ -109,7 +109,11 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   .add_rbuildignore("^docs$", path = path)
   .add_rbuildignore("^altdoc$", path = path)
   .add_gitignore("altdoc/freeze.rds", path = path)
-  if (tool == "quarto_website") .add_rbuildignore("^_quarto$", path = path)
+  if (tool == "quarto_website") {
+    .add_rbuildignore("^_quarto$", path = path)
+    .add_gitignore("_quarto/*", path = path)
+    .add_gitignore("!_quarto/_freeze/", path = path)
+  }
 
   cli::cli_alert_info("Importing default settings file(s) to `altdoc/`")
 
