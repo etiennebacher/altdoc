@@ -62,7 +62,8 @@
         fs::path_join(c(path, "_quarto/man")),
         pattern = "\\.qmd$", full.names = TRUE)
 
-    fn_man <- gsub(".*_quarto.", "", fn_man)
+    # issue #266: add word boundary check
+    fn_man <- gsub(".*\\b_quarto.", "", fn_man)
     fn_vignettes <- gsub(".*_quarto.", "", fn_vignettes)
 
     yml <- paste(sidebar, collapse = "\n")

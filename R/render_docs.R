@@ -68,8 +68,6 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
       fs::file_delete(docs_files)
     }
 
-    .add_gitignore("_quarto/", path = path)
-    .add_gitignore("!_quarto/_freeze/", path = path)
   } else {
     docs_dir <- fs::path_join(c(path, "docs"))
   }
