@@ -17,6 +17,6 @@ Examples If TRUE
 }
 \examples{
 \dontshow{if (2 + 2 == 4) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontshow{\}) # examplesIf}
 examplesIf_true()
+\dontshow{\}) # examplesIf}
 }

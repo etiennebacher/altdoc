@@ -6,7 +6,6 @@
 #' @export
 #'
 #' @examplesIf 2 + 2 == 5
-#' @examples
 #' examplesIf_false()
 examplesIf_false <- function() {
   print("Hello, world!")
