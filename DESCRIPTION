@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'
-Version: 0.3.0.9001
+Version: 0.3.0.9002
 Authors@R: 
     c(person(given = "Etienne",
              family = "Bacher",
