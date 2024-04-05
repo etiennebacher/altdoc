@@ -46,15 +46,17 @@
     Code
       .readlines("docs/_sidebar.md")
     Output
-      [1] "* [Home](/)"                                 
-      [2] "* Articles: "                                
-      [3] "  - [here.pdf](vignettes/here.pdf ':ignore')"
-      [4] "  - [test](vignettes/test.md)"               
-      [5] "* Reference: "                               
-      [6] "  - [hello_base](man/hello_base)"            
-      [7] "  - [hello_r6](man/hello_r6)"                
-      [8] "* [News](NEWS.md)"                           
-      [9] "* [Citation](CITATION.md)"                   
+       [1] "* [Home](/)"                                 
+       [2] "* Articles: "                                
+       [3] "  - [here.pdf](vignettes/here.pdf ':ignore')"
+       [4] "  - [test](vignettes/test.md)"               
+       [5] "* Reference: "                               
+       [6] "  - [examplesIf_false](man/examplesIf_false)"
+       [7] "  - [examplesIf_true](man/examplesIf_true)"  
+       [8] "  - [hello_base](man/hello_base)"            
+       [9] "  - [hello_r6](man/hello_r6)"                
+      [10] "* [News](NEWS.md)"                           
+      [11] "* [Citation](CITATION.md)"                   
 
 ---
 
