@@ -23,6 +23,7 @@ BugReports: https://github.com/etiennebacher/altdoc/issues
 Imports: 
     cli,
     desc,
+    evaluate,
     fs,
     quarto,
     tools,
