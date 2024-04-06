@@ -25,20 +25,31 @@
       quiet = FALSE,
       as_job = FALSE
     ), silent = FALSE)
+    success <- !inherits(out, "try-error")
   } else {
-    void <- utils::capture.output(
-      out <- try(quarto::quarto_render(
-        input = path.expand(tar_file),
-        output_format = "md",
-        quiet = TRUE,
-        as_job = FALSE
-      ), silent = TRUE)
+    success <- TRUE
+    out <- evaluate::evaluate('quarto::quarto_render(
+      input = path.expand(tar_file),
+      output_format = "md",
+      quiet = FALSE,
+      as_job = FALSE
+    )')
+    is_error <- vapply(
+      out,
+      function(x) inherits(x, c("error", "rlang_error")),
+      FUN.VALUE = logical(1)
     )
+
+    # in "out", first element is the call, 2nd element is output in the console
+    # (i.e what we want because it includes the error), 3rd element is the call
+    # that triggered the error, if any (i.e quarto_render()).
+    if (any(is_error)) {
+      cat(out[[2]])
+      success <- FALSE
+    }
   }
 
-  out <- !inherits(out, "try-error")
-
-  return(out)
+  success
 }
 
 
