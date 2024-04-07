@@ -32,8 +32,8 @@
       input = path.expand(tar_file),
       output_format = "md",
       quiet = FALSE,
-      as_job = FALSE
-    )')
+      as_job = FALSE,
+    )', new_device = FALSE)
     is_error <- vapply(
       out,
       function(x) inherits(x, c("error", "rlang_error")),
