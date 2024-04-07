@@ -108,25 +108,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   if (isTRUE(autolink)) {
     cli::cli_h1("Auto-Link")
-    html_files <- c(fs::dir_ls(fs::path_join(c(path, "docs/vignettes")), regexp = "\\.html$"),
-                    fs::dir_ls(fs::path_join(c(path, "docs/man")), regexp = "\\.html$"))
-    for (h in html_files) {
-        downlit::downlit_html_path(h, h)
-    }
-    h <- fs::path_join(c(path, "docs/index.html"))
-    if (fs::file_exists(h)) {
-        downlit::downlit_html_path(h, h)
-    }
-
-    md_files <- c(fs::dir_ls(fs::path_join(c(path, "docs/vignettes")), regexp = "\\.html$"),
-                    fs::dir_ls(fs::path_join(c(path, "docs/man")), regexp = "\\.html$"))
-    for (m in md_files) {
-        downlit::downlit_html_path(m, m)
-    }
-    m <- fs::path_join(c(path, "docs/README.md"))
-    if (fs::file_exists(m)) {
-        downlit::downlit_html_path(m, m)
-    }
+    .autolink(path)
   }
 
   cli::cli_h1("Complete")
