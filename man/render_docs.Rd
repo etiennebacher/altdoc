@@ -4,7 +4,13 @@
 \alias{render_docs}
 \title{Update documentation}
 \usage{
-render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
+render_docs(
+  path = ".",
+  verbose = FALSE,
+  parallel = FALSE,
+  freeze = FALSE,
+  autolink = TRUE
+)
 }
 \arguments{
 \item{path}{Path to the package root directory.}
@@ -14,6 +20,8 @@ render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 \item{parallel}{Logical. Render man pages and vignettes in parallel using the \code{future} framework. In addition to setting this argument to TRUE, users must define the parallelism plan in \code{future}. See the examples section below.}
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
+
+\item{autolink}{Logical. If TRUE use the \code{downlit} package to link function names and help calls from vignettes and man pages to documentation page on the web.}
 }
 \description{
 Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
