@@ -160,15 +160,8 @@ test_that("quarto: autolink", {
   setup_docs("quarto_website")
   expect_no_error(render_docs(verbose = .on_ci(), autolink = TRUE))
 
-  ### Quarto output changes depending on the version, I don't have a solution for
-  ### now.
-
-  ### test
-  # expect_snapshot(.readlines("docs/index.html"))
-  # expect_snapshot(.readlines("docs/NEWS.html"))
-  # expect_snapshot(.readlines("docs/man/hello_base.html"))
-  # expect_snapshot(.readlines("docs/man/hello_r6.html"))
-  # expect_snapshot(.readlines("docs/vignettes/test.html"))
+  tmp <- .readlines("docs/vignettes/test.html")
+  expect_true(any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE)))
 })
 
 
