@@ -21,7 +21,7 @@ render_docs(
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
 
-\item{autolink}{Logical. If TRUE use the \code{downlit} package to link function names and help calls from vignettes and man pages to documentation page on the web. Warning: \code{downlit} works best in conjunction with the Quarto framework. \code{mkdocs} ignores \code{downlit} annotations altogether. \code{docute} and \code{docsify} display them properly, but the CSS styling can be affected.}
+\item{autolink}{Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.}
 }
 \description{
 Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
@@ -102,6 +102,18 @@ For the Quarto format, we rely on the \href{https://quarto.org/docs/projects/cod
 \if{html}{\out{<div class="sourceCode yml">}}\preformatted{execute:
   freeze: auto
 }\if{html}{\out{</div>}}
+}
+
+\section{Auto-link}{
+
+
+When the \code{autolink} argument is \code{TRUE}, \code{altdoc} will use the \code{downlit} package to replace the function names on the package website by links to web-based package documentation. This works for base R libraries and any package published on CRAN.
+
+To allow internal links to functions documented by \code{altdoc}, we need to include links to correct URLs in the \code{altdoc/pkgdown.yml} file. By default, this file is populated with links to the first URL in the \code{DESCRIPTION}. When calling \code{render_docs(autolink=TRUE)}, the \code{pkgdown.yml} file is moved to the root of the website.
+
+Importantly, \code{downlit} requires the \code{pkgdown.yml} to be live on the website to create links. This means that links will generally not be updated when making purely local changes. Also, links may not be updated the first time an \code{altdoc} website is published to the web.
+
+Note that the \code{autolink} argument works best for Quarto-based websites. \code{mkdocs} appears to ignore \code{downlit} annotations altogether. \code{docute} and \code{docsify} display \code{downlit} annotations, but CSS styling and code highlighting sometimes suffer.
 }
 
 \examples{

@@ -7,7 +7,7 @@
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
-#' @param autolink Logical. If TRUE use the `downlit` package to link function names and help calls from vignettes and man pages to documentation page on the web. Warning: `downlit` works best in conjunction with the Quarto framework. `mkdocs` ignores `downlit` annotations altogether. `docute` and `docsify` display them properly, but the CSS styling can be affected. 
+#' @param autolink Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -33,6 +33,7 @@
 #' @template altdoc_variables
 #' @template altdoc_preambles
 #' @template altdoc_freeze
+#' @template altdoc_autolink
 #'
 #' @examples
 #' if (interactive()) {
