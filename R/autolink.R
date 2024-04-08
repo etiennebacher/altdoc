@@ -1,5 +1,5 @@
 .autolink <- function(path = ".") {
-    # everyting wrapped in tryCatch() because especially error prone with weird pandoc memory errors
+    # everything wrapped in tryCatch() because especially error prone with weird pandoc memory errors
     html_files <- c(tryCatch(fs::dir_ls(fs::path_join(c(path, "docs/vignettes")), regexp = "\\.html$"), error = function(e) NULL),
                     tryCatch(fs::dir_ls(fs::path_join(c(path, "docs/man")), regexp = "\\.html$"), error = function(e) NULL))
     for (h in html_files) {
