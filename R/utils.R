@@ -131,7 +131,7 @@
   if (!isTRUE(.dir_is_package(path))) {
     stop(".add_pkgdown() must be run from the root of a package.", call. = FALSE)
   }
-  url <- desc::desc_get_urls()
+  url <- setdiff(desc::desc_get_urls(), .gh_url(path))
   fn <- fs::path_join(c(path, "altdoc/pkgdown.yml"))
   if (!fs::file_exists(fn) && length(url) > 0) {
     url <- url[1]
