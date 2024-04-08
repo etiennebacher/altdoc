@@ -9,7 +9,7 @@ render_docs(
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE,
-  autolink = TRUE
+  autolink = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ render_docs(
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
 
-\item{autolink}{Logical. If TRUE use the \code{downlit} package to link function names and help calls from vignettes and man pages to documentation page on the web.}
+\item{autolink}{Logical. If TRUE use the \code{downlit} package to link function names and help calls from vignettes and man pages to documentation page on the web. Warning: \code{downlit} works best in conjunction with the Quarto framework. \code{mkdocs} ignores \code{downlit} annotations altogether. \code{docute} and \code{docsify} display them properly, but the CSS styling can be affected.}
 }
 \description{
 Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
@@ -88,6 +88,20 @@ When you call \code{render_docs()}, \code{altdoc} will automatically paste the c
 The README file uses the vignette preamble.
 
 To preempt this behavior, add your own preamble to the README file or to a vignette.
+}
+
+\section{Freeze}{
+
+
+When working on a package, running \code{render_docs()} to preview changes can be a time-consuming road block. The argument \code{freeze = TRUE} tries to improve the experience by preventing rerendering of files that have not changed since the last time \code{render_docs()} was ran. Note that changes to package internals will not cause a rerender, so rerendering the entire docs can still be necessary.
+
+For non-Quarto formats, this is done by creating a \code{freeze.rds} file in \verb{altdoc/} that is able to determine which documentation files have changed.
+
+For the Quarto format, we rely on the \href{https://quarto.org/docs/projects/code-execution.html#freeze}{Quarto freeze} feature. Freezing a document needs to be set either at a project or per-file level. Freezing a document needs to be set either at a project or per-file level. To do so, add to either \code{quarto_website.yml} or the frontmatter of a file:
+
+\if{html}{\out{<div class="sourceCode yml">}}\preformatted{execute:
+  freeze: auto
+}\if{html}{\out{</div>}}
 }
 
 \examples{
