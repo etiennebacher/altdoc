@@ -19,8 +19,4 @@
             cli::cli_alert_danger(sprintf("Failed to auto-link: %s", h))
         }
     }
-    # m <- fs::path_join(c(path, "docs/README.md"))
-    # if (fs::file_exists(m)) {
-    #     downlit::downlit_html_path(m, m)
-    # }
 }
