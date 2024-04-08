@@ -17,6 +17,7 @@
   execute:
     freeze: auto
   ```
+* `render_docs(autolink = TRUE)` uses the `downlit` package to automatically link function calls to their documentation on the web.
 
 ### Other changes
 
