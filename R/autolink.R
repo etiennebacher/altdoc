@@ -9,10 +9,6 @@
         }
 
     }
-    # h <- fs::path_join(c(path, "docs/index.html"))
-    # if (fs::file_exists(h)) {
-    #     downlit::downlit_html_path(h, h)
-    # }
 
     md_files <- c(
         tryCatch(fs::dir_ls(fs::path_join(c(path, "docs/vignettes")), regexp = "\\.md$"), error = function(e) NULL),
