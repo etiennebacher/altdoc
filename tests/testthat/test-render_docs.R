@@ -139,6 +139,32 @@ test_that("quarto: no error for basic workflow", {
 })
 
 
+test_that("quarto: autolink", {
+  skip_on_cran()
+  skip_if(.is_windows() && .on_ci(), "Windows on CI")
+
+  ### setup: create a temp package using the structure of testpkg.altdoc
+  path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
+  create_local_project()
+  fs::dir_delete("R")
+  fs::dir_copy(path_to_example_pkg, ".")
+  all_files <- list.files("testpkg.altdoc", full.names = TRUE)
+  for (i in all_files) {
+    fs::file_move(i, ".")
+  }
+  fs::dir_delete("testpkg.altdoc")
+
+  ### generate docs
+  install.packages(".", repos = NULL, type = "source")
+  fs::file_move("README.Rmd", "README.qmd") # special thing quarto
+  setup_docs("quarto_website")
+  expect_no_error(render_docs(verbose = .on_ci(), autolink = TRUE))
+
+  tmp <- .readlines("docs/vignettes/test.html")
+  expect_true(any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE)))
+})
+
+
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {

@@ -4,7 +4,13 @@
 \alias{render_docs}
 \title{Update documentation}
 \usage{
-render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
+render_docs(
+  path = ".",
+  verbose = FALSE,
+  parallel = FALSE,
+  freeze = FALSE,
+  autolink = FALSE
+)
 }
 \arguments{
 \item{path}{Path to the package root directory.}
@@ -14,6 +20,8 @@ render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 \item{parallel}{Logical. Render man pages and vignettes in parallel using the \code{future} framework. In addition to setting this argument to TRUE, users must define the parallelism plan in \code{future}. See the examples section below.}
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
+
+\item{autolink}{Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.}
 }
 \description{
 Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
@@ -80,6 +88,32 @@ When you call \code{render_docs()}, \code{altdoc} will automatically paste the c
 The README file uses the vignette preamble.
 
 To preempt this behavior, add your own preamble to the README file or to a vignette.
+}
+
+\section{Freeze}{
+
+
+When working on a package, running \code{render_docs()} to preview changes can be a time-consuming road block. The argument \code{freeze = TRUE} tries to improve the experience by preventing rerendering of files that have not changed since the last time \code{render_docs()} was ran. Note that changes to package internals will not cause a rerender, so rerendering the entire docs can still be necessary.
+
+For non-Quarto formats, this is done by creating a \code{freeze.rds} file in \verb{altdoc/} that is able to determine which documentation files have changed.
+
+For the Quarto format, we rely on the \href{https://quarto.org/docs/projects/code-execution.html#freeze}{Quarto freeze} feature. Freezing a document needs to be set either at a project or per-file level. Freezing a document needs to be set either at a project or per-file level. To do so, add to either \code{quarto_website.yml} or the frontmatter of a file:
+
+\if{html}{\out{<div class="sourceCode yml">}}\preformatted{execute:
+  freeze: auto
+}\if{html}{\out{</div>}}
+}
+
+\section{Auto-link}{
+
+
+When the \code{autolink} argument is \code{TRUE}, \code{altdoc} will use the \code{downlit} package to replace the function names on the package website by links to web-based package documentation. This works for base R libraries and any package published on CRAN.
+
+To allow internal links to functions documented by \code{altdoc}, we need to include links to correct URLs in the \code{altdoc/pkgdown.yml} file. By default, this file is populated with links to the first URL in the \code{DESCRIPTION}. When calling \code{render_docs(autolink=TRUE)}, the \code{pkgdown.yml} file is moved to the root of the website.
+
+Importantly, \code{downlit} requires the \code{pkgdown.yml} to be live on the website to create links. This means that links will generally not be updated when making purely local changes. Also, links may not be updated the first time an \code{altdoc} website is published to the web.
+
+Note that the \code{autolink} argument works best for Quarto-based websites. \code{mkdocs} appears to ignore \code{downlit} annotations altogether. \code{docute} and \code{docsify} display \code{downlit} annotations, but CSS styling and code highlighting sometimes suffer.
 }
 
 \examples{

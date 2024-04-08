@@ -60,8 +60,10 @@
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_vignettes)
         tmp <- paste(tmp, collapse = ", ")
         sidebar <- paste(sidebar, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "%s", sidebar)
-        sidebar <- sprintf(sidebar, tmp)
+        if (isTRUE(grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar))) {
+            sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "%s", sidebar)
+            sidebar <- sprintf(sidebar, tmp)
+        }
         sidebar <- strsplit(sidebar, "\n")[[1]]
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar)]
@@ -81,8 +83,10 @@
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_man)
         tmp <- paste(tmp, collapse = ", ")
         sidebar <- paste(sidebar, collapse = "\n")
-        sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "%s", sidebar)
-        sidebar <- sprintf(sidebar, tmp)
+        if (isTRUE(grepl("\\$ALTDOC_MAN_BLOCK", sidebar))) {
+            sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "%s", sidebar)
+            sidebar <- sprintf(sidebar, tmp)
+        }
         sidebar <- strsplit(sidebar, "\n")[[1]]
     } else {
         sidebar <- sidebar[!grepl("\\$ALTDOC_MAN_BLOCK", sidebar)]

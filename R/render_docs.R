@@ -7,6 +7,7 @@
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
+#' @param autolink Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -32,6 +33,7 @@
 #' @template altdoc_variables
 #' @template altdoc_preambles
 #' @template altdoc_freeze
+#' @template altdoc_autolink
 #'
 #' @examples
 #' if (interactive()) {
@@ -44,7 +46,7 @@
 #'   render_docs(parallel = TRUE)
 #'
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, autolink = FALSE) {
 
   path <- .convert_path(path)
   tool <- .doc_type(path)
@@ -92,6 +94,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   cli::cli_h1("Vignettes")
   fail_vignettes <- .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
+
   # Error so that CI fails
   if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
     cli::cli_abort("There were some failures when rendering vignettes and man pages.")
@@ -103,6 +106,11 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
+
+  if (isTRUE(autolink)) {
+    cli::cli_h1("Auto-Link")
+    .autolink(path)
+  }
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")

@@ -1,4 +1,4 @@
-#' @section Freeze
+#' @section Freeze:
 #' 
 #' When working on a package, running `render_docs()` to preview changes can be a time-consuming road block. The argument `freeze = TRUE` tries to improve the experience by preventing rerendering of files that have not changed since the last time `render_docs()` was ran. Note that changes to package internals will not cause a rerender, so rerendering the entire docs can still be necessary. 
 #' 
