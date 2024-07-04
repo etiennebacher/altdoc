@@ -52,7 +52,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information. 
   # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
   dots <- list(...)
-  if (quiet %in% names(dots) && is.logical(dots[["quiet"]]) && length(dots[["quiet"]]) == 1) {
+  if ("quiet" %in% names(dots) && is.logical(dots[["quiet"]]) && length(dots[["quiet"]]) == 1) {
     verbose <- !dots[["quiet"]]
   }
 
