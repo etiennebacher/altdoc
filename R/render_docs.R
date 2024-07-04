@@ -7,6 +7,7 @@
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
+#' @param ... Additional arguments are ignored.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -45,7 +46,14 @@
 #'   render_docs(parallel = TRUE)
 #'
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...) {
+
+  # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information. 
+  # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
+  dots <- list(...)
+  if ("quiet" %in% names(dots) && is.logical(dots[["quiet"]]) && isTRUE(length(dots[["quiet"]]) == 1)) {
+    verbose <- !dots[["quiet"]]
+  }
 
   path <- .convert_path(path)
   tool <- .doc_type(path)
