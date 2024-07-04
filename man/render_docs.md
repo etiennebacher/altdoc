@@ -2,7 +2,7 @@
 
 # Update documentation
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L48)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L49)
 
 ## Description
 
@@ -13,7 +13,7 @@ below.
 
 ## Usage
 
-<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
+<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...)
 </code></pre>
 
 ## Arguments
@@ -55,6 +55,14 @@ Logical. If TRUE and a man page or vignette has not changed since the
 last call to <code>render_docs()</code>, that file is skipped. File
 hashes are stored in <code>altdoc/freeze.rds</code>. If that file is
 deleted, all man pages and vignettes will be rendered anew.
+</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<code id="...">…</code>
+</td>
+<td>
+Additional arguments are ignored.
 </td>
 </tr>
 </table>
