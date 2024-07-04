@@ -36,7 +36,7 @@
       [16] "<table>"                                                                        
       [17] "<tr>"                                                                           
       [18] "<td style=\"white-space: nowrap; font-family: monospace; vertical-align: top\">"
-      [19] "<code id=\"hello_base_:_x\">x</code>"                                           
+      [19] "<code id=\"x\">x</code>"                                                        
       [20] "</td>"                                                                          
       [21] "<td>"                                                                           
       [22] "A parameter"                                                                    
