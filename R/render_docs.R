@@ -7,7 +7,6 @@
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
 #' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
 #' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
-#' @param autolink Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.
 #' @inheritParams setup_docs
 #' @export
 #'
@@ -46,7 +45,7 @@
 #'   render_docs(parallel = TRUE)
 #'
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, autolink = FALSE) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
 
   path <- .convert_path(path)
   tool <- .doc_type(path)
@@ -106,11 +105,6 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
-
-  if (isTRUE(autolink)) {
-    cli::cli_h1("Auto-Link")
-    .autolink(path)
-  }
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
