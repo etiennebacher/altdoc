@@ -158,7 +158,7 @@ test_that("quarto: autolink", {
   install.packages(".", repos = NULL, type = "source")
   fs::file_move("README.Rmd", "README.qmd") # special thing quarto
   setup_docs("quarto_website")
-  expect_no_error(render_docs(verbose = .on_ci(), autolink = TRUE))
+  expect_no_error(render_docs(verbose = .on_ci()))
 
   tmp <- .readlines("docs/vignettes/test.html")
   expect_true(any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE)))

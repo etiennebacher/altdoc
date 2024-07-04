@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'
-Version: 0.3.0.9003
+Version: 0.3.0.9004
 Authors@R: 
     c(person(given = "Etienne",
              family = "Bacher",
@@ -24,7 +24,6 @@ Imports:
     cli,
     desc,
     evaluate,
-    downlit,
     fs,
     quarto,
     tools,
@@ -32,6 +31,7 @@ Imports:
 Suggests: 
     covr,
     digest,
+    downlit,
     future,
     future.apply,
     knitr,

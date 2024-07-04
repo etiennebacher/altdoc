@@ -8,6 +8,7 @@ project:
 
 website:
   title: "$ALTDOC_PACKAGE_NAME"
+  code-links: true
   navbar:
     search: true
     right:
@@ -34,7 +35,8 @@ website:
       - text: Citation
         file: $ALTDOC_CITATION
 
-# format:
-#   html:
+format:
+  html:
+    code-link: true
 #     theme: cosmo
 #     number-sections: false
