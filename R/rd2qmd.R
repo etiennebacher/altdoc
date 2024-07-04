@@ -30,7 +30,7 @@
 
   # examples: evaluate code blocks (assume examples are always last)
   pkg <- .pkg_name(path)
-  pkg_load <- paste0("library(", pkg, ")")
+  pkg_load <- paste0("library(\"", pkg, "\")")
   idx <- which(tmp == "<h3>Examples</h3>")
 
   if (length(idx) == 1) {
