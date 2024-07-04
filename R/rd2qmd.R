@@ -25,6 +25,9 @@
   # doesn't escape symbols between two $.
   tmp <- gsub("\\$", "\\\\$", tmp)
 
+  # process \doi{...} tags that were expanded to \Sexpr[results=rd]{tools:::Rd_expr_doi("...")}
+  tmp <- gsub("(\\\\Sexpr\\[results=rd\\]\\{tools:::Rd_expr_doi\\(\\\")([^\\\"]+)(\\\"\\)\\})", "[doi:\\2](https://doi.org/\\2)", tmp)
+
   # examples: evaluate code blocks (assume examples are always last)
   pkg <- .pkg_name(path)
   pkg_load <- paste0("library(", pkg, ")")
