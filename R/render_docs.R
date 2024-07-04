@@ -46,8 +46,7 @@
 #'   render_docs(parallel = TRUE)
 #'
 #' }
-<<<<<<< HEAD
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, autolink = FALSE, ...) {
+render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...) {
 
   # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information. 
   # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
@@ -55,9 +54,6 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   if ("quiet" %in% names(dots) && is.logical(dots[["quiet"]]) && isTRUE(length(dots[["quiet"]]) == 1)) {
     verbose <- !dots[["quiet"]]
   }
-=======
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE) {
->>>>>>> main
 
   path <- .convert_path(path)
   tool <- .doc_type(path)
