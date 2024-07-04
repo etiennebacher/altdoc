@@ -9,7 +9,8 @@ render_docs(
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE,
-  autolink = FALSE
+  autolink = FALSE,
+  ...
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ render_docs(
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
 
 \item{autolink}{Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.}
+
+\item{...}{Additional arguments are ignored.}
 }
 \description{
 Render and update the function reference manual, vignettes, README, NEWS, CHANGELOG, LICENSE,
