@@ -9,7 +9,6 @@ render_docs(
   verbose = FALSE,
   parallel = FALSE,
   freeze = FALSE,
-  autolink = FALSE,
   ...
 )
 }
@@ -21,9 +20,6 @@ render_docs(
 \item{parallel}{Logical. Render man pages and vignettes in parallel using the \code{future} framework. In addition to setting this argument to TRUE, users must define the parallelism plan in \code{future}. See the examples section below.}
 
 \item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
-
-\item{autolink}{Logical. TRUE to link function names and calls to web-based documentation. See the Autolink section below for details.}
-
 \item{...}{Additional arguments are ignored.}
 }
 \description{
@@ -107,16 +103,14 @@ For the Quarto format, we rely on the \href{https://quarto.org/docs/projects/cod
 }\if{html}{\out{</div>}}
 }
 
-\section{Auto-link}{
+\section{Auto-link for Quarto websites}{
 
 
-When the \code{autolink} argument is \code{TRUE}, \code{altdoc} will use the \code{downlit} package to replace the function names on the package website by links to web-based package documentation. This works for base R libraries and any package published on CRAN.
+When the \code{code-link} format setting is \code{true} in \code{altdoc/quarto_website.yml} and the \code{downlit} package is installed, \code{altdoc} will use the \code{downlit} package to replace the function names on the package website by links to web-based package documentation. This works for base R libraries and any package published on CRAN.
 
-To allow internal links to functions documented by \code{altdoc}, we need to include links to correct URLs in the \code{altdoc/pkgdown.yml} file. By default, this file is populated with links to the first URL in the \code{DESCRIPTION}. When calling \code{render_docs(autolink=TRUE)}, the \code{pkgdown.yml} file is moved to the root of the website.
+To allow internal links to functions documented by \code{altdoc}, we need to include links to correct URLs in the \code{altdoc/pkgdown.yml} file. By default, this file is populated with links to the first URL in the \code{DESCRIPTION}.
 
-Importantly, \code{downlit} requires the \code{pkgdown.yml} to be live on the website to create links. This means that links will generally not be updated when making purely local changes. Also, links may not be updated the first time an \code{altdoc} website is published to the web.
-
-Note that the \code{autolink} argument works best for Quarto-based websites. \code{mkdocs} appears to ignore \code{downlit} annotations altogether. \code{docute} and \code{docsify} display \code{downlit} annotations, but CSS styling and code highlighting sometimes suffer.
+Importantly, \code{downlit} requires the \code{pkgdown.yml} file to be live on the website to create links. This means that links will generally not be updated when making purely local changes. Also, links may not be updated the first time an \code{altdoc} website is published to the web.
 }
 
 \examples{
