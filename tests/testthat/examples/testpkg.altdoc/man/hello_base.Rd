@@ -15,8 +15,16 @@ Some value
 \description{
 Base function
 }
+\details{
+Some code with weird symbols: \code{pl$when(condition)} and \code{pl$then(output)}
+
+Some equations: \eqn{\partial Y / \partial X = a + \varepsilon/2}
+}
 \examples{
 hello_base()
+
+mtcars$drat <- mtcars$drat + 1
+head(mtcars[["drat"]], 2)
 }
 \references{
 Ihaka R, Gentleman R (1996).
