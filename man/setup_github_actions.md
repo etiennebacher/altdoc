@@ -21,7 +21,7 @@ push the output to the branch "gh-pages".
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_github_actions_:_path">path</code>
+<code id="path">path</code>
 </td>
 <td>
 Path to the package root directory.

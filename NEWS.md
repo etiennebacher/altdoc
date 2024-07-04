@@ -17,7 +17,7 @@
   execute:
     freeze: auto
   ```
-* `render_docs(autolink = TRUE)` uses the `downlit` package to automatically link function calls to their documentation on the web.
+* For Quarto websites, `render_docs()` can use the `downlit` package to automatically link function calls to their documentation on the web. Turn off by modifying the `code-link` line in `altdoc/quarto_website.yml`
 
 ### Other changes
 

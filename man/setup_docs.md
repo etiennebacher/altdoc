@@ -26,7 +26,7 @@ customize the sidebar and website.
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_tool">tool</code>
+<code id="tool">tool</code>
 </td>
 <td>
 String. "docsify", "docute", "mkdocs", or "quarto_website".
@@ -34,7 +34,7 @@ String. "docsify", "docute", "mkdocs", or "quarto_website".
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_path">path</code>
+<code id="path">path</code>
 </td>
 <td>
 Path to the package root directory.
@@ -42,7 +42,7 @@ Path to the package root directory.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="setup_docs_:_overwrite">overwrite</code>
+<code id="overwrite">overwrite</code>
 </td>
 <td>
 Logical. If TRUE, overwrite existing files. Warning: This will

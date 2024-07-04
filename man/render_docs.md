@@ -2,7 +2,7 @@
 
 # Update documentation
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L49)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L48)
 
 ## Description
 
@@ -13,13 +13,7 @@ below.
 
 ## Usage
 
-<pre><code class='language-R'>render_docs(
-  path = ".",
-  verbose = FALSE,
-  parallel = FALSE,
-  freeze = FALSE,
-  autolink = FALSE
-)
+<pre><code class='language-R'>render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE)
 </code></pre>
 
 ## Arguments
@@ -27,7 +21,7 @@ below.
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="render_docs_:_path">path</code>
+<code id="path">path</code>
 </td>
 <td>
 Path to the package root directory.
@@ -35,7 +29,7 @@ Path to the package root directory.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="render_docs_:_verbose">verbose</code>
+<code id="verbose">verbose</code>
 </td>
 <td>
 Logical. Print Rmarkdown or Quarto rendering output.
@@ -43,7 +37,7 @@ Logical. Print Rmarkdown or Quarto rendering output.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="render_docs_:_parallel">parallel</code>
+<code id="parallel">parallel</code>
 </td>
 <td>
 Logical. Render man pages and vignettes in parallel using the
@@ -54,22 +48,13 @@ the examples section below.
 </tr>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="render_docs_:_freeze">freeze</code>
+<code id="freeze">freeze</code>
 </td>
 <td>
 Logical. If TRUE and a man page or vignette has not changed since the
 last call to <code>render_docs()</code>, that file is skipped. File
 hashes are stored in <code>altdoc/freeze.rds</code>. If that file is
 deleted, all man pages and vignettes will be rendered anew.
-</td>
-</tr>
-<tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="render_docs_:_autolink">autolink</code>
-</td>
-<td>
-Logical. TRUE to link function names and calls to web-based
-documentation. See the Autolink section below for details.
 </td>
 </tr>
 </table>
@@ -281,32 +266,25 @@ a project or per-file level. To do so, add to either
   freeze: auto
 </pre>
 
-## Auto-link
+## Auto-link for Quarto websites
 
-When the <code>autolink</code> argument is <code>TRUE</code>,
-<code>altdoc</code> will use the <code>downlit</code> package to replace
-the function names on the package website by links to web-based package
-documentation. This works for base R libraries and any package published
-on CRAN.
+When the <code>code-link</code> format setting is <code>true</code> in
+<code>altdoc/quarto_website.yml</code> and the <code>downlit</code>
+package is installed, <code>altdoc</code> will use the
+<code>downlit</code> package to replace the function names on the
+package website by links to web-based package documentation. This works
+for base R libraries and any package published on CRAN.
 
 To allow internal links to functions documented by <code>altdoc</code>,
 we need to include links to correct URLs in the
 <code>altdoc/pkgdown.yml</code> file. By default, this file is populated
-with links to the first URL in the <code>DESCRIPTION</code>. When
-calling <code>render_docs(autolink=TRUE)</code>, the
-<code>pkgdown.yml</code> file is moved to the root of the website.
+with links to the first URL in the <code>DESCRIPTION</code>.
 
 Importantly, <code>downlit</code> requires the <code>pkgdown.yml</code>
-to be live on the website to create links. This means that links will
-generally not be updated when making purely local changes. Also, links
-may not be updated the first time an <code>altdoc</code> website is
-published to the web.
-
-Note that the <code>autolink</code> argument works best for Quarto-based
-websites. <code>mkdocs</code> appears to ignore <code>downlit</code>
-annotations altogether. <code>docute</code> and <code>docsify</code>
-display <code>downlit</code> annotations, but CSS styling and code
-highlighting sometimes suffer.
+file to be live on the website to create links. This means that links
+will generally not be updated when making purely local changes. Also,
+links may not be updated the first time an <code>altdoc</code> website
+is published to the web.
 
 ## Examples
 

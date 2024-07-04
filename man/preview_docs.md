@@ -18,7 +18,7 @@ Preview the documentation in a webpage or in viewer
 <table>
 <tr>
 <td style="white-space: nowrap; font-family: monospace; vertical-align: top">
-<code id="preview_docs_:_path">path</code>
+<code id="path">path</code>
 </td>
 <td>
 Path to the package root directory.
