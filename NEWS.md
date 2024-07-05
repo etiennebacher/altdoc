@@ -4,7 +4,10 @@
 
 ### Breaking changes
 
-* Simplified rendering for Quarto websites. Previously, the website was rendered into `_quarto/_site` and manually copied over to `docs/`. The new version removes this logic and instead uses the `output-dir` project option. To transition, change `quarto_website.yml` to:
+* Simplified rendering for Quarto websites. Previously, the website was rendered
+  into `_quarto/_site` and manually copied over to `docs/`. The new version removes
+  this logic and instead uses the `output-dir` project option. To transition, change
+  `quarto_website.yml` to:
   ``` yml
   project:
     output-dir: ../docs/
@@ -12,12 +15,21 @@
 
 ### New features
 
-* `render_docs(freeze = TRUE)` now works correctly when output is `"quarto_website"`. Freezing a document needs to be set either at a project or per-file level. To do so, add to either `quarto_website.yml` or the frontmatter of a file:
+* `render_docs(freeze = TRUE)` now works correctly when output is `"quarto_website"`.
+  Freezing a document needs to be set either at a project or per-file level. To do 
+  so, add to either `quarto_website.yml` or the frontmatter of a file:
+
   ``` yml
   execute:
     freeze: auto
   ```
-* For Quarto websites, `render_docs()` can use the `downlit` package to automatically link function calls to their documentation on the web. Turn off by modifying the `code-link` line in `altdoc/quarto_website.yml`
+* For Quarto websites, `render_docs()` can use the `downlit` package to automatically
+  link function calls to their documentation on the web. Turn off by modifying 
+  the `code-link` line in `altdoc/quarto_website.yml`
+* Citation is now formatted with HTML instead of verbatim ([#282](https://github.com/etiennebacher/altdoc/issues/282), Achim Zeileis).
+* The `\doi{}` tags in Rd files are now linked once rendered ([#282](https://github.com/etiennebacher/altdoc/issues/282), Achim Zeileis).
+
+
 
 ### Other changes
 

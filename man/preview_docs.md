@@ -35,7 +35,7 @@ VS Code), see the vignette on the <code>altdoc</code> website.
 ## Examples
 
 ``` r
-library(altdoc)
+library("altdoc")
 
 if (interactive()) {
 

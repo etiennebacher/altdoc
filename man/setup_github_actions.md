@@ -36,7 +36,7 @@ No value returned. Creates the file ".github/workflows/altdoc.yaml"
 ## Examples
 
 ``` r
-library(altdoc)
+library("altdoc")
 
 if (interactive()) {
   setup_github_actions()

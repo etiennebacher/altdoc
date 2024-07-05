@@ -191,7 +191,7 @@ a vignette.
 ## Examples
 
 ``` r
-library(altdoc)
+library("altdoc")
 
 if (interactive()) {
 

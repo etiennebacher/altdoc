@@ -297,7 +297,7 @@ is published to the web.
 ## Examples
 
 ``` r
-library(altdoc)
+library("altdoc")
 
 if (interactive()) {
 
