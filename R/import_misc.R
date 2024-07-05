@@ -13,8 +13,19 @@
       tryCatch(
         {
           name <- .pkg_name(src_dir)
-          cite <- utils::capture.output(print(utils::citation(name)))
-          c("# Citation", "", "```verbatim", cite, "```")
+          cite <- utils::citation(name)
+          head <- vapply(cite, function(x) {
+            if (is.null(x$header)) {
+              ""
+            } else {
+              paste0(x$header, "\n\n")
+            }
+          }, character(1))
+          if (!is.null(attr(cite, "mheader"))) {
+            head[1] <- paste0(attr(cite, "mheader"), "\n\n", head[1])
+          }
+          cite <- paste0(head, format(cite, style = "html"))
+          c("# Citation", "", paste(cite, collapse = "\n\n"))
         },
         error = function(e) NULL)
     )

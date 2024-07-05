@@ -26,3 +26,12 @@ hello_base()
 mtcars$drat <- mtcars$drat + 1
 head(mtcars[["drat"]], 2)
 }
+\references{
+Ihaka R, Gentleman R (1996).
+R: A Language for Data Analysis and Graphics.
+\emph{Journal of Computational and Graphical Statistics}. \bold{5}(3), 299--314.
+\doi{10.2307/139080}
+}
+\seealso{
+\code{\link[base]{print}}, \code{\link{hello_r6}}
+}
