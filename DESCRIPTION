@@ -1,7 +1,7 @@
 Type: Package
 Package: altdoc
 Title: Package Documentation Websites with 'Quarto', 'Docsify', 'Docute', or 'MkDocs'
-Version: 0.3.0.9005
+Version: 0.4.0
 Authors@R: 
     c(person(given = "Etienne",
              family = "Bacher",
@@ -45,6 +45,6 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Language: en-US
 VignetteBuilder: knitr
