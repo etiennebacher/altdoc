@@ -171,7 +171,7 @@ MkDocs
 <code>polars</code>
 </td>
 <td>
-🌐<a href="https://rpolars.github.io">rpolars.github.io</a>
+🌐<a href="https://pola-rs.github.io/r-polars/">pola-rs.github.io/r-polars</a>
 </td>
 <td>
 <a href="https://github.com/pola-rs/r-polars">Github Repository</a>
