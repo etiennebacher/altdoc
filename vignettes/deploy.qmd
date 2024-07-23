@@ -24,7 +24,7 @@ custom domain of your choice.
 
 ### Using the `main` branch and `docs/` directory
 
-The simplest way to deploy a website from Github is to use the `docs/` directory from the `main` (or `master`) branch of your repository. Thuis process is usually very simple:
+The simplest way to deploy a website from Github is to use the `docs/` directory from the `main` (or `master`) branch of your repository. This process is usually very simple:
 
 1. Go to your Github repository settings. 
 2. Click on "Pages" in the left sidebar. 
@@ -84,7 +84,7 @@ we need to change it.
 
 6. Click on "Domain settings". In "Custom domains", click on "Add custom
 domain". 
-7. Add a custom domaine name. For example, if you own `mywebsite.com`, you can 
+7. Add a custom domain name. For example, if you own `mywebsite.com`, you can 
 name the custom domain as `mypackage.mywebsite.com`. 
 8. Confirm that you are the owner of `mywebsite.com`. 
 9. Force HTTPS (automatically proposed by Netlify).
