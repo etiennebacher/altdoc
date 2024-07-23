@@ -100,7 +100,7 @@ The websites in this table were created using Altdoc:
     <td>Quarto</td>
     <td><code>tinytable</code></td>
     <td>🌐<a href="https://vincentarelbundock.github.io/tinytable/">vincentarelbundock.github.io/tinytable/</a></td>
-    <td><a href="https://github.com/vincentarelbundock/tintyable/tree/main/altdoc">Altdoc Settings</a></td>
+    <td><a href="https://github.com/vincentarelbundock/tinytable/tree/main/altdoc">Altdoc Settings</a></td>
   </tr>
   <tr>
     <td>Quarto</td>

@@ -144,7 +144,7 @@ Quarto
 🌐<a href="https://vincentarelbundock.github.io/tinytable/">vincentarelbundock.github.io/tinytable/</a>
 </td>
 <td>
-<a href="https://github.com/vincentarelbundock/tintyable/tree/main/altdoc">Altdoc
+<a href="https://github.com/vincentarelbundock/tinytable/tree/main/altdoc">Altdoc
 Settings</a>
 </td>
 </tr>
