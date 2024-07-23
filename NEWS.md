@@ -28,6 +28,7 @@
   the `code-link` line in `altdoc/quarto_website.yml`
 * Citation is now formatted with HTML instead of verbatim ([#282](https://github.com/etiennebacher/altdoc/issues/282), Achim Zeileis).
 * The `\doi{}` tags in Rd files are now linked once rendered ([#282](https://github.com/etiennebacher/altdoc/issues/282), Achim Zeileis).
+* Warn if README.qmd does not exist when calling `setup_docs("quarto_website")`. Issue [#280](https://github.com/etiennebacher/altdoc/issues/280).
 
 
 
