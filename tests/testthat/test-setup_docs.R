@@ -56,3 +56,11 @@ test_that("overwrite=TRUE works: mkdocs", {
     txt <- readLines("altdoc/mkdocs.yml", warn = FALSE)
     expect_false("Cruft" %in% txt)
 })
+
+test_that("quarto: README.qmd", {
+  create_local_package()
+  expect_false(file.exists("README.qmd"))
+  setup_docs("quarto_website", overwrite = TRUE)
+  expect_true(file.exists("README.qmd"))
+})
+
