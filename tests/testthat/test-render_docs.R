@@ -26,6 +26,7 @@ test_that("docute: main files are correct", {
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docute")
   expect_snapshot(.readlines("docs/man/examplesIf_true.md"), variant = "docute")
   expect_snapshot(.readlines("docs/man/examplesIf_false.md"), variant = "docute")
+  expect_snapshot(.readlines("docs/man/backticks_for_inline_code.md"), variant = "docute")
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docute")
 })
 
@@ -60,6 +61,7 @@ test_that("docsify: main files are correct", {
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docsify")
   expect_snapshot(.readlines("docs/man/examplesIf_true.md"), variant = "docsify")
   expect_snapshot(.readlines("docs/man/examplesIf_false.md"), variant = "docsify")
+  expect_snapshot(.readlines("docs/man/backticks_for_inline_code.md"), variant = "docsify")
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
 })
 
@@ -101,6 +103,7 @@ test_that("mkdocs: main files are correct", {
   expect_snapshot(.readlines("docs/NEWS.md"), variant = "mkdocs")
   expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "mkdocs")
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "mkdocs")
+  expect_snapshot(.readlines("docs/man/backticks_for_inline_code.md"), variant = "mkdocs")
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "mkdocs")
 })
 
