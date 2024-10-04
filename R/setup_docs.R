@@ -164,11 +164,7 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
   }
 
   # README.md is mandatory
-  if (tool == "quarto_website") {
-    fn <- "README.qmd"
-  } else {
-    fn <- "README.md"
-  }
+  fn <- "README.md"
   msg <- sprintf("%s is mandatory. `altdoc` created a dummy README file in the package directory.", fn)
   fn <- fs::path_join(c(path, fn))
   if (!fs::file_exists(fn)) {
