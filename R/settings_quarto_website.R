@@ -12,12 +12,6 @@
     settings <- strsplit(settings, "\\n")[[1]]
     writeLines(settings, fs::path_join(c(path, "_quarto", "_quarto.yml")))
 
-    # index.md breaks rendering
-    fn <- fs::path_join(c(path, "_quarto", "index.md"))
-    if (fs::file_exists(fn)) {
-        fs::file_delete(fn)
-    }
-
     # NEWS.qmd breaks rendering, so we delete it if NEWS.md is available.
     # This happens when converting from NEWS.Rd
     a <- fs::path_join(c(path, "_quarto", "NEWS.md"))
