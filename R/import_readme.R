@@ -65,10 +65,6 @@
         # not a big problem to omit the preamble, but it would be good to
         # investigate this, because I am not sure what is going on -VAB
         .qmd2md(src_file, src_dir)
-        # .qmd2md(fn, src_dir, preamble = pre)
-        .update_freeze(src_dir, basename(src_file), successes = 1, fails = NULL, type = "README")
-        cli::cli_alert_success("{.file README} imported.")
-        return(invisible())
     }
   )
 
