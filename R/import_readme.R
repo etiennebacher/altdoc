@@ -26,13 +26,6 @@
     "md"
   }
 
-  if (readme_type != "qmd" && tool == "quarto_website") {
-    cli::cli_abort(
-      "Quarto websites require a README.qmd file in the root of the package directory.",
-      call = NULL
-    )
-  }
-
   src_file <- fs::path_join(
     c(src_dir, grep(paste0("\\.", readme_type, "$"), readme_files, ignore.case = TRUE, value = TRUE))
   )
@@ -67,35 +60,26 @@
     "qmd" = {
         pre <- fs::path_join(c(src_dir, "altdoc/preamble_vignettes_qmd.yml"))
         pre <- tryCatch(.readlines(pre), warning = function(w) NULL, error = function(e) NULL)
-        # copy to quarto file
-        if (tool == "quarto_website") {
-          fs::file_copy(
-            src_file,
-            fs::path_join(c(tar_dir, "index.qmd")),
-            overwrite = TRUE
-          )
-        }
         # process in-place for use on Github
         # TODO: preambles inserted in the README often break Quarto websites. It's
         # not a big problem to omit the preamble, but it would be good to
         # investigate this, because I am not sure what is going on -VAB
         .qmd2md(src_file, src_dir)
-        # .qmd2md(fn, src_dir, preamble = pre)
-        .update_freeze(src_dir, basename(src_file), successes = 1, fails = NULL, type = "README")
-        cli::cli_alert_success("{.file README} imported.")
-        return(invisible())
     }
   )
 
-  if (tool == "quarto_website") {
-    tar_file <- fs::path_join(c(tar_dir, "index.md"))
-  } else {
-    tar_file <- fs::path_join(c(tar_dir, "README.md"))
-  }
-
+  tar_file <- fs::path_join(c(tar_dir, "README.md"))
   src_file <- fs::path_join(c(src_dir, "README.md"))
   fs::file_copy(src_file, tar_file, overwrite = TRUE)
   .check_md_structure(tar_file)
+
+  # Add the index page which includes README.md
+  if (tool == "quarto_website") {
+    writeLines(
+      enc2utf8("{{< include README.md >}}"),
+      fs::path_join(c(tar_dir, "index.md"))
+    )
+  }
 
   tmp <- fs::path_join(c(src_dir, "README.markdown_strict_files"))
   if (fs::dir_exists(tmp)) {
