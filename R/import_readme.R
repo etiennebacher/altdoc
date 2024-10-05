@@ -75,8 +75,8 @@
 
   # Add the index page which includes README.md
   if (tool == "quarto_website") {
-    brio::write_lines(
-      "{{< include README.md >}}",
+    writeLines(
+      enc2utf8("{{< include README.md >}}"),
       fs::path_join(c(tar_dir, "index.md"))
     )
   }

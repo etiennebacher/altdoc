@@ -21,7 +21,6 @@ License: MIT + file LICENSE
 URL: https://altdoc.etiennebacher.com, https://github.com/etiennebacher/altdoc
 BugReports: https://github.com/etiennebacher/altdoc/issues
 Imports: 
-    brio,
     cli,
     desc,
     evaluate,
