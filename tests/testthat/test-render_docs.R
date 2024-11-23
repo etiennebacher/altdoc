@@ -168,12 +168,17 @@ test_that("arg 'output_path' works", {
   parent_dir <- withr::local_tempfile()
   create_local_package(dir = parent_dir)
   fs::dir_create(fs::path("..", "foobar"))
+  fs::dir_create("man")
+  install.packages(".", repos = NULL, type = "source")
+  cat("\\name{hi}\n\\title{hi}\n\\usage{\nhi()\n}\n\\examples{\n1 + 1\n}\n", file = "man/foo.Rd")
 
   setup_docs("docute")
   render_docs(output_path = "../foobar", verbose = .on_ci())
 
   expect_false(dir_exists("docs"))
-  expect_true(dir_exists("../foobar/docs"))
+  expect_true(dir_exists("../foobar"))
+  expect_true(file_exists("../foobar/docute.html"))
+  expect_true(file_exists("../foobar/man/foo.md"))
 })
 
 

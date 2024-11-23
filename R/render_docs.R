@@ -12,8 +12,7 @@
 #' since the last call to `render_docs()`, that file is skipped. File hashes
 #' are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages
 #' and vignettes will be rendered anew.
-#' @param output_path Destination path for the documentation. For instance,
-#' specifying `output_path = "foo"` will write the documentation in `foo/docs`.
+#' @param output_path Destination path for the documentation.
 #' @param ... Additional arguments are ignored.
 #' @inheritParams setup_docs
 #' @export
@@ -120,7 +119,8 @@ render_docs <- function(
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
 
   if (output_path != path) {
-    fs::dir_copy(fs::path(path, "docs"), fs::path(output_path, "docs"))
+    files_to_copy <- list.files(fs::path(path, "docs"), full.names = TRUE)
+    file.copy(files_to_copy, to = fs::path(output_path), recursive = TRUE)
     fs::dir_delete(fs::path(path, "docs"))
   }
 

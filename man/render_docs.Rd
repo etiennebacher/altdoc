@@ -27,8 +27,7 @@ since the last call to \code{render_docs()}, that file is skipped. File hashes
 are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages
 and vignettes will be rendered anew.}
 
-\item{output_path}{Destination path for the documentation. For instance,
-specifying \code{output_path = "foo"} will write the documentation in \code{foo/docs}.}
+\item{output_path}{Destination path for the documentation.}
 
 \item{...}{Additional arguments are ignored.}
 }
