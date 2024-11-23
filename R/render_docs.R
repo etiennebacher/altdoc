@@ -5,8 +5,15 @@
 #' content of the 'docs/' folder. See details below.
 #'
 #' @param verbose Logical. Print Rmarkdown or Quarto rendering output.
-#' @param parallel Logical. Render man pages and vignettes in parallel using the `future` framework. In addition to setting this argument to TRUE, users must define the parallelism plan in `future`. See the examples section below.
-#' @param freeze Logical. If TRUE and a man page or vignette has not changed since the last call to `render_docs()`, that file is skipped. File hashes are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages and vignettes will be rendered anew.
+#' @param parallel Logical. Render man pages and vignettes in parallel using
+#' the `future` framework. In addition to setting this argument to TRUE, users
+#' must define the parallelism plan in `future`. See the examples section below.
+#' @param freeze Logical. If TRUE and a man page or vignette has not changed
+#' since the last call to `render_docs()`, that file is skipped. File hashes
+#' are stored in `altdoc/freeze.rds`. If that file is deleted, all man pages
+#' and vignettes will be rendered anew.
+#' @param output_path Destination path for the documentation. For instance,
+#' specifying `output_path = "foo"` will write the documentation in `foo/docs`.
 #' @param ... Additional arguments are ignored.
 #' @inheritParams setup_docs
 #' @export
@@ -37,18 +44,21 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'
 #'   render_docs()
 #'
 #'   # parallel rendering
 #'   library(future)
 #'   plan(multicore)
 #'   render_docs(parallel = TRUE)
-#'
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...) {
-
-  # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information. 
+render_docs <- function(
+    path = ".",
+    verbose = FALSE,
+    parallel = FALSE,
+    freeze = FALSE,
+    output_path = ".",
+    ...) {
+  # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information.
   # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
   dots <- list(...)
   if ("quiet" %in% names(dots) && is.logical(dots[["quiet"]]) && isTRUE(length(dots[["quiet"]]) == 1)) {
@@ -56,6 +66,7 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   }
 
   path <- .convert_path(path)
+  output_path <- .convert_path(output_path)
   tool <- .doc_type(path)
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
 
@@ -66,25 +77,24 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
   if (tool == "quarto_website") {
-    docs_dir <- fs::path_join(c(path, "_quarto"))
+    docs_dir <- fs::path_join(c(output_path, "_quarto"))
 
     # Delete everything in `_quarto/` besides `_freeze/`
     if (fs::dir_exists(docs_dir)) {
       docs_files <- fs::dir_ls(docs_dir)
       if (freeze == TRUE) {
         docs_files <- Filter(function(f) basename(f) != "_freeze", docs_files)
-      } 
+      }
       fs::file_delete(docs_files)
     }
-
   } else {
-    docs_dir <- fs::path_join(c(path, "docs"))
+    docs_dir <- fs::path_join(c(output_path, "docs"))
   }
 
   # create `docs_dir/`
   fs::dir_create(docs_dir)
 
-  cli::cli_h1("Basic files")  
+  cli::cli_h1("Basic files")
   basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
@@ -117,4 +127,3 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
 }
-

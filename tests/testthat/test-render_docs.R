@@ -164,6 +164,15 @@ test_that("quarto: autolink", {
   expect_true(any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE)))
 })
 
+test_that("arg 'output_path' works", {
+  parent_dir <- withr::local_tempfile()
+  create_local_package(dir = parent_dir)
+  fs::dir_create(fs::path("..", "docs"))
+
+  setup_docs("docute")
+  render_docs(output_path = "../docs")
+})
+
 
 # Test failures ------------------------------
 
