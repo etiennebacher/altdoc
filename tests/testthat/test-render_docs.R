@@ -167,10 +167,13 @@ test_that("quarto: autolink", {
 test_that("arg 'output_path' works", {
   parent_dir <- withr::local_tempfile()
   create_local_package(dir = parent_dir)
-  fs::dir_create(fs::path("..", "docs"))
+  fs::dir_create(fs::path("..", "foobar"))
 
   setup_docs("docute")
-  render_docs(output_path = "../docs")
+  render_docs(output_path = "../foobar", verbose = .on_ci())
+
+  expect_false(dir_exists("docs"))
+  expect_true(dir_exists("../foobar/docs"))
 })
 
 

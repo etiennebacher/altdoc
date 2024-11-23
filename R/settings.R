@@ -1,4 +1,4 @@
-.import_settings <- function(path = ".", tar_dir, tool = "docsify", verbose = FALSE, freeze = FALSE) {
+.import_settings <- function(path = ".", tool = "docsify", verbose = FALSE, freeze = FALSE) {
   # copy all files from altdoc/ into docs/
   # this allows users to store arbitrary and settings static files in altdoc/
   src <- fs::path_abs(fs::path_join(c(path, "altdoc")))
@@ -17,9 +17,9 @@
 
     # docs/* files are mutable and should be overwritten
     if (grepl("^quarto", tool)) {
-      tar_dir <- fs::path_join(c(tar_dir, "_quarto"))
+      tar_dir <- fs::path_join(c(path, "_quarto"))
     } else {
-      tar_dir <- .doc_path(tar_dir)
+      tar_dir <- .doc_path(path)
     }
 
     fs::dir_copy(src, tar_dir, overwrite = TRUE)

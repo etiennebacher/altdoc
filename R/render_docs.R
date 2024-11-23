@@ -77,7 +77,7 @@ render_docs <- function(
   # build quarto in a separate folder to use the built-in freeze functionality
   # and to allow moving the _site folder to docs/
   if (tool == "quarto_website") {
-    docs_dir <- fs::path_join(c(output_path, "_quarto"))
+    docs_dir <- fs::path_join(c(path, "_quarto"))
 
     # Delete everything in `_quarto/` besides `_freeze/`
     if (fs::dir_exists(docs_dir)) {
@@ -88,10 +88,9 @@ render_docs <- function(
       fs::file_delete(docs_files)
     }
   } else {
-    docs_dir <- fs::path_join(c(output_path, "docs"))
+    docs_dir <- fs::path_join(c(path, "docs"))
   }
 
-  # create `docs_dir/`
   fs::dir_create(docs_dir)
 
   cli::cli_h1("Basic files")
@@ -102,15 +101,11 @@ render_docs <- function(
   .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool, freeze = freeze)
   .import_citation(src_dir = path, tar_dir = docs_dir)
 
-
-  # Update functions reference
   cli::cli_h1("Man pages")
   fail_man <- .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
 
-  # Update vignettes
   cli::cli_h1("Vignettes")
   fail_vignettes <- .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
-
 
   # Error so that CI fails
   if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
@@ -123,6 +118,11 @@ render_docs <- function(
 
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
+
+  if (path != ".") {
+    fs::dir_copy(fs::path(path, "docs"), fs::path(output_path, "docs"))
+    fs::dir_delete(fs::path(path, "docs"))
+  }
 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
