@@ -119,7 +119,7 @@ render_docs <- function(
   cli::cli_h1("Update HTML")
   .import_settings(path = path, tool = tool, verbose = verbose, freeze = freeze)
 
-  if (path != ".") {
+  if (output_path != path) {
     fs::dir_copy(fs::path(path, "docs"), fs::path(output_path, "docs"))
     fs::dir_delete(fs::path(path, "docs"))
   }
