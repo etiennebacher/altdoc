@@ -1,5 +1,9 @@
 # News
 
+## Development
+
+* Do not render README.qmd to markdown automatically. Users should render them manually to make sure that the README on CRAN and Github is in sync with the Altdoc home page.
+
 ## 0.4.0
 
 ### Breaking changes
