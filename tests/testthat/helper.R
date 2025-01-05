@@ -58,7 +58,7 @@ create_local_thing <- function(
 
   withr::defer(
     {
-      fs::dir_delete(dir)
+      try(fs::dir_delete(dir))
     },
     envir = env
   )
