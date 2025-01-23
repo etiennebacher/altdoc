@@ -4,5 +4,4 @@
 
 ## Other comments
 
-This is the second submission of altdoc 0.4.0. First submission failed because
-of a dead link in the README, that is now fixed.
+This is a submission to fix the errors in CRAN checks occurring in 0.4.0.
