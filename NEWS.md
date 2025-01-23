@@ -1,10 +1,19 @@
 # News
 
-## Development
+## 0.5.0
 
-Breaking changes:
+### Breaking changes
 
 * Do not render README.qmd to markdown automatically. Users should render them manually to make sure that the README on CRAN and Github is in sync with the Altdoc home page.
+
+### Other changes
+
+* `README.qmd` is no longer required to create a `quarto_website`, only 
+  `README.md` ([#295](https://github.com/etiennebacher/altdoc/issues/295)).
+
+### Bug fixes
+
+* Fix some failures in CRAN checks ([#303](https://github.com/etiennebacher/altdoc/issues/303)).
 
 ## 0.4.0
 
