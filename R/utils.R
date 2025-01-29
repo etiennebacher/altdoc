@@ -1,7 +1,6 @@
 # https://github.com/ropenscilabs/r2readthedocs/blob/main/R/utils.R
 .convert_path <- function(path = ".") {
   path <- fs::path_abs(path)
-  .check_is_package(path = path)
   path <- normalizePath(path)
   return(path)
 }
@@ -89,10 +88,18 @@
     )
   }
 
-  if (mkdocs) return("mkdocs")
-  if (docsify) return("docsify")
-  if (docute) return("docute")
-  if (quarto_website) return("quarto_website")
+  if (mkdocs) {
+    return("mkdocs")
+  }
+  if (docsify) {
+    return("docsify")
+  }
+  if (docute) {
+    return("docute")
+  }
+  if (quarto_website) {
+    return("quarto_website")
+  }
 
   return(NULL)
 }
@@ -141,7 +148,8 @@
       "urls:",
       paste("  reference:", man),
       paste("  article:", vig),
-      "")
+      ""
+    )
     cli::cli_alert_info("Adding altdoc/pkgdown.yml file.")
     writeLines(content, fn)
   }

@@ -4,16 +4,30 @@
 \alias{render_docs}
 \title{Update documentation}
 \usage{
-render_docs(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...)
+render_docs(
+  path = ".",
+  verbose = FALSE,
+  parallel = FALSE,
+  freeze = FALSE,
+  output_path = ".",
+  ...
+)
 }
 \arguments{
 \item{path}{Path to the package root directory.}
 
 \item{verbose}{Logical. Print Rmarkdown or Quarto rendering output.}
 
-\item{parallel}{Logical. Render man pages and vignettes in parallel using the \code{future} framework. In addition to setting this argument to TRUE, users must define the parallelism plan in \code{future}. See the examples section below.}
+\item{parallel}{Logical. Render man pages and vignettes in parallel using
+the \code{future} framework. In addition to setting this argument to TRUE, users
+must define the parallelism plan in \code{future}. See the examples section below.}
 
-\item{freeze}{Logical. If TRUE and a man page or vignette has not changed since the last call to \code{render_docs()}, that file is skipped. File hashes are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages and vignettes will be rendered anew.}
+\item{freeze}{Logical. If TRUE and a man page or vignette has not changed
+since the last call to \code{render_docs()}, that file is skipped. File hashes
+are stored in \code{altdoc/freeze.rds}. If that file is deleted, all man pages
+and vignettes will be rendered anew.}
+
+\item{output_path}{Destination path for the documentation.}
 
 \item{...}{Additional arguments are ignored.}
 }
@@ -110,13 +124,11 @@ Importantly, \code{downlit} requires the \code{pkgdown.yml} file to be live on t
 
 \examples{
 if (interactive()) {
-
   render_docs()
 
   # parallel rendering
   library(future)
   plan(multicore)
   render_docs(parallel = TRUE)
-
 }
 }
