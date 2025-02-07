@@ -1,5 +1,4 @@
 .import_readme <- function(src_dir, tar_dir, tool, freeze) {
-
   # priorities: .qmd > .Rmd > .md
   readme_files <- list.files(src_dir, pattern = "README")
 
@@ -27,7 +26,15 @@
   }
 
   src_file <- fs::path_join(
-    c(src_dir, grep(paste0("\\.", readme_type, "$"), readme_files, ignore.case = TRUE, value = TRUE))
+    c(
+      src_dir,
+      grep(
+        paste0("\\.", readme_type, "$"),
+        readme_files,
+        ignore.case = TRUE,
+        value = TRUE
+      )
+    )
   )
 
   # Skip file when frozen
@@ -39,7 +46,9 @@
       hashes = hashes
     )
     if (isTRUE(flag)) {
-      cli::cli_alert("Skipped {.file {basename(src_file)}} rendering because it didn't change.")
+      cli::cli_alert(
+        "Skipped {.file {basename(src_file)}} rendering because it didn't change."
+      )
       return(invisible())
     }
   }
@@ -52,7 +61,10 @@
   # Add the index page which includes README.md
   if (tool == "quarto_website") {
     if ("README.qmd" %in% readme_files) {
-      fs::file_copy(fs::path_join(c(src_dir, "README.qmd")), fs::path_join(c(tar_dir, "index.qmd")))
+      fs::file_copy(
+        fs::path_join(c(src_dir, "README.qmd")),
+        fs::path_join(c(tar_dir, "index.qmd"))
+      )
     } else {
       writeLines(
         enc2utf8("{{< include README.md >}}"),
@@ -64,11 +76,21 @@
 
   tmp <- fs::path_join(c(src_dir, "README.markdown_strict_files"))
   if (fs::dir_exists(tmp)) {
-    cli::cli_alert("We recommend using a `knitr` option to set the path of your images to `man/figures/README-`. This would ensure that images are properly stored and displayed on multiple platforms like CRAN, Github, and on your `altdoc` website.")
+    cli::cli_alert(
+      "We recommend using a `knitr` option to set the path of your images to `man/figures/README-`. This would ensure that images are properly stored and displayed on multiple platforms like CRAN, Github, and on your `altdoc` website."
+    )
   }
-  .update_freeze(src_dir, basename(src_file), successes = 1, fails = NULL, type = "README")
+  .update_freeze(
+    src_dir,
+    basename(src_file),
+    successes = 1,
+    fails = NULL,
+    type = "README"
+  )
   cli::cli_alert_success("{.file README} imported.")
   if ("README.qmd" %in% readme_files) {
-    cli::cli_alert("Altdoc does not render README.qmd automatically to markdown. Please ensure that your README.md file is in sync.")
+    cli::cli_alert(
+      "Altdoc does not render README.qmd automatically to markdown. Please ensure that your README.md file is in sync."
+    )
   }
 }

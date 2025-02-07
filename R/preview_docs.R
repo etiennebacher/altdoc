@@ -22,7 +22,9 @@ preview_docs <- function(path = ".") {
 
   tool <- .doc_type(path)
   if (.folder_is_empty(fs::path_join(c(path, "docs")))) {
-    cli::cli_abort("You must render the docs before previewing them. Use {.code altdoc::render_docs()}.")
+    cli::cli_abort(
+      "You must render the docs before previewing them. Use {.code altdoc::render_docs()}."
+    )
   }
 
   servr::httw(fs::path_join(c(path, "docs")))

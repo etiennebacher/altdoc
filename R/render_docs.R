@@ -46,12 +46,22 @@
 #'   render_docs(parallel = TRUE)
 #'
 #' }
-render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = FALSE, ...) {
-
-  # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information. 
+render_docs <- function(
+  path = ".",
+  verbose = FALSE,
+  parallel = FALSE,
+  freeze = FALSE,
+  ...
+) {
+  # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information.
   # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
   dots <- list(...)
-  if ("quiet" %in% names(dots) && is.logical(dots[["quiet"]]) && isTRUE(length(dots[["quiet"]]) == 1)) {
+  if (
+    "quiet" %in%
+      names(dots) &&
+      is.logical(dots[["quiet"]]) &&
+      isTRUE(length(dots[["quiet"]]) == 1)
+  ) {
     verbose <- !dots[["quiet"]]
   }
 
@@ -60,7 +70,9 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   dir_altdoc <- fs::path_join(c(path, "altdoc"))
 
   if (!fs::dir_exists(dir_altdoc) || length(fs::dir_ls(dir_altdoc)) == 0) {
-    cli::cli_abort("No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}.")
+    cli::cli_abort(
+      "No settings file found in {dir_altdoc}. Consider running {.code setup_docs()}."
+    )
   }
 
   # build quarto in a separate folder to use the built-in freeze functionality
@@ -73,10 +85,9 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
       docs_files <- fs::dir_ls(docs_dir)
       if (freeze == TRUE) {
         docs_files <- Filter(function(f) basename(f) != "_freeze", docs_files)
-      } 
+      }
       fs::file_delete(docs_files)
     }
-
   } else {
     docs_dir <- fs::path_join(c(path, "docs"))
   }
@@ -84,27 +95,53 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   # create `docs_dir/`
   fs::dir_create(docs_dir)
 
-  cli::cli_h1("Basic files")  
-  basics <- c("NEWS", "CHANGELOG", "ChangeLog", "CODE_OF_CONDUCT", "LICENSE", "LICENCE")
+  cli::cli_h1("Basic files")
+  basics <- c(
+    "NEWS",
+    "CHANGELOG",
+    "ChangeLog",
+    "CODE_OF_CONDUCT",
+    "LICENSE",
+    "LICENCE"
+  )
   for (b in basics) {
     .import_basic(src_dir = path, tar_dir = docs_dir, name = b)
   }
-  .import_readme(src_dir = path, tar_dir = docs_dir, tool = tool, freeze = freeze)
+  .import_readme(
+    src_dir = path,
+    tar_dir = docs_dir,
+    tool = tool,
+    freeze = freeze
+  )
   .import_citation(src_dir = path, tar_dir = docs_dir)
-
 
   # Update functions reference
   cli::cli_h1("Man pages")
-  fail_man <- .import_man(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
+  fail_man <- .import_man(
+    src_dir = path,
+    tar_dir = docs_dir,
+    tool = tool,
+    verbose = verbose,
+    parallel = parallel,
+    freeze = freeze
+  )
 
   # Update vignettes
   cli::cli_h1("Vignettes")
-  fail_vignettes <- .import_vignettes(src_dir = path, tar_dir = docs_dir, tool = tool, verbose = verbose, parallel = parallel, freeze = freeze)
-
+  fail_vignettes <- .import_vignettes(
+    src_dir = path,
+    tar_dir = docs_dir,
+    tool = tool,
+    verbose = verbose,
+    parallel = parallel,
+    freeze = freeze
+  )
 
   # Error so that CI fails
   if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
-    cli::cli_abort("There were some failures when rendering vignettes and man pages.")
+    cli::cli_abort(
+      "There were some failures when rendering vignettes and man pages."
+    )
   } else if (length(fail_vignettes) > 0 & length(fail_man) == 0) {
     cli::cli_abort("There were some failures when rendering vignettes.")
   } else if (length(fail_vignettes) == 0 & length(fail_man) > 0) {
@@ -117,4 +154,3 @@ render_docs <- function(path = ".", verbose = FALSE, parallel = FALSE, freeze = 
   cli::cli_h1("Complete")
   cli::cli_alert_success("Documentation updated.")
 }
-

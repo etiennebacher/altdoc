@@ -5,12 +5,15 @@
   tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
-  freeze = FALSE) {
-
+  freeze = FALSE
+) {
   # source and target file paths
   # using here::here() breaks tests, so we rely on directory check higher up
   man_source <- list.files(path = "man", pattern = "\\.Rd$")
-  man_target <- list.files(path = fs::path_join(c(tar_dir, "man")), pattern = "\\.md$")
+  man_target <- list.files(
+    path = fs::path_join(c(tar_dir, "man")),
+    pattern = "\\.md$"
+  )
   man_source <- fs::path_ext_remove(man_source)
   man_target <- fs::path_ext_remove(man_target)
 
@@ -55,7 +58,10 @@
     conversion_worked <- vapply(
       seq_along(man_source),
       function(x) {
-        cli::cli_progress_step("Converting function reference {x}/{n}: {basename(man_source[x])}", spinner = TRUE)
+        cli::cli_progress_step(
+          "Converting function reference {x}/{n}: {basename(man_source[x])}",
+          spinner = TRUE
+        )
         out <- .render_one_man(
           man_source[x],
           tool = tool,
@@ -85,17 +91,23 @@
   cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
   if (length(skipped_internal) > 0) {
-    cli::cli_alert("{length(skipped_internal)} .Rd files skipped because they document internal functions.")
+    cli::cli_alert(
+      "{length(skipped_internal)} .Rd files skipped because they document internal functions."
+    )
   }
 
   if (length(skipped_unchanged) > 0) {
-    cli::cli_alert("{length(skipped_unchanged)} .Rd files skipped because they didn't change.")
+    cli::cli_alert(
+      "{length(skipped_unchanged)} .Rd files skipped because they didn't change."
+    )
   }
 
   if (length(fails) > 0) {
     cli::cli_par()
     cli::cli_end()
-    cli::cli_alert_danger("{cli::qty(length(successes))}The conversion failed for the following man page{?s}:")
+    cli::cli_alert_danger(
+      "{cli::qty(length(successes))}The conversion failed for the following man page{?s}:"
+    )
     cli::cli_ul(id = "list-fail")
     for (i in seq_along(fails)) {
       cli::cli_li("{.file {man_source[fails[i]]}}")
@@ -107,8 +119,15 @@
   fails
 }
 
-
-.render_one_man <- function(fn, tool, src_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
+.render_one_man <- function(
+  fn,
+  tool,
+  src_dir,
+  tar_dir,
+  freeze,
+  hashes = NULL,
+  verbose = FALSE
+) {
   # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
   origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
   destination_dir <- fs::path_join(c(tar_dir, "man"))
@@ -126,7 +145,11 @@
 
   # Skip file when frozen
   if (isTRUE(freeze)) {
-    flag <- .is_frozen(input = origin_Rd, output = destination_md, hashes = hashes)
+    flag <- .is_frozen(
+      input = origin_Rd,
+      output = destination_md,
+      hashes = hashes
+    )
     if (isTRUE(flag)) {
       return("skipped_unchanged")
     }
@@ -142,7 +165,12 @@
     } else {
       pre <- NULL
     }
-    worked <- .qmd2md(destination_qmd, destination_dir, verbose = verbose, preamble = pre)
+    worked <- .qmd2md(
+      destination_qmd,
+      destination_dir,
+      verbose = verbose,
+      preamble = pre
+    )
     fs::file_delete(destination_qmd)
   } else {
     worked <- TRUE
@@ -155,7 +183,12 @@
     if (fs::file_exists(rendered_man)) {
       temp <- .readlines(rendered_man)
       header_idx <- grep("^## ", temp)[1]
-      new <- c(temp[1:header_idx], "", to_insert, temp[(header_idx + 1): length(temp)])
+      new <- c(
+        temp[1:header_idx],
+        "",
+        to_insert,
+        temp[(header_idx + 1):length(temp)]
+      )
       writeLines(new, rendered_man)
     }
   }
@@ -173,15 +206,16 @@
   return(ifelse(worked, "success", "failure"))
 }
 
-
-
 .find_github_source <- function(fn) {
   head_branch <- .find_head_branch(path = ".")
   if (is.null(head_branch)) {
     return(NULL)
   }
   # find file and row location
-  fn <- try(eval(parse(text = paste0(.pkg_name("."), ":::", fn))), silent = TRUE)
+  fn <- try(
+    eval(parse(text = paste0(.pkg_name("."), ":::", fn))),
+    silent = TRUE
+  )
   if (inherits(fn, "try-error")) {
     return(NULL)
   }

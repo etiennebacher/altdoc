@@ -35,14 +35,16 @@
 #'   setup_docs(tool = "quarto_website")
 #' }
 setup_docs <- function(tool, path = ".", overwrite = FALSE) {
-
   # input sanity checks
-  if (missing(tool) ||
+  if (
+    missing(tool) ||
       !is.character(tool) ||
       length(tool) != 1 ||
-      !tool %in% c("docute", "docsify", "mkdocs", "quarto_website")) {
+      !tool %in% c("docute", "docsify", "mkdocs", "quarto_website")
+  ) {
     cli::cli_abort(
-      'The `tool` argument must be "docsify", "docute", "mkdocs", or "quarto_website".')
+      'The `tool` argument must be "docsify", "docute", "mkdocs", or "quarto_website".'
+    )
   }
 
   if (tool == "mkdocs") {
@@ -86,7 +88,13 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
       }
 
       file_names <- c(
-        "mkdocs.yml", "quarto_website.yml", "docute.html", "docsify.html", "docsify.md", ".nojekyll", "freeze.rds"
+        "mkdocs.yml",
+        "quarto_website.yml",
+        "docute.html",
+        "docsify.html",
+        "docsify.md",
+        ".nojekyll",
+        "freeze.rds"
       )
       for (file_name in file_names) {
         file_name <- fs::path_join(c(altdoc_dir, file_name))
@@ -129,17 +137,14 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
 
     tar <- fs::path_join(c(altdoc_dir, ".nojekyll"))
     fs::file_create(tar)
-
   } else if (isTRUE(tool == "docute")) {
     src <- system.file("docute/docute.html", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "docute.html"))
     .safe_copy(src, tar, overwrite = overwrite)
-
   } else if (isTRUE(tool == "mkdocs")) {
     src <- system.file("mkdocs/mkdocs.yml", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "mkdocs.yml"))
     .safe_copy(src, tar, overwrite = overwrite)
-
   } else if (isTRUE(tool == "quarto_website")) {
     src <- system.file("quarto_website/quarto_website.yml", package = "altdoc")
     tar <- fs::path_join(c(altdoc_dir, "quarto_website.yml"))
@@ -152,27 +157,32 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
     .safe_copy(
       system.file("preamble/preamble_vignettes_qmd.yml", package = "altdoc"),
       fs::path_join(c(altdoc_dir, "preamble_vignettes_qmd.yml")),
-      overwrite = TRUE)
+      overwrite = TRUE
+    )
     .safe_copy(
       system.file("preamble/preamble_vignettes_rmd.yml", package = "altdoc"),
       fs::path_join(c(altdoc_dir, "preamble_vignettes_rmd.yml")),
-      overwrite = TRUE)
+      overwrite = TRUE
+    )
     .safe_copy(
       system.file("preamble/preamble_man_qmd.yml", package = "altdoc"),
       fs::path_join(c(altdoc_dir, "preamble_man_qmd.yml")),
-      overwrite = TRUE)
+      overwrite = TRUE
+    )
   }
 
   # README.md is mandatory
   fn <- "README.md"
-  msg <- sprintf("%s is mandatory. `altdoc` created a dummy README file in the package directory.", fn)
+  msg <- sprintf(
+    "%s is mandatory. `altdoc` created a dummy README file in the package directory.",
+    fn
+  )
   fn <- fs::path_join(c(path, fn))
   if (!fs::file_exists(fn)) {
     cli::cli_alert_info(msg)
     writeLines("Hello World!", fn)
   }
 }
-
 
 .safe_copy <- function(src, tar, overwrite) {
   if (fs::file_exists(tar) && !isTRUE(overwrite)) {

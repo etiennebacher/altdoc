@@ -15,10 +15,11 @@
 #'   setup_github_actions()
 #' }
 setup_github_actions <- function(path = ".") {
-
   path <- .convert_path(path)
   fs::dir_create(fs::path_join(c(path, ".github/workflows")))
-  if (fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))) {
+  if (
+    fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))
+  ) {
     cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
   }
 
@@ -43,4 +44,3 @@ setup_github_actions <- function(path = ".") {
   cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
   cli::cli_alert_success("Added {.code altdoc} in Suggests.")
 }
-

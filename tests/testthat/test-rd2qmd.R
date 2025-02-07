@@ -1,6 +1,8 @@
 test_that(".rd2qmd works", {
   # .rd2qmd works only in pkg directory
-  rd_file <- fs::path_abs(testthat::test_path("examples/examples-man/between.Rd"))
+  rd_file <- fs::path_abs(
+    testthat::test_path("examples/examples-man/between.Rd")
+  )
   create_local_package()
   fs::file_copy(rd_file, ".")
   fs::dir_create("docs")
@@ -16,7 +18,10 @@ test_that(".rd2qmd works", {
   )
 
   h2 <- grep("^## ", content, value = TRUE)
-  expect_equal(h2, "## Do values in a numeric vector fall in specified range? {.unnumbered}")
+  expect_equal(
+    h2,
+    "## Do values in a numeric vector fall in specified range? {.unnumbered}"
+  )
 })
 
 test_that(".rd2qmd: basic errors", {
@@ -25,7 +30,11 @@ test_that(".rd2qmd: basic errors", {
     "must be a valid file path"
   )
   expect_error(
-    .rd2qmd(testthat::test_path("examples/examples-man/between.Rd"), "foo", path = "."),
+    .rd2qmd(
+      testthat::test_path("examples/examples-man/between.Rd"),
+      "foo",
+      path = "."
+    ),
     "must be a valid directory"
   )
 })

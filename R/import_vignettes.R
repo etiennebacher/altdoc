@@ -15,8 +15,8 @@
   tool = "docsify",
   verbose = FALSE,
   parallel = FALSE,
-  freeze = FALSE) {
-
+  freeze = FALSE
+) {
   # quarto vignettes are rendered by quarto itself, so we just need to copy them
   if (tool == "quarto_website") {
     dn_src <- fs::path_join(c(src_dir, "vignettes"))
@@ -97,7 +97,10 @@
     conversion_worked <- vapply(
       seq_along(src_files),
       function(x) {
-        cli::cli_progress_step("Converting vignette {x}/{n}: {basename(src_files[x])}", spinner = TRUE)
+        cli::cli_progress_step(
+          "Converting vignette {x}/{n}: {basename(src_files[x])}",
+          spinner = TRUE
+        )
         out <- .render_one_vignette(
           vignette = src_files[x],
           src_dir = src_dir,
@@ -123,7 +126,9 @@
   cli::cli_progress_done()
 
   if (length(skipped_unchanged) > 0) {
-    cli::cli_alert("{length(skipped_unchanged)} vignette{?s} skipped because {?it/they} didn't change.")
+    cli::cli_alert(
+      "{length(skipped_unchanged)} vignette{?s} skipped because {?it/they} didn't change."
+    )
   }
 
   if (length(fails) > 0) {
@@ -131,7 +136,9 @@
     cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
     cli::cli_par()
     cli::cli_end()
-    cli::cli_alert_danger("{length(successes)}The conversion failed for the following vignette{?s}:")
+    cli::cli_alert_danger(
+      "{length(successes)}The conversion failed for the following vignette{?s}:"
+    )
     cli::cli_ul(id = "list-fail")
     for (i in seq_along(fails)) {
       cli::cli_li("{.file {src_files[fails[i]]}}")
@@ -143,9 +150,15 @@
   fails
 }
 
-
-.render_one_vignette <- function(vignette, src_dir, vig_dir, tar_dir, freeze, hashes = NULL, verbose = FALSE) {
-
+.render_one_vignette <- function(
+  vignette,
+  src_dir,
+  vig_dir,
+  tar_dir,
+  freeze,
+  hashes = NULL,
+  verbose = FALSE
+) {
   worked <- FALSE
 
   # only process new or modified vignettes
@@ -161,7 +174,11 @@
 
   # Skip file when frozen
   if (isTRUE(freeze)) {
-    flag <- .is_frozen(input = origin, output = gsub("\\.Rmd$|\\.qmd$", ".md", destination), hashes = hashes)
+    flag <- .is_frozen(
+      input = origin,
+      output = gsub("\\.Rmd$|\\.qmd$", ".md", destination),
+      hashes = hashes
+    )
     if (isTRUE(flag)) {
       return("skipped_unchanged")
     }
@@ -176,7 +193,12 @@
     # issues we'd been having when generating images from code blocks and
     # inserting ones with ![]().
   } else {
-    pre <- fs::path_join(c(src_dir, sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(vignette))))
+    pre <- fs::path_join(
+      c(
+        src_dir,
+        sprintf("altdoc/preamble_vignettes_%s.yml", fs::path_ext(vignette))
+      )
+    )
     if (fs::file_exists(pre)) {
       pre <- .readlines(pre)
     } else {
@@ -188,13 +210,9 @@
   return(ifelse(worked, "success", "failure"))
 }
 
-
-
-
 # Get a filename with a vignette and try to extract its title
 
 .get_vignettes_titles <- function(fn, path = ".") {
-
   if (!fs::file_exists(fn)) return(invisible())
 
   x <- .readlines(fn)
@@ -234,4 +252,3 @@
 
   return(out)
 }
-

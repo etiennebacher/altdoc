@@ -1,5 +1,4 @@
 .qmd2md <- function(source_file, tar_dir, verbose = FALSE, preamble = NULL) {
-
   if (missing(source_file) || !file.exists(source_file)) {
     stop("source_file must be a valid file path.", call. = FALSE)
   }
@@ -19,21 +18,27 @@
   }
 
   if (isTRUE(verbose)) {
-    out <- try(quarto::quarto_render(
-      input = path.expand(tar_file),
-      output_format = "md",
-      quiet = FALSE,
-      as_job = FALSE
-    ), silent = FALSE)
+    out <- try(
+      quarto::quarto_render(
+        input = path.expand(tar_file),
+        output_format = "md",
+        quiet = FALSE,
+        as_job = FALSE
+      ),
+      silent = FALSE
+    )
     success <- !inherits(out, "try-error")
   } else {
     success <- TRUE
-    out <- evaluate::evaluate('quarto::quarto_render(
+    out <- evaluate::evaluate(
+      'quarto::quarto_render(
       input = path.expand(tar_file),
       output_format = "md",
       quiet = FALSE,
       as_job = FALSE,
-    )', new_device = FALSE)
+    )',
+      new_device = FALSE
+    )
     is_error <- vapply(
       out,
       function(x) inherits(x, c("error", "rlang_error")),
@@ -51,5 +56,3 @@
 
   success
 }
-
-

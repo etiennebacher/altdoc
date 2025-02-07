@@ -25,11 +25,12 @@ test_that("docute: main files are correct", {
   expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docute")
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docute")
   expect_snapshot(.readlines("docs/man/examplesIf_true.md"), variant = "docute")
-  expect_snapshot(.readlines("docs/man/examplesIf_false.md"), variant = "docute")
+  expect_snapshot(
+    .readlines("docs/man/examplesIf_false.md"),
+    variant = "docute"
+  )
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docute")
 })
-
-
 
 test_that("docsify: main files are correct", {
   skip_on_cran()
@@ -58,12 +59,16 @@ test_that("docsify: main files are correct", {
   expect_snapshot(.readlines("docs/NEWS.md"), variant = "docsify")
   expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docsify")
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docsify")
-  expect_snapshot(.readlines("docs/man/examplesIf_true.md"), variant = "docsify")
-  expect_snapshot(.readlines("docs/man/examplesIf_false.md"), variant = "docsify")
+  expect_snapshot(
+    .readlines("docs/man/examplesIf_true.md"),
+    variant = "docsify"
+  )
+  expect_snapshot(
+    .readlines("docs/man/examplesIf_false.md"),
+    variant = "docsify"
+  )
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
 })
-
-
 
 test_that("mkdocs: main files are correct", {
   skip_on_cran()
@@ -84,10 +89,16 @@ test_that("mkdocs: main files are correct", {
   ### special mkdocs stuff
   if (.is_windows()) {
     shell("python3 -m venv .venv_altdoc")
-    shell(".venv_altdoc\\Scripts\\activate.bat && python3 -m pip install mkdocs --quiet")
+    shell(
+      ".venv_altdoc\\Scripts\\activate.bat && python3 -m pip install mkdocs --quiet"
+    )
   } else {
     system2("python3", "-m venv .venv_altdoc")
-    system2("bash", "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs --quiet'", stdout = FALSE)
+    system2(
+      "bash",
+      "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs --quiet'",
+      stdout = FALSE
+    )
   }
 
   ### generate docs
@@ -103,8 +114,6 @@ test_that("mkdocs: main files are correct", {
   expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "mkdocs")
   expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "mkdocs")
 })
-
-
 
 test_that("quarto: no error for basic workflow", {
   skip_on_cran()
@@ -138,7 +147,6 @@ test_that("quarto: no error for basic workflow", {
   # expect_snapshot(.readlines("docs/vignettes/test.html"))
 })
 
-
 test_that("quarto: autolink", {
   skip_on_cran()
   skip_if(.is_windows() && .on_ci(), "Windows on CI")
@@ -161,9 +169,10 @@ test_that("quarto: autolink", {
   expect_no_error(render_docs(verbose = .on_ci()))
 
   tmp <- .readlines("docs/vignettes/test.html")
-  expect_true(any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE)))
+  expect_true(
+    any(grepl("https://rdrr.io/r/base/library.html", tmp, fixed = TRUE))
+  )
 })
-
 
 # Test failures ------------------------------
 
@@ -181,7 +190,10 @@ test_that("render_docs errors if vignettes fail", {
 test_that("render_docs errors if man fail", {
   create_local_package()
   fs::dir_create("man")
-  cat("\\name{hi}\n\\title{hi}\n\\usage{\nhi()\n}\n\\examples{\n1 +\n}\n", file = "man/foo.Rd")
+  cat(
+    "\\name{hi}\n\\title{hi}\n\\usage{\nhi()\n}\n\\examples{\n1 +\n}\n",
+    file = "man/foo.Rd"
+  )
   setup_docs("docute", path = getwd())
   expect_error(
     render_docs(path = getwd()),
