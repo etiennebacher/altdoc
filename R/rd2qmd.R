@@ -19,14 +19,22 @@
   # first column (odd entries) of table in Arguments should not be wrapped
   idx <- grep("<td>", tmp)
   idx <- idx[seq_along(idx) %% 2 == 1]
-  tmp[idx] <- sub("<td>", '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">', tmp[idx])
+  tmp[idx] <- sub(
+    "<td>",
+    '<td style = "white-space: collapse; font-family: monospace; vertical-align: top">',
+    tmp[idx]
+  )
 
   # escape the $ in man pages otherwise it thinks it is a latex equation and
   # doesn't escape symbols between two $.
   tmp <- gsub("\\$", "\\\\$", tmp)
 
   # process \doi{...} tags that were expanded to \Sexpr[results=rd]{tools:::Rd_expr_doi("...")}
-  tmp <- gsub("(\\\\Sexpr\\[results=rd\\]\\{tools:::Rd_expr_doi\\(\\\")([^\\\"]+)(\\\"\\)\\})", "[doi:\\2](https://doi.org/\\2)", tmp)
+  tmp <- gsub(
+    "(\\\\Sexpr\\[results=rd\\]\\{tools:::Rd_expr_doi\\(\\\")([^\\\"]+)(\\\"\\)\\})",
+    "[doi:\\2](https://doi.org/\\2)",
+    tmp
+  )
 
   # examples: evaluate code blocks (assume examples are always last)
   pkg <- .pkg_name(path)
@@ -55,22 +63,24 @@
     # would be very hard to parse different examples wrapped or not wrapped in a
     # \donttest{}.
     block_eval <- !any(grepl("dontrun|donttest|## Not run:", tmp))
-   
+
     # hack to support `examplesIf`. This is very ugly and probably fragile
     # added in roxygen2::rd-examples.R
     # https://github.com/r-lib/roxygen2/blob/db4dd9a4de2ce6817c17441d481cf5d03ef220e2/R/rd-examples.R#L17
     regex <- ') (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf'
     exampleIf <- grep(regex, rd, fixed = TRUE)[1]
     if (!is.na(exampleIf[1])) {
-        exampleIf <- sub(regex, "", as.character(rd)[exampleIf], fixed = TRUE)
-        exampleIf <- sub("^if \\(", "", exampleIf)
-        if (!isTRUE(try(eval(parse(text=exampleIf)), silent = TRUE))) {
-            block_eval <- FALSE
-        }
+      exampleIf <- sub(regex, "", as.character(rd)[exampleIf], fixed = TRUE)
+      exampleIf <- sub("^if \\(", "", exampleIf)
+      if (!isTRUE(try(eval(parse(text = exampleIf)), silent = TRUE))) {
+        block_eval <- FALSE
+      }
     }
 
-    block <- sprintf("```{r, warning=FALSE, message=FALSE, eval=%s}", block_eval)
-
+    block <- sprintf(
+      "```{r, warning=FALSE, message=FALSE, eval=%s}",
+      block_eval
+    )
 
     tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
   }
