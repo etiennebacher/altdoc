@@ -1,121 +1,126 @@
 .rd2qmd <- function(source_file, target_dir, path) {
-  if (missing(source_file) || !file.exists(source_file)) {
-    stop("source_file must be a valid file path.", call. = FALSE)
-  }
-  if (missing(source_file) || !dir.exists(target_dir)) {
-    stop("target_dir must be a valid directory.", call. = FALSE)
-  }
-
-  # Rd -> html
-  rd <- tools::parse_Rd(source_file)
-  tmp_html <- paste0(tempfile(), ".html")
-  tools::Rd2HTML(rd, out = tmp_html)
-
-  # superfluous header and footer
-  tmp <- .readlines(tmp_html)
-  tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
-  tmp <- utils::head(tmp, -4)
-
-  # first column (odd entries) of table in Arguments should not be wrapped
-  idx <- grep("<td>", tmp)
-  idx <- idx[seq_along(idx) %% 2 == 1]
-  tmp[idx] <- sub(
-    "<td>",
-    '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">',
-    tmp[idx]
-  )
-
-  # escape the $ in man pages otherwise it thinks it is a latex equation and
-  # doesn't escape symbols between two $.
-  tmp <- gsub("\\$", "\\\\$", tmp)
-
-  # process \doi{...} tags that were expanded to \Sexpr[results=rd]{tools:::Rd_expr_doi("...")}
-  tmp <- gsub(
-    "(\\\\Sexpr\\[results=rd\\]\\{tools:::Rd_expr_doi\\(\\\")([^\\\"]+)(\\\"\\)\\})",
-    "[doi:\\2](https://doi.org/\\2)",
-    tmp
-  )
-
-  # examples: evaluate code blocks (assume examples are always last)
-  pkg <- .pkg_name(path)
-  pkg_load <- paste0("library(\"", pkg, "\")")
-  idx <- which(tmp == "<h3>Examples</h3>")
-
-  if (length(idx) == 1) {
-    # until next section or the end
-    idx_post_examples <- grep("<h3>", tmp)
-    idx_post_examples <- idx_post_examples[idx_post_examples > idx]
-    if (length(idx_post_examples) > 0) {
-      ex <- tmp[(idx + 1):(idx_post_examples[1] - 1)]
-    } else {
-      ex <- tmp[(idx + 1):length(tmp)]
+    if (missing(source_file) || !file.exists(source_file)) {
+        stop("source_file must be a valid file path.", call. = FALSE)
     }
-    ex <- gsub("<.*>", "", ex)
-    ex <- gsub("&lt;", "<", ex)
-    ex <- gsub("&gt;", ">", ex)
-    ex <- gsub("&amp;", "&", ex)
-    ex <- gsub("\\$", "$", ex, fixed = TRUE)
-    ex <- ex[!grepl("## Not run:", ex)]
-    ex <- ex[!grepl("## End", ex)]
-
-    # respect \dontrun{} and \donttest{}. This is too aggressive because it
-    # ignores all tests whenever one of the two tags appear anywhere, but it
-    # would be very hard to parse different examples wrapped or not wrapped in a
-    # \donttest{}.
-    block_eval <- !any(grepl("dontrun|donttest|## Not run:", tmp))
-
-    # hack to support `examplesIf`. This is very ugly and probably fragile
-    # added in roxygen2::rd-examples.R
-    # https://github.com/r-lib/roxygen2/blob/db4dd9a4de2ce6817c17441d481cf5d03ef220e2/R/rd-examples.R#L17
-    regex <- ') (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf'
-    exampleIf <- grep(regex, rd, fixed = TRUE)[1]
-    if (!is.na(exampleIf[1])) {
-      exampleIf <- sub(regex, "", as.character(rd)[exampleIf], fixed = TRUE)
-      exampleIf <- sub("^if \\(", "", exampleIf)
-      if (!isTRUE(try(eval(parse(text = exampleIf)), silent = TRUE))) {
-        block_eval <- FALSE
-      }
+    if (missing(source_file) || !dir.exists(target_dir)) {
+        stop("target_dir must be a valid directory.", call. = FALSE)
     }
 
-    block <- sprintf(
-      "```{r, warning=FALSE, message=FALSE, eval=%s}",
-      block_eval
+    # Rd -> html
+    rd <- tools::parse_Rd(source_file)
+    tmp_html <- paste0(tempfile(), ".html")
+    tools::Rd2HTML(rd, out = tmp_html)
+
+    # superfluous header and footer
+    tmp <- .readlines(tmp_html)
+    tmp <- tmp[(grep("</table>$", tmp)[1] + 1):length(tmp)]
+    tmp <- utils::head(tmp, -4)
+
+    # first column (odd entries) of table in Arguments should not be wrapped
+    idx <- grep("<td>", tmp)
+    idx <- idx[seq_along(idx) %% 2 == 1]
+    tmp[idx] <- sub(
+        "<td>",
+        '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">',
+        tmp[idx]
     )
 
-    tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
-  }
+    # escape the $ in man pages otherwise it thinks it is a latex equation and
+    # doesn't escape symbols between two $.
+    tmp <- gsub("\\$", "\\\\$", tmp)
 
-  # cleanup equations
-  tmp <- gsub(
-    '<code class="reqn">(.*?)&gt;(.*?)</code>',
-    '<code class="reqn">\\1>\\2</code>',
-    tmp
-  )
-  tmp <- gsub(
-    '<code class="reqn">(.*?)&lt;(.*?)</code>',
-    '<code class="reqn">\\1<\\2</code>',
-    tmp
-  )
-  tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
+    # process \doi{...} tags that were expanded to \Sexpr[results=rd]{tools:::Rd_expr_doi("...")}
+    tmp <- gsub(
+        "(\\\\Sexpr\\[results=rd\\]\\{tools:::Rd_expr_doi\\(\\\")([^\\\"]+)(\\\"\\)\\})",
+        "[doi:\\2](https://doi.org/\\2)",
+        tmp
+    )
 
-  # cleanup code
-  tmp <- gsub("&#8288;", "", tmp, fixed = TRUE)
+    # examples: evaluate code blocks (assume examples are always last)
+    pkg <- .pkg_name(path)
+    pkg_load <- paste0("library(\"", pkg, "\")")
+    idx <- which(tmp == "<h3>Examples</h3>")
 
-  # title
-  tmp <- gsub("<h2[^>]*>(.*)</h2>", "## \\1 {.unnumbered}\n", tmp)
+    if (length(idx) == 1) {
+        # until next section or the end
+        idx_post_examples <- grep("<h3>", tmp)
+        idx_post_examples <- idx_post_examples[idx_post_examples > idx]
+        if (length(idx_post_examples) > 0) {
+            ex <- tmp[(idx + 1):(idx_post_examples[1] - 1)]
+        } else {
+            ex <- tmp[(idx + 1):length(tmp)]
+        }
+        ex <- gsub("<.*>", "", ex)
+        ex <- gsub("&lt;", "<", ex)
+        ex <- gsub("&gt;", ">", ex)
+        ex <- gsub("&amp;", "&", ex)
+        ex <- gsub("\\$", "$", ex, fixed = TRUE)
+        ex <- ex[!grepl("## Not run:", ex)]
+        ex <- ex[!grepl("## End", ex)]
 
-  # Fix title level (use ## and not <h2> so that the TOC can be generated by
-  # mkdocs)
-  tmp <- gsub("<h2[^>]*>", "", tmp, perl = TRUE)
-  tmp <- gsub("<.h2>", "", tmp)
-  tmp <- gsub("<h3>", "### ", tmp)
-  tmp <- gsub("</h3>", "", tmp)
+        # respect \dontrun{} and \donttest{}. This is too aggressive because it
+        # ignores all tests whenever one of the two tags appear anywhere, but it
+        # would be very hard to parse different examples wrapped or not wrapped in a
+        # \donttest{}.
+        block_eval <- !any(grepl("dontrun|donttest|## Not run:", tmp))
 
-  # paragraph tags are unnecessary in markdown
-  tmp <- gsub("<p>", "", tmp, fixed = TRUE)
-  tmp <- gsub("</p>", "", tmp, fixed = TRUE)
+        # hack to support `examplesIf`. This is very ugly and probably fragile
+        # added in roxygen2::rd-examples.R
+        # https://github.com/r-lib/roxygen2/blob/db4dd9a4de2ce6817c17441d481cf5d03ef220e2/R/rd-examples.R#L17
+        regex <- ') (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf'
+        exampleIf <- grep(regex, rd, fixed = TRUE)[1]
+        if (!is.na(exampleIf[1])) {
+            exampleIf <- sub(
+                regex,
+                "",
+                as.character(rd)[exampleIf],
+                fixed = TRUE
+            )
+            exampleIf <- sub("^if \\(", "", exampleIf)
+            if (!isTRUE(try(eval(parse(text = exampleIf)), silent = TRUE))) {
+                block_eval <- FALSE
+            }
+        }
 
-  # write to file
-  fn <- file.path(target_dir, sub("Rd$", "qmd", basename(source_file)))
-  writeLines(tmp, con = fn)
+        block <- sprintf(
+            "```{r, warning=FALSE, message=FALSE, eval=%s}",
+            block_eval
+        )
+
+        tmp <- c(tmp[2:idx], block, pkg_load, ex, "```")
+    }
+
+    # cleanup equations
+    tmp <- gsub(
+        '<code class="reqn">(.*?)&gt;(.*?)</code>',
+        '<code class="reqn">\\1>\\2</code>',
+        tmp
+    )
+    tmp <- gsub(
+        '<code class="reqn">(.*?)&lt;(.*?)</code>',
+        '<code class="reqn">\\1<\\2</code>',
+        tmp
+    )
+    tmp <- gsub('<code class="reqn">(.*?)</code>', "\\$\\1\\$", tmp)
+
+    # cleanup code
+    tmp <- gsub("&#8288;", "", tmp, fixed = TRUE)
+
+    # title
+    tmp <- gsub("<h2[^>]*>(.*)</h2>", "## \\1 {.unnumbered}\n", tmp)
+
+    # Fix title level (use ## and not <h2> so that the TOC can be generated by
+    # mkdocs)
+    tmp <- gsub("<h2[^>]*>", "", tmp, perl = TRUE)
+    tmp <- gsub("<.h2>", "", tmp)
+    tmp <- gsub("<h3>", "### ", tmp)
+    tmp <- gsub("</h3>", "", tmp)
+
+    # paragraph tags are unnecessary in markdown
+    tmp <- gsub("<p>", "", tmp, fixed = TRUE)
+    tmp <- gsub("</p>", "", tmp, fixed = TRUE)
+
+    # write to file
+    fn <- file.path(target_dir, sub("Rd$", "qmd", basename(source_file)))
+    writeLines(tmp, con = fn)
 }

@@ -8,5 +8,5 @@
 #' @examplesIf 2 + 2 == 5
 #' examplesIf_false()
 examplesIf_false <- function() {
-  print("Hello, world!")
+    print("Hello, world!")
 }
