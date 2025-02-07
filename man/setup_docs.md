@@ -2,7 +2,7 @@
 
 # Initialize documentation website settings
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/049c47a2d1220cba7d323955880466bfce012cb2/R/setup_docs.R#L37)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/setup_docs.R#L37)
 
 ## Description
 
