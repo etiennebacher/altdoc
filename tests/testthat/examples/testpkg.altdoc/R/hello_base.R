@@ -24,5 +24,5 @@
 #' mtcars$drat <- mtcars$drat + 1
 #' head(mtcars[["drat"]], 2)
 hello_base <- function(x = 2) {
-  print("Hello, world!")
+    print("Hello, world!")
 }
