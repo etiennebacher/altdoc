@@ -170,7 +170,7 @@ test_that("quarto: no error for basic workflow, no Github URL", {
 
     install.packages(".", repos = NULL, type = "source")
     setup_docs("quarto_website")
-    expect_no_error(render_docs(verbose = TRUE))
+    expect_no_error(render_docs(verbose = .on_ci()))
 })
 
 test_that("quarto: autolink", {
