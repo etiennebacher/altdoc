@@ -44,7 +44,7 @@
   )
 
   if (length(.gh_urls) == 0) {
-    return("")
+    return(NULL)
   }
 
   .gh_url <- .gh_urls[grep("github.com", .gh_urls)]
@@ -58,10 +58,8 @@
   .gh_url <- gsub("#.*", "", .gh_url)
   .gh_url <- unique(.gh_url)
 
-  if (length(.gh_url) == 0) .gh_url <- ""
   return(.gh_url)
 }
-
 
 # Get the tool that was used
 .doc_type <- function(path = ".") {
@@ -97,7 +95,6 @@
   return(NULL)
 }
 
-
 # Get the path for files
 .doc_path <- function(path = ".") {
   return(fs::path_abs("docs", start = path))
@@ -121,15 +118,16 @@
   as.character(utils::packageVersion("altdoc"))
 }
 
-
 .readlines <- function(x) {
   readLines(x, warn = FALSE)
 }
 
-
 .add_pkgdown <- function(path = ".") {
   if (!isTRUE(.dir_is_package(path))) {
-    stop(".add_pkgdown() must be run from the root of a package.", call. = FALSE)
+    stop(
+      ".add_pkgdown() must be run from the root of a package.",
+      call. = FALSE
+    )
   }
   url <- setdiff(desc::desc_get_urls(), .gh_url(path))
   fn <- fs::path_join(c(path, "altdoc/pkgdown.yml"))
@@ -141,16 +139,19 @@
       "urls:",
       paste("  reference:", man),
       paste("  article:", vig),
-      "")
+      ""
+    )
     cli::cli_alert_info("Adding altdoc/pkgdown.yml file.")
     writeLines(content, fn)
   }
 }
 
-
 .add_rbuildignore <- function(x = "^docs$", path = ".") {
   if (!isTRUE(.dir_is_package(path))) {
-    stop(".add_rbuildignore() must be run from the root of a package.", call. = FALSE)
+    stop(
+      ".add_rbuildignore() must be run from the root of a package.",
+      call. = FALSE
+    )
   }
   fn <- fs::path_join(c(path, ".Rbuildignore"))
   if (!fs::file_exists(fn)) {
@@ -164,10 +165,12 @@
   }
 }
 
-
 .add_gitignore <- function(x = "^docs$", path = ".") {
   if (!isTRUE(.dir_is_package(path))) {
-    stop(".add_gitignore() must be run from the root of a package.", call. = FALSE)
+    stop(
+      ".add_gitignore() must be run from the root of a package.",
+      call. = FALSE
+    )
   }
   fn <- fs::path_join(c(path, ".gitignore"))
   if (!fs::file_exists(fn)) {
@@ -180,7 +183,6 @@
     writeLines(tmp, fn)
   }
 }
-
 
 .has_preamble <- function(fn) {
   x <- .readlines(fn)
