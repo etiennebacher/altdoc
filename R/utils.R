@@ -144,27 +144,6 @@
         cli::cli_alert_info("Adding altdoc/pkgdown.yml file.")
         writeLines(content, fn)
     }
-    if (!isTRUE(.dir_is_package(path))) {
-        stop(
-            ".add_pkgdown() must be run from the root of a package.",
-            call. = FALSE
-        )
-    }
-    url <- setdiff(desc::desc_get_urls(), .gh_url(path))
-    fn <- fs::path_join(c(path, "altdoc/pkgdown.yml"))
-    if (!fs::file_exists(fn) && length(url) > 0) {
-        url <- url[1]
-        vig <- fs::path_join(c(url, "vignettes"))
-        man <- fs::path_join(c(url, "man"))
-        content <- c(
-            "urls:",
-            paste("  reference:", man),
-            paste("  article:", vig),
-            ""
-        )
-        cli::cli_alert_info("Adding altdoc/pkgdown.yml file.")
-        writeLines(content, fn)
-    }
 }
 
 .add_rbuildignore <- function(x = "^docs$", path = ".") {
@@ -184,41 +163,9 @@
         tmp <- c(tmp, x)
         writeLines(tmp, fn)
     }
-    if (!isTRUE(.dir_is_package(path))) {
-        stop(
-            ".add_rbuildignore() must be run from the root of a package.",
-            call. = FALSE
-        )
-    }
-    fn <- fs::path_join(c(path, ".Rbuildignore"))
-    if (!fs::file_exists(fn)) {
-        fs::file_create(fn)
-    }
-    tmp <- .readlines(fn)
-    if (!x %in% tmp) {
-        cli::cli_alert_info("Adding {x} to .Rbuildignore")
-        tmp <- c(tmp, x)
-        writeLines(tmp, fn)
-    }
 }
 
 .add_gitignore <- function(x = "^docs$", path = ".") {
-    if (!isTRUE(.dir_is_package(path))) {
-        stop(
-            ".add_gitignore() must be run from the root of a package.",
-            call. = FALSE
-        )
-    }
-    fn <- fs::path_join(c(path, ".gitignore"))
-    if (!fs::file_exists(fn)) {
-        fs::file_create(fn)
-    }
-    tmp <- .readlines(fn)
-    if (!x %in% tmp) {
-        cli::cli_alert_info("Adding {x} to .gitignore")
-        tmp <- c(tmp, x)
-        writeLines(tmp, fn)
-    }
     if (!isTRUE(.dir_is_package(path))) {
         stop(
             ".add_gitignore() must be run from the root of a package.",
