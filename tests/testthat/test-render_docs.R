@@ -135,7 +135,6 @@ test_that("quarto: no error for basic workflow", {
 
     ### generate docs
     install.packages(".", repos = NULL, type = "source")
-    fs::file_move("README.Rmd", "README.qmd") # special thing quarto
     setup_docs("quarto_website")
     expect_no_error(render_docs(verbose = .on_ci()))
 
@@ -190,7 +189,6 @@ test_that("quarto: autolink", {
 
     ### generate docs
     install.packages(".", repos = NULL, type = "source")
-    fs::file_move("README.Rmd", "README.qmd") # special thing quarto
     setup_docs("quarto_website")
     expect_no_error(render_docs(verbose = .on_ci()))
 
