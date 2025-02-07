@@ -2,11 +2,13 @@
 # output = rendered man page or vignette (md file)
 # hashes = content of altdoc/freeze.rds
 .is_frozen <- function(input, output, hashes) {
-    if (!fs::file_exists(input) || !fs::file_exists(output) || is.null(hashes)) {
+    if (
+        !fs::file_exists(input) || !fs::file_exists(output) || is.null(hashes)
+    ) {
         return(FALSE)
     }
     if (grepl("/vignettes/", input)) {
-      input <- paste0("vignettes/", basename(input))
+        input <- paste0("vignettes/", basename(input))
     }
     out <- FALSE
     if (input %in% names(hashes)) {

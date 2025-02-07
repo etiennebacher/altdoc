@@ -5,7 +5,8 @@
     # Fix vignette relative links before calling `mkdocs`
     vignettes <- list.files(
         fs::path_join(c(.doc_path(path), "vignettes")),
-        pattern = "\\.md")
+        pattern = "\\.md"
+    )
     for (v in vignettes) {
         fn <- fs::path_join(c(.doc_path(path), "vignettes", v))
         txt <- .readlines(fn)
@@ -13,18 +14,21 @@
             paste0("![](", .doc_path(path), "/vignettes/"),
             "![](",
             txt,
-            fixed = TRUE)
+            fixed = TRUE
+        )
         txt <- gsub(
             sprintf('src=\\"%s.markdown_strict_files', v),
             sprintf('src=\\"\\.\\.\\/%s.markdown_strict_files', v),
-            txt)
+            txt
+        )
         writeLines(txt, fn)
     }
 
     # Fix man page relative links
     man <- list.files(
         fs::path_join(c(.doc_path(path), "man")),
-        pattern = "\\.md")
+        pattern = "\\.md"
+    )
     for (v in man) {
         fn <- fs::path_join(c(.doc_path(path), "man", v))
         txt <- .readlines(fn)
@@ -32,7 +36,8 @@
             paste0("![](", .doc_path(path), "/man/"),
             "![](",
             txt,
-            fixed = TRUE)
+            fixed = TRUE
+        )
         writeLines(txt, fn)
     }
 
@@ -60,25 +65,27 @@
         fs::file_delete(fn)
     }
 
-
     # render mkdocs
     if (.is_windows()) {
         shell(
-          paste(
-            "cd", fs::path_abs(path),
-            "&& .venv_altdoc\\Scripts\\activate.bat",
-            "&& python3 -m mkdocs build -q"
-          )
+            paste(
+                "cd",
+                fs::path_abs(path),
+                "&& .venv_altdoc\\Scripts\\activate.bat",
+                "&& python3 -m mkdocs build -q"
+            )
         )
     } else {
         goback <- getwd()
         system2(
-          "bash",
-          paste0(
-            "-c 'source ",
-            fs::path_join(c(fs::path_abs(path), "/.venv_altdoc/bin/activate")),
-            " && python3 -m mkdocs build -q'"
-          )
+            "bash",
+            paste0(
+                "-c 'source ",
+                fs::path_join(
+                    c(fs::path_abs(path), "/.venv_altdoc/bin/activate")
+                ),
+                " && python3 -m mkdocs build -q'"
+            )
         )
     }
 
@@ -99,15 +106,24 @@
     # for some reason, the folder "docs/vignettes" gets a gitignore that
     # prevents HTML files to be committed so we remove it (happened several times
     # in polars, see e.g https://github.com/pola-rs/r-polars/pull/646)
-    if (fs::file_exists(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))) {
-        fs::file_delete(fs::path_join(c(.doc_path(path), "vignettes/.gitignore")))
+    if (
+        fs::file_exists(
+            fs::path_join(c(.doc_path(path), "vignettes/.gitignore"))
+        )
+    ) {
+        fs::file_delete(
+            fs::path_join(c(.doc_path(path), "vignettes/.gitignore"))
+        )
     }
 }
 
-
 .sidebar_vignettes_mkdocs <- function(sidebar, path) {
     dn <- fs::path_join(c(.doc_path(path), "vignettes"))
-    fn_vignettes <- list.files(dn, pattern = "\\.md$|\\.pdf$", full.names = TRUE)
+    fn_vignettes <- list.files(
+        dn,
+        pattern = "\\.md$|\\.pdf$",
+        full.names = TRUE
+    )
 
     # before gsub on paths
     titles <- sapply(fn_vignettes, .get_vignettes_titles)
@@ -136,7 +152,6 @@
     return(sidebar)
 }
 
-
 .sidebar_man_mkdocs <- function(sidebar, path) {
     .assert_dependency("yaml", install = TRUE)
 
@@ -145,7 +160,10 @@
 
     if (fs::dir_exists(dn_man) && length(fs::dir_ls(dn_man)) > 0) {
         fn_man <- list.files(dn_man, pattern = "\\.md$", full.names = TRUE)
-        fn_man <- sapply(fn_man, function(x) fs::path_join(c("man", basename(x))))
+        fn_man <- sapply(
+            fn_man,
+            function(x) fs::path_join(c("man", basename(x)))
+        )
         titles <- fs::path_ext_remove(basename(fn_man))
 
         yml <- paste(sidebar, collapse = "\n")

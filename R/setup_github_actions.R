@@ -15,32 +15,32 @@
 #'   setup_github_actions()
 #' }
 setup_github_actions <- function(path = ".") {
+    path <- .convert_path(path)
+    fs::dir_create(fs::path_join(c(path, ".github/workflows")))
+    if (
+        fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))
+    ) {
+        cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
+    }
 
-  path <- .convert_path(path)
-  fs::dir_create(fs::path_join(c(path, ".github/workflows")))
-  if (fs::file_exists(fs::path_join(c(path, ".github/workflows/altdoc.yaml")))) {
-    cli::cli_abort("{.file .github/workflows/altdoc.yaml} already exists.")
-  }
+    src <- system.file("gha/altdoc.yaml", package = "altdoc")
+    tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
+    fs::file_copy(src, tar)
 
-  src <- system.file("gha/altdoc.yaml", package = "altdoc")
-  tar <- fs::path_join(c(path, ".github/workflows/altdoc.yaml"))
-  fs::file_copy(src, tar)
+    # Deal with mkdocs installation in workflow
+    tool <- .doc_type(path)
+    workflow <- .readlines(tar)
+    start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
+    end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
+    if (tool == "mkdocs") {
+        workflow <- workflow[-c(start, end)]
+    } else {
+        workflow <- workflow[-(start:end)]
+    }
+    writeLines(workflow, tar)
 
-  # Deal with mkdocs installation in workflow
-  tool <- .doc_type(path)
-  workflow <- .readlines(tar)
-  start <- grep("\\$ALTDOC_MKDOCS_START", workflow)
-  end <- grep("\\$ALTDOC_MKDOCS_END", workflow)
-  if (tool == "mkdocs") {
-    workflow <- workflow[-c(start, end)]
-  } else {
-    workflow <- workflow[-(start:end)]
-  }
-  writeLines(workflow, tar)
+    invisible(desc::desc_set_dep("altdoc", "Suggests"))
 
-  invisible(desc::desc_set_dep("altdoc", "Suggests"))
-
-  cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
-  cli::cli_alert_success("Added {.code altdoc} in Suggests.")
+    cli::cli_alert_success("{.file .github/workflows/altdoc.yaml} created.")
+    cli::cli_alert_success("Added {.code altdoc} in Suggests.")
 }
-
