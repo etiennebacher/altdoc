@@ -237,6 +237,7 @@
             close(connection)
         },
         warning = function(w) {
+            # flint-ignore
             is_404 <<- grepl("404", w)
         }
     )
