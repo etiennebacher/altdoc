@@ -8,7 +8,7 @@ test_that("rendering fails", {
     fs::dir_create("man")
     fs::file_copy(dest, "man")
     src <- fs::path_ext_remove(list.files("man"))
-    expect_equal(
+    expect_identical(
         .render_one_man(
             src,
             tool = "docute",
@@ -31,7 +31,7 @@ test_that("rendering skipped because internal", {
     fs::dir_create("man")
     fs::file_copy(dest, "man")
     src <- fs::path_ext_remove(list.files("man"))
-    expect_equal(
+    expect_identical(
         .render_one_man(
             src,
             tool = "docute",
@@ -69,7 +69,7 @@ test_that("rendering skipped because unchanged and freeze = TRUE", {
     .update_freeze(".", src, successes = 1, fails = NULL, type = "man")
     hashes <- .get_hashes(".", freeze = TRUE)
 
-    expect_equal(
+    expect_identical(
         .render_one_man(
             src,
             tool = "docute",

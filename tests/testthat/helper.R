@@ -76,6 +76,7 @@ create_local_thing <- function(
     defer(proj_set(old_project, force = TRUE), envir = env)
     proj_set(dir)
 
+    # flint-ignore-start
     defer(
         {
             setwd(old_wd)
@@ -83,6 +84,7 @@ create_local_thing <- function(
         envir = env
     )
     setwd(proj_get())
+    # flint-ignore-end
 
     invisible(proj_get())
 }

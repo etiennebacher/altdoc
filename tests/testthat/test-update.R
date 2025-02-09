@@ -9,7 +9,7 @@ for (tool in c("docute", "docsify")) {
         render_docs(path = getwd())
         readme1 <- .readlines("README.md")
         readme2 <- .readlines("docs/README.md")
-        expect_true(identical(readme1, readme2))
+        expect_identical(readme1, readme2)
     })
 }
 
@@ -35,7 +35,7 @@ for (tool in c("docute", "docsify")) {
         expect_false(identical(news1, news2))
         render_docs(path = getwd())
         news2 <- .readlines("docs/NEWS.md")
-        expect_true(identical(news1, news2))
+        expect_identical(news1, news2)
     })
 }
 
@@ -57,7 +57,7 @@ for (tool in c("docute", "docsify")) {
             expect_false(identical(news1, news2))
             render_docs(path = getwd())
             news2 <- .readlines("docs/CODE_OF_CONDUCT.md")
-            expect_true(identical(news1, news2))
+            expect_identical(news1, news2)
         }
     )
 }
@@ -78,7 +78,7 @@ for (tool in c("docute", "docsify")) {
         expect_false(identical(news1, news2))
         render_docs(path = getwd())
         news2 <- .readlines("docs/LICENSE.md")
-        expect_true(identical(news1, news2))
+        expect_identical(news1, news2)
     })
 }
 
