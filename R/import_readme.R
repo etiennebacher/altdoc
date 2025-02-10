@@ -60,10 +60,17 @@
 
     # Add the index page which includes README.md
     if (tool == "quarto_website") {
-        writeLines(
-            enc2utf8("{{< include README.md >}}"),
-            fs::path_join(c(tar_dir, "index.md"))
-        )
+        if ("README.qmd" %in% readme_files) {
+            fs::file_copy(
+                fs::path_join(c(src_dir, "README.qmd")),
+                fs::path_join(c(tar_dir, "index.qmd"))
+            )
+        } else {
+            writeLines(
+                enc2utf8("{{< include README.md >}}"),
+                fs::path_join(c(tar_dir, "index.md"))
+            )
+        }
     }
 
     tmp <- fs::path_join(c(src_dir, "README.markdown_strict_files"))
