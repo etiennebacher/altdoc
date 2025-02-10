@@ -194,8 +194,6 @@ for (tool in c("docute", "docsify", "quarto_website")) {
 test_that("quarto: autolink", {
     skip_on_cran()
 
-    print(here::here())
-
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
     create_local_project()
