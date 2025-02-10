@@ -172,26 +172,30 @@ test_that("quarto: no error for basic workflow, no Github URL", {
     expect_no_error(render_docs(verbose = .on_ci()))
 })
 
-test_that("quarto: no error with different types of README", {
-    skip_on_cran()
-    create_local_package()
+patrick::with_parameters_test_that(
+    "quarto: no error with different types of README",
+    {
+        skip_on_cran()
+        create_local_package()
 
-    # README.md
-    cat("hello there", file = "README.md")
-    setup_docs("quarto_website")
-    expect_no_error(render_docs(verbose = .on_ci()))
-    fs::dir_delete("docs")
+        # README.md
+        cat("hello there", file = "README.md")
+        setup_docs(tool)
+        expect_no_error(render_docs(verbose = .on_ci()))
+        fs::dir_delete("docs")
 
-    # README.Rmd
-    cat("hello there", file = "README.Rmd")
-    expect_no_error(render_docs(verbose = .on_ci()))
-    fs::dir_delete("docs")
-    fs::file_delete("README.Rmd")
+        # README.Rmd
+        cat("hello there", file = "README.Rmd")
+        expect_no_error(render_docs(verbose = .on_ci()))
+        fs::dir_delete("docs")
+        fs::file_delete("README.Rmd")
 
-    # README.qmd
-    cat("hello there", file = "README.qmd")
-    expect_no_error(render_docs(verbose = .on_ci()))
-})
+        # README.qmd
+        cat("hello there", file = "README.qmd")
+        expect_no_error(render_docs(verbose = .on_ci()))
+    },
+    tool = c("docute", "docsify", "quarto_website")
+)
 
 test_that("quarto: autolink", {
     skip_on_cran()
