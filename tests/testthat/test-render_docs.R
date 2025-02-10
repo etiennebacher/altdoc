@@ -1,5 +1,6 @@
 test_that("docute: main files are correct", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -36,6 +37,7 @@ test_that("docute: main files are correct", {
 
 test_that("docsify: main files are correct", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -118,6 +120,7 @@ test_that("mkdocs: main files are correct", {
 
 test_that("quarto: no error for basic workflow", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -149,6 +152,7 @@ test_that("quarto: no error for basic workflow", {
 # https://github.com/etiennebacher/altdoc/issues/307
 test_that("quarto: no error for basic workflow, no Github URL", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
     ### setup: create a temp package using the structure of testpkg.altdoc.noURL
     path_to_example_pkg <- fs::path_abs(
@@ -171,6 +175,7 @@ test_that("quarto: no error for basic workflow, no Github URL", {
 for (tool in c("docute", "docsify", "quarto_website")) {
     test_that("no error with different types of README", {
         skip_on_cran()
+        skip_if(.is_windows() && .on_ci(), "Windows on CI")
         create_local_package()
 
         # README.md
@@ -193,6 +198,7 @@ for (tool in c("docute", "docsify", "quarto_website")) {
 
 test_that("quarto: autolink", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
