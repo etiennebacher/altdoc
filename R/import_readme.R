@@ -53,11 +53,7 @@
         }
     }
 
-    if (tool == "quarto_website") {
-        tar_file <- fs::path_join(c(tar_dir, "index.md"))
-    } else {
-        tar_file <- fs::path_join(c(tar_dir, "README.md"))
-    }
+    tar_file <- fs::path_join(c(tar_dir, "README.md"))
     src_file <- fs::path_join(c(src_dir, "README.md"))
     fs::file_copy(src_file, tar_file, overwrite = TRUE)
     .check_md_structure(tar_file)
@@ -74,7 +70,6 @@
                 enc2utf8("{{< include README.md >}}"),
                 fs::path_join(c(tar_dir, "index.md"))
             )
-            fs::file_copy(fs::path_join(c(src_dir, "README.md")), tar_dir)
         }
     }
 
