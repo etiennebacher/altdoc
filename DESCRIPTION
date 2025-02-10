@@ -35,7 +35,6 @@ Suggests:
     future,
     future.apply,
     knitr,
-    patrick,
     servr,
     spelling,
     testthat (>= 3.0.0),
