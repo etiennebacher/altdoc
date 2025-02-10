@@ -173,7 +173,7 @@ test_that("quarto: no error for basic workflow, no Github URL", {
 })
 
 patrick::with_parameters_test_that(
-    "quarto: no error with different types of README",
+    "no error with different types of README",
     {
         skip_on_cran()
         create_local_package()
