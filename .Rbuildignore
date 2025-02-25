@@ -17,5 +17,5 @@ man-roxygen
 ^inst/NEWS\.Rd$
 
 
-# flint files
-^flint$
+# flir files
+^flir$
