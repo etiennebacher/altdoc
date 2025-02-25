@@ -21,7 +21,7 @@
     idx <- idx[seq_along(idx) %% 2 == 1]
     tmp[idx] <- sub(
         "<td>",
-        '<td style = "white-space: nowrap; font-family: monospace; vertical-align: top">',
+        '<td style = "white-space: collapse; font-family: monospace; vertical-align: top">',
         tmp[idx]
     )
 
