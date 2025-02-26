@@ -12,13 +12,10 @@ test_that(".rd2qmd works", {
 
     content <- .readlines(qmd_file)
     h3 <- grep("^### ", content, value = TRUE)
-    expect_equal(
-        h3,
-        c("### Description", "### Usage", "### Arguments")
-    )
+    expect_identical(h3, c("### Description", "### Usage", "### Arguments"))
 
     h2 <- grep("^## ", content, value = TRUE)
-    expect_equal(
+    expect_identical(
         h2,
         "## Do values in a numeric vector fall in specified range? {.unnumbered}"
     )

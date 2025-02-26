@@ -61,7 +61,7 @@
 
     if (length(fn_vignettes) > 0) {
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_vignettes)
-        tmp <- paste(tmp, collapse = ", ")
+        tmp <- toString(tmp)
         sidebar <- paste(sidebar, collapse = "\n")
         if (isTRUE(grepl("\\$ALTDOC_VIGNETTE_BLOCK", sidebar))) {
             sidebar <- gsub("\\$ALTDOC_VIGNETTE_BLOCK", "%s", sidebar)
@@ -86,7 +86,7 @@
         )
         titles <- fs::path_ext_remove(basename(fn_man))
         tmp <- sprintf("{title: '%s', link: '%s'}", titles, fn_man)
-        tmp <- paste(tmp, collapse = ", ")
+        tmp <- toString(tmp)
         sidebar <- paste(sidebar, collapse = "\n")
         if (isTRUE(grepl("\\$ALTDOC_MAN_BLOCK", sidebar))) {
             sidebar <- gsub("\\$ALTDOC_MAN_BLOCK", "%s", sidebar)
