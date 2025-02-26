@@ -20,7 +20,7 @@ below.
 
 <table>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>
 </td>
 <td>
@@ -28,7 +28,7 @@ Path to the package root directory.
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="verbose">verbose</code>
 </td>
 <td>
@@ -36,7 +36,7 @@ Logical. Print Rmarkdown or Quarto rendering output.
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="parallel">parallel</code>
 </td>
 <td>
@@ -47,7 +47,7 @@ the examples section below.
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="freeze">freeze</code>
 </td>
 <td>
@@ -58,7 +58,7 @@ deleted, all man pages and vignettes will be rendered anew.
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="...">…</code>
 </td>
 <td>

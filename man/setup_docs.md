@@ -25,7 +25,7 @@ customize the sidebar and website.
 
 <table>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="tool">tool</code>
 </td>
 <td>
@@ -33,7 +33,7 @@ String. "docsify", "docute", "mkdocs", or "quarto_website".
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>
 </td>
 <td>
@@ -41,7 +41,7 @@ Path to the package root directory.
 </td>
 </tr>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="overwrite">overwrite</code>
 </td>
 <td>

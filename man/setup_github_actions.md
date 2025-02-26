@@ -20,7 +20,7 @@ push the output to the branch "gh-pages".
 
 <table>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>
 </td>
 <td>

@@ -17,7 +17,7 @@ Preview the documentation in a webpage or in viewer
 
 <table>
 <tr>
-<td style="white-space: nowrap; font-family: monospace; vertical-align: top">
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>
 </td>
 <td>
