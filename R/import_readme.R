@@ -70,7 +70,6 @@
                 enc2utf8("{{< include README.md >}}"),
                 fs::path_join(c(tar_dir, "index.md"))
             )
-            fs::file_copy(fs::path_join(c(src_dir, "README.md")), tar_dir)
         }
     }
 

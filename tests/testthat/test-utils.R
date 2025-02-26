@@ -9,14 +9,14 @@ test_that(".folder_is_empty() works", {
 
 test_that(".pkg_name() works", {
     create_local_package()
-    expect_true(is.character(.pkg_name(getwd())))
-    expect_true(nchar(.pkg_name(getwd())) > 0)
+    expect_type(.pkg_name(getwd()), "character")
+    expect_gt(nchar(.pkg_name(getwd())), 0)
 })
 
 test_that(".pkg_version() works", {
     create_local_package()
-    expect_true(is.character(.pkg_version(".")))
-    expect_true(nchar(.pkg_version(".")) > 0)
+    expect_type(.pkg_version("."), "character")
+    expect_gt(nchar(.pkg_version(".")), 0)
 })
 
 test_that(".parse_news works", {
@@ -44,10 +44,10 @@ test_that(".parse_news works", {
 test_that(".which_license works", {
     create_local_package()
     fs::file_create("LICENSE.md")
-    expect_equal(.which_license(), "LICENSE.md")
+    expect_identical(.which_license(), "LICENSE.md")
     fs::file_delete("LICENSE.md")
     fs::file_create("LICENCE.md")
-    expect_equal(.which_license(), "LICENCE.md")
+    expect_identical(.which_license(), "LICENCE.md")
     fs::file_delete("LICENCE.md")
     expect_null(.which_license())
 })

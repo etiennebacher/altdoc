@@ -11,6 +11,10 @@ on:
 
 name: altdoc
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   altdoc:
     runs-on: ubuntu-latest

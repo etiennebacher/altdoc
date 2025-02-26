@@ -44,7 +44,7 @@
     )
 
     if (length(.gh_urls) == 0) {
-        return("")
+        return(NULL)
     }
 
     .gh_url <- .gh_urls[grep("github.com", .gh_urls)]
@@ -58,7 +58,6 @@
     .gh_url <- gsub("#.*", "", .gh_url)
     .gh_url <- unique(.gh_url)
 
-    if (length(.gh_url) == 0) .gh_url <- ""
     return(.gh_url)
 }
 
