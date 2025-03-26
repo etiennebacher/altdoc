@@ -182,14 +182,22 @@
         rendered_man <- gsub("\\.qmd$", ".md", destination_qmd)
         if (fs::file_exists(rendered_man)) {
             temp <- .readlines(rendered_man)
-            header_idx <- grep("^## ", temp)[1]
-            new <- c(
-                temp[1:header_idx],
-                "",
-                to_insert,
-                temp[(header_idx + 1):length(temp)]
-            )
-            writeLines(new, rendered_man)
+            header_idx <- grep("^#+ Examples", temp)[1]
+            if (length(header_idx) == 1 && !is.na(header_idx)) {
+                new <- c(
+                    temp[1:header_idx],
+                    "",
+                    to_insert,
+                    temp[(header_idx + 1):length(temp)]
+                )
+                writeLines(new, rendered_man)
+            } else if (length(header_idx) > 1) {
+                cli::cli_abort(paste0(
+                    "Found several 'Examples' section in ",
+                    fn,
+                    ".Rd"
+                ))
+            }
         }
     }
 
@@ -224,7 +232,7 @@
 
     # build URL
     gh_link <- .gh_url(".")
-    if (is.na(gh_link)) {
+    if (is.null(gh_link) || is.na(gh_link)) {
         return(NULL)
     }
     final_link <- paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
