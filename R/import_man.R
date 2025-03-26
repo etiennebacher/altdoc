@@ -224,7 +224,7 @@
 
     # build URL
     gh_link <- .gh_url(".")
-    if (is.null(gh_link)) {
+    if (is.null(gh_link) || is.na(gh_link)) {
         return(NULL)
     }
     final_link <- paste0(gh_link, "/tree/", head_branch, "/", file, "#L", line)
