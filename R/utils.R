@@ -59,7 +59,7 @@
     .gh_url <- unique(.gh_url)
 
     if (length(.gh_url) == 0) {
-      return(NULL)
+        return(NULL)
     }
 
     return(.gh_url)
