@@ -7,6 +7,11 @@
 * The CSS for arguments table in "Reference" page has changed a bit. Argument
   names are now wrapped so that they have limited width, improving the
   readibility in case of multiple arguments on the same line ([#308](https://github.com/etiennebacher/altdoc/issues/308)).
+  
+### Bug fixes
+
+* Fix a `quarto_website` rendering failure when the package being rendered has
+  its URL or BugReports set to a site other than GitHub ([#319](https://github.com/etiennebacher/altdoc/issues/319), [@gardiners](https://github.com/gardiners)).
 
 ## 0.5.0
 
