@@ -174,26 +174,26 @@ test_that("quarto: no error for basic workflow, no Github URL", {
 
 # https://github.com/etiennebacher/altdoc/issues/318
 test_that("quarto: no error for basic workflow, non-GitHub URL", {
-  skip_on_cran()
-  skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
 
-  ### setup: create a temp package using the structure of
-  ### testpkg.altdoc.nonGithubURL
-  path_to_example_pkg <- fs::path_abs(
-    test_path("examples/testpkg.altdoc.nonGithubURL")
-  )
-  create_local_project()
-  fs::dir_delete("R")
-  fs::dir_copy(path_to_example_pkg, ".")
-  all_files <- list.files("testpkg.altdoc.nonGithubURL", full.names = TRUE)
-  for (i in all_files) {
-    fs::file_move(i, ".")
-  }
-  fs::dir_delete("testpkg.altdoc.nonGithubURL")
+    ### setup: create a temp package using the structure of
+    ### testpkg.altdoc.nonGithubURL
+    path_to_example_pkg <- fs::path_abs(
+        test_path("examples/testpkg.altdoc.nonGithubURL")
+    )
+    create_local_project()
+    fs::dir_delete("R")
+    fs::dir_copy(path_to_example_pkg, ".")
+    all_files <- list.files("testpkg.altdoc.nonGithubURL", full.names = TRUE)
+    for (i in all_files) {
+        fs::file_move(i, ".")
+    }
+    fs::dir_delete("testpkg.altdoc.nonGithubURL")
 
-  install.packages(".", repos = NULL, type = "source")
-  setup_docs("quarto_website")
-  expect_no_error(render_docs(verbose = .on_ci()))
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("quarto_website")
+    expect_no_error(render_docs(verbose = .on_ci()))
 })
 
 for (tool in c("docute", "docsify", "quarto_website")) {
