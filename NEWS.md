@@ -8,7 +8,8 @@
   names are now wrapped so that they have limited width, improving the
   readibility in case of multiple arguments on the same line (#308).
 
-* `lifecycle` badges now appear correctly in reference pages (#319).
+* Files stored in `man/figures` (such as `lifecycle` badges) are now properly
+  included by `render_docs()` (#319).
 
 ### Bug fixes
 
