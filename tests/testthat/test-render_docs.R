@@ -246,6 +246,30 @@ test_that("quarto: autolink", {
     )
 })
 
+test_that("files in man/figures are copied to docs/help/figures", {
+    path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.lifecycle"))
+    create_local_project()
+    fs::dir_delete("R")
+    fs::dir_copy(path_to_example_pkg, ".")
+    all_files <- list.files("testpkg.lifecycle", full.names = TRUE)
+    for (i in all_files) {
+        fs::file_move(i, ".")
+    }
+    fs::dir_delete("testpkg.lifecycle")
+
+    ### generate docs
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("docute")
+    expect_no_error(render_docs(verbose = .on_ci()))
+    expect_true(fs::file_exists("docs/help/figures/lifecycle-experimental.svg"))
+    md <- .readlines("docs/man/foo.md")
+    expect_true(any(grepl(
+        "../help/figures/lifecycle-experimental.svg",
+        md,
+        fixed = TRUE
+    )))
+})
+
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {

@@ -7,7 +7,9 @@
 * The CSS for arguments table in "Reference" page has changed a bit. Argument
   names are now wrapped so that they have limited width, improving the
   readibility in case of multiple arguments on the same line (#308).
-  
+
+* `lifecycle` badges now appear correctly in reference pages (#319).
+
 ### Bug fixes
 
 * Fix a `quarto_website` rendering failure when the package being rendered has
