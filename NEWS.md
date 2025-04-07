@@ -9,7 +9,7 @@
   readibility in case of multiple arguments on the same line (#308).
 
 * Files stored in `man/figures` (such as `lifecycle` badges) are now properly
-  included by `render_docs()` (#319).
+  included by `render_docs()` (#321).
 
 ### Bug fixes
 
