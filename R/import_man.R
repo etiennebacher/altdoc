@@ -27,6 +27,16 @@
         cruft <- fs::dir_ls(fs::path_join(c(tar_dir, "man")), regexp = "\\.Rd$")
         cruft <- Filter(fs::is_file, cruft)
         fs::file_delete(cruft)
+
+        # Rd2HTML() replaces "man/figures" by "../help/figures" so we move the
+        # directory
+        if (fs::dir_exists(fs::path_join(c(b, "figures")))) {
+            fs::dir_create(fs::path_join(c(tar_dir, "help")))
+            fs::file_move(
+                fs::path_join(c(b, "figures")),
+                fs::path_join(c(tar_dir, "help"))
+            )
+        }
     }
 
     n <- length(man_source)
