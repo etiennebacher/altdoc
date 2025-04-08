@@ -268,6 +268,9 @@ test_that("files in man/figures are copied to docs/help/figures", {
         md,
         fixed = TRUE
     )))
+
+    ### re-rendering works
+    expect_no_error(render_docs(verbose = .on_ci()))
 })
 
 # Test failures ------------------------------

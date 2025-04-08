@@ -32,10 +32,12 @@
         # directory
         if (fs::dir_exists(fs::path_join(c(b, "figures")))) {
             fs::dir_create(fs::path_join(c(tar_dir, "help")))
-            fs::file_move(
+            fs::dir_copy(
                 fs::path_join(c(b, "figures")),
-                fs::path_join(c(tar_dir, "help"))
+                fs::path_join(c(tar_dir, "help", "figures")),
+                overwrite = TRUE
             )
+            fs::dir_delete(fs::path_join(c(b, "figures")))
         }
     }
 
