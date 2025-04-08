@@ -7,7 +7,10 @@
 * The CSS for arguments table in "Reference" page has changed a bit. Argument
   names are now wrapped so that they have limited width, improving the
   readibility in case of multiple arguments on the same line ([#308](https://github.com/etiennebacher/altdoc/issues/308)).
-  
+
+* Files stored in `man/figures` (such as `lifecycle` badges) are now properly
+  included by `render_docs()` ([#321](https://github.com/etiennebacher/altdoc/issues/321)).
+
 ### Bug fixes
 
 * Fix a `quarto_website` rendering failure when the package being rendered has
