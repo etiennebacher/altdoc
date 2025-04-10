@@ -4,6 +4,7 @@ test_that(".rd2qmd works", {
         testthat::test_path("examples/examples-man/between.Rd")
     )
     create_local_package()
+    setup_docs("docute")
     fs::file_copy(rd_file, ".")
     fs::dir_create("docs")
     .rd2qmd(rd_file, "docs", path = ".")

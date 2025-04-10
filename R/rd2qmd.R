@@ -6,6 +6,8 @@
         stop("target_dir must be a valid directory.", call. = FALSE)
     }
 
+    tool <- .doc_type(path)
+
     # Rd -> html
     rd <- tools::parse_Rd(source_file)
     tmp_html <- paste0(tempfile(), ".html")
@@ -21,7 +23,12 @@
     idx <- idx[seq_along(idx) %% 2 == 1]
     tmp[idx] <- sub(
         "<td>",
-        '<td style = "white-space: collapse; font-family: monospace; vertical-align: top">',
+        paste0(
+            '<td style = "white-space: ',
+            # https://github.com/etiennebacher/altdoc/issues/306
+            if (tool != "mkdocs") "collapse" else "nowrap",
+            '; font-family: monospace; vertical-align: top">'
+        ),
         tmp[idx]
     )
 
