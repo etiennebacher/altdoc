@@ -23,7 +23,7 @@ customize the sidebar and website.
 
 ## Arguments
 
-<table>
+<table role="presentation">
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="tool">tool</code>

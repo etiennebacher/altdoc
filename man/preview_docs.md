@@ -15,7 +15,7 @@ Preview the documentation in a webpage or in viewer
 
 ## Arguments
 
-<table>
+<table role="presentation">
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>

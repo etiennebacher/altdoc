@@ -16,6 +16,9 @@
 * Fix a `quarto_website` rendering failure when the package being rendered has
   its URL or BugReports set to a site other than GitHub ([#319](https://github.com/etiennebacher/altdoc/issues/319), [@gardiners](https://github.com/gardiners)).
 
+* Fix footer in `docsify` when a package doesn't have a website or GitHub URL
+  ([#324](https://github.com/etiennebacher/altdoc/issues/324)).
+
 ## 0.5.0
 
 ### Breaking changes
