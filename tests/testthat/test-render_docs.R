@@ -196,6 +196,18 @@ test_that("quarto: no error for basic workflow, non-GitHub URL", {
     expect_no_error(render_docs(verbose = .on_ci()))
 })
 
+# https://github.com/etiennebacher/altdoc/issues/323
+test_that("docsify: footer is still present even if URL is absent", {
+    skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    create_local_package()
+
+    setup_docs("docsify")
+    render_docs()
+    html <- .readlines("docs/index.html")
+    expect_true(any(grepl("Documentation made with", html)))
+})
+
 for (tool in c("docute", "docsify", "quarto_website")) {
     test_that("no error with different types of README", {
         skip_on_cran()
