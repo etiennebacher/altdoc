@@ -33,7 +33,7 @@
       [13] ""                                                                               
       [14] "## Arguments"                                                                   
       [15] ""                                                                               
-      [16] "<table>"                                                                        
+      [16] "<table role=\"presentation\">"                                                  
       [17] "<tr>"                                                                           
       [18] "<td style=\"white-space: nowrap; font-family: monospace; vertical-align: top\">"
       [19] "<code id=\"x\">x</code>"                                                        

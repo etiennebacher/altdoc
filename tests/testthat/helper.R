@@ -63,30 +63,34 @@ create_local_thing <- function(
     usethis::ui_silence(
         switch(
             thing,
-            package = create_package(
+            package = usethis::create_package(
                 dir,
                 rstudio = rstudio,
                 open = FALSE,
                 check_name = FALSE
             ),
-            project = create_project(dir, rstudio = rstudio, open = FALSE)
+            project = usethis::create_project(
+                dir,
+                rstudio = rstudio,
+                open = FALSE
+            )
         )
     )
 
-    defer(proj_set(old_project, force = TRUE), envir = env)
-    proj_set(dir)
+    withr::defer(usethis::proj_set(old_project, force = TRUE), envir = env)
+    usethis::proj_set(dir)
 
     # flir-ignore-start
-    defer(
+    withr::defer(
         {
             setwd(old_wd)
         },
         envir = env
     )
-    setwd(proj_get())
+    setwd(usethis::proj_get())
     # flir-ignore-end
 
-    invisible(proj_get())
+    invisible(usethis::proj_get())
 }
 
 expect_proj_file <- function(...) expect_true(fs::file_exists(proj_path(...)))

@@ -40,7 +40,11 @@
         if (length(gh_url) > 0) {
             x <- gsub("\\$ALTDOC_PACKAGE_URL_GITHUB", gh_url, x)
         } else {
-            x <- x[!grepl("\\$ALTDOC_PACKAGE_URL_GITHUB", x)]
+            if (tool == "docsify") {
+                x <- gsub("href='\\$ALTDOC_PACKAGE_URL_GITHUB'", "", x)
+            } else {
+                x <- x[!grepl("\\$ALTDOC_PACKAGE_URL_GITHUB", x)]
+            }
         }
 
         all_urls <- tryCatch(
@@ -52,7 +56,11 @@
         if (length(website_url) > 0) {
             x <- gsub("\\$ALTDOC_PACKAGE_URL", website_url[1], x)
         } else {
-            x <- x[!grepl("\\$ALTDOC_PACKAGE_URL", x)]
+            if (tool == "docsify") {
+                x <- gsub("href='\\$ALTDOC_PACKAGE_URL'", "", x)
+            } else {
+                x <- x[!grepl("\\$ALTDOC_PACKAGE_URL", x)]
+            }
         }
 
         x <- gsub("\\$ALTDOC_PACKAGE_NAME", desc::desc_get("Package", path), x)
@@ -70,6 +78,5 @@
 
     # some commands expand the full path
     x <- gsub(.doc_path(path), "", x, fixed = TRUE)
-
-    return(x)
+    x
 }
