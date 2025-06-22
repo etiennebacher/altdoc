@@ -214,3 +214,21 @@
 .on_ci <- function() {
     isTRUE(as.logical(Sys.getenv("CI", "false")))
 }
+
+# Adapted from quarto::quarto_binary_sitrep() because we don't want the
+# comparison with the RStudio quarto binary version.
+.quarto_is_installed <- function() {
+    !is.null(quarto::quarto_path())
+}
+
+.check_quarto_installed <- function() {
+    if (!.quarto_is_installed()) {
+        cli::cli_abort(
+            c(
+                "Quarto (the command-line tool) is not installed on your system.",
+                "i" = "It is needed to render manual pages and vignettes.",
+                "i" = "Install it from {.url https://quarto.org/docs/get-started}."
+            )
+        )
+    }
+}

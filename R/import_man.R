@@ -140,6 +140,8 @@
     hashes = NULL,
     verbose = FALSE
 ) {
+    .check_quarto_installed()
+
     # fs::path_ext_set breaks filenames with dots, ex: 'foo.bar.Rd'
     origin_Rd <- fs::path_join(c("man", paste0(fn, ".Rd")))
     destination_dir <- fs::path_join(c(tar_dir, "man"))

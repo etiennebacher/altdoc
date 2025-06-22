@@ -1,4 +1,5 @@
 test_that("use template preamble if no preamble in file", {
+    skip_if(!.quarto_is_installed())
     source <- tempfile(fileext = ".qmd")
     fs::file_copy(
         test_path("examples/examples-qmd/without-preamble.qmd"),
@@ -26,6 +27,7 @@ test_that("use template preamble if no preamble in file", {
 })
 
 test_that("do not use template preamble if preamble in file", {
+    skip_if(!.quarto_is_installed())
     source <- tempfile(fileext = ".qmd")
     fs::file_copy(test_path("examples/examples-qmd/with-preamble.qmd"), source)
     create_local_package()

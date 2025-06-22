@@ -53,6 +53,8 @@ render_docs <- function(
     freeze = FALSE,
     ...
 ) {
+    .check_quarto_installed()
+
     # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information.
     # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
     dots <- list(...)
