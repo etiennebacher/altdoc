@@ -91,10 +91,18 @@
         )
     }
 
-    if (mkdocs) return("mkdocs")
-    if (docsify) return("docsify")
-    if (docute) return("docute")
-    if (quarto_website) return("quarto_website")
+    if (mkdocs) {
+        return("mkdocs")
+    }
+    if (docsify) {
+        return("docsify")
+    }
+    if (docute) {
+        return("docute")
+    }
+    if (quarto_website) {
+        return("quarto_website")
+    }
 
     return(NULL)
 }

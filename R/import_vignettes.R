@@ -216,7 +216,9 @@
 # Get a filename with a vignette and try to extract its title
 
 .get_vignettes_titles <- function(fn, path = ".") {
-    if (!fs::file_exists(fn)) return(invisible())
+    if (!fs::file_exists(fn)) {
+        return(invisible())
+    }
 
     x <- .readlines(fn)
 
