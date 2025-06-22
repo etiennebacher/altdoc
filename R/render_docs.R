@@ -53,6 +53,16 @@ render_docs <- function(
     freeze = FALSE,
     ...
 ) {
+    if (!.quarto_is_installed()) {
+        cli::cli_abort(
+            c(
+                "Quarto (the command-line tool) is not installed on your system.",
+                "i" = "It is needed to render manual pages and vignettes.",
+                "i" = "Install it from {.url https://quarto.org/docs/get-started}."
+            )
+        )
+    }
+
     # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information.
     # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.
     dots <- list(...)

@@ -19,6 +19,9 @@
 * Fix footer in `docsify` when a package doesn't have a website or GitHub URL
   (#324).
 
+* `render_docs()` now shows an explicit error message if Quarto is not installed
+  on the system (#326).
+
 ## 0.5.0
 
 ### Breaking changes

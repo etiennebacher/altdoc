@@ -91,10 +91,18 @@
         )
     }
 
-    if (mkdocs) return("mkdocs")
-    if (docsify) return("docsify")
-    if (docute) return("docute")
-    if (quarto_website) return("quarto_website")
+    if (mkdocs) {
+        return("mkdocs")
+    }
+    if (docsify) {
+        return("docsify")
+    }
+    if (docute) {
+        return("docute")
+    }
+    if (quarto_website) {
+        return("quarto_website")
+    }
 
     return(NULL)
 }
@@ -205,4 +213,10 @@
 
 .on_ci <- function() {
     isTRUE(as.logical(Sys.getenv("CI", "false")))
+}
+
+# Adapted from quarto::quarto_binary_sitrep() because we don't want the
+# comparison with the RStudio quarto binary version.
+.quarto_is_installed <- function() {
+    is.null(quarto::quarto_path())
 }
