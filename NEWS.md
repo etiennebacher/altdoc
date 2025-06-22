@@ -20,7 +20,7 @@
   (#324).
 
 * `render_docs()` now shows an explicit error message if Quarto is not installed
-  on the system (#326).
+  on the system (#329).
 
 ## 0.5.0
 
