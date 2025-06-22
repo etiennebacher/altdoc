@@ -218,5 +218,5 @@
 # Adapted from quarto::quarto_binary_sitrep() because we don't want the
 # comparison with the RStudio quarto binary version.
 .quarto_is_installed <- function() {
-    is.null(quarto::quarto_path())
+    !is.null(quarto::quarto_path())
 }
