@@ -1,6 +1,7 @@
 test_that("docute: main files are correct", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -38,6 +39,7 @@ test_that("docute: main files are correct", {
 test_that("docsify: main files are correct", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -77,6 +79,7 @@ test_that("mkdocs: main files are correct", {
     skip_on_cran()
     skip_if_offline() # we download mkdocs every time
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -121,6 +124,7 @@ test_that("mkdocs: main files are correct", {
 test_that("quarto: no error for basic workflow", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -153,6 +157,7 @@ test_that("quarto: no error for basic workflow", {
 test_that("quarto: no error for basic workflow, no Github URL", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc.noURL
     path_to_example_pkg <- fs::path_abs(
@@ -176,6 +181,7 @@ test_that("quarto: no error for basic workflow, no Github URL", {
 test_that("quarto: no error for basic workflow, non-GitHub URL", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of
     ### testpkg.altdoc.nonGithubURL
@@ -200,6 +206,8 @@ test_that("quarto: no error for basic workflow, non-GitHub URL", {
 test_that("docsify: footer is still present even if URL is absent", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
+
     create_local_package()
 
     setup_docs("docsify")
@@ -212,6 +220,8 @@ for (tool in c("docute", "docsify", "quarto_website")) {
     test_that("no error with different types of README", {
         skip_on_cran()
         skip_if(.is_windows() && .on_ci(), "Windows on CI")
+        skip_if(!.quarto_is_installed())
+
         create_local_package()
 
         # README.md
@@ -235,6 +245,7 @@ for (tool in c("docute", "docsify", "quarto_website")) {
 test_that("quarto: autolink", {
     skip_on_cran()
     skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
@@ -259,6 +270,7 @@ test_that("quarto: autolink", {
 })
 
 test_that("files in man/figures are copied to docs/help/figures", {
+    skip_if(!.quarto_is_installed())
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.lifecycle"))
     create_local_project()
     fs::dir_delete("R")
@@ -288,6 +300,7 @@ test_that("files in man/figures are copied to docs/help/figures", {
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {
+    skip_if(!.quarto_is_installed())
     create_local_package()
     fs::dir_create("vignettes")
     cat("# Get Started\n```{r}\n1 +\n```\n", file = "vignettes/foo.Rmd")
@@ -299,6 +312,7 @@ test_that("render_docs errors if vignettes fail", {
 })
 
 test_that("render_docs errors if man fail", {
+    skip_if(!.quarto_is_installed())
     create_local_package()
     fs::dir_create("man")
     cat(

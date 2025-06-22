@@ -1,4 +1,5 @@
 test_that(".substitute_altdoc_vars removes github if no url", {
+    skip_if(!.quarto_is_installed())
     create_local_package()
     desc::desc_set_urls("https://foobar.com")
     setup_docs("docute")
@@ -10,6 +11,7 @@ test_that(".substitute_altdoc_vars removes github if no url", {
 })
 
 test_that(".substitute_altdoc_vars removes website if no url", {
+    skip_if(!.quarto_is_installed())
     create_local_package()
     desc::desc_set_urls("https://github.com/foo/bar")
     setup_docs("docute")

@@ -2,6 +2,7 @@
 
 for (tool in c("docute", "docsify")) {
     test_that(sprintf("render_docs updates correctly the README: %s", tool), {
+        skip_if(!.quarto_is_installed())
         skip_if(tool == "mkdocs" && !.venv_exists())
         create_local_package()
         setup_docs(tool = tool, path = getwd())
@@ -17,6 +18,7 @@ for (tool in c("docute", "docsify")) {
 
 for (tool in c("docute", "docsify")) {
     test_that(sprintf("render_docs updates correctly the NEWS: %s", tool), {
+        skip_if(!.quarto_is_installed())
         skip_if(tool == "mkdocs" && !.venv_exists())
         create_local_package()
         # https://github.com/cynkra/fledge/issues/683
@@ -45,6 +47,7 @@ for (tool in c("docute", "docsify")) {
     test_that(
         sprintf("docute: render_docs updates correctly the CoC, %s", tool),
         {
+            skip_if(!.quarto_is_installed())
             skip_if(tool == "mkdocs" && !.venv_exists())
             create_local_package()
             usethis::use_code_of_conduct("etienne.bacher@protonmail.com")
@@ -66,6 +69,7 @@ for (tool in c("docute", "docsify")) {
 
 for (tool in c("docute", "docsify")) {
     test_that(sprintf("render_docs updates correctly the License: %s", tool), {
+        skip_if(!.quarto_is_installed())
         skip_if(tool == "mkdocs" && !.venv_exists())
         create_local_package()
         usethis::use_mit_license("etienne.bacher@protonmail.com")
@@ -91,6 +95,7 @@ for (tool in c("docute", "docsify")) {
             tool
         ),
         {
+            skip_if(!.quarto_is_installed())
             skip_on_ci()
             skip_if(tool == "mkdocs" && !.venv_exists())
             # setup
