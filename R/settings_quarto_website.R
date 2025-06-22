@@ -74,7 +74,9 @@
 
     # reverse order because we delete elements
     for (i in rev(seq_along(yml$website$sidebar$contents))) {
-        if (!"section" %in% names(yml$website$sidebar$contents[[i]])) next
+        if (!"section" %in% names(yml$website$sidebar$contents[[i]])) {
+            next
+        }
         if (
             isTRUE(
                 yml$website$sidebar$contents[[i]]$section[[1]] ==
@@ -110,11 +112,12 @@
             if (length(fn_man) > 0) {
                 man_list <- lapply(
                     fn_man,
-                    function(x)
+                    function(x) {
                         list(
                             text = sub("\\.qmd$", "", basename(x)),
                             file = x
                         )
+                    }
                 )
                 yml$website$sidebar$contents[[i]] <- list(
                     section = "Reference",
