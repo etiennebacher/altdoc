@@ -11,7 +11,6 @@
 * Files stored in `man/figures` (such as `lifecycle` badges) are now properly
   included by `render_docs()` ([#321](https://github.com/etiennebacher/altdoc/issues/321)).
 
-
 ### Bug fixes
 
 * Fix a `quarto_website` rendering failure when the package being rendered has
