@@ -22,6 +22,9 @@
 * `render_docs()` now shows an explicit error message if Quarto is not installed
   on the system ([#329](https://github.com/etiennebacher/altdoc/issues/329)).
 
+* Fix an error in `render_docs()` when the title in the Rd file is split across
+  several lines ([#333](https://github.com/etiennebacher/altdoc/issues/333)).
+
 ## 0.5.0
 
 ### Breaking changes
