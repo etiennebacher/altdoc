@@ -36,3 +36,15 @@ test_that(".rd2qmd: basic errors", {
         "must be a valid directory"
     )
 })
+
+test_that(".rd2qmd: title across several lines", {
+    rd_file <- fs::path_abs(
+        testthat::test_path("examples/examples-man/long_title.Rd")
+    )
+    create_local_package()
+    setup_docs("docute")
+    fs::file_copy(rd_file, ".")
+    fs::dir_create("docs")
+    .rd2qmd(rd_file, "docs", path = ".")
+    expect_snapshot(readLines("docs/long_title.qmd"))
+})
