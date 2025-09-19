@@ -1,12 +1,12 @@
 # News
 
-## development version
+## 0.6.0
 
 ### Changes
 
 * The CSS for arguments table in "Reference" page has changed a bit. Argument
   names are now wrapped so that they have limited width, improving the
-  readibility in case of multiple arguments on the same line (#308).
+  readability in case of multiple arguments on the same line (#308).
 
 * Files stored in `man/figures` (such as `lifecycle` badges) are now properly
   included by `render_docs()` (#321).
