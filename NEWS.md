@@ -1,5 +1,14 @@
 # News
 
+## Development version
+
+### Bug fixes
+
+* When using `mkdocs` as documentation generator, changes in settings such as
+  overrides templates or CSS files are now correctly applied to `docs/index.html`.
+  Previously, it was required to manually delete the file and run `render_docs()`
+  again (#337).
+
 ## 0.6.0
 
 ### Changes
