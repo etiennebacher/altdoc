@@ -60,7 +60,7 @@
     }
     yaml::write_yaml(yml, fn, indent.mapping.sequence = TRUE)
 
-    fn <- fs::path_join(c(path, "index.html"))
+    fn <- fs::path_join(c(path, "docs", "index.html"))
     if (fs::file_exists(fn)) {
         fs::file_delete(fn)
     }

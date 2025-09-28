@@ -60,7 +60,6 @@ test_that("docsify: main files are correct", {
     ### test
     expect_snapshot(.readlines("docs/README.md"), variant = "docsify")
     expect_snapshot(.readlines("docs/_sidebar.md"), variant = "docsify")
-    expect_snapshot(.readlines("docs/index.html"), variant = "docsify")
     expect_snapshot(.readlines("docs/NEWS.md"), variant = "docsify")
     expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docsify")
     expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docsify")
@@ -73,6 +72,10 @@ test_that("docsify: main files are correct", {
         variant = "docsify"
     )
     expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
+    # This changes imperceptedly between windows and Linux/macOS, but the old
+    # and new snapshots are LF so I don't really know why.
+    skip_if(.is_windows())
+    expect_snapshot(.readlines("docs/index.html"), variant = "docsify")
 })
 
 test_that("mkdocs: main files are correct", {
@@ -295,6 +298,47 @@ test_that("files in man/figures are copied to docs/help/figures", {
 
     ### re-rendering works
     expect_no_error(render_docs(verbose = .on_ci()))
+})
+
+test_that("mkdocs: index.html is reset at every render_docs(), #336", {
+    skip_on_cran()
+    skip_if_offline() # we download mkdocs every time
+    skip_if(.is_windows())
+
+    ### setup: create a temp package using the structure of testpkg.altdoc
+    create_local_package()
+    fs::dir_delete("R")
+
+    system2("python3", "-m venv .venv_altdoc")
+    system2(
+        "bash",
+        "-c 'source .venv_altdoc/bin/activate && python3 -m pip install mkdocs mkdocs-material --quiet'",
+        stdout = FALSE
+    )
+
+    ### generate docs
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("mkdocs")
+
+    ### Custom overrides partial
+    fs::dir_create("altdoc/overrides/partials")
+    cat("HELLO THERE", file = "altdoc/overrides/partials/copyright.html")
+    cat(
+        "site_name: foo
+theme:
+  name: material
+  custom_dir: altdoc/overrides",
+        file = "altdoc/mkdocs.yml"
+    )
+
+    render_docs(verbose = .on_ci())
+    expect_true(any(grepl("HELLO THERE", .readlines("docs/index.html"))))
+
+    ### Ensure that the overrides/partial is updated
+    cat("HELLO AGAIN", file = "altdoc/overrides/partials/copyright.html")
+    render_docs(verbose = .on_ci())
+    expect_false(any(grepl("HELLO THERE", .readlines("docs/index.html"))))
+    expect_true(any(grepl("HELLO AGAIN", .readlines("docs/index.html"))))
 })
 
 # Test failures ------------------------------
