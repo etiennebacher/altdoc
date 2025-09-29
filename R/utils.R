@@ -15,7 +15,11 @@
 }
 
 .venv_exists <- function(path = ".") {
-    fs::dir_exists(fs::path_abs(".venv_altdoc", start = path))
+    venv_path <- Sys.getenv("ALTDOC_VENV")
+    if (identical(venv_path, "")) {
+        venv_path <- fs::path_abs(".venv_altdoc", start = path)
+    }
+    fs::dir_exists(venv_path)
 }
 
 # https://stackoverflow.com/a/42945293/11598948
