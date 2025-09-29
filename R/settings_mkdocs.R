@@ -76,7 +76,7 @@
             paste0(
                 "cd ",
                 fs::path_abs(path),
-                "&& ",
+                " && ",
                 venv_path,
                 "/bin/python3 -m mkdocs build -q"
             )
