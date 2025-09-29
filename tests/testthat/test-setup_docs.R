@@ -76,16 +76,10 @@ test_that("mkdocs: venv path can be set with ALTDOC_VENV", {
         "needs `mkdocs` to be installed in a Python virtual environment"
     )
 
-    if (.is_windows()) {
-        shell(
-            "cd .. && python3 -m venv my_custom_venv && my_custom_venv/bin/pip install mkdocs -q"
-        )
-    } else {
-        system2(
-            "cd",
-            ".. && python3 -m venv my_custom_venv && my_custom_venv/bin/pip install mkdocs -q"
-        )
-    }
+    system2(
+        "cd",
+        ".. && python3 -m venv my_custom_venv && my_custom_venv/bin/pip install mkdocs -q"
+    )
 
     withr::with_envvar(
         list(ALTDOC_VENV = fs::path(dir, "my_custom_venv")),
