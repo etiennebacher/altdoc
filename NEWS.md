@@ -2,6 +2,12 @@
 
 ## Development version
 
+### New features
+
+* When using `mkdocs` as documentation generator, the Python virtual environment
+  to be used can now be set with the environment variable `ALTDOC_VENV`. It
+  doesn't have to be `.venv_altdoc` located at the project root anymore (#339).
+
 ### Bug fixes
 
 * When using `mkdocs` as documentation generator, changes in settings such as
