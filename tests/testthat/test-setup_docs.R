@@ -78,8 +78,7 @@ test_that("mkdocs: venv path can be set with ALTDOC_VENV", {
 
     if (.is_windows()) {
         shell(
-            "cd .. && python3 -m venv my_custom_venv && my_custom_venv/bin/pip install mkdocs",
-            invisible = FALSE
+            "cd .. && python -m venv my_custom_venv && my_custom_venv\\Scripts\\pip.exe install mkdocs -q"
         )
     } else {
         system2(

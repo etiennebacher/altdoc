@@ -77,8 +77,8 @@
                 "cd ",
                 fs::path_abs(path),
                 " && ",
-                venv_path,
-                "/bin/python3 -m mkdocs build -q"
+                fs::path(venv_path, "Scripts", "python3"),
+                " -m mkdocs build -q"
             )
         )
     } else {
