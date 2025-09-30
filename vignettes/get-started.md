@@ -60,6 +60,10 @@ See the [`mkdocs`](https://www.mkdocs.org/user-guide/installation/) and
 [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip)
 installation guides for details.
 
+**Note:** if you want the virtual environment to be stored somewhere
+else, you can set its path as the environment variable `ALTDOC_VENV`,
+e.g. `Sys.setenv(ALTDOC_VENV = "/opt/venv/altdoc")`.
+
 ## Package structure
 
 `altdoc` makes assumptions about your package structure:
@@ -74,7 +78,7 @@ installation guides for details.
     can edit them manually to customize the settings of your
     documentation and website. All the files stored in `altdoc/` are
     copied to `docs/` and made available as static files in the root of
-    the website.  
+    the website.
 -   The content of the (optional) “news” section is stored in `NEWS.md`
     or `CHANGELOG.md`
 -   The content of the (optional) “code of conduct” section is stored in
@@ -191,7 +195,7 @@ This function will:
 3.  Copy Markdown files with extension `.md` from `vignettes/` to
     `docs/vignettes/`.
 4.  Convert the manual pages stored in `man/` from `.Rd` to `.md`
-    format, and copy them to `docs/man/`.  
+    format, and copy them to `docs/man/`.
 5.  Copy all static files from `altdoc/` to `docs/`.
 
 Whenever you make changes to the man pages or to the vignettes, you can
