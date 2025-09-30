@@ -63,7 +63,8 @@ setup_docs <- function(tool, path = ".", overwrite = FALSE) {
                     " " = "python -m venv .venv_altdoc",
                     " " = ".venv_altdoc\\Scripts\\pip.exe install mkdocs mkdocs-material",
                     " " = "",
-                    "i" = " If these commands do not work or you want learn more, visit this link: {.url https://docs.python.org/3/library/venv.html#how-venvs-work}"
+                    "i" = " If these commands do not work or you want learn more, visit this link: {.url https://docs.python.org/3/library/venv.html#how-venvs-work}",
+                    "i" = "You can also set the envvar `ALTDOC_VENV` to be the path of the virtual environment to use."
                 )
             )
         }

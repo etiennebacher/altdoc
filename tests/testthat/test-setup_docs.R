@@ -63,3 +63,37 @@ test_that("quarto: README.qmd", {
     setup_docs("quarto_website", overwrite = TRUE)
     expect_false(file.exists("README.qmd"))
 })
+
+test_that("mkdocs: venv path can be set with ALTDOC_VENV", {
+    skip_on_cran()
+    skip_if_offline()
+
+    dir <- withr::local_tempdir()
+    create_local_package(dir = fs::path(dir, "package_dir"))
+
+    expect_error(
+        setup_docs("mkdocs"),
+        "needs `mkdocs` to be installed in a Python virtual environment"
+    )
+
+    if (.is_windows()) {
+        shell(
+            "cd .. && python -m venv my_custom_venv && my_custom_venv\\Scripts\\pip.exe install mkdocs -q"
+        )
+    } else {
+        system2(
+            "cd",
+            ".. && python3 -m venv my_custom_venv && my_custom_venv/bin/pip install mkdocs -q"
+        )
+    }
+
+    withr::with_envvar(
+        list(ALTDOC_VENV = fs::path(dir, "my_custom_venv")),
+        {
+            expect_no_error({
+                setup_docs("mkdocs")
+                render_docs()
+            })
+        }
+    )
+})
