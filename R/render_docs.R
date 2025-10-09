@@ -26,8 +26,6 @@
 #'   - CODE_OF_CONDUCT.md, CODE_OF_CONDUCT.txt, CODE_OF_CONDUCT
 #' * `docs/LICENSE.md`
 #'   - LICENSE.md, LICENSE.txt, LICENSE
-#' * `docs/LICENCE.md`
-#'   - LICENCE.md, LICENCE.txt, LICENCE
 #'
 #' @return NULL
 #' @template altdoc_variables
