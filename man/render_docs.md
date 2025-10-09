@@ -2,7 +2,7 @@
 
 # Update documentation
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L49)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L47)
 
 ## Description
 
@@ -138,18 +138,6 @@ CODE_OF_CONDUCT.md, CODE_OF_CONDUCT.txt, CODE_OF_CONDUCT
 <li>
 
 LICENSE.md, LICENSE.txt, LICENSE
-
-</li>
-</ul>
-</li>
-<li>
-
-<code>docs/LICENCE.md</code>
-
-<ul>
-<li>
-
-LICENCE.md, LICENCE.txt, LICENCE
 
 </li>
 </ul>
