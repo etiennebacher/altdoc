@@ -46,10 +46,6 @@ This function searches the root directory and the \verb{inst/} directory for spe
 \itemize{
 \item LICENSE.md, LICENSE.txt, LICENSE
 }
-\item \code{docs/LICENCE.md}
-\itemize{
-\item LICENCE.md, LICENCE.txt, LICENCE
-}
 }
 }
 \section{Altdoc variables}{
