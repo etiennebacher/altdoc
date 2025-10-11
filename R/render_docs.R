@@ -52,6 +52,7 @@ render_docs <- function(
     ...
 ) {
     .check_quarto_installed()
+    .add_pkgdown(path)
 
     # Quarto sometimes raises errors encouraging users to set `quiet=FALSE` to get more information.
     # This is a convenience check to match Quarto's `quiet` and `altdoc`'s `verbose` arguments.

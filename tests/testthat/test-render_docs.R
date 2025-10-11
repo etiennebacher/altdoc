@@ -341,6 +341,40 @@ theme:
     expect_true(any(grepl("HELLO AGAIN", .readlines("docs/index.html"))))
 })
 
+test_that(".add_pkgdown() works", {
+    skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
+
+    ### setup: create a temp package using the structure of testpkg.altdoc
+    path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
+    create_local_project()
+    fs::dir_delete("R")
+    fs::dir_copy(path_to_example_pkg, ".")
+    all_files <- list.files("testpkg.altdoc", full.names = TRUE)
+    for (i in all_files) {
+        fs::file_move(i, ".")
+    }
+    fs::dir_delete("testpkg.altdoc")
+    desc::desc_add_urls("https://mywebsite.com")
+
+    ### generate docs
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("docute")
+    expect_snapshot(
+        cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),
+        transform = function(x) {
+            x <- gsub("\\d+\\.\\d+\\.\\d+(\\.\\d+|)", "0.0.0", x)
+            x <- gsub(
+                "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}",
+                "2020-01-01T00:00:00+0000",
+                x
+            )
+            x
+        }
+    )
+})
+
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {
