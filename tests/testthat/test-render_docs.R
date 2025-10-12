@@ -358,15 +358,19 @@ test_that(".add_pkgdown() works", {
     fs::dir_delete("testpkg.altdoc")
     desc::desc_add_urls("https://mywebsite.com")
 
+    timestamp_regex <- "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}"
+
     ### generate docs
     install.packages(".", repos = NULL, type = "source")
     setup_docs("docute")
     expect_snapshot(
         cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),
         transform = function(x) {
+            first_timestamp <<- regmatches(x, gregexpr(timestamp_regex, x)) |>
+                unlist()
             x <- gsub("\\d+\\.\\d+\\.\\d+(\\.\\d+|)", "0.0.0", x)
             x <- gsub(
-                "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}",
+                timestamp_regex,
                 "2020-01-01T00:00:00+0000",
                 x
             )
@@ -374,16 +378,35 @@ test_that(".add_pkgdown() works", {
         }
     )
 
-    ### update the link to pkg website, render_docs() should update pkgdown.yml
-    .readlines("DESCRIPTION") |>
-        paste(collapse = "\n") |>
-        gsub(
-            "https://mywebsite.com",
-            "https://anotherwebsite.com",
-            x = _,
-            fixed = TRUE
-        ) |>
-        writeLines("DESCRIPTION")
+    ### There are not many fields that are updated because if they were created
+    ### by the user then we don't want to overwrite them.
+    ### render_docs() should update pkgdown.yml with a new timestamp, so we can
+    ### check that it is different than the initial one.
+    Sys.sleep(1)
+    render_docs()
+    content <- .readlines("altdoc/pkgdown.yml")
+    second_timestamp <- regmatches(
+        content,
+        gregexpr(timestamp_regex, content)
+    ) |>
+        unlist()
+
+    expect_true(first_timestamp != second_timestamp)
+
+    ### render_docs() doesn't remove pre-existing fields in pkgdown.yml
+    cat(
+        "altdoc: 0.0.0
+pandoc: 0.0.0
+pkgdown: 0.0.0
+last_built: 2020-01-01T00:00:00+0000
+articles:
+  polars: polars.html
+  install: install.html
+urls:
+  reference: https://anotherwebsite.com/man
+  article: https://anotherwebsite.com/vignettes\n",
+        file = "altdoc/pkgdown.yml"
+    )
     render_docs()
     expect_snapshot(
         cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),

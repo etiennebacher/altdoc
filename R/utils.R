@@ -166,21 +166,43 @@
         vig <- paste0(url, "/vignettes")
         man <- paste0(url, "/man")
 
-        yaml_content <- list(
-            altdoc = .altdoc_version(),
-            pandoc = as.character(rmarkdown::pandoc_version()),
-            pkgdown = "2.1.3", # don't know if this actually matters
+        if (!already_exists) {
+            yaml_content <- list(
+                altdoc = .altdoc_version(),
+                pandoc = as.character(rmarkdown::pandoc_version()),
+                pkgdown = "2.1.3", # don't know if this actually matters
 
+                # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
+                last_built = strftime(
+                    as.POSIXlt(Sys.time(), "UTC"),
+                    "%Y-%m-%dT%H:%M:%S%z"
+                ),
+                urls = list(
+                    reference = man,
+                    article = vig
+                )
+            )
+        } else {
+            yaml_content <- yaml::read_yaml(output_path)
+            yaml_content[["altdoc"]] <- .altdoc_version()
+            yaml_content[[
+                "pandoc"
+            ]] <- as.character(rmarkdown::pandoc_version())
+            if (is.null(yaml_content[["pkgdown"]])) {
+                yaml_content[["pkgdown"]] <- "2.1.3" # don't know if this actually matters
+            }
             # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
-            last_built = strftime(
+            yaml_content[["last_built"]] <- strftime(
                 as.POSIXlt(Sys.time(), "UTC"),
                 "%Y-%m-%dT%H:%M:%S%z"
-            ),
-            urls = list(
-                reference = man,
-                article = vig
             )
-        )
+            if (is.null(yaml_content[["urls"]])) {
+                yaml_content[["urls"]] <- list(
+                    reference = man,
+                    article = vig
+                )
+            }
+        }
         cli::cli_alert_info(
             "{if (already_exists) 'Updated' else 'Added'} altdoc/pkgdown.yml file."
         )
