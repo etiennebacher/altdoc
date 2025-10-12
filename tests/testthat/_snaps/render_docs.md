@@ -6,6 +6,7 @@
       altdoc: 0.0.0
       pandoc: 0.0.0
       pkgdown: 0.0.0
+      pkgdown_sha: ~
       last_built: 2020-01-01T00:00:00+0000
       urls:
         reference: https://mywebsite.com/man
@@ -26,4 +27,5 @@
       urls:
         reference: https://anotherwebsite.com/man
         article: https://anotherwebsite.com/vignettes
+      pkgdown_sha: ~
 

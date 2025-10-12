@@ -171,6 +171,7 @@
                 altdoc = .altdoc_version(),
                 pandoc = as.character(rmarkdown::pandoc_version()),
                 pkgdown = "2.1.3", # don't know if this actually matters
+                pkgdown_sha = NULL,
 
                 # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
                 last_built = strftime(
@@ -191,6 +192,7 @@
             if (is.null(yaml_content[["pkgdown"]])) {
                 yaml_content[["pkgdown"]] <- "2.1.3" # don't know if this actually matters
             }
+            yaml_content["pkgdown_sha"] <- list(NULL)
             # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
             yaml_content[["last_built"]] <- strftime(
                 as.POSIXlt(Sys.time(), "UTC"),

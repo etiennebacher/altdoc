@@ -343,6 +343,7 @@ theme:
 
 test_that(".add_pkgdown() works", {
     skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
     skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
