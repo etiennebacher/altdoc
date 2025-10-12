@@ -146,19 +146,69 @@
         )
     }
     url <- setdiff(desc::desc_get_urls(), .gh_url(path))
-    fn <- fs::path_join(c(path, "altdoc/pkgdown.yml"))
-    if (!fs::file_exists(fn) && length(url) > 0) {
-        url <- url[1]
-        vig <- fs::path_join(c(url, "vignettes"))
-        man <- fs::path_join(c(url, "man"))
-        content <- c(
-            "urls:",
-            paste("  reference:", man),
-            paste("  article:", vig),
-            ""
+    output_path <- fs::path_join(c(path, "altdoc/pkgdown.yml"))
+    already_exists <- fs::file_exists(output_path)
+
+    if (length(url) > 0) {
+        url_not_repo <- grep(
+            "github\\.com|gitlab\\.com|codeberg.org",
+            url,
+            invert = TRUE,
+            value = TRUE
         )
-        cli::cli_alert_info("Adding altdoc/pkgdown.yml file.")
-        writeLines(content, fn)
+        if (length(url_not_repo) > 0) {
+            url <- url_not_repo[1]
+        } else {
+            url <- url[1]
+        }
+
+        url <- gsub("/$", "", url)
+        vig <- paste0(url, "/vignettes")
+        man <- paste0(url, "/man")
+
+        if (!already_exists) {
+            yaml_content <- list(
+                altdoc = .altdoc_version(),
+                pandoc = as.character(rmarkdown::pandoc_version()),
+                pkgdown = "2.1.3", # don't know if this actually matters
+                pkgdown_sha = NULL,
+
+                # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
+                last_built = strftime(
+                    as.POSIXlt(Sys.time(), "UTC"),
+                    "%Y-%m-%dT%H:%M:%S%z"
+                ),
+                urls = list(
+                    reference = man,
+                    article = vig
+                )
+            )
+        } else {
+            yaml_content <- yaml::read_yaml(output_path)
+            yaml_content[["altdoc"]] <- .altdoc_version()
+            yaml_content[[
+                "pandoc"
+            ]] <- as.character(rmarkdown::pandoc_version())
+            if (is.null(yaml_content[["pkgdown"]])) {
+                yaml_content[["pkgdown"]] <- "2.1.3" # don't know if this actually matters
+            }
+            yaml_content["pkgdown_sha"] <- list(NULL)
+            # https://stackoverflow.com/questions/29517896/current-time-in-iso-8601-format
+            yaml_content[["last_built"]] <- strftime(
+                as.POSIXlt(Sys.time(), "UTC"),
+                "%Y-%m-%dT%H:%M:%S%z"
+            )
+            if (is.null(yaml_content[["urls"]])) {
+                yaml_content[["urls"]] <- list(
+                    reference = man,
+                    article = vig
+                )
+            }
+        }
+        cli::cli_alert_info(
+            "{if (already_exists) 'Updated' else 'Added'} altdoc/pkgdown.yml file."
+        )
+        yaml::write_yaml(yaml_content, output_path)
     }
 }
 

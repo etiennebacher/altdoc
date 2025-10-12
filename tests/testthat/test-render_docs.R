@@ -341,6 +341,87 @@ theme:
     expect_true(any(grepl("HELLO AGAIN", .readlines("docs/index.html"))))
 })
 
+test_that(".add_pkgdown() works", {
+    skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
+
+    ### setup: create a temp package using the structure of testpkg.altdoc
+    path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
+    create_local_project()
+    fs::dir_delete("R")
+    fs::dir_copy(path_to_example_pkg, ".")
+    all_files <- list.files("testpkg.altdoc", full.names = TRUE)
+    for (i in all_files) {
+        fs::file_move(i, ".")
+    }
+    fs::dir_delete("testpkg.altdoc")
+    desc::desc_add_urls("https://mywebsite.com")
+
+    timestamp_regex <- "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}"
+
+    ### generate docs
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("docute")
+    expect_snapshot(
+        cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),
+        transform = function(x) {
+            first_timestamp <<- regmatches(x, gregexpr(timestamp_regex, x)) |>
+                unlist()
+            x <- gsub("\\d+\\.\\d+\\.\\d+(\\.\\d+|)", "0.0.0", x)
+            x <- gsub(
+                timestamp_regex,
+                "2020-01-01T00:00:00+0000",
+                x
+            )
+            x
+        }
+    )
+
+    ### There are not many fields that are updated because if they were created
+    ### by the user then we don't want to overwrite them.
+    ### render_docs() should update pkgdown.yml with a new timestamp, so we can
+    ### check that it is different than the initial one.
+    Sys.sleep(1)
+    render_docs()
+    content <- .readlines("altdoc/pkgdown.yml")
+    second_timestamp <- regmatches(
+        content,
+        gregexpr(timestamp_regex, content)
+    ) |>
+        unlist()
+
+    expect_true(first_timestamp != second_timestamp)
+
+    ### render_docs() doesn't remove pre-existing fields in pkgdown.yml
+    cat(
+        "altdoc: 0.0.0
+pandoc: 0.0.0
+pkgdown: 0.0.0
+last_built: 2020-01-01T00:00:00+0000
+articles:
+  polars: polars.html
+  install: install.html
+urls:
+  reference: https://anotherwebsite.com/man
+  article: https://anotherwebsite.com/vignettes\n",
+        file = "altdoc/pkgdown.yml"
+    )
+    render_docs()
+    expect_snapshot(
+        cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),
+        transform = function(x) {
+            x <- gsub("\\d+\\.\\d+\\.\\d+(\\.\\d+|)", "0.0.0", x)
+            x <- gsub(
+                "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}",
+                "2020-01-01T00:00:00+0000",
+                x
+            )
+            x
+        }
+    )
+})
+
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {
