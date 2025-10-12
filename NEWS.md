@@ -8,6 +8,10 @@
   to be used can now be set with the environment variable `ALTDOC_VENV`. It
   doesn't have to be `.venv_altdoc` located at the project root anymore (#339).
 
+* `render_docs()` now updates the file `altdoc/pkgdown.yml`. This file was also
+  adapted so that it can be used by R-universe to display a link to the package
+  website (#344).
+
 ### Bug fixes
 
 * When using `mkdocs` as documentation generator, changes in settings such as
