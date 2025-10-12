@@ -373,6 +373,30 @@ test_that(".add_pkgdown() works", {
             x
         }
     )
+
+    ### update the link to pkg website, render_docs() should update pkgdown.yml
+    .readlines("DESCRIPTION") |>
+        paste(collapse = "\n") |>
+        gsub(
+            "https://mywebsite.com",
+            "https://anotherwebsite.com",
+            x = _,
+            fixed = TRUE
+        ) |>
+        writeLines("DESCRIPTION")
+    render_docs()
+    expect_snapshot(
+        cat(.readlines("altdoc/pkgdown.yml"), sep = "\n"),
+        transform = function(x) {
+            x <- gsub("\\d+\\.\\d+\\.\\d+(\\.\\d+|)", "0.0.0", x)
+            x <- gsub(
+                "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{4}",
+                "2020-01-01T00:00:00+0000",
+                x
+            )
+            x
+        }
+    )
 })
 
 # Test failures ------------------------------
