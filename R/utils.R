@@ -151,7 +151,7 @@
 
     if (length(url) > 0) {
         url_not_repo <- grep(
-            "github\\.com|gitlab\\.com|codeberg.org",
+            "github\\.com|gitlab\\.com|codeberg\\.org",
             url,
             invert = TRUE,
             value = TRUE
