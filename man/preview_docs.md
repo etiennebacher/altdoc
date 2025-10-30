@@ -2,7 +2,7 @@
 
 # Preview the documentation in a webpage or in viewer
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/6280859702a4b63013ff008ad18b05207ee99816/R/preview_docs.R#L20)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/preview_docs.R#L20)
 
 ## Description
 

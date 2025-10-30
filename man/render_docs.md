@@ -2,7 +2,7 @@
 
 # Update documentation
 
-[**Source code**](https://github.com/etiennebacher/altdoc/tree/6280859702a4b63013ff008ad18b05207ee99816/R/render_docs.R#L47)
+[**Source code**](https://github.com/etiennebacher/altdoc/tree/main/R/render_docs.R#L47)
 
 ## Description
 
