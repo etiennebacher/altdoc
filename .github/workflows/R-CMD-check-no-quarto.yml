@@ -1,6 +1,6 @@
 # Run CI for R using https://eddelbuettel.github.io/r-ci/
 
-name: R-CMD-check
+name: R-CMD-check-no-quarto
 
 on:
   push:
