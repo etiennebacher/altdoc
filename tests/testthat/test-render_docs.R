@@ -20,20 +20,14 @@ test_that("docute: main files are correct", {
     render_docs(verbose = .on_ci())
 
     ### test
-    expect_snapshot(.readlines("docs/README.md"), variant = "docute")
-    expect_snapshot(.readlines("docs/docute.html"), variant = "docute")
-    expect_snapshot(.readlines("docs/NEWS.md"), variant = "docute")
-    expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docute")
-    expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docute")
-    expect_snapshot(
-        .readlines("docs/man/examplesIf_true.md"),
-        variant = "docute"
-    )
-    expect_snapshot(
-        .readlines("docs/man/examplesIf_false.md"),
-        variant = "docute"
-    )
-    expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docute")
+    expect_snapshot_file("docs/README.md", variant = "docute")
+    expect_snapshot_file("docs/docute.html", variant = "docute")
+    expect_snapshot_file("docs/NEWS.md", variant = "docute")
+    expect_snapshot_file("docs/man/hello_base.md", variant = "docute")
+    expect_snapshot_file("docs/man/hello_r6.md", variant = "docute")
+    expect_snapshot_file("docs/man/examplesIf_true.md", variant = "docute")
+    expect_snapshot_file("docs/man/examplesIf_false.md", variant = "docute")
+    expect_snapshot_file("docs/vignettes/test.md", variant = "docute")
 })
 
 test_that("docsify: main files are correct", {
@@ -58,24 +52,18 @@ test_that("docsify: main files are correct", {
     render_docs(verbose = .on_ci())
 
     ### test
-    expect_snapshot(.readlines("docs/README.md"), variant = "docsify")
-    expect_snapshot(.readlines("docs/_sidebar.md"), variant = "docsify")
-    expect_snapshot(.readlines("docs/NEWS.md"), variant = "docsify")
-    expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "docsify")
-    expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "docsify")
-    expect_snapshot(
-        .readlines("docs/man/examplesIf_true.md"),
-        variant = "docsify"
-    )
-    expect_snapshot(
-        .readlines("docs/man/examplesIf_false.md"),
-        variant = "docsify"
-    )
-    expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "docsify")
+    expect_snapshot_file("docs/README.md", variant = "docsify")
+    expect_snapshot_file("docs/_sidebar.md", variant = "docsify")
+    expect_snapshot_file("docs/NEWS.md", variant = "docsify")
+    expect_snapshot_file("docs/man/hello_base.md", variant = "docsify")
+    expect_snapshot_file("docs/man/hello_r6.md", variant = "docsify")
+    expect_snapshot_file("docs/man/examplesIf_true.md", variant = "docsify")
+    expect_snapshot_file("docs/man/examplesIf_false.md", variant = "docsify")
+    expect_snapshot_file("docs/vignettes/test.md", variant = "docsify")
     # This changes imperceptedly between windows and Linux/macOS, but the old
     # and new snapshots are LF so I don't really know why.
     skip_if(.is_windows())
-    expect_snapshot(.readlines("docs/index.html"), variant = "docsify")
+    expect_snapshot_file("docs/index.html", variant = "docsify")
 })
 
 test_that("mkdocs: main files are correct", {
@@ -118,10 +106,10 @@ test_that("mkdocs: main files are correct", {
     ### test
     # no good way to test the site structure ("docs/mkdocs.yml" only shows
     # the old yaml, not the one with replaced variables)
-    expect_snapshot(.readlines("docs/NEWS.md"), variant = "mkdocs")
-    expect_snapshot(.readlines("docs/man/hello_base.md"), variant = "mkdocs")
-    expect_snapshot(.readlines("docs/man/hello_r6.md"), variant = "mkdocs")
-    expect_snapshot(.readlines("docs/vignettes/test.md"), variant = "mkdocs")
+    expect_snapshot_file("docs/NEWS.md", variant = "mkdocs")
+    expect_snapshot_file("docs/man/hello_base.md", variant = "mkdocs")
+    expect_snapshot_file("docs/man/hello_r6.md", variant = "mkdocs")
+    expect_snapshot_file("docs/vignettes/test.md", variant = "mkdocs")
 })
 
 test_that("quarto: no error for basic workflow", {
@@ -149,11 +137,11 @@ test_that("quarto: no error for basic workflow", {
     ### now.
 
     ### test
-    # expect_snapshot(.readlines("docs/index.html"))
-    # expect_snapshot(.readlines("docs/NEWS.html"))
-    # expect_snapshot(.readlines("docs/man/hello_base.html"))
-    # expect_snapshot(.readlines("docs/man/hello_r6.html"))
-    # expect_snapshot(.readlines("docs/vignettes/test.html"))
+    # expect_snapshot_file("docs/index.html")
+    # expect_snapshot_file("docs/NEWS.html")
+    # expect_snapshot_file("docs/man/hello_base.html")
+    # expect_snapshot_file("docs/man/hello_r6.html")
+    # expect_snapshot_file("docs/vignettes/test.html")
 })
 
 # https://github.com/etiennebacher/altdoc/issues/307

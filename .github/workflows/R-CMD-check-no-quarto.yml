@@ -1,0 +1,58 @@
+# Run CI for R using https://eddelbuettel.github.io/r-ci/
+
+name: R-CMD-check-no-quarto
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - .Rbuildignore
+      - R/**
+      - tests/**
+      - vignettes/*
+      - DESCRIPTION
+      - NAMESPACE
+  pull_request:
+    branches: [main, master]
+    paths:
+      - .Rbuildignore
+      - R/**
+      - tests/**
+      - vignettes/*
+      - DESCRIPTION
+      - NAMESPACE
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  USE_BSPM: "true"
+  _R_CHECK_FORCE_SUGGESTS_: "false"
+   # Otherwise default is to use "--no-build-vignettes --no-manual --as-cran"
+  R_BUILD_ARGS: "--no-manual"
+  R_CHECK_ARGS: "--no-manual --no-vignettes --as-cran"
+  WARNINGS_ARE_ERRORS: "true"
+  R_GH: true
+  GITHUB_PAT: ${{ secrets.COVR_GH_PAT }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Setup
+        uses: eddelbuettel/github-actions/r-ci-setup@master
+
+      - name: Bootstrap
+        run: ./run.sh bootstrap
+
+      - name: Dependencies
+        run: ./run.sh install_all
+
+      - name: Test
+        run: ./run.sh run_tests

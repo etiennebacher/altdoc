@@ -1,0 +1,15 @@
+## Title across two lines {.unnumbered}
+
+
+### Description
+
+Title across
+two lines
+
+
+
+### Usage
+
+<pre><code class='language-R'>foo()
+</code></pre>
+
