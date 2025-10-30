@@ -12,6 +12,7 @@ on:
       - vignettes/*
       - DESCRIPTION
       - NAMESPACE
+      - .github
   pull_request:
     branches: [main, master]
     paths:
@@ -21,6 +22,7 @@ on:
       - vignettes/*
       - DESCRIPTION
       - NAMESPACE
+      - .github
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
