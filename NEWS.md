@@ -1,6 +1,6 @@
 # News
 
-## Development version
+## 0.7.0
 
 ### New features
 
@@ -18,6 +18,10 @@
   overrides templates or CSS files are now correctly applied to `docs/index.html`.
   Previously, it was required to manually delete the file and run `render_docs()`
   again ([#337](https://github.com/etiennebacher/altdoc/issues/337)).
+
+### Misc
+
+* Fix errors in CRAN checks occurring when Quarto isn't available on the system.
 
 ## 0.6.0
 

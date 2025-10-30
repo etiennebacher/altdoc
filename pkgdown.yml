@@ -1,8 +1,8 @@
 urls:
   reference: https://altdoc.etiennebacher.com/man
   article: https://altdoc.etiennebacher.com/vignettes
-altdoc: 0.6.0.9000
+altdoc: 0.7.0
 pandoc: 3.1.3
 pkgdown: 2.1.3
 pkgdown_sha: ~
-last_built: 2025-10-30T21:12:17+0000
+last_built: 2025-10-30T21:36:12+0000
