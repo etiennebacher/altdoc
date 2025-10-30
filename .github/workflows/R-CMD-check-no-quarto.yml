@@ -5,24 +5,8 @@ name: R-CMD-check-no-quarto
 on:
   push:
     branches: [main, master]
-    paths:
-      - .Rbuildignore
-      - R/**
-      - tests/**
-      - vignettes/*
-      - DESCRIPTION
-      - NAMESPACE
-      - .github
   pull_request:
     branches: [main, master]
-    paths:
-      - .Rbuildignore
-      - R/**
-      - tests/**
-      - vignettes/*
-      - DESCRIPTION
-      - NAMESPACE
-      - .github
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
