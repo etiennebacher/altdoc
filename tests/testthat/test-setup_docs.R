@@ -67,6 +67,7 @@ test_that("quarto: README.qmd", {
 test_that("mkdocs: venv path can be set with ALTDOC_VENV", {
     skip_on_cran()
     skip_if_offline()
+    skip_if(!.quarto_is_installed())
 
     dir <- withr::local_tempdir()
     create_local_package(dir = fs::path(dir, "package_dir"))

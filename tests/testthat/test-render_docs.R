@@ -304,6 +304,7 @@ test_that("mkdocs: index.html is reset at every render_docs(), #336", {
     skip_on_cran()
     skip_if_offline() # we download mkdocs every time
     skip_if(.is_windows())
+    skip_if(!.quarto_is_installed())
 
     ### setup: create a temp package using the structure of testpkg.altdoc
     create_local_package()

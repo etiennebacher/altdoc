@@ -1,4 +1,5 @@
 test_that(".reformat_md works", {
+    skip_if(!.quarto_is_installed())
     # Need to write and read to avoid all \n differences
     create_local_package()
     setup_docs(tool = "docsify", path = getwd())
