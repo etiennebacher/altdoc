@@ -1,6 +1,6 @@
 ---
 title: "Analysing Longitudinal or Panel Data"
-output: 
+output:
   rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Analysing Longitudinal or Panel Data}
@@ -16,3 +16,6 @@ Here's some code:
 print(mtcars)
 ```
 
+With a footnote[^word].
+
+[^word]: hello there
