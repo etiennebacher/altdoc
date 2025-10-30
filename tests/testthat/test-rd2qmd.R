@@ -46,5 +46,5 @@ test_that(".rd2qmd: title across several lines", {
     fs::file_copy(rd_file, ".")
     fs::dir_create("docs")
     .rd2qmd(rd_file, "docs", path = ".")
-    expect_snapshot(readLines("docs/long_title.qmd"))
+    expect_snapshot_file("docs/long_title.qmd")
 })
