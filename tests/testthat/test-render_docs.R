@@ -321,13 +321,25 @@ theme:
     )
 
     render_docs(verbose = .on_ci())
-    expect_true(any(grepl("HELLO THERE", .readlines("docs/index.html"), fixed = TRUE)))
+    expect_true(any(grepl(
+        "HELLO THERE",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
 
     ### Ensure that the overrides/partial is updated
     cat("HELLO AGAIN", file = "altdoc/overrides/partials/copyright.html")
     render_docs(verbose = .on_ci())
-    expect_false(any(grepl("HELLO THERE", .readlines("docs/index.html"), fixed = TRUE)))
-    expect_true(any(grepl("HELLO AGAIN", .readlines("docs/index.html"), fixed = TRUE)))
+    expect_false(any(grepl(
+        "HELLO THERE",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
+    expect_true(any(grepl(
+        "HELLO AGAIN",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
 })
 
 test_that(".add_pkgdown() works", {

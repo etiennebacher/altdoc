@@ -157,7 +157,10 @@
     people <- unique(people)
 
     if (length(people) > 0) {
-        people_link <- paste0("https://github.com/", gsub("@", "", people, fixed = TRUE))
+        people_link <- paste0(
+            "https://github.com/",
+            gsub("@", "", people, fixed = TRUE)
+        )
 
         people_out <- data.frame(
             in_text = people,

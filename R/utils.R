@@ -56,7 +56,12 @@
     if (length(.gh_url) == 0) {
         .gh_url <- .gh_urls[grep("github.io", .gh_urls)]
         .gh_url <- gsub(".github.io", "", .gh_url)
-        .gh_url <- gsub("https://", "https://github.com/", .gh_url, fixed = TRUE)
+        .gh_url <- gsub(
+            "https://",
+            "https://github.com/",
+            .gh_url,
+            fixed = TRUE
+        )
     }
     .gh_url <- gsub(" ", "", .gh_url, fixed = TRUE)
     .gh_url <- gsub("#.*", "", .gh_url)
