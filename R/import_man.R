@@ -252,7 +252,7 @@
         },
         warning = function(w) {
             # flir-ignore
-            is_404 <<- grepl("404", w)
+            is_404 <<- grepl("404", w, fixed = TRUE)
         }
     )
 

@@ -246,7 +246,7 @@
     # file name
     if (length(out) == 0) {
         out <- fs::path_ext_remove(basename(fn))
-        out <- gsub("_", " ", out)
+        out <- gsub("_", " ", out, fixed = TRUE)
         out <- tools::toTitleCase(out)
     }
 

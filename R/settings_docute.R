@@ -1,6 +1,6 @@
 .finalize_docute <- function(settings, path, ...) {
     # drop missing entries
-    settings <- settings[!grepl("link: ''", settings)]
+    settings <- settings[!grepl("link: ''", settings, fixed = TRUE)]
 
     fn <- fs::path_join(c(.doc_path(path), "index.html"))
     writeLines(settings, fn)
@@ -52,7 +52,7 @@
     fn_vignettes <- gsub(.doc_path(path), "", fn_vignettes, fixed = TRUE)
 
     # escape because we enclose in single quotes in the json file
-    titles <- gsub("'", "\\\\'", titles)
+    titles <- gsub("'", "\\\\'", titles, fixed = TRUE)
 
     # # static assets strict relative path
     # fn_vignettes <- ifelse(tools::file_ext(fn_vignettes) == "pdf",

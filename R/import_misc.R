@@ -116,7 +116,7 @@
         issues_pr_link <- paste0(
             .gh_url(path),
             "/issues/",
-            gsub("#", "", issues_pr)
+            gsub("#", "", issues_pr, fixed = TRUE)
         )
 
         issues_pr_out <- data.frame(
@@ -157,7 +157,10 @@
     people <- unique(people)
 
     if (length(people) > 0) {
-        people_link <- paste0("https://github.com/", gsub("@", "", people))
+        people_link <- paste0(
+            "https://github.com/",
+            gsub("@", "", people, fixed = TRUE)
+        )
 
         people_out <- data.frame(
             in_text = people,

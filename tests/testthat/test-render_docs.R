@@ -204,7 +204,7 @@ test_that("docsify: footer is still present even if URL is absent", {
     setup_docs("docsify")
     render_docs()
     html <- .readlines("docs/index.html")
-    expect_true(any(grepl("Documentation made with", html)))
+    expect_true(any(grepl("Documentation made with", html, fixed = TRUE)))
 })
 
 for (tool in c("docute", "docsify", "quarto_website")) {
@@ -321,13 +321,25 @@ theme:
     )
 
     render_docs(verbose = .on_ci())
-    expect_true(any(grepl("HELLO THERE", .readlines("docs/index.html"))))
+    expect_true(any(grepl(
+        "HELLO THERE",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
 
     ### Ensure that the overrides/partial is updated
     cat("HELLO AGAIN", file = "altdoc/overrides/partials/copyright.html")
     render_docs(verbose = .on_ci())
-    expect_false(any(grepl("HELLO THERE", .readlines("docs/index.html"))))
-    expect_true(any(grepl("HELLO AGAIN", .readlines("docs/index.html"))))
+    expect_false(any(grepl(
+        "HELLO THERE",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
+    expect_true(any(grepl(
+        "HELLO AGAIN",
+        .readlines("docs/index.html"),
+        fixed = TRUE
+    )))
 })
 
 test_that(".add_pkgdown() works", {

@@ -142,13 +142,13 @@ render_docs <- function(
     )
 
     # Error so that CI fails
-    if (length(fail_vignettes) > 0 & length(fail_man) > 0) {
+    if (length(fail_vignettes) > 0 && length(fail_man) > 0) {
         cli::cli_abort(
             "There were some failures when rendering vignettes and man pages."
         )
-    } else if (length(fail_vignettes) > 0 & length(fail_man) == 0) {
+    } else if (length(fail_vignettes) > 0 && length(fail_man) == 0) {
         cli::cli_abort("There were some failures when rendering vignettes.")
-    } else if (length(fail_vignettes) == 0 & length(fail_man) > 0) {
+    } else if (length(fail_vignettes) == 0 && length(fail_man) > 0) {
         cli::cli_abort("There were some failures when rendering man pages.")
     }
 
