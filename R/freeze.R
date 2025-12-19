@@ -7,7 +7,7 @@
     ) {
         return(FALSE)
     }
-    if (grepl("/vignettes/", input)) {
+    if (grepl("/vignettes/", input, fixed = TRUE)) {
         input <- paste0("vignettes/", basename(input))
     }
     out <- FALSE
