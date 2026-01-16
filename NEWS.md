@@ -6,7 +6,7 @@
 
 * In 0.5.0, we announced that `README.qmd` wouldn't be automatically rendered,
   but this still happened when `output = "quarto_website"`. This is now fixed,
-  meaning that `altdoc` uses `README.md` over `README.qmd` (#353).
+  meaning that `altdoc` uses `README.md` over `README.qmd` (#354).
 
 ## 0.7.0
 
