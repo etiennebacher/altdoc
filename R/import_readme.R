@@ -60,7 +60,9 @@
 
     # Add the index page which includes README.md
     if (tool == "quarto_website") {
-        if ("README.qmd" %in% readme_files) {
+        if (
+            "README.qmd" %in% readme_files && !("README.md" %in% readme_files)
+        ) {
             fs::file_copy(
                 fs::path_join(c(src_dir, "README.qmd")),
                 fs::path_join(c(tar_dir, "index.qmd"))
