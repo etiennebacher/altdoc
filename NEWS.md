@@ -1,5 +1,16 @@
 # News
 
+## Development version
+
+### Bug fixes
+
+* In 0.5.0, we announced that `README.qmd` wouldn't be automatically rendered,
+  but this still happened when `output = "quarto_website"`. This is now fixed,
+  meaning that `altdoc` uses `README.md` over `README.qmd` (#354).
+
+* Figures stored in `man/figures` and used in the README are now properly
+  displayed (#354).
+
 ## 0.7.0
 
 ### New features

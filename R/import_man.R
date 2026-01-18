@@ -37,7 +37,10 @@
                 fs::path_join(c(tar_dir, "help", "figures")),
                 overwrite = TRUE
             )
-            fs::dir_delete(fs::path_join(c(b, "figures")))
+            # We used to delete the old "fs::path_join(c(b, "figures"))", but
+            # this prevented images in README to be displayed when they were
+            # stored in "man/figures". The README is never passed to Rd2HTML(),
+            # so the paths to the figures were never updated to "../help/figures".
         }
     }
 
