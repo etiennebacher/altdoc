@@ -21,7 +21,7 @@
         out <- try(
             quarto::quarto_render(
                 input = path.expand(tar_file),
-                output_format = "md",
+                output_format = "gfm",
                 quiet = FALSE,
                 as_job = FALSE
             ),
@@ -33,7 +33,7 @@
         out <- evaluate::evaluate(
             'quarto::quarto_render(
       input = path.expand(tar_file),
-      output_format = "md",
+      output_format = "gfm",
       quiet = FALSE,
       as_job = FALSE,
     )',

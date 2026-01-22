@@ -45,6 +45,10 @@
 * Files stored in `man/figures` (such as `lifecycle` badges) are now properly
   included by `render_docs()` (#321).
 
+* `render_docs()` now renders to Github-flavored markdown (`gfm`) that seems
+  to be used by all docs generators used by `altdoc`. This enables for
+  instance a better support for footnotes (#332).
+
 ### Bug fixes
 
 * Fix a `quarto_website` rendering failure when the package being rendered has
