@@ -43,7 +43,8 @@
         input = fs::path_join(c(path, "_quarto")),
         quiet = !verbose,
         as_job = FALSE,
-        use_freezer = freeze
+        use_freezer = freeze,
+        quarto_args = if (verbose) " --log-level debug"
     )
 
     if (verbose) cli::cli_inform("finished `quarto::quarto_render()`")
