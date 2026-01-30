@@ -57,7 +57,8 @@
     fn_vignettes <- list.files(
         fs::path_join(c(path, "_quarto/vignettes")),
         pattern = "\\.qmd$|\\.Rmd|\\.pdf$",
-        full.names = TRUE
+        full.names = TRUE,
+        recursive = TRUE
     )
     fn_man <- list.files(
         fs::path_join(c(path, "_quarto/man")),
