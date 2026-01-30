@@ -16,7 +16,6 @@
         indent.mapping.sequence = TRUE,
         handler = list(logical = yaml::verbatim_logical)
     )
-    if (verbose) cat(settings)
     settings <- strsplit(settings, "\\n")[[1]]
     writeLines(settings, fs::path_join(c(path, "_quarto", "_quarto.yml")))
 
