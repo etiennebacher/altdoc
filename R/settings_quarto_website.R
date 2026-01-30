@@ -16,9 +16,7 @@
         indent.mapping.sequence = TRUE,
         handler = list(logical = yaml::verbatim_logical)
     )
-    if (verbose) {
-        cat(settings)
-    }
+    if (verbose) cat(settings)
     settings <- strsplit(settings, "\\n")[[1]]
     writeLines(settings, fs::path_join(c(path, "_quarto", "_quarto.yml")))
 
@@ -46,7 +44,6 @@
         use_freezer = freeze
     )
 
-    if (verbose) cli::cli_inform("finished `quarto::quarto_render()`")
     # copy the content of altdoc/ to docs/. This is important because the
     # process above rendered the site in a completely different directory, so
     # did not have the static files, and we want the static files in altdoc/ to
