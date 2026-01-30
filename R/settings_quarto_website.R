@@ -43,6 +43,7 @@
         use_freezer = freeze
     )
 
+    if (verbose) cli::cli_inform("finished `quarto::quarto_render()`")
     # copy the content of altdoc/ to docs/. This is important because the
     # process above rendered the site in a completely different directory, so
     # did not have the static files, and we want the static files in altdoc/ to
