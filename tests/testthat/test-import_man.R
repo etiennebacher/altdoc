@@ -5,6 +5,11 @@ test_that("rendering fails", {
     fs::file_copy(source, dest)
 
     create_local_package()
+    # need to install it because we automatically add library(...) at the top of
+    # the example, but this will fail if the package isn't installed. We want
+    # a failure, but not this one.
+    install.packages(".", repos = NULL, type = "source")
+
     setup_docs("docute")
     fs::dir_create("man")
     fs::file_copy(dest, "man")

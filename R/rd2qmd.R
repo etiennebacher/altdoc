@@ -11,7 +11,8 @@
     # Rd -> html
     rd <- tools::parse_Rd(source_file)
     tmp_html <- paste0(tempfile(), ".html")
-    tools::Rd2HTML(rd, out = tmp_html)
+    # the default for "toc" changed in R 4.6.0, so we need to set it explicitly
+    tools::Rd2HTML(rd, out = tmp_html, toc = FALSE)
 
     # superfluous header and footer
     tmp <- .readlines(tmp_html)
