@@ -11,6 +11,9 @@
 * Figures stored in `man/figures` and used in the README are now properly
   displayed ([#354](https://github.com/etiennebacher/altdoc/issues/354)).
 
+* Fix for change of default value of `getOption("help.htmltoc")` in R-devel
+  4.6.0 ([#356](https://github.com/etiennebacher/altdoc/issues/356)).
+
 ## 0.7.0
 
 ### New features
