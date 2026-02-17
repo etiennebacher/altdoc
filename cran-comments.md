@@ -1,1 +1,1 @@
-This release fixes errors happening in some CRAN checks running on systems where Quarto is not installed.
+This release fixes an error due to changes in R-devel, and it includes a few other bug fixes.
