@@ -1,6 +1,6 @@
 # News
 
-## Development version
+## 0.7.1
 
 ### Bug fixes
 
