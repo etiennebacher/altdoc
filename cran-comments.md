@@ -1,6 +1,6 @@
 altdoc was removed from CRAN due to a `NOTE` happening only on Fedora about
-"non-standard things in the check directory". This release disables the test
-suite on CRAN to reduce the risk of removal.
+"non-standard things in the check directory". This release disables some tests
+on CRAN to reduce the risk of removal.
 
 Timeline:
 

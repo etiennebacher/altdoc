@@ -2,8 +2,7 @@
 
 ## 0.7.2
 
-* Test suite is disabled on CRAN following a removal from CRAN due to a `NOTE`
-  (#359).
+* Disabled more tests on CRAN following a removal from CRAN due to a `NOTE` (#359).
 
 ## 0.7.1
 
