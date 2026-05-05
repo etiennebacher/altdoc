@@ -51,6 +51,15 @@
 
     # this can be done automatically with `project:` > `resources: ../altdoc/`
     fs::dir_copy(fs::path_join(c(path, "altdoc")), tar, overwrite = TRUE)
+
+    # Also copy pkgdown.yml to the root of docs/ so that downlit can find it at
+    # <url>/pkgdown.yml when auto-linking function calls in vignettes and articles.
+    # fs::dir_copy() copies altdoc/ as a subdirectory of docs/ (creating
+    # docs/altdoc/pkgdown.yml), but downlit looks for it at the website root.
+    pkgdown_src <- fs::path_join(c(path, "altdoc", "pkgdown.yml"))
+    if (fs::file_exists(pkgdown_src)) {
+        fs::file_copy(pkgdown_src, fs::path_join(c(tar, "pkgdown.yml")), overwrite = TRUE)
+    }
 }
 
 .sidebar_vignettes_quarto_website <- function(sidebar, path) {

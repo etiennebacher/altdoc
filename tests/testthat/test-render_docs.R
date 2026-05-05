@@ -260,6 +260,35 @@ test_that("quarto: autolink", {
     )
 })
 
+test_that("quarto: pkgdown.yml is at docs root after render_docs", {
+    skip_on_cran()
+    skip_if(.is_windows() && .on_ci(), "Windows on CI")
+    skip_if(!.quarto_is_installed())
+
+    ### setup: create a temp package using the structure of testpkg.altdoc
+    path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.altdoc"))
+    create_local_project()
+    fs::dir_delete("R")
+    fs::dir_copy(path_to_example_pkg, ".")
+    all_files <- list.files("testpkg.altdoc", full.names = TRUE)
+    for (i in all_files) {
+        fs::file_move(i, ".")
+    }
+    fs::dir_delete("testpkg.altdoc")
+    desc::desc_add_urls("https://mywebsite.com")
+
+    ### generate docs
+    install.packages(".", repos = NULL, type = "source")
+    setup_docs("quarto_website")
+    expect_no_error(render_docs(verbose = .on_ci()))
+
+    ### pkgdown.yml must be at the root of docs/ so that downlit can find it at
+    ### <url>/pkgdown.yml when auto-linking function calls in vignettes
+    expect_true(fs::file_exists("docs/pkgdown.yml"))
+    docs_pkgdown <- yaml::read_yaml("docs/pkgdown.yml")
+    expect_equal(docs_pkgdown$urls$reference, "https://mywebsite.com/man")
+})
+
 test_that("files in man/figures are copied to docs/help/figures", {
     skip_on_cran()
     skip_if(!.quarto_is_installed())
@@ -412,6 +441,12 @@ test_that(".add_pkgdown() works", {
         unlist()
 
     expect_true(first_timestamp != second_timestamp)
+
+    ### pkgdown.yml must be at the root of docs/ so that downlit can find it at
+    ### <url>/pkgdown.yml when auto-linking function calls in vignettes
+    expect_true(fs::file_exists("docs/pkgdown.yml"))
+    docs_pkgdown <- yaml::read_yaml("docs/pkgdown.yml")
+    expect_equal(docs_pkgdown$urls$reference, "https://mywebsite.com/man")
 
     ### render_docs() doesn't remove pre-existing fields in pkgdown.yml
     cat(
