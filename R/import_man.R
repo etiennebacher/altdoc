@@ -95,7 +95,6 @@
 
     successes <- which(conversion_worked == "success")
     fails <- which(conversion_worked == "failure")
-    skipped_internal <- which(conversion_worked == "skipped_internal")
     skipped_unchanged <- which(conversion_worked == "skipped_unchanged")
 
     .update_freeze(src_dir, man_source, successes, fails, type = "man")
@@ -104,12 +103,6 @@
 
     # indent bullet points
     cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
-
-    if (length(skipped_internal) > 0) {
-        cli::cli_alert(
-            "{length(skipped_internal)} .Rd files skipped because they document internal functions."
-        )
-    }
 
     if (length(skipped_unchanged) > 0) {
         cli::cli_alert(
@@ -150,15 +143,6 @@
     destination_dir <- fs::path_join(c(tar_dir, "man"))
     destination_qmd <- fs::path_join(c(destination_dir, paste0(fn, ".qmd")))
     destination_md <- fs::path_join(c(destination_dir, paste0(fn, ".md")))
-
-    # Skip internal functions
-    flag <- tryCatch(
-        any(grepl("\\keyword\\{internal\\}", .readlines(origin_Rd))),
-        error = function(e) FALSE
-    )
-    if (isTRUE(flag)) {
-        return("skipped_internal")
-    }
 
     # Skip file when frozen
     if (isTRUE(freeze)) {
