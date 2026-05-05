@@ -261,6 +261,7 @@ test_that("quarto: autolink", {
 })
 
 test_that("files in man/figures are copied to docs/help/figures", {
+    skip_on_cran()
     skip_if(!.quarto_is_installed())
     path_to_example_pkg <- fs::path_abs(test_path("examples/testpkg.lifecycle"))
     create_local_project()
@@ -444,6 +445,7 @@ urls:
 # Test failures ------------------------------
 
 test_that("render_docs errors if vignettes fail", {
+    skip_on_cran()
     skip_if(!.quarto_is_installed())
     create_local_package()
     fs::dir_create("vignettes")
@@ -456,6 +458,7 @@ test_that("render_docs errors if vignettes fail", {
 })
 
 test_that("render_docs errors if man fail", {
+    skip_on_cran()
     skip_if(!.quarto_is_installed())
     create_local_package()
     fs::dir_create("man")
