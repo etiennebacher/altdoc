@@ -57,7 +57,8 @@
     fn_vignettes <- list.files(
         fs::path_join(c(path, "_quarto/vignettes")),
         pattern = "\\.qmd$|\\.Rmd|\\.pdf$",
-        full.names = TRUE
+        full.names = TRUE,
+        recursive = TRUE
     )
     fn_man <- list.files(
         fs::path_join(c(path, "_quarto/man")),
@@ -70,7 +71,7 @@
     fn_vignettes <- gsub(".*_quarto.", "", fn_vignettes)
 
     yml <- paste(sidebar, collapse = "\n")
-    yml <- yaml::yaml.load(yml)
+    yml <- yaml::yaml.load(yml, handlers = list(seq = function(x) as.list(x)))
 
     # reverse order because we delete elements
     for (i in rev(seq_along(yml$website$sidebar$contents))) {
