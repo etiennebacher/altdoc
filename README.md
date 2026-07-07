@@ -13,23 +13,23 @@ websites for simple `R` packages, and it can efficiently organize
 documentation for complex projects with hundreds of functions or dozens
 vignettes. Its features include:
 
--   Support for several documentation frameworks:
-    -   [Quarto websites](https://quarto.org/docs/websites/)
-    -   [Docsify](https://docsify.js.org/#/)
-    -   [MkDocs](https://www.mkdocs.org/).
-    -   [Docute](https://docute.egoist.dev//)
--   Render:
-    -   Quarto and Rmarkdown vignettes.
-    -   Reference pages for exported functions, along with evaluated
-        examples.
-    -   Common sections: `README.md`, `NEWS.md`, `CHANGELOG.md`,
-        `CODE_OF_CONDUCT.md`, `CITATION.md`, etc.
--   Preview the site:
-    -   Browser
-    -   RStudio Viewer
--   Deploy the website:
-    -   Github pages
-    -   Other platforms
+- Support for several documentation frameworks:
+  - [Quarto websites](https://quarto.org/docs/websites/)
+  - [Docsify](https://docsify.js.org/#/)
+  - [MkDocs](https://www.mkdocs.org/).
+  - [Docute](https://docute.egoist.dev//)
+- Render:
+  - Quarto and Rmarkdown vignettes.
+  - Reference pages for exported functions, along with evaluated
+    examples.
+  - Common sections: `README.md`, `NEWS.md`, `CHANGELOG.md`,
+    `CODE_OF_CONDUCT.md`, `CITATION.md`, etc.
+- Preview the site:
+  - Browser
+  - RStudio Viewer
+- Deploy the website:
+  - Github pages
+  - Other platforms
 
 ## Installation
 
@@ -116,21 +116,6 @@ Quarto
 <td>
 <a href="https://github.com/vincentarelbundock/modelsummary/tree/main/altdoc">Altdoc
 settings</a>
-</td>
-</tr>
-<tr>
-<td>
-Quarto
-</td>
-<td>
-<code>marginaleffects</code>
-</td>
-<td>
-🌐<a href="https://marginaleffects.com">marginaleffects.com</a>
-</td>
-<td>
-<a href="https://github.com/vincentarelbundock/marginaleffects/tree/main/altdoc">Altdoc
-Settings</a>
 </td>
 </tr>
 <tr>
@@ -231,12 +216,12 @@ Settings</a>
 [The `altdoc` website](https://altdoc.etiennebacher.com/) includes more
 information on topics like:
 
--   [How to get
-    started](https://altdoc.etiennebacher.com/#/vignettes/get-started.md)
--   [How to customize your
-    website](https://altdoc.etiennebacher.com/#/vignettes/customize.md)
--   [How to deploy your
-    website](https://altdoc.etiennebacher.com/#/vignettes/deploy.md)
+- [How to get
+  started](https://altdoc.etiennebacher.com/#/vignettes/get-started.md)
+- [How to customize your
+  website](https://altdoc.etiennebacher.com/#/vignettes/customize.md)
+- [How to deploy your
+  website](https://altdoc.etiennebacher.com/#/vignettes/deploy.md)
 
 ### Logo
 

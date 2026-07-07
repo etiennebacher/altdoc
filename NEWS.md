@@ -1,5 +1,9 @@
 # News
 
+## 0.7.3
+
+* Fix NOTE in CRAN results.
+
 ## 0.7.2
 
 * Disabled more tests on CRAN following a removal from CRAN due to a `NOTE` ([#359](https://github.com/etiennebacher/altdoc/issues/359)).
