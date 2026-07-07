@@ -22,13 +22,6 @@
     fs::dir_exists(venv_path)
 }
 
-# https://stackoverflow.com/a/42945293/11598948
-.stop_quietly <- function() {
-    opt <- options(show.error.messages = FALSE)
-    on.exit(options(opt))
-    stop()
-}
-
 .folder_is_empty <- function(x) {
     length(list.files(x)) == 0
 }

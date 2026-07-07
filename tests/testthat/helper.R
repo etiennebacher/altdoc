@@ -2,25 +2,11 @@ library(fs)
 library(usethis)
 library(withr)
 
-### Don't run mkdocs in other places than my laptop
-### It requires installing pip3 and mkdocs, which is not possible on CRAN
-### (to my knowledge)
-skip_mkdocs <- function() {
-    skip_on_cran()
-    skip_if_not(.venv_exists())
-}
-
 ### Taken from {usethis} (file "R/project.R")
 
 proj <- new.env(parent = emptyenv())
 
 proj_get_ <- function() proj$cur
-
-proj_set_ <- function(path) {
-    old <- proj$cur
-    proj$cur <- path
-    invisible(old)
-}
 
 ### Taken from {usethis} (file "tests/testthat/helper.R")
 
@@ -92,5 +78,3 @@ create_local_thing <- function(
 
     invisible(usethis::proj_get())
 }
-
-expect_proj_file <- function(...) expect_true(fs::file_exists(proj_path(...)))
