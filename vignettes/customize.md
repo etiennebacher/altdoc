@@ -26,9 +26,9 @@ Docsify supports many themes and offers extensive configuration
 possibilities. Here, we show a minimal example using the Themeable
 framework. For more information, see:
 
--   [Docsify User Guide](https://docsify.js.org/#/)
--   [Themeable for
-    Docsify](https://jhildenbiddle.github.io/docsify-themeable/#/)
+- [Docsify User Guide](https://docsify.js.org/#/)
+- [Themeable for
+  Docsify](https://jhildenbiddle.github.io/docsify-themeable/#/)
 
 Initialize the documentation website settings:
 
@@ -127,9 +127,9 @@ MkDocs supports many themes and offers extensive configuration
 possibilities. Here, we show a minimal example using the Material theme.
 For more information, see:
 
--   [MkDocs User Guide](https://www.mkdocs.org/user-guide/)
--   [Material for
-    MkDocs](https://squidfunk.github.io/mkdocs-material/customization/)
+- [MkDocs User Guide](https://www.mkdocs.org/user-guide/)
+- [Material for
+  MkDocs](https://squidfunk.github.io/mkdocs-material/customization/)
 
 First, install both the `mkdocs` and `mkdocs-material` package for
 Python:
@@ -191,8 +191,8 @@ The Docute website hosts a detailed guide on customization. As with the
 other documentation engines, the strategy is to customize the settings
 files stored in the `altdoc/` directory, before calling `render_docs()`.
 
--   [Docute Customization
-    Guide](https://docute.egoist.dev/guide/customization)
+- [Docute Customization
+  Guide](https://docute.egoist.dev/guide/customization)
 
 ## Pre and post-processing
 

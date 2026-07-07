@@ -6,10 +6,10 @@
 several tools. The authors of these documentation generators have all
 written detailed guides to deployment, which you can read here:
 
--   [Docsify deployment](https://docsify.js.org/#/deploy)
--   [Docute deployment](https://docute.egoist.dev/guide/deployment)
--   [MkDocs
-    deployment](https://www.mkdocs.org/user-guide/deploying-your-docs/).
+- [Docsify deployment](https://docsify.js.org/#/deploy)
+- [Docute deployment](https://docute.egoist.dev/guide/deployment)
+- [MkDocs
+  deployment](https://www.mkdocs.org/user-guide/deploying-your-docs/).
 
 We’ll just focus on GitHub Pages and Netlify here.
 
@@ -28,19 +28,19 @@ process is usually very simple:
 1.  Go to your Github repository settings.
 2.  Click on “Pages” in the left sidebar.
 3.  Under “Build and deployment”, select:
-    -   Deploy from branch
-    -   Branch: `main` or `master` (depending on your git repository
-        settings)
-    -   Select folder: `docs/`
+    - Deploy from branch
+    - Branch: `main` or `master` (depending on your git repository
+      settings)
+    - Select folder: `docs/`
 4.  Update your `altdoc` site, commit, and push to Github. Make sure all
     files in `docs/` are committed to the repository, including hidden
     files like `.nojekyll`.
 
 Detailed instructions are available on Github’s website:
 
--   https://docs.github.com/en/pages
--   https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-    \[Github offers\]
+- https://docs.github.com/en/pages
+- https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+  \[Github offers\]
 
 ### Github Actions
 
@@ -67,10 +67,10 @@ In case this is useful, we now describe how Etienne got his
 documentation deployed with an address like `mypackage.mywebsite.com`.
 The context is:
 
--   Website made with `{distill}`, deployed through Netlify;
--   Custom domain name, such as `mywebsite.com`;
--   We would like to have the package documentation as a subdomain, such
-    as `mypackage.mywebsite.com`.
+- Website made with `{distill}`, deployed through Netlify;
+- Custom domain name, such as `mywebsite.com`;
+- We would like to have the package documentation as a subdomain, such
+  as `mypackage.mywebsite.com`.
 
 If you are in the same situation, you can follow the steps below.
 Otherwise, you should refer to `docsify.js` documentation linked above.
