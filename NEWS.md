@@ -6,11 +6,21 @@
 
 ## 0.7.2
 
+* `quarto_website` now stages files pulled in by `{{< include >}}` directives
+  that resolve outside the copied source trees (e.g. a shared `macros/macros.qmd`
+  submodule at the package root), so those includes resolve at render time.
+
 * Disabled more tests on CRAN following a removal from CRAN due to a `NOTE` (#359).
 
 ## 0.7.1
 
 ### Bug fixes
+
+* Vignettes in subfolders (e.g., `vignettes/articles/`) are now discovered 
+  recursively when using `quarto_website`. (#355)
+
+* Custom sidebars with singleton entries in `quarto_website.yml` are now 
+  properly processed. (#355)
 
 * In 0.5.0, we announced that `README.qmd` wouldn't be automatically rendered,
   but this still happened when `output = "quarto_website"`. This is now fixed,

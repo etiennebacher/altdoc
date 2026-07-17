@@ -35,6 +35,15 @@
     # Clear out `tar`
     fs::file_delete(files)
 
+    # Stage files pulled in by `{{< include >}}` directives that live outside
+    # the copied source trees (e.g. a shared `macros/macros.qmd` submodule at
+    # the package root). Quarto resolves include paths relative to the
+    # including file, so these must exist under `_quarto/` before rendering.
+    .stage_external_includes(
+        src_dir = path,
+        quarto_dir = fs::path_join(c(path, "_quarto"))
+    )
+
     # render to `output-dir: ../docs/`
     quarto::quarto_render(
         input = fs::path_join(c(path, "_quarto")),
@@ -57,7 +66,8 @@
     fn_vignettes <- list.files(
         fs::path_join(c(path, "_quarto/vignettes")),
         pattern = "\\.qmd$|\\.Rmd|\\.pdf$",
-        full.names = TRUE
+        full.names = TRUE,
+        recursive = TRUE
     )
     fn_man <- list.files(
         fs::path_join(c(path, "_quarto/man")),
@@ -70,7 +80,7 @@
     fn_vignettes <- gsub(".*_quarto.", "", fn_vignettes)
 
     yml <- paste(sidebar, collapse = "\n")
-    yml <- yaml::yaml.load(yml)
+    yml <- yaml::yaml.load(yml, handlers = list(seq = function(x) as.list(x)))
 
     # reverse order because we delete elements
     for (i in rev(seq_along(yml$website$sidebar$contents))) {
@@ -142,4 +152,73 @@
         }
     }
     return(sidebar)
+}
+
+# Copy files referenced by Quarto `{{< include >}}` directives that resolve to
+# a location outside the `_quarto/` build tree into the matching spot under
+# `_quarto/`, so Quarto can find them at render time.
+#
+# altdoc stages `vignettes/`, `man/`, and the miscellaneous root files into
+# `_quarto/`, but an include such as `{{< include ../macros/macros.qmd >}}`
+# (common when a package shares its LaTeX macros via a submodule at the package
+# root) points outside those trees and is otherwise never copied. Because
+# Quarto resolves include paths relative to the including file, the referenced
+# file must live at the same relative path under `_quarto/`. This walks the
+# staged files, follows their includes recursively, and copies each
+# externally-referenced file from the source tree into `_quarto/`.
+.stage_external_includes <- function(src_dir, quarto_dir) {
+    src_dir <- fs::path_abs(src_dir)
+    quarto_dir <- fs::path_abs(quarto_dir)
+    include_re <- "\\{\\{<\\s*include\\s+([^>]+?)\\s*>\\}\\}"
+
+    queue <- list.files(
+        quarto_dir,
+        pattern = "\\.qmd$|\\.Rmd$|\\.md$",
+        full.names = TRUE,
+        recursive = TRUE
+    )
+    seen <- character(0)
+
+    while (length(queue) > 0) {
+        fn <- queue[[1]]
+        queue <- queue[-1]
+        if (fn %in% seen || !fs::file_exists(fn)) {
+            next
+        }
+        seen <- c(seen, fn)
+
+        matches <- regmatches(
+            .readlines(fn),
+            regexpr(include_re, .readlines(fn))
+        )
+        paths <- sub(include_re, "\\1", matches)
+        for (inc in unique(trimws(paths))) {
+            inc <- gsub('^["\']|["\']$', "", inc)
+
+            # only includes that escape the copied tree need staging; the rest
+            # were already copied with their containing directory
+            if (!grepl("\\.\\.", inc)) {
+                next
+            }
+
+            rel <- fs::path_rel(
+                fs::path_norm(fs::path_join(c(fs::path_dir(fn), inc))),
+                start = quarto_dir
+            )
+            tar_file <- fs::path_join(c(quarto_dir, rel))
+            src_file <- fs::path_join(c(src_dir, rel))
+
+            if (fs::file_exists(tar_file)) {
+                queue <- c(queue, tar_file)
+                next
+            }
+            if (fs::file_exists(src_file)) {
+                fs::dir_create(fs::path_dir(tar_file))
+                fs::file_copy(src_file, tar_file, overwrite = TRUE)
+                queue <- c(queue, tar_file)
+            }
+        }
+    }
+
+    invisible()
 }
