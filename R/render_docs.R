@@ -89,8 +89,27 @@ render_docs <- function(
                     function(f) basename(f) != "_freeze",
                     docs_files
                 )
+                docs_files <- Filter(
+                    function(f) basename(f) != "man",
+                    docs_files
+                )
             }
             fs::file_delete(docs_files)
+
+            # When freeze is on, clean up stale man-page qmds with no matching .Rd
+            if (isTRUE(freeze)) {
+                man_dir <- fs::path_join(c(docs_dir, "man"))
+                if (fs::dir_exists(man_dir)) {
+                    rd_stems <- fs::path_ext_remove(basename(
+                        list.files(fs::path_join(c(path, "man")),
+                            pattern = "\\.Rd$"
+                        )
+                    ))
+                    old_qmds <- fs::dir_ls(man_dir, regexp = "\\.qmd$")
+                    stale <- old_qmds[!fs::path_ext_remove(basename(old_qmds)) %in% rd_stems]
+                    if (length(stale)) fs::file_delete(stale)
+                }
+            }
         }
     } else {
         docs_dir <- fs::path_join(c(path, "docs"))
