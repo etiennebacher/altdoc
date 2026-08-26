@@ -166,7 +166,24 @@ The Docute website hosts a detailed guide on customization. As with the other do
 
 * [Docute Customization Guide](https://docute.egoist.dev/guide/customization)
 
+## Quarto website
 
+For `quarto_website`, you can group and order functions on the reference index page and sidebar by adding an `altdoc/reference.yml` file. This works similarly to the `reference` section of `pkgdown`'s `_pkgdown.yml`.
+
+Create `altdoc/reference.yml`, listing functions (by name or alias) under section titles:
+
+```yaml
+- title: Main functions
+  contents:
+    - my_function
+    - my_other_function
+- title: Helpers
+  contents:
+    - helper_one
+    - helper_two
+```
+
+`altdoc` builds a grouped `man/index.qmd` overview page and reflects the same grouping and order in the sidebar. Every documented function must be listed in `altdoc/reference.yml`; `altdoc` errors on unknown names and warns about any documented function that is missing from the file. If `altdoc/reference.yml` does not exist, it uses a flat alphabetical layout.
 
 ## Pre and post-processing
 

@@ -130,6 +130,13 @@ render_docs <- function(
         freeze = freeze
     )
 
+    # Only supported for quarto_website, and only if altdoc/reference.yml exists.
+    if (
+        tool == "quarto_website" && fs::file_exists(.reference_yaml_path(path))
+    ) {
+        .build_reference_index(path, docs_dir)
+    }
+
     # Update vignettes
     cli::cli_h1("Vignettes")
     fail_vignettes <- .import_vignettes(

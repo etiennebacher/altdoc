@@ -1,5 +1,11 @@
 # News
 
+## Development version
+
+* For `quarto_website`, functions can now be grouped and ordered on the
+  reference index page and sidebar by adding an `altdoc/reference.yml` file
+  (similar to `pkgdown`'s `_pkgdown.yml` reference section).
+
 ## 0.7.3
 
 * Fix NOTE in CRAN results.

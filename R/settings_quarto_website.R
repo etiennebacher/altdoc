@@ -110,15 +110,42 @@
             )
         ) {
             if (length(fn_man) > 0) {
-                man_list <- lapply(
-                    fn_man,
-                    function(x) {
-                        list(
-                            text = sub("\\.qmd$", "", basename(x)),
-                            file = x
-                        )
-                    }
-                )
+                config <- .read_reference_config(path)
+                if (!is.null(config)) {
+                    topics <- .rd_topic_index(path)
+                    man_list <- c(
+                        list(list(text = "Overview", file = "man/index.qmd")),
+                        lapply(config, function(block) {
+                            list(
+                                section = block$title,
+                                contents = lapply(
+                                    block$contents,
+                                    function(name) {
+                                        topic <- topics[[name]]
+                                        list(
+                                            text = name,
+                                            file = paste0(
+                                                "man/",
+                                                topic$basename,
+                                                ".qmd"
+                                            )
+                                        )
+                                    }
+                                )
+                            )
+                        })
+                    )
+                } else {
+                    man_list <- lapply(
+                        fn_man,
+                        function(x) {
+                            list(
+                                text = sub("\\.qmd$", "", basename(x)),
+                                file = x
+                            )
+                        }
+                    )
+                }
                 yml$website$sidebar$contents[[i]] <- list(
                     section = "Reference",
                     contents = man_list
